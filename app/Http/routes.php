@@ -12,5 +12,6 @@
  */
 
 Route::get('/', function () {
+    dd(phpinfo());
     return view('welcome');
 });
