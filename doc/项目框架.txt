@@ -2,4 +2,3 @@
 php版本		PHP 			5.5.x(>5.5.9)
 jquery版本	JQuery 			1.11.3
 前端框架	Bootstrap 		3.3.7
-表单验证	jquery-validation	1.14.0
