@@ -19,6 +19,7 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+
 Route::group(['prefix' => 'admin'], function () {
     Route::get('index', [
         'as' => 'admin_index', 'uses' => 'Admin\IndexController@index'
