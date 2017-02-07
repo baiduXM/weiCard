@@ -18,3 +18,18 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('index', [
+        'as' => 'admin_index', 'uses' => 'Admin\IndexController@index'
+    ]);
+});
+
+Route::group(['prefix' => 'home'], function () {
+    Route::get('index', [
+        'as' => 'home_index', 'uses' => 'Home\IndexController@index'
+    ]);
+});
+

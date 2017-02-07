@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class IndexController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -15,6 +17,7 @@ class IndexController extends Controller
      */
     public function __construct()
     {
+//        
 //        $this->middleware('auth');
     }
 
@@ -25,6 +28,7 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('Admin.index');
     }
+
 }
