@@ -31,4 +31,6 @@ class IndexController extends Controller
         return view('Admin.index');
     }
 
+
+
 }

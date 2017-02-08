@@ -20,11 +20,15 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 
-
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('index', [
-        'as' => 'admin_index', 'uses' => 'Admin\IndexController@index'
-    ]);
+    Route::get('/', function () {
+        return redirect()->route('admin_user_index');
+    });
+    Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
+    });
 });
 
 Route::group(['prefix' => 'home'], function () {
