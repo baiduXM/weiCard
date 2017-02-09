@@ -1,17 +1,20 @@
 @extends('layouts.admin')
 @section('title', '用户管理')
+@section('breadcrumb')
+    用户管理
+@stop
 @section('content')
     @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
 
-                <div class="panel-heading"><h2 class="sub-header">用户列表</h2></div>
+                <div class="panel-heading">用户列表</div>
                 <div class="panel-body">
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>#编号</th>
+                            <th>#</th>
                             <th>用户名</th>
                             <th>邮箱</th>
                             <th>权限</th>
@@ -29,15 +32,17 @@
                                 <td>{{ $user->privilege($user->privilege) }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
-                                <td><span><a href="">详情</a></span> - <span><a href="">修改</a></span> - <span><a href="">删除</a></span>
+                                <td>
+                                    <span><a href="{{ url('admin/user/detail', ['id' => $user->id]) }}">详情</a></span>
+                                    - <span><a href="{{ url('admin/user/update', ['id' => $user->id]) }}">修改</a></span>
+                                    - <span><a href="{{ url('admin/user/delete', ['id' => $user->id]) }}">删除</a></span>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <div class="pull-left">
-                        {{--{{ $users->render() }}--}}
-                        {{ $users->links() }}
+                        {{ $users->render() }}
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(20);
-        return view('admin.user')->with([
+        return view('admin.user.index')->with([
             'users' => $users
         ]);
     }
@@ -28,20 +28,29 @@ class UserController extends Controller
     // 用户详情
     public function detail($id)
     {
-        // TODO
+        $user = User::find($id);
+        return view('admin.user.detail', [
+            'user' => $user
+        ]);
+
     }
 
     // 修改用户
     public function update($id)
     {
-        // TODO
+        $user = User::find($id);
+        return view('admin.user.modify', [
+            'user' => $user
+        ]);
     }
 
     // 删除用户
-    public function delete($id) {
+    public function delete($id)
+    {
         // TODO
+        echo 1;
+        exit;
     }
-
 
 
 }

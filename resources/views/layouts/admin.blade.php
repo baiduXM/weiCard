@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><span>微名片</span>管理后台</a>
+                <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a>
                 {{--用户菜单--}}
                 <ul class="user-menu">
                     <li class="dropdown pull-right">
@@ -99,6 +99,13 @@
     @section('content')
         {{--面包削--}}
         @include('common.breadcrumb')
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">@yield('title')</h1>
+            </div>
+        </div><!--/.row-->
+
 
     @show
 </div><!--/.main-->
