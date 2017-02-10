@@ -21,9 +21,9 @@ Route::get('/home', 'HomeController@index');
 
 // 后台管理界面
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', function () {
+    Route::get('/', ['as' => 'admin', function () {
         return redirect()->route('admin_index');
-    });
+    }]);
     Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
 
     Route::group(['prefix' => 'user'], function () {

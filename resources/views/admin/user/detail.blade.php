@@ -1,23 +1,19 @@
 @extends('layouts.admin')
 @section('title', '用户详情')
-
+@section('breadcrumb')
+    {!! Breadcrumbs::render('detail', $user->id) !!}
+@stop
 @section('content')
-
-    @parent
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">账户信息</div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <tr>
-                                <th class="text-right">#编号</th>
-                                <td>{{ $user->id }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">用户名</th>
-                                <td>{{ $user->name }}</td>
+                                <th class="text-right col-md-3">用户名</th>
+                                <td class="col-md-9">{{ $user->name }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">邮箱</th>
@@ -32,14 +28,14 @@
                                 <td>{{ $user->created_at }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">最后登录时间</th>
+                                <th class="text-right">更新时间</th>
                                 <td>{{ $user->updated_at }}</td>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!--/.col-->
     </div><!--/.row-->
 
 @stop

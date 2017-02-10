@@ -15,7 +15,6 @@
 
 <body>
 @section('header')
-
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -50,63 +49,64 @@
                 <input type="text" class="form-control" placeholder="Search">
             </div>
         </form>
-        @section('menu')
-            <ul class="nav menu">
-                <li class="{{ Request::getPathInfo() == '/admin/index' ? 'active' : '' }}"><a
-                            href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>
-                        首页</a></li>
-                <li class="{{ Request::getPathInfo() == '/admin/user' ? 'active' : '' }}"><a
-                            href="{{ url('admin/user') }}"><span class=" glyphicon glyphicon-th"></span> 用户管理</a></li>
-                <li class="{{ Request::getPathInfo() == '/admin/charts' ? 'active' : '' }}"><a
-                            href="{{ url('admin/member') }}"><span
-                                class="glyphicon glyphicon-stats"></span> 管理员列表</a></li>
-                <li class="parent ">
-                    <a href="#">
-                        <span class="glyphicon glyphicon-list"></span> Dropdown <span data-toggle="collapse"
-                                                                                      href="#sub-item-1"
-                                                                                      class="icon pull-right"><em
-                                    class="glyphicon glyphicon-s glyphicon-plus"></em></span>
-                    </a>
-                    <ul class="children collapse" id="sub-item-1">
-                        <li>
-                            <a class="" href="#">
-                                <span class="glyphicon glyphicon-share-alt"></span> Sub Item 1
-                            </a>
-                        </li>
-                        <li>
-                            <a class="" href="#">
-                                <span class="glyphicon glyphicon-share-alt"></span> Sub Item 2
-                            </a>
-                        </li>
-                        <li>
-                            <a class="" href="#">
-                                <span class="glyphicon glyphicon-share-alt"></span> Sub Item 3
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+        <ul class="nav menu">
+            <li class="{{ Request::path() == 'admin/index' ? 'active' : '' }}">
+                <a href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>
+                    首页</a>
+            </li>
+            <li class="{{ Request::path() == 'admin/user' || Request::is('admin/user/*') ? 'active' : '' }}">
+                <a href="{{ url('admin/user') }}"><span class=" glyphicon glyphicon-th"></span> 用户管理</a>
+            </li>
+            <li class="{{ Request::path() == 'admin/charts' ? 'active' : '' }}">
+                <a href="{{ url('admin/member') }}"><span class="glyphicon glyphicon-stats"></span> 管理员列表</a>
+            </li>
+            <li class="parent ">
+                <a href="#">
+                    <span class="glyphicon glyphicon-list"></span> Dropdown
+                    <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right">
+                            <em class="glyphicon glyphicon-s glyphicon-plus"></em>
+                        </span>
+                </a>
+                <ul class="children collapse" id="sub-item-1">
+                    <li>
+                        <a class="" href="#">
+                            <span class="glyphicon glyphicon-share-alt"></span> Sub Item 1
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="#">
+                            <span class="glyphicon glyphicon-share-alt"></span> Sub Item 2
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="#">
+                            <span class="glyphicon glyphicon-share-alt"></span> Sub Item 3
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li role="presentation" class="divider"></li>
+            <li role="presentation" class="divider"></li>
 
-                <li><a href="login.html"><span class="glyphicon glyphicon-user"></span> Login Page</a></li>
+            <li><a href="login.html"><span class="glyphicon glyphicon-user"></span> Login Page</a></li>
 
-            </ul>
-        @show
+        </ul>
     </div>
 @show
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    {{--面包削--}}
+    <div class="row">
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('admin') !!}
+        @show
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">@yield('title')</h1>
+        </div>
+    </div><!--/.row-->
     @section('content')
-        {{--面包削--}}
-        @include('common.breadcrumb')
-
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">@yield('title')</h1>
-            </div>
-        </div><!--/.row-->
-
-
     @show
 </div><!--/.main-->
 

@@ -1,15 +1,17 @@
 @extends('layouts.admin')
 @section('title', '用户管理')
 @section('breadcrumb')
-
+    {!! Breadcrumbs::render('user') !!}
 @stop
 @section('content')
-    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
 
-                <div class="panel-heading">用户列表</div>
+                <div class="panel-heading">
+                    用户列表
+                    <a href="{{ url('admin/user/create') }}" type="button" class="btn btn-primary pull-right">添加用户</a>
+                </div>
                 <div class="panel-body">
                     <table class="table table-striped">
                         <thead>
@@ -41,9 +43,10 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="pull-left">
-                        {{ $users->render() }}
+                    <div class="pull-right">
+                        {!! $users->render() !!}
                     </div>
+
                 </div>
             </div>
         </div>

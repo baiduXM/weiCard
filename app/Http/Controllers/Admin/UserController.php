@@ -9,20 +9,32 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    const PAGENUM = 20; // 每页显示条数
 
     // 用户列表
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::paginate(self::PAGENUM);
         return view('admin.user.index')->with([
             'users' => $users
         ]);
     }
 
     // 新增用户
-    public function create()
+    public function create(Request $request)
     {
-        // TODO
+        if ($request->isMethod('POST')) {
+            $data = $request->input('User');
+            if (User::create($data)) {
+                return redirect('admin/user')->with('success', '添加成功');
+            } else {
+                return redirect()->back();
+            }
+        }
+        $user = new User();
+        return view('admin.user.create', [
+            'user' => $user,
+        ]);
     }
 
     // 用户详情
@@ -36,10 +48,16 @@ class UserController extends Controller
     }
 
     // 修改用户
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $user = User::find($id);
-        return view('admin.user.modify', [
+        if ($request->isMethod('POST')) {
+
+            dd($request->all());
+
+        }
+
+        return view('admin.user.update', [
             'user' => $user
         ]);
     }
