@@ -5,6 +5,7 @@
  + 修改.env中APP_KEY的值：base64:Q68mWjpqKdhnlGyB/bmf5DmBlyt2jvCaFCJ6Uv1cAdI=`
  + 用composer引入breadcrumb（面包屑扩展）所以需要PHP版本>5.6 
    [breadcrumbs扩展](http://www.jianshu.com/p/a7a53052d53a)
+
  ~~~
    composer require davejamesmiller/laravel-breadcrumbs
  ~~~
