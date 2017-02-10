@@ -1,8 +1,5 @@
 @extends('layouts.admin')
 @section('title', '用户详情')
-@section('breadcrumb')
-    用户详情
-@stop
 
 @section('content')
 

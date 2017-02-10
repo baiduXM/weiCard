@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', '用户管理')
 @section('breadcrumb')
-    用户管理
+
 @stop
 @section('content')
     @parent

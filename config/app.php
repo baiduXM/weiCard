@@ -157,6 +157,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
 
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // 面包屑扩展
 
 
     ],
@@ -205,6 +206,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // 面包屑扩展
     ],
 
 ];
