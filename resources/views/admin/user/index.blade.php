@@ -4,6 +4,12 @@
     {!! Breadcrumbs::render('user') !!}
 @stop
 @section('content')
+
+    <div class="row">
+        <div class="col-lg-12">
+            @include('common.message')
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">

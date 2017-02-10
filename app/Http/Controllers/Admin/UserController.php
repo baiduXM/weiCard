@@ -24,6 +24,23 @@ class UserController extends Controller
     public function create(Request $request)
     {
         if ($request->isMethod('POST')) {
+
+            $this->validate($request, [
+                'User.name' => 'required|min:6|max:20',
+                'User.email' => 'required|email|max:255',
+                'User.password' => 'required|min:6|confirmed',
+            ], [
+                'required' => ':attribute为必填项',
+                'min' => ':attribute长度太短',
+                'max' => ':attribute长度太长',
+                'email' => ':attribute格式不正确',
+                'confirmed' => '两次:attribute不一致',
+            ], [
+                'User.name' => '用户名',
+                'User.email' => '邮箱',
+                'User.password' => '密码',
+            ]);
+
             $data = $request->input('User');
             if (User::create($data)) {
                 return redirect('admin/user')->with('success', '添加成功');

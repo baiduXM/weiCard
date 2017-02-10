@@ -30,7 +30,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
         Route::any('/create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
         Route::any('/update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
-        Route::get('/delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);
+        Route::any('/delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);
         Route::get('/detail/{id}', ['as' => 'admin_user_detail', 'uses' => 'Admin\UserController@detail']);
     });
 });
