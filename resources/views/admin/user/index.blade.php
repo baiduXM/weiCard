@@ -4,12 +4,7 @@
     {!! Breadcrumbs::render('user') !!}
 @stop
 @section('content')
-
-    <div class="row">
-        <div class="col-lg-12">
-            @include('common.message')
-        </div>
-    </div>
+    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -43,7 +38,8 @@
                                 <td>
                                     <span><a href="{{ url('admin/user/detail', ['id' => $user->id]) }}">详情</a></span>
                                     - <span><a href="{{ url('admin/user/update', ['id' => $user->id]) }}">修改</a></span>
-                                    - <span><a href="{{ url('admin/user/delete', ['id' => $user->id]) }}">删除</a></span>
+                                    - <span><a href="{{ url('admin/user/delete', ['id' => $user->id]) }}"
+                                               onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
                                 </td>
                             </tr>
                         @endforeach

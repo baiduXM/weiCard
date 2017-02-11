@@ -10,42 +10,54 @@
                 <div class="panel-heading">修改信息</div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="" method="post">
-                    <fieldset>
-                    <!-- Name input-->
-                        <div class="form-group">
+                        {{ csrf_field() }}
+
+                        <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">用户名</label>
-                            <div class="col-md-9">
-                                <input id="name" name="user[name]" type="text" placeholder="Your name"
-                                       class="form-control" value="{{ $user->name }}">
+                            <div class="col-md-6">
+                                <input id="name" name="User[name]" type="text" placeholder="输入用户名(6~20个字符)"
+                                       class="form-control" value="{{ old('User.name') ? old('User.name') : $user->name }}">
                             </div>
+                            @if ($errors->has('User.name'))
+                                <span class="help-block col-md-3">
+                                        <strong>{{ $errors->first('User.name') }}</strong>
+                                    </span>
+                            @endif
                         </div>
 
-                        <!-- Email input-->
-                        <div class="form-group">
+                        <div class="form-group {{ $errors->has('User.email') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="email">邮箱</label>
-                            <div class="col-md-9">
-                                <input id="email" name="user[email]" type="text" placeholder="Your email"
-                                       class="form-control" value="{{ $user->email }}">
+                            <div class="col-md-6">
+                                <input id="email" name="User[email]" type="text" placeholder="输入邮箱"
+                                       class="form-control" value="{{ old('User.email') ? old('User.email') : $user->email }}">
                             </div>
+                            @if ($errors->has('User.email'))
+                                <span class="help-block col-md-3">
+                                        <strong>{{ $errors->first('User.email') }}</strong>
+                                    </span>
+                            @endif
                         </div>
 
-                        <!-- Email input-->
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="email">密码</label>
                             <div class="col-md-9">
-                                <a href="" type="button" class="btn btn-default btn-md pull-left">修改密码</a>
+                                <button id="modifyPassword" type="button" class="btn btn-default" data-container="body"
+                                        data-toggle="popover" data-placement="right"
+                                        data-content="暂时无法修改密码">修改密码
+                                </button>
+
+                                {{--<a href="" type="button" class="btn btn-default btn-md pull-left">修改密码</a>--}}
                             </div>
                         </div>
 
-                        <!-- Message body -->
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="message">权限</label>
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 @foreach($user->privilege() as $ind => $val)
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="user[privilege]"
-                                                   value="{{ $ind }}">{{ $val }}
+                                            <input type="radio" name="User[privilege]" value="{{ $ind }}"
+                                                    {{ $user->privilege == $ind ? 'checked' : '' }}>{{ $val }}
                                         </label>
                                     </div>
                                 @endforeach
@@ -54,14 +66,25 @@
 
                         <!-- Form actions -->
                         <div class="form-group">
-                            <div class="col-md-6 widget-left">
-                                <button type="submit" class="btn btn-default btn-md pull-right">Submit</button>
+                            <div class="col-md-12 widget-left">
+                                <button type="submit" class="btn btn-primary btn-md">确认</button>
+                                <a href="{{ url('admin/user') }}" type="button"
+                                   class="btn btn-default btn-md">返回</a>
                             </div>
                         </div>
-                        </fieldset>
                     </form>
                 </div>
             </div>
         </div><!--/.col-->
     </div><!--/.row-->
+@stop
+@section('javascript')
+    <script>
+//        $('#modifyPassword').click(function () {
+
+            $('#modifyPassword').popover({
+                'trigger': 'click',
+            });
+//        });
+    </script>
 @stop

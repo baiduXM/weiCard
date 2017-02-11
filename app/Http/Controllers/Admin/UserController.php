@@ -61,7 +61,6 @@ class UserController extends Controller
         return view('admin.user.detail', [
             'user' => $user
         ]);
-
     }
 
     // 修改用户
@@ -69,10 +68,30 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($request->isMethod('POST')) {
-
-            dd($request->all());
+            $this->validate($request, [
+                'User.name' => 'required|min:6|max:20',
+                'User.email' => 'required|email|max:255',
+            ], [
+                'required' => ':attribute为必填项',
+                'min' => ':attribute长度太短',
+                'max' => ':attribute长度太长',
+                'email' => ':attribute格式不正确',
+            ], [
+                'User.name' => '用户名',
+                'User.email' => '邮箱',
+            ]);
+            $data = $request->input('User');
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->privilege = $data['privilege'];
+            if ($user->save()) {
+                return redirect('admin/user')->with('success', '修改成功');
+            } else {
+                return redirect()->back();
+            }
 
         }
+
 
         return view('admin.user.update', [
             'user' => $user
@@ -82,9 +101,13 @@ class UserController extends Controller
     // 删除用户
     public function delete($id)
     {
-        // TODO
-        echo 1;
-        exit;
+        $user = User::find($id);
+        if ($user->delete()) {
+            return redirect('admin/user')->with('success', '删除成功 - ' . $user->id);
+        } else {
+            return redirect('admin/user')->with('error', '删除失败 - ' . $user->id);
+        }
+
     }
 
 
