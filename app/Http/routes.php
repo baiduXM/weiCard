@@ -25,9 +25,17 @@ Route::group(['prefix' => 'admin'], function () {
         return redirect()->route('admin_index');
     }]);
     Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
-
+    // 用户路由组
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
+        Route::any('/create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
+        Route::any('/update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
+        Route::any('/delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);
+        Route::get('/detail/{id}', ['as' => 'admin_user_detail', 'uses' => 'Admin\UserController@detail']);
+    });
+    // 客服路由组
+    Route::group(['prefix' => 'member'], function () {
+        Route::get('/', ['as' => 'admin_member_index', 'uses' => 'Admin\MemberController@index']);
         Route::any('/create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
         Route::any('/update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
         Route::any('/delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);

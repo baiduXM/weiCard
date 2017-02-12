@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Admin\User;
+use App\Model\Admin\Member;
 use Illuminate\Http\Request;
 
 
-class UserController extends Controller
+class MemberController extends Controller
 {
     const PAGENUM = 20; // 每页显示条数
 
     // 用户列表
     public function index()
     {
-        $users = User::paginate(self::PAGENUM);
+        // TODO
+        $member = Member::paginate(self::PAGENUM);
         return view('admin.user.index')->with([
             'users' => $users
         ]);
