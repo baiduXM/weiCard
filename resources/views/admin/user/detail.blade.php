@@ -20,8 +20,8 @@
                                 <td>{{ $user->email }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">权限</th>
-                                <td>{{ $user->privilege($user->privilege) }}</td>
+                                <th class="text-right">角色</th>
+                                <td>{{ $user->role($user->role) }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>
