@@ -31,10 +31,10 @@ Route::group(['prefix' => 'admin'], function () {
     // 用户管理
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
-        Route::any('/create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
-        Route::any('/update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
-        Route::any('/delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);
-        Route::get('/detail/{id}', ['as' => 'admin_user_detail', 'uses' => 'Admin\UserController@detail']);
+        Route::any('create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
+        Route::any('update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
+        Route::any('delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete']);
+        Route::get('detail/{id}', ['as' => 'admin_user_detail', 'uses' => 'Admin\UserController@detail']);
     });
 
     // 公司管理

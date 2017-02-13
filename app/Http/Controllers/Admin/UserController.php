@@ -88,7 +88,7 @@ class UserController extends Controller
             $data = $request->input('User');
             $user->name = $data['name'];
             $user->email = $data['email'];
-            $user->privilege = $data['privilege'];
+            $user->role = $data['role'];
             if ($user->save()) {
                 return redirect('admin/user')->with('success', '修改成功');
             } else {
