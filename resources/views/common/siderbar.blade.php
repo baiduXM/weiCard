@@ -6,16 +6,22 @@
         </form>
         <ul class="nav menu">
             <li class="{{ Request::path() == 'admin/index' ? 'active' : '' }}">
-                <a href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>首页</a>
+                <a href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>棣栭〉</a>
             </li>
             <li class="{{ Request::path() == 'admin/user' || Request::is('admin/user/*') ? 'active' : '' }}">
-                <a href="{{ url('admin/user') }}"><span class=" glyphicon glyphicon-th"></span>用户管理</a>
+                <a href="{{ url('admin/user') }}"><span class=" glyphicon glyphicon-th"></span>鐢ㄦ埛绠＄悊</a>
             </li>
-            <li class="{{ Request::path() == 'admin/member' || Request::is('admin/member/*') ? 'active' : '' }}">
-                <a href="{{ url('admin/member') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
+            <li class="{{ Request::path() == 'admin/company' || Request::is('admin/company/*')  ? 'active' : '' }}">
+                <a href="{{ url('admin/company') }}"><span class="glyphicon glyphicon-stats"></span>鍏徃绠＄悊</a>
             </li>
-            <li class="{{ Request::path() == 'admin/setting' ? 'active' : '' }}">
-                <a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-stats"></span>设置</a>
+            <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
+                <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>妯℃澘绠＄悊</a>
+            </li>
+            <li class="{{ Request::path() == 'admin/administrator' || Request::is('admin/administrator/*') ? 'active' : '' }}">
+                <a href="{{ url('admin/member') }}"><span class="glyphicon glyphicon-stats"></span>瀹㈡湇绠＄悊</a>
+            </li>
+            <li class="{{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'active' : '' }}">
+                <a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-stats"></span>璁剧疆</a>
             </li>
             <!--<li class="parent ">
                 <a href="#">

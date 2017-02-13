@@ -8,7 +8,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-
                 <div class="panel-heading">
                     用户列表
                     <a href="{{ url('admin/user/create') }}" type="button" class="btn btn-primary pull-right">添加用户</a>
@@ -20,7 +19,7 @@
                             <th>#</th>
                             <th>用户名</th>
                             <th>邮箱</th>
-                            <th>权限</th>
+                            <th>角色</th>
                             <th>创建时间</th>
                             <th>最后登录时间</th>
                             <th>操作</th>
@@ -32,7 +31,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->privilege($user->privilege) }}</td>
+                                <td>{{ $user->role($user->role) }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td>
@@ -55,21 +54,21 @@
     </div><!--/.row-->
 @stop
 @section('javascript')
-    <script>
-        !function ($) {
-            $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
-                $(this).find('em:first').toggleClass("glyphicon-minus");
-            });
-            $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-        }(window.jQuery);
+    {{--<script>--}}
+        {{--!function ($) {--}}
+            {{--$(document).on("click", "ul.nav li.parent > a > span.icon", function () {--}}
+                {{--$(this).find('em:first').toggleClass("glyphicon-minus");--}}
+            {{--});--}}
+            {{--$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");--}}
+        {{--}(window.jQuery);--}}
 
-        $(window).on('resize', function () {
-            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-        })
-        $(window).on('resize', function () {
-            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-        })
-    </script>
+        {{--$(window).on('resize', function () {--}}
+            {{--if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')--}}
+        {{--})--}}
+        {{--$(window).on('resize', function () {--}}
+            {{--if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')--}}
+        {{--})--}}
+    {{--</script>--}}
 @stop
 
 

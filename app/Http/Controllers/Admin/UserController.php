@@ -11,6 +11,11 @@ class UserController extends Controller
 {
     const PAGENUM = 20; // 每页显示条数
 
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
+
     // 用户列表
     public function index()
     {

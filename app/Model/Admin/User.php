@@ -8,15 +8,15 @@ class User extends Authenticatable
 {
 //    protected $table = 'users';
 
-    const PRIVILEGE_CUSTOMER = 0; // 用户权限
-    const PRIVILEGE_SERVICE = 1; // 客服权限
-    const PRIVILEGE_ADMIN = 2; // 管理员权限
+//    const ROLE_UN = 0; // 未知
+    const ROLE_USER = 1; // 个人
+    const ROLE_COMPANY = 2; // 公司
 
 
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'email', 'password', 'privilege',
+        'name', 'email', 'password',
     ];
 
     protected $hidden = [
@@ -24,15 +24,15 @@ class User extends Authenticatable
     ];
 
     // 设置权限
-    public function privilege($ind = null)
+    public function role($ind = null)
     {
         $arr = [
-            self::PRIVILEGE_CUSTOMER => '用户',
-            self::PRIVILEGE_SERVICE => '客服',
-            self::PRIVILEGE_ADMIN => '管理员',
+//            self::ROLE_UN => '未知',
+            self::ROLE_USER => '个人',
+            self::ROLE_COMPANY => '公司',
         ];
         if ($ind !== null) {
-            return array_key_exists($ind, $arr) ? $arr[$ind] : $arr[self::PRIVILEGE_CUSTOMER];
+            return array_key_exists($ind, $arr) ? $arr[$ind] : $arr[self::ROLE_USER];
         }
         return $arr;
 
