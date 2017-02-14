@@ -40,11 +40,21 @@ Route::group(['prefix' => 'admin'], function () {
     // 公司管理
     Route::group(['prefix' => 'company'], function () {
         // TODO
+        Route::get('/', ['as' => 'admin_company_index', 'uses' => 'Admin\CompanyController@index']);
+        Route::any('create', ['as' => 'admin_company_create', 'uses' => 'Admin\CompanyController@create']);
+        Route::any('update/{id}', ['as' => 'admin_company_update', 'uses' => 'Admin\CompanyController@update']);
+        Route::any('delete/{id}', ['as' => 'admin_company_delete', 'uses' => 'Admin\CompanyController@delete']);
+        Route::get('detail/{id}', ['as' => 'admin_company_detail', 'uses' => 'Admin\CompanyController@detail']);
     });
 
     // 模板管理
     Route::group(['prefix' => 'template'], function () {
         // TODO
+        Route::get('/', ['as' => 'admin_template_index', 'uses' => 'Admin\TemplateController@index']);
+        Route::any('create', ['as' => 'admin_template_create', 'uses' => 'Admin\TemplateController@create']);
+        Route::any('update/{id}', ['as' => 'admin_template_update', 'uses' => 'Admin\TemplateController@update']);
+        Route::any('delete/{id}', ['as' => 'admin_template_delete', 'uses' => 'Admin\TemplateController@delete']);
+        Route::get('detail/{id}', ['as' => 'admin_template_detail', 'uses' => 'Admin\TemplateController@detail']);
     });
 
     // 客服管理

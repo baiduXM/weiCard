@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>微名片系统后台管理 - @yield('title', '首页')</title>
-    <link href="{{ asset('static/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/css/datepicker3.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/common/css/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/admin/css/styles.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="{{ asset('static/js/html5shiv.js') }}"></script>
-    <script src="{{ asset('static/js/respond.min.js') }}"></script>
+    <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
+    <script src="{{ asset('static/common/js/respond.min.js') }}"></script>
     <![endif]-->
 </head>
 
@@ -67,9 +67,9 @@
     @show
 </div><!--/.main-->
 
-<script src="{{ asset('static/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('static/js/chart.min.js') }}"></script>
+<script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
+<script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/js/chart.min.js') }}"></script>
 @section('javascript')
 
 @show
