@@ -31,3 +31,9 @@ Breadcrumbs::register('create', function ($breadcrumbs) {
     $breadcrumbs->parent('user');
     $breadcrumbs->push('添加用户', route('admin_user_create'));
 });
+
+// 首页 > 用户列表 > 添加用户
+Breadcrumbs::register('member', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin');
+    $breadcrumbs->push('客服列表', route('admin_member_index'));
+});

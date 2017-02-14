@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Model\Admin\User;
 use Illuminate\Http\Request;
 
 
 class UserController extends Controller
 {
     const PAGENUM = 20; // 每页显示条数
+
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
 
     // 用户列表
     public function index()
@@ -83,7 +88,7 @@ class UserController extends Controller
             $data = $request->input('User');
             $user->name = $data['name'];
             $user->email = $data['email'];
-            $user->privilege = $data['privilege'];
+            $user->role = $data['role'];
             if ($user->save()) {
                 return redirect('admin/user')->with('success', '修改成功');
             } else {

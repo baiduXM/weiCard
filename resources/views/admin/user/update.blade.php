@@ -53,11 +53,11 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="message">权限</label>
                             <div class="col-md-6">
-                                @foreach($user->privilege() as $ind => $val)
+                                @foreach($user->role() as $ind => $val)
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="User[privilege]" value="{{ $ind }}"
-                                                    {{ $user->privilege == $ind ? 'checked' : '' }}>{{ $val }}
+                                            <input type="radio" name="User[role]" value="{{ $ind }}"
+                                                    {{ $user->role == $ind ? 'checked' : '' }}>{{ $val }}
                                         </label>
                                     </div>
                                 @endforeach
