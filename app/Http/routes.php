@@ -14,23 +14,40 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::auth();
 
 //Route::group(['middleware' => 'web'], function () {
-
-    Route::auth();
-    Route::get('/home', 'HomeController@index');
+// Authentication Routes...
+//Route::get('login', 'Auth\AuthController@showLoginForm');
+//Route::post('login', 'Auth\AuthController@login');
+//Route::get('logout', 'Auth\AuthController@logout');
+//// Registration Routes...
+//Route::get('register', 'Auth\AuthController@showRegistrationForm');
+//Route::post('register', 'Auth\AuthController@register');
+//// Password Reset Routes...
+//Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+//Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
+//Route::post('password/reset', 'Auth\PasswordController@reset');
 //});
+Route::get('/home', 'HomeController@index');
+
+// 登录管理
+Route::get('admin/login', 'Admin\AuthController@getLogin');
+Route::post('admin/login', 'Admin\AuthController@postLogin');
+Route::get('admin/register', 'Admin\AuthController@getRegister');
+Route::post('admin/register', 'Admin\AuthController@postRegister');
+Route::get('admin/logout', 'Admin\AuthController@logout');
 
 
 // 后台管理界面
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 首页
     Route::get('/', ['as' => 'admin', function () {
         return redirect()->route('admin_index');
     }]);
-
     Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
+
     // 用户管理
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
@@ -79,4 +96,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'setting'], function () {
         // TODO
     });
+
+
 });

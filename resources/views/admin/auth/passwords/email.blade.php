@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('admin.common.app')
 <!-- Main Content -->
 @section('content')
 <div class="container">
@@ -14,7 +13,7 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('admin/password/email') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">

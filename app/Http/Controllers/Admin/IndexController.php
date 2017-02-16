@@ -17,7 +17,7 @@ class IndexController extends Controller
      */
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
 
     /**
@@ -27,7 +27,8 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('Admin.index');
+        $admin = Auth::guard('admin')->user();
+        return view('admin.index');
     }
 
 
