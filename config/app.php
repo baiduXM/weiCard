@@ -26,6 +26,7 @@ return [
     |
     */
 
+
     'debug' => env('APP_DEBUG', false),
 
     /*
@@ -156,7 +157,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // add
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
 
     ],
 
@@ -204,7 +205,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // add
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
 
     ],
 

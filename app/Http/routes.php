@@ -15,22 +15,34 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'web'], function () {
+//Route::group(['middleware' => 'web'], function () {
+//});
 
-    Route::auth();
-    Route::get('/home', 'HomeController@index');
+// 前台登录
+Route::auth();
+
+// 后台登录
+Route::get('admin/login', 'Admin\AuthController@getLogin');
+Route::post('admin/login', 'Admin\AuthController@postLogin');
+Route::get('admin/register', 'Admin\AuthController@getRegister');
+Route::post('admin/register', 'Admin\AuthController@postRegister');
+Route::get('admin/logout', function () {
+    Auth::guard('admin')->logout();
+    return redirect()->to('/admin');
 });
 
+// 前台路由组
+Route::get('/home', 'HomeController@index');
 
 // 后台管理界面
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 首页
     Route::get('/', ['as' => 'admin', function () {
         return redirect()->route('admin_index');
     }]);
-
     Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
+
     // 用户管理
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
@@ -67,16 +79,18 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     // 客服管理
-    Route::group(['prefix' => 'administrator'], function () {
-        Route::get('/', ['as' => 'admin_administrator_index', 'uses' => 'Admin\AdministratorController@index']);
-        Route::any('/create', ['as' => 'admin_administrator_create', 'uses' => 'Admin\AdministratorController@create']);
-        Route::any('/update/{id}', ['as' => 'admin_administrator_update', 'uses' => 'Admin\AdministratorController@update']);
-        Route::any('/delete/{id}', ['as' => 'admin_administrator_delete', 'uses' => 'Admin\AdministratorController@delete']);
-        Route::get('/detail/{id}', ['as' => 'admin_administrator_detail', 'uses' => 'Admin\AdministratorController@detail']);
+    Route::group(['prefix' => 'manager'], function () {
+        Route::get('/', ['as' => 'admin_manager_index', 'uses' => 'Admin\ManagerController@index']);
+        Route::any('/create', ['as' => 'admin_manager_create', 'uses' => 'Admin\ManagerController@create']);
+        Route::any('/update/{id}', ['as' => 'admin_manager_update', 'uses' => 'Admin\ManagerController@update']);
+        Route::any('/delete/{id}', ['as' => 'admin_manager_delete', 'uses' => 'Admin\ManagerController@delete']);
+        Route::get('/detail/{id}', ['as' => 'admin_manager_detail', 'uses' => 'Admin\ManagerController@detail']);
     });
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
         // TODO
     });
+
+
 });

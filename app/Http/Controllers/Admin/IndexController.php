@@ -2,32 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class IndexController extends Controller
 {
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-//        $this->middleware('auth');
+        $this->middleware('auth:admin');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('Admin.index');
+//        (Auth::guard('admin')->user());
+        return view('admin.index');
     }
 
 
