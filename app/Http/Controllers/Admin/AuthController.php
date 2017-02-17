@@ -19,7 +19,6 @@ class AuthController extends Controller
 
     public function __construct()
     {
-//        dd(1);
         $this->middleware('guest:admin', ['except' => 'logout']);
     }
 
