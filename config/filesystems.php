@@ -51,7 +51,10 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+<<<<<<< HEAD
 //            'root' => public_path('app/public'),
+=======
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
             'visibility' => 'public',
         ],
 

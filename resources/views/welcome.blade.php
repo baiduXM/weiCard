@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 <html>
@@ -43,3 +44,22 @@
 </body>
 </html>
 
+=======
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">Welcome</div>
+
+                <div class="panel-body">
+                    Your Application's Landing Page.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d

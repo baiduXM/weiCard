@@ -11,6 +11,10 @@
                 <div class="panel-body">
                     <form class="form-horizontal" action="" method="post">
                         {{ csrf_field() }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">用户名</label>
                             <div class="col-md-6">

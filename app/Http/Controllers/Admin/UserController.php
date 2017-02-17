@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+<<<<<<< HEAD
 use App\Model\Admin\User;
+=======
+use App\User;
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
 use Illuminate\Http\Request;
 
 
