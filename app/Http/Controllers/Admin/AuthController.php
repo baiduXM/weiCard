@@ -15,7 +15,7 @@ class AuthController extends Controller
     protected $guard = 'admin';
     protected $loginView = 'admin.auth.login';
     protected $registerView = 'admin.auth.register';
-    protected $redirectAfterLogout = '/admin';
+//    protected $redirectAfterLogout = '/admin';
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:administrators',
             'password' => 'required|confirmed',
         ]);
     }
@@ -41,4 +41,5 @@ class AuthController extends Controller
         ]);
 
     }
+
 }

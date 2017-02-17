@@ -9,8 +9,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    用户列表
-                    <a href="{{ url('admin/user/create') }}" type="button" class="btn btn-primary pull-right">添加用户</a>
+                    客服列表
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped">
@@ -19,25 +18,25 @@
                             <th>#</th>
                             <th>用户名</th>
                             <th>邮箱</th>
-                            <th>角色</th>
+                            {{--<th>权限</th>--}}
                             <th>创建时间</th>
                             <th>最后登录时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($users as $user)
+                        @foreach($managers as $manager)
                             <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->role($user->role) }}</td>
-                                <td>{{ $user->created_at }}</td>
-                                <td>{{ $user->updated_at }}</td>
+                                <td>{{ $manager->id }}</td>
+                                <td>{{ $manager->name }}</td>
+                                <td>{{ $manager->email }}</td>
+{{--                                <td>{{ $manager->role($user->role) }}</td>--}}
+                                <td>{{ $manager->created_at }}</td>
+                                <td>{{ $manager->updated_at }}</td>
                                 <td>
-                                    <span><a href="{{ url('admin/user/detail', ['id' => $user->id]) }}">详情</a></span>
-                                    - <span><a href="{{ url('admin/user/update', ['id' => $user->id]) }}">修改</a></span>
-                                    - <span><a href="{{ url('admin/user/delete', ['id' => $user->id]) }}"
+                                    <span><a href="{{ url('admin/manager/detail', ['id' => $manager->id]) }}">详情</a></span>
+                                    - <span><a href="{{ url('admin/manager/update', ['id' => $manager->id]) }}">修改</a></span>
+                                    - <span><a href="{{ url('admin/manager/delete', ['id' => $manager->id]) }}"
                                                onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
                                 </td>
                             </tr>
@@ -45,7 +44,7 @@
                         </tbody>
                     </table>
                     <div class="pull-right">
-                        {!! $users->render() !!}
+                        {!! $managers->render() !!}
                     </div>
 
                 </div>

@@ -2,16 +2,14 @@
 
 namespace App\Model\Admin;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-//    protected $table = 'users';
 
 //    const ROLE_UN = 0; // 未知
     const ROLE_USER = 1; // 个人
     const ROLE_COMPANY = 2; // 公司
-
 
     public $timestamps = true;
 
