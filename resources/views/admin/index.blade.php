@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.common.admin')
 @section('title', '首页')
 @section('content')
     @parent

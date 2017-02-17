@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Admin;
+use App\Model\Admin\Admin;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -15,10 +15,11 @@ class AuthController extends Controller
     protected $guard = 'admin';
     protected $loginView = 'admin.auth.login';
     protected $registerView = 'admin.auth.register';
-    protected $table = 'administrtors';
+    protected $redirectAfterLogout = '/admin';
 
     public function __construct()
     {
+//        dd(1);
         $this->middleware('guest:admin', ['except' => 'logout']);
     }
 
