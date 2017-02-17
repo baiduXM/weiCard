@@ -26,7 +26,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
+    'debug' => env('APP_DEBUG', true),
+=======
     'debug' => env('APP_DEBUG', false),
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +112,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
+    'log' => env('APP_LOG', 'single'),
+=======
     'log' => env('APP_LOG', 'daily'),
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
 
     /*
     |--------------------------------------------------------------------------
@@ -156,7 +164,13 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+<<<<<<< HEAD
+
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // 面包屑扩展
+
+=======
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // add
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
 
     ],
 
@@ -204,8 +218,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+<<<<<<< HEAD
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // 面包屑扩展
+=======
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // add
 
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
     ],
 
 ];

@@ -56,11 +56,19 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
+<<<<<<< HEAD
+            'database' => env('DB_DATABASE', 'weicard'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+=======
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
+>>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
             'prefix' => 'wc_',
             'strict' => false,
             'engine' => null,
