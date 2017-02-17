@@ -4,12 +4,6 @@
 Homestead.yaml
 Homestead.json
 .env
-<<<<<<< HEAD
-/nbproject
-.idea/*
-weicard.sublime-project
-=======
 
 .idea/*
 /nbproject
->>>>>>> 697f93b0898e0306a7faefa3bf9eb752fb448e6d
