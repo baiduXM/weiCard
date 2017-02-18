@@ -17,9 +17,11 @@
         <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
         </li>
-        <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
-            <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
-        </li>
+        @if(Auth::guard('admin')->user()->permission === 1)
+            <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
+                <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
+            </li>
+        @endif
         <li class="{{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'active' : '' }}">
             <a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-stats"></span>设置</a>
         </li>

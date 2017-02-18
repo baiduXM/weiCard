@@ -11,7 +11,7 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
 // 首页 > 用户列表
 Breadcrumbs::register('user', function ($breadcrumbs) {
     $breadcrumbs->parent('admin');
-    $breadcrumbs->push('用户列表', route('admin_user_index'));
+    $breadcrumbs->push('用户列表', route('admin_user'));
 });
 
 // 首页 > 用户列表 > 用户详情
@@ -32,8 +32,8 @@ Breadcrumbs::register('create', function ($breadcrumbs) {
     $breadcrumbs->push('添加用户', route('admin_user_create'));
 });
 
-// 首页 > 用户列表 > 添加用户
-Breadcrumbs::register('member', function ($breadcrumbs) {
+// 首页 > 客服列表
+Breadcrumbs::register('manager', function ($breadcrumbs) {
     $breadcrumbs->parent('admin');
-    $breadcrumbs->push('客服列表', route('admin_member_index'));
+    $breadcrumbs->push('客服列表', route('admin_manager'));
 });

@@ -54,7 +54,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 用户管理
     Route::group(['prefix' => 'user'], function () {
-        Route::get('/', ['as' => 'admin_user_index', 'uses' => 'Admin\UserController@index']);
+        Route::get('/', ['as' => 'admin_user', 'uses' => 'Admin\UserController@index']);
         Route::any('create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
         Route::any('update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update'])
             ->where(['id' => '[0-9]+']);
@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 客服管理
     Route::group(['prefix' => 'manager'], function () {
-        Route::get('/', ['as' => 'admin_manager_index', 'uses' => 'Admin\ManagerController@index']);
+        Route::get('/', ['as' => 'admin_manager', 'uses' => 'Admin\ManagerController@index']);
         Route::any('/create', ['as' => 'admin_manager_create', 'uses' => 'Admin\ManagerController@create']);
         Route::any('/update/{id}', ['as' => 'admin_manager_update', 'uses' => 'Admin\ManagerController@update']);
         Route::any('/delete/{id}', ['as' => 'admin_manager_delete', 'uses' => 'Admin\ManagerController@delete']);
@@ -98,7 +98,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
-        // TODO
+        Route::any('/safety', ['as' => 'admin_setting_safety', 'uses' => 'Admin\SettingController@safety']);
+        Route::any('/person', ['as' => 'admin_setting_person', 'uses' => 'Admin\SettingController@person']);
+
     });
 
 
