@@ -21,6 +21,17 @@ Route::get('/', function () {
 // 前台登录
 Route::auth();
 
+// 前台路由组
+Route::group(['middleware' => 'web'], function () {
+
+    Route::get('index', 'Home\IndexController@index');
+
+    // 用户操作
+    Route::group(['prefix' => 'user'], function () {
+
+    });
+});
+
 // 后台登录
 Route::get('admin/login', 'Admin\AuthController@getLogin');
 Route::post('admin/login', 'Admin\AuthController@postLogin');
@@ -31,8 +42,6 @@ Route::get('admin/logout', function () {
     return redirect()->to('/admin');
 });
 
-// 前台路由组
-Route::get('/home', 'HomeController@index');
 
 // 后台管理界面
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
