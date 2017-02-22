@@ -158,6 +158,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
+        Zizaco\Entrust\EntrustServiceProvider::class, // added 权限管理
 
     ],
 
@@ -206,6 +207,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
+        'Entrust' => Zizaco\Entrust\EntrustFacade::class, // added 权限管理
+
 
     ],
 

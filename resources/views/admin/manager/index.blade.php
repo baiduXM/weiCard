@@ -1,7 +1,7 @@
 @extends('admin.common.admin')
-@section('title', '用户管理')
+@section('title', '客服管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('user') !!}
+    {!! Breadcrumbs::render('manager') !!}
 @stop
 @section('content')
     @parent

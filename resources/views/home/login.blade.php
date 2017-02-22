@@ -4,10 +4,10 @@
 <meta http-equiv="x-ua-compatible" content="ie=Edge" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>微名片后台登录</title>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/animate.css" />
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<link rel="stylesheet" href="{{ asset('static/home/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('static/home/css/animate.css') }}" />
+<script type="text/javascript" src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
+{{--<script type="text/javascript" src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}js/jquery.SuperSlide.2.1.1.js"></script>--}}
 <script src="js/site.js" type="text/javascript"></script><!--主要是用在实现的效果上 必须要的-->
 <script src="js/wow.min.js"></script><!--主要是用在实现的效果上 必须要的-->
 <script type="text/javascript" src="js/main.js"></script>

@@ -4,6 +4,11 @@ namespace App\Model;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * 前台验证
+ *
+ * @package App\Model
+ */
 class User extends Authenticatable
 {
 
