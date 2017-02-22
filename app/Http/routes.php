@@ -12,11 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('index');
 });
 
-//Route::group(['middleware' => 'web'], function () {
-//});
 
 // 前台登录
 Route::auth();
@@ -24,7 +22,7 @@ Route::auth();
 // 前台路由组
 Route::group(['middleware' => 'web'], function () {
 
-    Route::get('index', 'Home\IndexController@index');
+    Route::get('index', ['as' => 'index', 'uses' => 'Home\IndexController@index']);
 
     // 用户操作
     Route::group(['prefix' => 'user'], function () {
