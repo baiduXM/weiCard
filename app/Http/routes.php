@@ -64,7 +64,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 公司管理
     Route::group(['prefix' => 'company'], function () {
-        // TODO
         Route::get('/', ['as' => 'admin_company_index', 'uses' => 'Admin\CompanyController@index']);
         Route::any('create', ['as' => 'admin_company_create', 'uses' => 'Admin\CompanyController@create']);
         Route::any('update/{id}', ['as' => 'admin_company_update', 'uses' => 'Admin\CompanyController@update']);
@@ -74,7 +73,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 模板管理
     Route::group(['prefix' => 'template'], function () {
-        // TODO
         Route::get('/', ['as' => 'admin_template_index', 'uses' => 'Admin\TemplateController@index']);
         Route::any('create', ['as' => 'admin_template_create', 'uses' => 'Admin\TemplateController@create']);
         Route::any('update/{id}', ['as' => 'admin_template_update', 'uses' => 'Admin\TemplateController@update'])
