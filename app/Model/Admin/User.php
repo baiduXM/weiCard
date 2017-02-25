@@ -4,6 +4,11 @@ namespace App\Model\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class User 后台获取用户信息
+ *
+ * @package App\Model\Admin
+ */
 class User extends Model
 {
 

@@ -12,7 +12,7 @@ class ManagerController extends Controller
     public function index()
     {
         $managers = Manager::where('name', "!=", 'admin')->paginate(); // 超级管理员不能删除
-        return view('admin.manager.index')->with([
+        return view('admin.managers.index')->with([
             'managers' => $managers
         ]);
     }

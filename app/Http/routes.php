@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    return redirect()->route('admin.role.index');
     return redirect()->route('index');
 });
 
@@ -91,6 +92,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::any('/delete/{id}', ['as' => 'admin_manager_delete', 'uses' => 'Admin\ManagerController@delete']);
         Route::get('/detail/{id}', ['as' => 'admin_manager_detail', 'uses' => 'Admin\ManagerController@detail']);
     });
+
+    // 角色管理
+//    Route::group(['prefix' => 'role'], function () {
+//
+//    });
+    Route::resource('role', 'Admin\RoleController');
+
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
