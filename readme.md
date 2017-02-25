@@ -1,15 +1,13 @@
 # 微名片
 
-
- + /vendor目录 被git忽略，需要运行“composer install”命令，加载第三方包
+ + 运行“composer install”命令，加载第三方包
  + .env文件 被git忽略，用.env.example修改成.env文件，根据本地环境修改配置参数
  + 修改.env中APP_KEY的值： base64:Bhrr6VfOTOSjZ2JUdHCCeu+bJNA2aDyjtppeZWioQuk=
- + 用composer引入breadcrumb（面包屑扩展）所以需要PHP版本>5.6[breadcrumbs扩展](http://www.jianshu.com/p/a7a53052d53a)
- + 用composer引入entrust（权限管理）
- + 查看composer.json文件是否存在"davejamesmiller/laravel-breadcrumbs"和"zizaco/entrust"，存在直接运行composer update，若不存在，运行下面代码
+ 
+ 添加扩展包，若composer install后仍未加载，运行下列代码
 ~~~
-   composer require davejamesmiller/laravel-breadcrumbs
-   composer require zizaco/entrust 5.2.x-dev
+   composer require davejamesmiller/laravel-breadcrumbs     //面包屑扩展
+   composer require zizaco/entrust 5.2.x-dev                //权限管理扩展
 ~~~
 
  
