@@ -36,9 +36,9 @@
                                 <td>{{ $role->created_at }}</td>
                                 <td>{{ $role->updated_at }}</td>
                                 <td>
-                                    <span><a href="{{ url('admin/role/detail', ['id' => $role->id]) }}">详情</a></span>
-                                    - <span><a href="{{ url('admin/role/update', ['id' => $role->id]) }}">修改</a></span>
-                                    - <span><a href="{{ url('admin/role/delete', ['id' => $role->id]) }}"
+                                    <span><a href="{{ url('admin/role/'. $role->id) }}">详情</a></span> -
+                                    <span><a href="{{ url('admin/role/'. $role->id .'/edit') }}">修改</a></span>
+                                    - <span><a href="{{ url('admin/role', ['id' => $role->id]) }}"
                                                onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
                                 </td>
                             </tr>
@@ -54,3 +54,14 @@
         </div>
     </div><!--/.row-->
 @stop
+
+@section('javascript')
+    <script>
+        $(function () {
+            alert(1);
+        });
+
+    </script>
+
+@stop
+

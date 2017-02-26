@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect()->route('admin.role.index');
+//    return redirect()->route('admin.role.index');
     return redirect()->route('index');
 });
 

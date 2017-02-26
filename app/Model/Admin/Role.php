@@ -8,6 +8,7 @@ class Role extends Model
 {
     use EntrustUserTrait;
 
+
     const ROLE_TYPE_HOME = 0; // 前台
     const ROLE_TYPE_ADMIN = 1; // 后台
 
@@ -16,7 +17,7 @@ class Role extends Model
     ];
 
     // 角色类型
-    public function setype($ind = null)
+    public function setType($ind = null)
     {
         $arr = [
             self::ROLE_TYPE_HOME => '前台角色',
