@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>微名片管理平台 - @yield('title', '首页')</title>
-    <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('static/home/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('static/home/css/style.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -17,9 +17,21 @@
 </head>
 
 <body>
-@section('content')
+<div class="wrapper">
+    <div class="header">
+        <div class="logo wow zoomInRight animated"><a href=""><img src="{{ asset('static/home/images/logo.png') }}"></a>
+        </div>
+    </div>
+    <div class="side">
+        @include('home.common.sidebar')
+        @section('content')
 
-@show
+        @show
+    </div>
+    <div id="footer">
+        copyright 厦门易尔通网络科技有限公司 版权所有
+    </div>
+</div>
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>

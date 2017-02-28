@@ -15,28 +15,9 @@ class IndexController extends Controller
         $this->middleware('auth:admin');
     }
 
-    public function index(Request $request)
+    public function index()
     {
-//        $admin = Manager::findOrFail($id);
-//        $admin = Auth::guard('admin')->user();
-////        dd($admin);
-//        if ($request->user()->cannot('update-post', $admin)) {
-//            dd('cannot');
-//
-//            abort(403);
-//        }
-//
-//
-//        dd(Gate::denies('super-admin', $admin));
-//        if (Gate::denies('super-admin', $admin)) {
-//            dd('Gate');
-//        }
-//
-//        if (Gate::forUser($admin)->allows('update-post', $admin)) {
-//            //
-//        }
-            return view('admin.index');
-
+        return view('admin.index');
     }
 
 
