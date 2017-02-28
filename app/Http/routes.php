@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+//    return redirect()->route('admin.role.index');
     return redirect()->route('index');
 });
 
@@ -40,64 +41,69 @@ Route::get('admin/logout', function () {
     return redirect()->to('/admin');
 });
 
-
 // 后台管理界面
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 首页
     Route::get('/', ['as' => 'admin', function () {
-        return redirect()->route('admin_index');
+        return redirect()->route('admin.index');
     }]);
-    Route::get('index', ['as' => 'admin_index', 'uses' => 'Admin\IndexController@index']);
+    Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
     // 用户管理
     Route::group(['prefix' => 'user'], function () {
-        Route::get('/', ['as' => 'admin_user', 'uses' => 'Admin\UserController@index']);
-        Route::any('create', ['as' => 'admin_user_create', 'uses' => 'Admin\UserController@create']);
-        Route::any('update/{id}', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update'])
+        Route::get('/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
+        Route::any('create', ['as' => 'admin.user.create', 'uses' => 'Admin\UserController@create']);
+        Route::any('update/{id}', ['as' => 'admin.user.update', 'uses' => 'Admin\UserController@update'])
             ->where(['id' => '[0-9]+']);
-        Route::any('delete/{id}', ['as' => 'admin_user_delete', 'uses' => 'Admin\UserController@delete'])
+        Route::any('delete/{id}', ['as' => 'admin.user.delete', 'uses' => 'Admin\UserController@delete'])
             ->where(['id' => '[0-9]+']);
-        Route::get('detail/{id}', ['as' => 'admin_user_detail', 'uses' => 'Admin\UserController@detail'])
+        Route::get('detail/{id}', ['as' => 'admin.user.detail', 'uses' => 'Admin\UserController@detail'])
             ->where(['id' => '[0-9]+']);
     });
 
     // 公司管理
     Route::group(['prefix' => 'company'], function () {
-        // TODO
-        Route::get('/', ['as' => 'admin_company_index', 'uses' => 'Admin\CompanyController@index']);
-        Route::any('create', ['as' => 'admin_company_create', 'uses' => 'Admin\CompanyController@create']);
-        Route::any('update/{id}', ['as' => 'admin_company_update', 'uses' => 'Admin\CompanyController@update']);
-        Route::any('delete/{id}', ['as' => 'admin_company_delete', 'uses' => 'Admin\CompanyController@delete']);
-        Route::get('detail/{id}', ['as' => 'admin_company_detail', 'uses' => 'Admin\CompanyController@detail']);
+        Route::get('/', ['as' => 'admin.company.index', 'uses' => 'Admin\CompanyController@index']);
+        Route::any('create', ['as' => 'admin.company.create', 'uses' => 'Admin\CompanyController@create']);
+        Route::any('update/{id}', ['as' => 'admin.company.update', 'uses' => 'Admin\CompanyController@update']);
+        Route::any('delete/{id}', ['as' => 'admin.company.delete', 'uses' => 'Admin\CompanyController@delete']);
+        Route::get('detail/{id}', ['as' => 'admin.company.detail', 'uses' => 'Admin\CompanyController@detail']);
     });
 
     // 模板管理
     Route::group(['prefix' => 'template'], function () {
-        // TODO
-        Route::get('/', ['as' => 'admin_template_index', 'uses' => 'Admin\TemplateController@index']);
-        Route::any('create', ['as' => 'admin_template_create', 'uses' => 'Admin\TemplateController@create']);
-        Route::any('update/{id}', ['as' => 'admin_template_update', 'uses' => 'Admin\TemplateController@update'])
+        Route::get('/', ['as' => 'admin.template.index', 'uses' => 'Admin\TemplateController@index']);
+        Route::any('create', ['as' => 'admin.template.create', 'uses' => 'Admin\TemplateController@create']);
+        Route::any('update/{id}', ['as' => 'admin.template.update', 'uses' => 'Admin\TemplateController@update'])
             ->where(['id' => '[0-9]+']);
-        Route::any('delete/{id}', ['as' => 'admin_template_delete', 'uses' => 'Admin\TemplateController@delete'])
+        Route::any('delete/{id}', ['as' => 'admin.template.delete', 'uses' => 'Admin\TemplateController@delete'])
             ->where(['id' => '[0-9]+']);
-        Route::get('detail/{id}', ['as' => 'admin_template_detail', 'uses' => 'Admin\TemplateController@detail'])
+        Route::get('detail/{id}', ['as' => 'admin.template.detail', 'uses' => 'Admin\TemplateController@detail'])
             ->where(['id' => '[0-9]+']);
     });
 
     // 客服管理
     Route::group(['prefix' => 'manager'], function () {
-        Route::get('/', ['as' => 'admin_manager', 'uses' => 'Admin\ManagerController@index']);
-        Route::any('/create', ['as' => 'admin_manager_create', 'uses' => 'Admin\ManagerController@create']);
-        Route::any('/update/{id}', ['as' => 'admin_manager_update', 'uses' => 'Admin\ManagerController@update']);
-        Route::any('/delete/{id}', ['as' => 'admin_manager_delete', 'uses' => 'Admin\ManagerController@delete']);
-        Route::get('/detail/{id}', ['as' => 'admin_manager_detail', 'uses' => 'Admin\ManagerController@detail']);
+        Route::get('/', ['as' => 'admin.manager', 'uses' => 'Admin\ManagerController@index']);
+        Route::any('/create', ['as' => 'admin.manager.create', 'uses' => 'Admin\ManagerController@create']);
+        Route::any('/update/{id}', ['as' => 'admin.manager.update', 'uses' => 'Admin\ManagerController@update']);
+        Route::any('/delete/{id}', ['as' => 'admin.manager.delete', 'uses' => 'Admin\ManagerController@delete']);
+        Route::get('/detail/{id}', ['as' => 'admin.manager.detail', 'uses' => 'Admin\ManagerController@detail']);
     });
+
+    // 角色管理
+//    Route::group(['prefix' => 'role'], function () {
+//
+//    });
+    Route::resource('role', 'Admin\RoleController');
+
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
-        Route::any('/safety', ['as' => 'admin_setting_safety', 'uses' => 'Admin\SettingController@safety']);
-        Route::any('/person', ['as' => 'admin_setting_person', 'uses' => 'Admin\SettingController@person']);
+        Route::any('/', ['as' => 'admin.setting.index', 'uses' => 'Admin\SettingController@index']);
+        Route::any('/safety', ['as' => 'admin.setting.safety', 'uses' => 'Admin\SettingController@safety']);
+        Route::any('/person', ['as' => 'admin.setting.person', 'uses' => 'Admin\SettingController@person']);
 
     });
 

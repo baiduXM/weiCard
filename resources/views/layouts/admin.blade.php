@@ -25,22 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a>
-                {{--用户菜单--}}
-                {{--@if (Auth::guest())--}}
-                {{--<li><a href="{{ url('/login') }}">Login</a></li>--}}
-                {{--<li><a href="{{ url('/register') }}">Register</a></li>--}}
-                {{--@else--}}
-                {{--<li class="dropdown">--}}
-                {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">--}}
-                {{--{{ Auth::user()->name }} <span class="caret"></span>--}}
-                {{--</a>--}}
-
-                {{--<ul class="dropdown-menu" role="menu">--}}
-                {{--<li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>--}}
-                {{--</ul>--}}
-                {{--</li>--}}
-                {{--@endif--}}
+                <a class="navbar-brand" href="{{ url('admin') }}"><span>微名片</span> 管理后台</a>
                 <ul class="nav navbar-nav navbar-right">
                     @if(Auth::guard('admin')->guest())
                         <li ><a href="{{ url('/login') }}">Login</a></li>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Gate;
 use App\Http\Controllers\Controller;
-//use App\Model\Admin\Manager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 

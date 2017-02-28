@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Admin\User;
 use Illuminate\Http\Request;
+use App\Models\Admin\User;
 
 
 class UserController extends Controller
@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(self::PAGENUM);
-        return view('admin.user.index')->with([
+        return view('admin.users.index')->with([
             'users' => $users
         ]);
     }
@@ -29,10 +29,9 @@ class UserController extends Controller
     public function create(Request $request)
     {
         if ($request->isMethod('POST')) {
-
             $this->validate($request, [
-                'User.name' => 'required|min:6|max:20',
-                'User.email' => 'required|email|max:255',
+                'User.name' => 'required|min:6|max:20|unique:users',
+                'User.email' => 'required|email|max:255|unique:users',
                 'User.password' => 'required|min:6|confirmed',
             ], [
                 'required' => ':attribute为必填项',
@@ -54,7 +53,7 @@ class UserController extends Controller
             }
         }
         $user = new User();
-        return view('admin.user.create', [
+        return view('admin.users.create', [
             'user' => $user,
         ]);
     }

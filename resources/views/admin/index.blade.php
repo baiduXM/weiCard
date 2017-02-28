@@ -1,7 +1,11 @@
-@extends('admin.common.admin')
+@extends('admin.common.layout')
 @section('title', '首页')
 @section('content')
-    @parent
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">首页</h1>
+        </div>
+    </div><!--/.row-->
     <div class="row">
         <div class="col-xs-12 col-md-6 col-lg-3">
             <div class="panel panel-blue panel-widget ">
