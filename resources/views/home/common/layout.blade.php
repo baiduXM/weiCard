@@ -4,17 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>微名片系统管理员后台 - @yield('title', '首页')</title>
+    <title>微名片管理平台 - @yield('title', '首页')</title>
     <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/home/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/home/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/home/css/style.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
     <script src="{{ asset('static/common/js/respond.min.js') }}"></script>
     <![endif]-->
+    @section('css')
+    @show
 </head>
 
 <body>
+@section('content')
+
+@show
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>

@@ -9,12 +9,12 @@
     <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">
     <link href="{{ asset('static/admin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ asset('static/admin/css/bootstrap-table.css') }}" rel="stylesheet">
-    @section('css')
-    @show
     <!--[if lt IE 9]>
     <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
     <script src="{{ asset('static/common/js/respond.min.js') }}"></script>
     <![endif]-->
+    @section('css')
+    @show
 </head>
 
 <body>
