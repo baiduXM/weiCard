@@ -76,7 +76,7 @@ class RoleController extends Controller
         if ($request->isMethod('PUT')) {
             $role = Role::find($id);
             $this->validate($request, [
-                'Roles.name' => 'required|unique:roles|alpha_num',
+                'Roles.name' => 'required|alpha_num|unique:roles,name,' . $id,
                 'Roles.display_name' => 'required|min:2|max:30',
                 'Roles.description' => 'max:255',
             ], [
@@ -90,7 +90,11 @@ class RoleController extends Controller
                 'Roles.description' => '角色描述',
             ]);
             $data = $request->input('Roles');
-            if ($role->save($data)) {
+            $role->name=$data['name'];
+            $role->display_name=$data['display_name'];
+            $role->description=$data['description'];
+            $role->type=$data['type'];
+            if ($role->save()) {
                 return redirect('admin/role')->with('success', '修改成功');
             } else {
                 return redirect()->back();
@@ -101,7 +105,6 @@ class RoleController extends Controller
     // DELETE
     public function destroy($id)
     {
-        dd('destroy' . $id);
         $role = Role::find($id);
         if ($role->delete()) {
             return redirect('admin/role')->with('success', '删除成功 - ' . $role->id);

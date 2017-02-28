@@ -78,9 +78,9 @@
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('static/admin/js/chart.min.js') }}"></script>
-<script src="{{ asset('static/admin/js/chart-data.js') }}"></script>
+{{--<script src="{{ asset('static/admin/js/chart-data.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>
-<script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>
+{{--<script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
 @section('javascript')
