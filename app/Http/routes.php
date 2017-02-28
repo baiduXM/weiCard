@@ -1,14 +1,14 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
+ * 资源路由方法
+    //GET /photo index photo.index                  索引
+    //GET /photo/create create photo.create         创建
+    //POST /photo store photo.store                 保存
+    //GET /photo/{photo} show photo.show            显示
+    //GET /photo/{photo}/edit edit photo.edit       编辑
+    //PUT/PATCH /photo/{photo} update photo.update  更新
+    //DELETE /photo/{photo} destroy photo.destroy   删除
 */
 
 Route::get('/', function () {
@@ -16,19 +16,17 @@ Route::get('/', function () {
     return redirect()->route('index');
 });
 
-
 // 前台登录
 Route::auth();
 
 // 前台路由组
 Route::group(['middleware' => 'web'], function () {
-
     Route::get('index', ['as' => 'index', 'uses' => 'Home\IndexController@index']);
-
-    // 用户操作
-    Route::group(['prefix' => 'user'], function () {
-
-    });
+    Route::resource('user', 'Home\UserController');
+    Route::resource('company', 'Home\CompanyController');
+    Route::resource('template', 'Home\TemplateController');
+    Route::resource('contact', 'Home\ContactController');
+    Route::resource('employee', 'Home\EmployeeController');
 });
 
 // 后台登录
@@ -93,11 +91,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     });
 
     // 角色管理
-//    Route::group(['prefix' => 'role'], function () {
-//
-//    });
     Route::resource('role', 'Admin\RoleController');
-
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
@@ -106,6 +100,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::any('/person', ['as' => 'admin.setting.person', 'uses' => 'Admin\SettingController@person']);
 
     });
-
 
 });

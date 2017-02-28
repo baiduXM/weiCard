@@ -20,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(self::PAGENUM);
-        return view('admin.users.index')->with([
+        return view('admin.user.index')->with([
             'users' => $users
         ]);
     }
@@ -53,7 +53,7 @@ class UserController extends Controller
             }
         }
         $user = new User();
-        return view('admin.users.create', [
+        return view('admin.user.create', [
             'user' => $user,
         ]);
     }

@@ -21,14 +21,14 @@ class RoleController extends Controller
     {
         $roles = Role::paginate();
 
-        return view('admin.roles.index')->with('roles', $roles);
+        return view('admin.role.index')->with('roles', $roles);
     }
 
     // GET
     public function create()
     {
         $roles = new Role();
-        return view('admin.roles.create')->with('roles', $roles);
+        return view('admin.role.create')->with('roles', $roles);
     }
 
     // POST
@@ -63,14 +63,14 @@ class RoleController extends Controller
     {
         dd('show'.$id);
 
-        return view('admin.roles.index');
+        return view('admin.role.index');
     }
 
     // GET
     public function edit($id)
     {
         dd('edit'.$id);
-        return view('admin.roles.index');
+        return view('admin.role.index');
     }
 
     // PUT/PATCH

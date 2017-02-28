@@ -38,8 +38,8 @@ input{outline: none;}
 .con-left-nav .ce li a i.a_down{width:12px;height: 12px;display: block;background: url(../images/er.png) center center no-repeat;position: absolute;top: 22px;right: 16px;}
 .con-left-nav .ce li a i.a_down_h{background: url(../images/er-h.png) center center no-repeat;}
 
-.con-left-nav .ce li:hover a,.con-left-nav .ce li a.current{color: #1da1dc;}
-.con-left-nav .ce li:hover a,.ce li.current a{ border-right: 3px solid #1da1dc;}
+
+.con-left-nav .ce li:hover a,.con-left-nav .ce li.current a{ border-right: 3px solid #1da1dc;color: #1da1dc;}
 .con-left-nav .ce li:nth-child(1){background: url(../images/icon3.png) 20px 16px no-repeat;}
 .con-left-nav .ce li:nth-child(1):hover,.ce li:nth-child(1).current{background: url(../images/icon3-h.png) 20px 16px no-repeat;box-shadow: 0px 3px 8px #a9dbf2;}
 .con-left-nav .ce li:nth-child(2){background: url(../images/icon4.png) 20px 16px no-repeat;}
@@ -53,7 +53,6 @@ input{outline: none;}
 .con-left-nav .ce li:nth-child(5):hover,.ce li:nth-child(5).current{background: url(../images/icon7-h.png) 20px 16px no-repeat;box-shadow: 0px 3px 8px #a9dbf2;}
 .con-left-nav .ce li:nth-child(6){background: url(../images/icon8.png) 20px 16px no-repeat;}
 .con-left-nav .ce li:nth-child(6):hover,.ce li:nth-child(6).current{background: url(../images/icon8-h.png) 20px 16px no-repeat;box-shadow: 0px 3px 8px #a9dbf2;}
-
 .clear{clear:both;}
 .con-left-nav .ce li ul.er{display:none;width:100%;}
 .con-left-nav .ce ul.er li{width:100%;margin: 0;padding: 0; border-bottom: 1px dashed #e6e6e6;background: none;}
