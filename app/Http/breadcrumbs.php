@@ -50,12 +50,12 @@ Breadcrumbs::register('admin.role.create', function ($breadcrumbs) {
     $breadcrumbs->push('添加角色', route('admin.role.create'));
 });
 // 首页 > 角色管理 > 角色详情
-Breadcrumbs::register('admin.role.show', function ($breadcrumbs) {
+Breadcrumbs::register('admin.role.show', function ($breadcrumbs, $id) {
     $breadcrumbs->parent('admin.role');
-    $breadcrumbs->push('角色详情', route('admin.role.show'));
+    $breadcrumbs->push('角色详情', route('admin.role.show', $id));
 });
 // 首页 > 角色管理 > 编辑角色
-Breadcrumbs::register('admin.role.edit', function ($breadcrumbs) {
+Breadcrumbs::register('admin.role.edit', function ($breadcrumbs, $id) {
     $breadcrumbs->parent('admin.role');
-    $breadcrumbs->push('编辑角色', route('admin.role.edit'));
+    $breadcrumbs->push('编辑角色', route('admin.role.edit', $id));
 });

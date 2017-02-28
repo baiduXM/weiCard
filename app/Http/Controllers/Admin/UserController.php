@@ -9,7 +9,6 @@ use App\Models\Admin\User;
 
 class UserController extends Controller
 {
-    const PAGENUM = 20; // 每页显示条数
 
 //    public function __construct()
 //    {
@@ -19,10 +18,8 @@ class UserController extends Controller
     // 用户列表
     public function index()
     {
-        $users = User::paginate(self::PAGENUM);
-        return view('admin.user.index')->with([
-            'users' => $users
-        ]);
+        $users = User::paginate();
+        return view('admin.user.index')->with('users', $users);
     }
 
     // 新增用户

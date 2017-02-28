@@ -27,7 +27,7 @@ class User extends Model
     ];
 
     // 设置权限
-    public function role($ind = null)
+    public function setRole($ind = null)
     {
         $arr = [
 //            self::ROLE_UN => '未知',

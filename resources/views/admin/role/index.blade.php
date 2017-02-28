@@ -36,16 +36,16 @@
                                 <td>{{ $role->updated_at }}</td>
                                 <td>
                                     <span><a href="{{ url('admin/role/'. $role->id) }}">详情</a></span> -
-                                    <span><a href="{{ url('admin/role/'. $role->id .'/edit') }}">修改</a></span>
-                                    - <span><a href="{{ url('admin/role', ['id' => $role->id]) }}"
-                                               onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
+                                    <span><a href="{{ url('admin/role/'. $role->id .'/edit') }}">修改</a></span> -
+                                    <span><a href="{{ url('admin/role', ['id' => $role->id]) }}"
+                                             onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <div class="pull-right">
-                        {!! $roles->links() !!}
+                        {!! $roles->render() !!}
                     </div>
 
                 </div>
