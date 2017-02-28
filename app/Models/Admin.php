@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * 后台登录验证
  *
- * @package App\Model
+ * @package App\Models
  */
 class Admin extends Authenticatable
 {

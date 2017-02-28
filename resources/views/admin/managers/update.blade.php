@@ -1,4 +1,4 @@
-@extends('admin.common.admin')
+@extends('admin.common.layout')
 @section('title', '修改用户')
 @section('breadcrumb')
     {!! Breadcrumbs::render('update', $user->id) !!}

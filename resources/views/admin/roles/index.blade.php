@@ -1,11 +1,9 @@
-@extends('layouts.admin')
+@extends('admin.common.layout')
 @section('title', '角色管理')
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.role') !!}
 @stop
-
 @section('content')
-    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -26,6 +24,7 @@
                             <th>操作</th>
                         </tr>
                         </thead>
+
                         <tbody>
                         @foreach($roles as $role)
                             <tr>
@@ -58,7 +57,7 @@
 @section('javascript')
     <script>
         $(function () {
-            alert(1);
+            //TODO：ajax删除 delete方法提交
         });
 
     </script>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-02-25 11:20:17
+Date: 2017-02-28 09:48:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,9 +80,9 @@ CREATE TABLE `wc_managers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '用户名',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '？记住登录',
-  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `permission` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '权限，0-客服，1-超级管理员',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
   `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-失效，1-活动',
@@ -195,9 +195,9 @@ CREATE TABLE `wc_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '用户名',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
-  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
   `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
   `sex` tinyint(4) DEFAULT NULL,
@@ -207,5 +207,7 @@ CREATE TABLE `wc_users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `users_name_unique` (`name`),
+  UNIQUE KEY `users_mobile_unique` (`mobile`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';

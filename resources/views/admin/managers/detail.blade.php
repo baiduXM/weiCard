@@ -1,4 +1,4 @@
-@extends('admin.common.admin')
+@extends('admin.common.layout')
 @section('title', '用户详情')
 @section('breadcrumb')
     {!! Breadcrumbs::render('detail', $user->id) !!}

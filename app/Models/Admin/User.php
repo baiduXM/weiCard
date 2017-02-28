@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Model\Admin;
+namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User 后台获取用户信息
  *
- * @package App\Model\Admin
+ * @package App\Models\Admin
  */
 class User extends Model
 {

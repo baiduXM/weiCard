@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Model\Admin\Role;
+use App\Models\Admin\Role;
 use Illuminate\Support\Facades\Input;
 
 class RoleController extends Controller
@@ -17,14 +17,10 @@ class RoleController extends Controller
     //DELETE /photo/{photo} destroy photo.destroy   删除
 
 
-    /**
-     * 列表GET
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function index()
     {
         $roles = Role::paginate();
+
         return view('admin.roles.index')->with('roles', $roles);
     }
 

@@ -14,7 +14,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-//        Manager::class => AdminPolicy::class, //===管理员权限
     ];
 
     /**
@@ -26,13 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(GateContract $gate)
     {
         $this->registerPolicies($gate);
-
-//        //===定义超级管理员权限===
-//        $gate->define('super-admin', function ($admin) {
-//            dd('gate->define');
-//            return $admin->permission === 1;
-//        });
-
 
     }
 }

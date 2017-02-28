@@ -1,4 +1,4 @@
-@extends('admin.common.admin')
+@extends('admin.common.layout')
 @section('title', '添加用户')
 @section('breadcrumb')
     {!! Breadcrumbs::render('create') !!}

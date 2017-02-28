@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
-use App\Model\Admin\Manager;
+use App\Models\Admin\Manager;
 
 class ManagerController extends Controller
 {

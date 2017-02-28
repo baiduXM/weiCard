@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.common.layout')
 @section('title', '添加角色')
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.role.create') !!}

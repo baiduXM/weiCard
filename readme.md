@@ -10,10 +10,5 @@
     - 修改.env配置参数
     ~~~        
         APP_KEY=base64:Bhrr6VfOTOSjZ2JUdHCCeu+bJNA2aDyjtppeZWioQuk=    
-        CACHE_DRIVER=array
+        CACHE_DRIVER=array        
     ~~~
-  
-        
-        
- 
- 
