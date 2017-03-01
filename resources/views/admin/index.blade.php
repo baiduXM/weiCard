@@ -285,6 +285,8 @@
 @stop
 
 @section('javascript')
+    <script src="{{ asset('static/admin/js/chart-data.js') }}"></script>
+    <script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>
     <script>
         $('#calendar').datepicker({});
 

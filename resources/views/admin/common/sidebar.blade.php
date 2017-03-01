@@ -4,10 +4,13 @@
             <input type="text" class="form-control" placeholder="Search">
         </div>
     </form>
+
+
     <ul class="nav menu">
         <li class="{{ Request::path() == 'admin/index' ? 'active' : '' }}">
             <a href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>首页</a>
         </li>
+
         <li class="{{ Request::path() == 'admin/user' || Request::is('admin/user/*') ? 'active' : '' }}">
             <a href="{{ url('admin/user') }}"><span class=" glyphicon glyphicon-th"></span>用户管理</a>
         </li>
@@ -17,21 +20,22 @@
         <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
         </li>
-        @if(Auth::guard('admin')->user()->permission === 1)
+        @if(Auth::guard('admin')->user()->is_super === 1)
             <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
                 <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
             </li>
         @endif
-        @if(Auth::guard('admin')->user()->permission === 1)
+        @if(Auth::guard('admin')->user()->is_super === 1)
             <li class="{{ Request::path() == 'admin/role' || Request::is('admin/role/*') ? 'active' : '' }}">
                 <a href="{{ url('admin/role') }}"><span class="glyphicon glyphicon-stats"></span>角色管理</a>
             </li>
         @endif
-        @if(Auth::guard('admin')->user()->permission === 1)
+        @if(Auth::guard('admin')->user()->is_super === 1)
             <li class="{{ Request::path() == 'admin/permission' || Request::is('admin/permission/*') ? 'active' : '' }}">
                 <a href="{{ url('admin/permission') }}"><span class="glyphicon glyphicon-stats"></span>权限管理</a>
             </li>
         @endif
+
         <li class="parent {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'active' : '' }}">
             <a href="#">
                 <span class="glyphicon glyphicon-list"></span> 设置
@@ -55,6 +59,8 @@
 
         <li role="presentation" class="divider"></li>
 
-
+        <li >
+            <a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-stats"></span>登出</a>
+        </li>
     </ul>
 </div>

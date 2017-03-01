@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 
 use App\Http\Controllers\Controller;
 
-class CompanyController extends Controller
+class PermissionController extends Controller
 {
-    // TODO
     public function index()
     {
-        return view('admin.company.index');
+        return view('admin.permission.index');
     }
 }

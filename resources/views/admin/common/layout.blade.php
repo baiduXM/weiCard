@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a>
+            <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a>  <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
@@ -78,9 +78,7 @@
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('static/admin/js/chart.min.js') }}"></script>
-{{--<script src="{{ asset('static/admin/js/chart-data.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>
-{{--<script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
 @section('javascript')

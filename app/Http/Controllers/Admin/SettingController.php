@@ -10,16 +10,16 @@ class SettingController extends Controller
     // TODO
     public function index()
     {
-        echo 1;
+        return view('admin.setting.index');
     }
 
     public function safety()
     {
-        echo 11;
+        return view('admin.setting.safety');
     }
 
     public function person()
     {
-        echo 123;
+        return view('admin.setting.person');
     }
 }

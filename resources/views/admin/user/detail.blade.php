@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '用户详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('detail', $user->id) !!}
+    {!! Breadcrumbs::render('admin.user.detail', $user->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -18,10 +18,6 @@
                             <tr>
                                 <th class="text-right">邮箱</th>
                                 <td>{{ $user->email }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">角色</th>
-                                <td>{{ $user->role($user->role) }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>

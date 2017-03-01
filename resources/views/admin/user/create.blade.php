@@ -62,19 +62,6 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label" for="message">权限</label>
-                            <div class="col-md-6">
-                                @foreach($user->role() as $ind => $val)
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="User[role]" value="{{ $ind }}"
-                                                    {{ old('User.role') == $ind ? 'checked' : '' }}>{{ $val }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <a href="{{ url('admin/user/create') }}" type="reset"
