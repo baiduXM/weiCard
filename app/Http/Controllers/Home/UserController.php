@@ -9,7 +9,10 @@ class UserController extends Controller
 {
     public function index()
     {
+//        dd(Auth::user());
+
         $user = User::find(Auth::id());
+        dd($user);
         return view('home.user.index')->with('user', $user);
     }
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-02-28 09:48:10
+Date: 2017-03-01 17:16:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,7 +83,7 @@ CREATE TABLE `wc_managers` (
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '？记住登录',
-  `permission` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '权限，0-客服，1-超级管理员',
+  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
   `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-失效，1-活动',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE `wc_roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for wc_role_user
@@ -202,8 +202,8 @@ CREATE TABLE `wc_users` (
   `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
   `sex` tinyint(4) DEFAULT NULL,
   `age` tinyint(4) DEFAULT NULL,
-  `company_id` int(10) unsigned NOT NULL,
-  `employee_id` int(10) unsigned NOT NULL,
+  `company_id` int(10) unsigned NOT NULL COMMENT '关联公司id',
+  `employee_id` int(10) unsigned NOT NULL COMMENT '关联雇员id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
