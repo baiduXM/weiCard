@@ -10,7 +10,7 @@
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="{{ url('admin/role/' .$role->id) }}" method="post">
-                        <input type="hidden" name="_method" value="put"/>
+                        {{ method_field('put') }}
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('Roles.name') ? ' has-error' : '' }}">

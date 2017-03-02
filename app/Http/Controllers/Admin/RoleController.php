@@ -114,26 +114,4 @@ class RoleController extends Controller
     }
 
 
-    private function validateData($request, $url)
-    {
-        $validator = Validator::make($request, [
-            'Roles.name' => 'required|unique:roles|alpha_num|min:3|max:30',
-            'Roles.display_name' => 'required|min:2|max:30',
-            'Roles.description' => 'max:255',
-        ], [
-            'alpha_num' => ':attribute必须是字母或数字',
-            'required' => ':attribute不能为空',
-            'min' => ':attribute长度太短',
-            'max' => ':attribute长度太长',
-        ], [
-            'Roles.name' => '角色名',
-            'Roles.display_name' => '可读的角色名',
-            'Roles.description' => '角色描述',
-        ]);
-        if ($validator->fails()) {
-            return redirect('admin/role/store')->withErrors($validator)->withInput();
-        }
-    }
-
-
 }

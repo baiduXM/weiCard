@@ -7,12 +7,42 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
     public function index()
     {
-//        dd(Auth::user());
-
         $user = User::find(Auth::id());
-        dd($user);
         return view('home.user.index')->with('user', $user);
+    }
+
+    public function create()
+    {
+        // TODO
+    }
+
+    public function store(Request $request)
+    {
+        // TODO
+    }
+
+    public function show($id)
+    {
+        // TODO
+    }
+
+    public function edit($id)
+    {
+        // TODO
+        $user = User::find($id);
+        return view('home.user.edit')->with('user', $user);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // TODO
+    }
+
+    public function destroy($id)
+    {
+        // TODO
     }
 }

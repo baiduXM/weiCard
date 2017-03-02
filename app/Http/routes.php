@@ -1,7 +1,7 @@
 <?php
 
 /*
- * 资源路由方法
+ * 资源路由方法restful
     //GET /photo index photo.index                  索引
     //GET /photo/create create photo.create         创建
     //POST /photo store photo.store                 保存
@@ -10,6 +10,9 @@
     //PUT/PATCH /photo/{photo} update photo.update  更新
     //DELETE /photo/{photo} destroy photo.destroy   删除
 */
+Route::get('phpinfo', function () {
+    echo phpinfo();
+});
 
 Route::get('/', function () {
 //    return redirect()->route('admin.role.index');

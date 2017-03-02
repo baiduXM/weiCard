@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-03-01 17:16:49
+Date: 2017-03-02 09:50:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -157,7 +157,7 @@ CREATE TABLE `wc_roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for wc_role_user
@@ -198,10 +198,11 @@ CREATE TABLE `wc_users` (
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
-  `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
-  `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
   `sex` tinyint(4) DEFAULT NULL,
   `age` tinyint(4) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
+  `avatar` text COMMENT '头像',
+  `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
   `company_id` int(10) unsigned NOT NULL COMMENT '关联公司id',
   `employee_id` int(10) unsigned NOT NULL COMMENT '关联雇员id',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -210,4 +211,4 @@ CREATE TABLE `wc_users` (
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_mobile_unique` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
