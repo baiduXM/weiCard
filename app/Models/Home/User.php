@@ -1,20 +1,10 @@
 <?php
-
-namespace App\Models\Admin;
+namespace App\Models\Home;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class User 后台获取用户信息
- *
- * @package App\Models\Admin
- */
 class User extends Model
 {
-
-
-    public $timestamps = true;
-
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -22,6 +12,4 @@ class User extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
 }

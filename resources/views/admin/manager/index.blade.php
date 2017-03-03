@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '客服管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('manager') !!}
+    {!! Breadcrumbs::render('admin.manager') !!}
 @stop
 @section('content')
     @parent

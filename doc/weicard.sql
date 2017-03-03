@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-02-28 09:48:10
+Date: 2017-03-03 15:51:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `wc_companies` (
   `telephone` varchar(255) NOT NULL COMMENT '公司电话',
   `description` varchar(255) DEFAULT NULL COMMENT '公司描述',
   `code` varchar(255) DEFAULT NULL COMMENT '公司代码（唯一）',
-  `admission` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否认证，0-未认证，1-认证中，2-认证通过',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-未认证，1-认证中，2-认证通过',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -39,7 +39,9 @@ CREATE TABLE `wc_companies` (
 DROP TABLE IF EXISTS `wc_contacts`;
 CREATE TABLE `wc_contacts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT '所属收藏人',
+  `user_id` int(10) unsigned NOT NULL COMMENT '所属收藏人',
+  `follow_id` int(10) unsigned NOT NULL COMMENT '关注者id',
+  `type` tinyint(4) NOT NULL COMMENT '类型，1-用户，2-员工',
   `name` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称备注',
   `telephone` varchar(255) DEFAULT NULL COMMENT '座机',
@@ -50,7 +52,8 @@ CREATE TABLE `wc_contacts` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `follow_id_and_type_unique` (`follow_id`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通讯录';
 
 -- ----------------------------
@@ -83,7 +86,7 @@ CREATE TABLE `wc_managers` (
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '？记住登录',
-  `permission` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '权限，0-客服，1-超级管理员',
+  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
   `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-失效，1-活动',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -157,7 +160,7 @@ CREATE TABLE `wc_roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for wc_role_user
@@ -188,6 +191,19 @@ CREATE TABLE `wc_templates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模板表';
 
 -- ----------------------------
+-- Table structure for wc_template_user
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_template_user`;
+CREATE TABLE `wc_template_user` (
+  `template_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`template_id`,`user_id`),
+  KEY `template_user_user_id_foreign` (`user_id`),
+  CONSTRAINT `template_user_template_id_foreign` FOREIGN KEY (`template_id`) REFERENCES `wc_templates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `template_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='模板-用户';
+
+-- ----------------------------
 -- Table structure for wc_users
 -- ----------------------------
 DROP TABLE IF EXISTS `wc_users`;
@@ -198,16 +214,17 @@ CREATE TABLE `wc_users` (
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
-  `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
-  `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
   `sex` tinyint(4) DEFAULT NULL,
   `age` tinyint(4) DEFAULT NULL,
-  `company_id` int(10) unsigned NOT NULL,
-  `employee_id` int(10) unsigned NOT NULL,
+  `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
+  `avatar` text COMMENT '头像',
+  `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
+  `company_id` int(10) unsigned NOT NULL COMMENT '关联公司id',
+  `employee_id` int(10) unsigned NOT NULL COMMENT '关联雇员id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_mobile_unique` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';

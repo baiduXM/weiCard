@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '用户管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('user') !!}
+    {!! Breadcrumbs::render('admin.user') !!}
 @stop
 @section('content')
     @parent
@@ -19,9 +19,8 @@
                             <th>#</th>
                             <th>用户名</th>
                             <th>邮箱</th>
-                            <th>角色</th>
                             <th>创建时间</th>
-                            <th>最后登录时间</th>
+                            <th>更新时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -31,7 +30,6 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->role($user->role) }}</td>
                                 <td>{{ $user->created_at }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td>

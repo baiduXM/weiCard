@@ -9,7 +9,6 @@ use App\Models\Admin\User;
 
 class UserController extends Controller
 {
-    const PAGENUM = 20; // 每页显示条数
 
 //    public function __construct()
 //    {
@@ -19,10 +18,8 @@ class UserController extends Controller
     // 用户列表
     public function index()
     {
-        $users = User::paginate(self::PAGENUM);
-        return view('admin.user.index')->with([
-            'users' => $users
-        ]);
+        $users = User::paginate();
+        return view('admin.user.index')->with('users', $users);
     }
 
     // 新增用户
@@ -30,9 +27,9 @@ class UserController extends Controller
     {
         if ($request->isMethod('POST')) {
             $this->validate($request, [
-                'User.name' => 'required|min:6|max:20|unique:users',
-                'User.email' => 'required|email|max:255|unique:users',
-                'User.password' => 'required|min:6|confirmed',
+                'Users.name' => 'required|max:20|unique:users',
+                'Users.email' => 'required|email|max:255|unique:users',
+                'Users.password' => 'required|min:6|confirmed',
             ], [
                 'required' => ':attribute为必填项',
                 'min' => ':attribute长度太短',
@@ -40,22 +37,20 @@ class UserController extends Controller
                 'email' => ':attribute格式不正确',
                 'confirmed' => '两次:attribute不一致',
             ], [
-                'User.name' => '用户名',
-                'User.email' => '邮箱',
-                'User.password' => '密码',
+                'Users.name' => '用户名',
+                'Users.email' => '邮箱',
+                'Users.password' => '密码',
             ]);
 
-            $data = $request->input('User');
+            $data = $request->input('Users');
             if (User::create($data)) {
                 return redirect('admin/user')->with('success', '添加成功');
             } else {
                 return redirect()->back();
             }
         }
-        $user = new User();
-        return view('admin.user.create', [
-            'user' => $user,
-        ]);
+//        $user = new User();
+        return view('admin.user.create');
     }
 
     // 用户详情

@@ -1,5 +1,12 @@
 @extends('admin.common.layout')
 @section('title', '角色管理')
+@section('css')
+    <style type="text/css">
+        .a {
+            cursor: pointer;
+        }
+    </style>
+@stop
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.role') !!}
 @stop
@@ -36,16 +43,22 @@
                                 <td>{{ $role->updated_at }}</td>
                                 <td>
                                     <span><a href="{{ url('admin/role/'. $role->id) }}">详情</a></span> -
-                                    <span><a href="{{ url('admin/role/'. $role->id .'/edit') }}">修改</a></span>
-                                    - <span><a href="{{ url('admin/role', ['id' => $role->id]) }}"
-                                               onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
+                                    <span><a href="{{ url('admin/role/'. $role->id .'/edit') }}">修改</a></span> -
+                                    <span>
+                                        {{--<a tabindex="0" class="delete" role="button" data-id="{{ $role->id }}"--}}
+                                        {{--data-toggle="popover" data-trigger="focus" title="Dismissible popover"--}}
+                                        {{--data-content="确认是否删除?">删除</a>--}}
+                                        <a href="#confirmModel" data-toggle="modal" data-target="#confirmModal"
+                                           data-id="{{ $role->id }}"
+                                           data-name="{{ $role->name }}">删除</a>
+                                    </span>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <div class="pull-right">
-                        {!! $roles->links() !!}
+                        {!! $roles->render() !!}
                     </div>
 
                 </div>
@@ -54,13 +67,22 @@
     </div><!--/.row-->
 @stop
 
+@include('admin.common.modal')
+
 @section('javascript')
     <script>
         $(function () {
-            //TODO：ajax删除 delete方法提交
+            $('#confirmModal').on('show.bs.modal', function (event) {
+                var relatedTarget = $(event.relatedTarget);
+                var _name = relatedTarget.data('name');
+                var _id = relatedTarget.data('id');
+                var modal = $(this);
+                modal.find('.modal-title').text('删除确认');
+                modal.find('.modal-body').text('是否删除' + _name + '角色？');
+                modal.find('form').attr('action', '/admin/role/' + _id);
+
+            });
         });
-
     </script>
-
 @stop
 

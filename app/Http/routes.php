@@ -1,7 +1,7 @@
 <?php
 
 /*
- * 资源路由方法
+ * 资源路由方法restful
     //GET /photo index photo.index                  索引
     //GET /photo/create create photo.create         创建
     //POST /photo store photo.store                 保存
@@ -10,6 +10,9 @@
     //PUT/PATCH /photo/{photo} update photo.update  更新
     //DELETE /photo/{photo} destroy photo.destroy   删除
 */
+Route::get('phpinfo', function () {
+    echo phpinfo();
+});
 
 Route::get('/', function () {
 //    return redirect()->route('admin.role.index');
@@ -20,7 +23,7 @@ Route::get('/', function () {
 Route::auth();
 
 // 前台路由组
-Route::group(['middleware' => 'web'], function () {
+Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('index', ['as' => 'index', 'uses' => 'Home\IndexController@index']);
     Route::resource('user', 'Home\UserController');
     Route::resource('company', 'Home\CompanyController');
@@ -92,6 +95,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     // 角色管理
     Route::resource('role', 'Admin\RoleController');
+    Route::resource('permission', 'Admin\PermissionController');
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {

@@ -28,6 +28,9 @@
             <li class="{{ Request::path() == 'contact' || Request::is('contact/*') ? 'current' : '' }}">
                 <a class=" xz" href="{{ url('/contact') }}">通讯录</a>
             </li>
+            <li class="{{ Request::path() == 'user' || Request::is('user/*') ? 'current' : '' }}">
+                <a class=" xz" href="{{ url('/user') }}">个人中心</a>
+            </li>
             <div class="clear"></div>
         </ul>
     </div>

@@ -6,7 +6,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class Role extends Model
 {
-    use EntrustUserTrait;
+//    use EntrustUserTrait;
 
 
     const ROLE_TYPE_HOME = 0; // 前台

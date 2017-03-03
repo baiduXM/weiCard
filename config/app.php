@@ -159,6 +159,7 @@ return [
 
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Zizaco\Entrust\EntrustServiceProvider::class, // added 权限管理
+        Intervention\Image\ImageServiceProvider::class, // added 图片处理
 
     ],
 
@@ -208,6 +209,7 @@ return [
 
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
         'Entrust' => Zizaco\Entrust\EntrustFacade::class, // added 权限管理
+        'Image' => Intervention\Image\Facades\Image::class, // added 图片处理
 
 
     ],
