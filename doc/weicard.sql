@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-03-03 15:51:54
+Date: 2017-03-06 17:29:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,11 +22,12 @@ DROP TABLE IF EXISTS `wc_companies`;
 CREATE TABLE `wc_companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '公司名',
+  `logo` varchar(255) DEFAULT NULL COMMENT '公司logo',
   `address` varchar(255) NOT NULL COMMENT '地址',
   `telephone` varchar(255) NOT NULL COMMENT '公司电话',
   `description` varchar(255) DEFAULT NULL COMMENT '公司描述',
   `code` varchar(255) DEFAULT NULL COMMENT '公司代码（唯一）',
-  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-未认证，1-认证中，2-认证通过',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-认证中，1-认证通过，2-认证失败',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -57,6 +58,21 @@ CREATE TABLE `wc_contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通讯录';
 
 -- ----------------------------
+-- Table structure for wc_departments
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_departments`;
+CREATE TABLE `wc_departments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL COMMENT '所属公司id',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属上级部门',
+  `employee_id` int(10) unsigned NOT NULL COMMENT '部门主管',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '部门名字',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='部门表';
+
+-- ----------------------------
 -- Table structure for wc_employees
 -- ----------------------------
 DROP TABLE IF EXISTS `wc_employees`;
@@ -71,6 +87,7 @@ CREATE TABLE `wc_employees` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `department_id` int(10) unsigned DEFAULT NULL COMMENT '部门id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `employees_number_unique` (`number`,`company_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工表';
@@ -104,7 +121,7 @@ DROP TABLE IF EXISTS `wc_migrations`;
 CREATE TABLE `wc_migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='laravel 数据迁移表';
 
 -- ----------------------------
 -- Table structure for wc_password_resets
@@ -116,7 +133,7 @@ CREATE TABLE `wc_password_resets` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `password_resets_email_index` (`email`),
   KEY `password_resets_token_index` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='laravel 密码重置';
 
 -- ----------------------------
 -- Table structure for wc_permissions
@@ -155,7 +172,7 @@ CREATE TABLE `wc_roles` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '角色唯一名称',
   `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '可读的角色名',
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '角色的详细描述',
-  `type` tinyint(4) DEFAULT '0' COMMENT '角色类型，0-前台，1-后台',
+  `type` tinyint(4) unsigned DEFAULT '0' COMMENT '角色类型，0-前台角色(users表)，1-后台角色(managers表)',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
