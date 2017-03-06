@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-03-06 17:29:28
+Date: 2017-03-06 17:31:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,6 +79,7 @@ DROP TABLE IF EXISTS `wc_employees`;
 CREATE TABLE `wc_employees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL COMMENT '公司id',
+  `department_id` int(10) unsigned NOT NULL COMMENT '部门id',
   `number` int(10) unsigned NOT NULL COMMENT '工号',
   `name` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
   `title` varchar(255) DEFAULT NULL COMMENT '职位头衔',
@@ -87,7 +88,6 @@ CREATE TABLE `wc_employees` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `department_id` int(10) unsigned DEFAULT NULL COMMENT '部门id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `employees_number_unique` (`number`,`company_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工表';
