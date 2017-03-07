@@ -81,7 +81,7 @@
 <script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>
 <script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="{{ asset('static/common/js/vue.js') }}"></script>
 @section('javascript')
 
 @show
