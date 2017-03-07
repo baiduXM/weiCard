@@ -42,6 +42,7 @@
 <script src="{{ asset('static/home/js/main.js') }}"></script>
 <script src="{{ asset('static/home/js/PicCarousel.js') }}"></script>
 <script src="{{ asset('static/home/js/site.js') }}"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
 @section('javascript')
 
 @show
