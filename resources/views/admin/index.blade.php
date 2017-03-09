@@ -2,10 +2,17 @@
 @section('title', '首页')
 @section('content')
     <div class="row">
+        <div id="app-6">
+            <p>@{{ message }}</p>
+            <input v-model="message">
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">首页</h1>
         </div>
     </div><!--/.row-->
+
     <div class="row">
         <div class="col-xs-12 col-md-6 col-lg-3">
             <div class="panel panel-blue panel-widget ">
@@ -282,12 +289,24 @@
 
         </div><!--/.col-->
     </div><!--/.row-->
+
+
 @stop
 
 @section('javascript')
+    <script>
+        var app6 = new Vue({
+            el: '#app-6',
+            data: {
+                message: 'Hello Vue!'
+            }
+        });
+    </script>
+
     <script src="{{ asset('static/admin/js/chart-data.js') }}"></script>
     <script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>
     <script>
+
         $('#calendar').datepicker({});
 
         !function ($) {

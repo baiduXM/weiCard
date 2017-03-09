@@ -11,9 +11,9 @@
                 @yield('modal_content', 'content')
             </div>
             <div class="modal-footer">
-                <form method="POST" action="">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="_method" value="DELETE">
+                <form>
+                    {{ method_field('DELETE') }}
+                    {{ csrf_field() }}
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-primary">确认</button>
                 </form>

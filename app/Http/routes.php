@@ -84,17 +84,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             ->where(['id' => '[0-9]+']);
     });
 
+
     // 客服管理
     Route::group(['prefix' => 'manager'], function () {
-        Route::get('/', ['as' => 'admin.manager', 'uses' => 'Admin\ManagerController@index']);
-        Route::any('/create', ['as' => 'admin.manager.create', 'uses' => 'Admin\ManagerController@create']);
-        Route::any('/update/{id}', ['as' => 'admin.manager.update', 'uses' => 'Admin\ManagerController@update']);
-        Route::any('/delete/{id}', ['as' => 'admin.manager.delete', 'uses' => 'Admin\ManagerController@delete']);
-        Route::get('/detail/{id}', ['as' => 'admin.manager.detail', 'uses' => 'Admin\ManagerController@detail']);
+        Route::match(['get', 'post'], '{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@setRole']);
+        Route::match(['get', 'post'], '{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@setPermission']);
     });
-
+    Route::resource('manager', 'Admin\ManagerController');
     // 角色管理
     Route::resource('role', 'Admin\RoleController');
+    // 权限管理
     Route::resource('permission', 'Admin\PermissionController');
 
     // 设置

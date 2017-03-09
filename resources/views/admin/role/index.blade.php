@@ -2,9 +2,9 @@
 @section('title', '角色管理')
 @section('css')
     <style type="text/css">
-        .a {
-            cursor: pointer;
-        }
+        /*.a {*/
+            /*cursor: pointer;*/
+        /*}*/
     </style>
 @stop
 @section('breadcrumb')
@@ -70,6 +70,7 @@
 @include('admin.common.modal')
 
 @section('javascript')
+
     <script>
         $(function () {
             $('#confirmModal').on('show.bs.modal', function (event) {
