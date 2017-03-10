@@ -15,6 +15,7 @@ class AuthController extends Controller
     protected $guard = 'admin';
     protected $loginView = 'admin.auth.login';
     protected $registerView = 'admin.auth.register';
+
 //    protected $redirectAfterLogout = '/admin';
 
     public function __construct()
@@ -38,6 +39,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'is_super' => $data['name'] == 'admin' ? 1 : 0,
         ]);
 
     }

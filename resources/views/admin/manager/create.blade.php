@@ -126,16 +126,14 @@
                         <div class="form-group {{ $errors->has('Manager.is_active') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="Manager[is_active]" value="1" checked="">活动
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="Manager[is_active]" value="0">停用
-                                    </label>
-                                </div>
+                                @foreach($manager->isActive() as $item => $value)
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Manager[is_active]"
+                                                   value="{{ $item }}" {{ old('Manager.is_active') == $item ? 'checked' : '' }}>{{ $value }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
                             @if ($errors->has('Manager.is_active'))
                                 <span class="help-block col-md-3">

@@ -46,7 +46,8 @@ class ManagerController extends Controller
     // GET
     public function create()
     {
-        return view('admin.manager.create');
+        $manager = new Manager;
+        return view('admin.manager.create')->with('manager', $manager);
     }
 
     // POST
