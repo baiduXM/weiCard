@@ -10,6 +10,7 @@
                 <div class="panel-heading">修改信息</div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="" method="post">
+                        {{ method_field('patch') }}
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">

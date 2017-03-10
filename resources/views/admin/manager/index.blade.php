@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '客服管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.manager.index') !!}
+    {!! Breadcrumbs::render('admin.manager') !!}
 @stop
 @section('content')
     @parent
@@ -14,6 +14,25 @@
                 <div class="panel-body">
                     <div class="bootstrap-table">
                         <div class="fixed-table-toolbar">
+                            {{--添加/删除--}}
+                            <div class="columns btn-group pull-left">
+                                <button class="btn btn-default operate-delete" type="button" name="operate-delete"
+                                        title="删除">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </button>
+                                <button class="btn btn-default operate-add" type="button" name="operate-add" title="添加">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </button>
+                                <button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"
+                                        title="批量添加">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>
+                                </button>
+                                <button class="btn btn-default operate-add-file" type="button" name="operate-add-file"
+                                        title="导入文件">
+                                    <i class="glyphicon glyphicon-file"></i>
+                                </button>
+                            </div>
+
                             {{--显示--}}
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default" type="button" name="refresh" title="Refresh"><i
@@ -35,28 +54,26 @@
                                 </div>
                             </div>
                             {{--查找--}}
-                            <div class="pull-right input-group col-sm-3">
+                            <div class="pull-right input-group col-sm-6">
+                                <div class="input-group-btn btn-group keep-open">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">昵称 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">昵称</a></li>
+                                        <li><a href="#">账号</a></li>
+                                        <li><a href="#">邮箱</a></li>
+                                        <li><a href="#">手机</a></li>
+                                        <li><a href="#">角色</a></li>
+                                        <li><a href="#">权限</a></li>
+                                    </ul>
+                                </div><!-- /btn-group -->
                                 <input class="form-control search" type="text" placeholder="Search">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" title="查找"><i class="glyphicon glyphicon-search"></i></button>
+                                    <button class="btn btn-default" type="button" title="查找"><i
+                                                class="glyphicon glyphicon-search"></i></button>
                                 </span>
                             </div>
-
-                            {{--<div class="input-group pull-right">--}}
-                                {{--<input class="form-control search" type="text" placeholder="Search">--}}
-                                {{--<span class="input-group-addon" id="basic-addon2">@example.com</span>--}}
-                            {{--</div>--}}
-
-                            {{--添加/删除--}}
-                            <div class="columns btn-group pull-left">
-                                <button class="btn btn-default" type="button" name="trash" title="删除">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </button>
-                                <button class="btn btn-default" type="button" name="plus" title="添加">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                </button>
-                            </div>
-
 
                         </div>
                         <div class="fixed-table-container">
@@ -158,7 +175,7 @@
                                                     <li><a href="javascript:void(0);">100</a></li>
                                                 </ul>
                                             </span>
-                                        </span>条
+                                        </span> 条
                                     </span>
                                 </div>
                                 <div class="pull-right pagination">
@@ -174,6 +191,17 @@
     </div><!--/.row-->
 @stop
 @section('javascript')
+    <script>
+        $(function () {
+            $(".operate-add").click(function () {
+                location.href = "{{ url('admin/manager/create') }}";
+            });
+        });
+
+
+    </script>
+
+
     <script>
         !function ($) {
             $(document).on("click", "ul.nav li.parent > a > span.icon", function () {

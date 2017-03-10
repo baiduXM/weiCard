@@ -56,27 +56,25 @@ class RoleController extends Controller
     // POST
     public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $this->validate($request, [
-                'Roles.name' => 'required|unique:roles|alpha_num',
-                'Roles.display_name' => 'required|min:2|max:30',
-                'Roles.description' => 'max:255',
-            ], [
-                'alpha_num' => ':attribute必须是字母或数字',
-                'required' => ':attribute不能为空',
-                'min' => ':attribute长度太短',
-                'max' => ':attribute长度太长',
-            ], [
-                'Roles.name' => '角色名',
-                'Roles.display_name' => '可读的角色名',
-                'Roles.description' => '角色描述',
-            ]);
-            $data = $request->input('Roles');
-            if (Role::create($data)) {
-                return redirect('admin/role')->with('success', '添加成功');
-            } else {
-                return redirect()->back();
-            }
+        $this->validate($request, [
+            'Roles.name' => 'required|unique:roles|alpha_num',
+            'Roles.display_name' => 'required|min:2|max:30',
+            'Roles.description' => 'max:255',
+        ], [
+            'alpha_num' => ':attribute必须是字母或数字',
+            'required' => ':attribute不能为空',
+            'min' => ':attribute长度太短',
+            'max' => ':attribute长度太长',
+        ], [
+            'Roles.name' => '角色名',
+            'Roles.display_name' => '可读的角色名',
+            'Roles.description' => '角色描述',
+        ]);
+        $data = $request->input('Roles');
+        if (Role::create($data)) {
+            return redirect('admin/role')->with('success', '添加成功');
+        } else {
+            return redirect()->back();
         }
     }
 

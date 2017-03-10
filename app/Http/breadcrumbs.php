@@ -33,11 +33,11 @@ Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
     $breadcrumbs->push('添加用户', route('admin.user.create'));
 });
 
-// 首页 > 客服列表
-Breadcrumbs::register('admin.manager', function ($breadcrumbs) {
-    $breadcrumbs->parent('admin');
-    $breadcrumbs->push('客服列表', route('admin.manager'));
-});
+//// 首页 > 客服列表
+//Breadcrumbs::register('admin.manager', function ($breadcrumbs) {
+//    $breadcrumbs->parent('admin');
+//    $breadcrumbs->push('客服列表', route('admin.manager'));
+//});
 
 //// 首页 > 角色管理
 //Breadcrumbs::register('admin.role', function ($breadcrumbs) {
