@@ -7,4 +7,5 @@ Homestead.json
 
 .idea/*
 /nbproject
-weicard.sublime-workspace
+*.sublime-workspace
+*.sublime-project

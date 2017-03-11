@@ -12,12 +12,12 @@ class InitDatabaseTables extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('users')) {
-            //
-        }
-        if (Schema::hasColumn('users', 'email')) {
-            //
-        }
+        // if (Schema::hasTable('users')) {
+        //     //
+        // }
+        // if (Schema::hasColumn('users', 'email')) {
+        //     //
+        // }
 
         // managers管理员表
         Schema::create('managers', function (Blueprint $table) {
@@ -29,7 +29,7 @@ class InitDatabaseTables extends Migration
             $table->string('mobile')->unique();
             $table->string('nickname');
             $table->tinyInteger('is_super')->unsigned();
-            $table->tinyInteger('is_super')->unsigned();
+            $table->tinyInteger('is_active')->unsigned();
             $table->timestamps();
         });
 
