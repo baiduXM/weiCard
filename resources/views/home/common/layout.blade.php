@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', '首页') - 微名片平台</title>
-    {{--<link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">--}}
+{{--    <link href="{{ asset('static/common/bootstrap-3.3.5-dist/css/bootstrap.min.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('static/home/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('static/home/css/style.css') }}" rel="stylesheet">
-    <script src="{{ asset('static/common/js/vue.js') }}"></script>
     <!--[if lt IE 9]>
     <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
     <script src="{{ asset('static/common/js/respond.min.js') }}"></script>
@@ -36,7 +35,7 @@
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('static/home/js/wow.min.js') }}"></script>
 <script src="{{ asset('static/home/js/function.js') }}"></script>
 <script src="{{ asset('static/home/js/jquery.SuperSlide.2.1.1.js') }}"></script>

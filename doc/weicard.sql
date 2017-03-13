@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-03-06 17:31:41
+Date: 2017-03-11 09:51:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -99,20 +99,22 @@ DROP TABLE IF EXISTS `wc_managers`;
 CREATE TABLE `wc_managers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '用户名',
-  `email` varchar(255) NOT NULL COMMENT '邮箱',
-  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '？记住登录',
-  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
-  `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-失效，1-活动',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
+  `description` varchar(255) DEFAULT NULL COMMENT '个性签名',
+  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
+  `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-停用，1-活动',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `manager_name_unique` (`name`) USING BTREE,
   UNIQUE KEY `manager_email_unique` (`email`) USING BTREE,
   UNIQUE KEY `manager_mobile_unique` (`mobile`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Table structure for wc_migrations
@@ -177,7 +179,7 @@ CREATE TABLE `wc_roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for wc_role_user

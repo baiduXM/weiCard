@@ -9,12 +9,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/manager') }}" method="post">
+                    <form class="form-horizontal" action="{{ url('admin/manager') }}" method="post"
+                          enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('Manager.name') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="name">账号</label>
+                            <label class="col-md-3 control-label" for="name">账号 <span
+                                        class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="name" name="Manager[name]" type="text" placeholder="输入用户名(6~20个字符)"
+                                <input id="name" name="Manager[name]" type="text" placeholder="输入用户名"
                                        class="form-control" value="{{ old('Manager.name') }}">
                             </div>
                             @if ($errors->has('Manager.name'))
@@ -23,10 +25,24 @@
                                 </span>
                             @endif
                         </div>
-                        <div class="form-group {{ $errors->has('Manager.password') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="password">密码</label>
+                        <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="email">邮箱 <span
+                                        class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="password" name="Manager[password]" type="password" placeholder="输入密码(至少6位)"
+                                <input id="email" name="Manager[email]" type="text" placeholder="输入邮箱"
+                                       class="form-control" value="{{ old('Manager.email') }}">
+                            </div>
+                            @if ($errors->has('Manager.email'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Manager.email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="form-group {{ $errors->has('Manager.password') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="password">密码 <span
+                                        class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input id="password" name="Manager[password]" type="password" placeholder="输入密码"
                                        class="form-control">
                             </div>
                             @if ($errors->has('Manager.password'))
@@ -36,7 +52,7 @@
                             @endif
                         </div>
                         <div class="form-group {{ $errors->has('Manager.password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="password-confirm">确认密码</label>
+                            <label class="col-md-3 control-label" for="password-confirm">确认密码 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
                                 <input id="password-confirm" name="Manager[password_confirmation]" type="password"
                                        placeholder="再次输入密码"
@@ -63,27 +79,20 @@
                         <div class="form-group {{ $errors->has('Manager.avatar') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="avatar">头像</label>
                             <div class="col-md-6">
-                                <input id="avatar" name="Manager[avatar]" type="file"
-                                       value="{{ old('Manager.avatar') }}">
+                                {{--<input id="file_upload" name="Manager[avatar]" type="file" />--}}
+                                <input id="avatar" class="file_upload" name="Manager[avatar]" type="file"
+                                       value="123">
+                                {{--<input id="avatar" name="Manager[avatar]" type="file"--}}
+                                {{--value="{{ old('Manager.avatar') }}">--}}
                             </div>
+                            <img src="" alt="" class="img-circle" id="avatar-img">
                             @if ($errors->has('Manager.avatar'))
                                 <span class="help-block col-md-3">
                                     <strong>{{ $errors->first('Manager.avatar') }}</strong>
                                 </span>
                             @endif
                         </div>
-                        <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="email">邮箱</label>
-                            <div class="col-md-6">
-                                <input id="email" name="Manager[email]" type="text" placeholder="输入邮箱"
-                                       class="form-control" value="{{ old('Manager.email') }}">
-                            </div>
-                            @if ($errors->has('Manager.email'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+
                         <div class="form-group {{ $errors->has('Manager.mobile') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="mobile">手机</label>
                             <div class="col-md-6">
@@ -153,4 +162,24 @@
             </div>
         </div><!--/.col-->
     </div><!--/.row-->
+@stop
+@section('javascript')
+
+    <script>
+        $(function () {
+            console.log($("input[name='Manager[avatar]']").val());
+            $(".file_upload").uploadify({
+                "swf": "{{ asset('/static/common/uploadify/uploadify.swf') }}",
+                "uploader": "{{ asset('/static/common/uploadify/uploadify.php') }}",
+                "auto": false,
+                "buttonText": "选择图片",
+                "cancelImg": "{{ asset('/static/common/uploadify/uploadify-cancel.png') }}",
+                "folder": "{{ asset('/uploads/images') }}",
+                "onUploadSuccess": function (file, data, response) {
+                    $("input[name='Manager[avatar]']").val(data);
+                    $("#avatar-img").attr("scr", data);
+                }
+            });
+        });
+    </script>
 @stop

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
+//use Intervention\Image\Facades\Image;
 
 class ManagerController extends Controller
 {
@@ -37,7 +38,7 @@ class ManagerController extends Controller
     // GET 客服列表
     public function index()
     {
-        $managers = Manager::where('is_super', '!=', 1)->where('is_active', 1)->paginate(2);
+        $managers = Manager::where('is_active', 1)->paginate();
         return view('admin.manager.index')->with([
             'managers' => $managers
         ]);
@@ -53,24 +54,41 @@ class ManagerController extends Controller
     // POST
     public function store(Request $request)
     {
+
+        dd($request->all());
+        $file = $request->file('Manager.avatar');
+        $extension = $file->extension();   //"jpeg
+        $path = $file->path();   //"/private/var/tmp/phpAF4CTc"
+        var_dump($extension);
+        var_dump($path);
+        $file->getRealPath();
+        Input::file('name')->getClientOriginalName();
+        Input::file('name')->getClientOriginalExtension();
+        Input::file('name')->getSize();
+        Input::file('name')->getMimeType();
+
+        if ($file->isValid()) {
+            $img = Image::make($file);
+            dd($img);
+
+        }
+        exit;
         $this->validate($request, [
             'Manager.name' => 'required|alpha_dash|unique:managers,managers.name',
             'Manager.password' => 'required|confirmed',
             'Manager.nickname' => 'alpha_dash',
             'Manager.avatar' => 'image',
-            'Manager.email' => 'email|unique:managers,managers.email',
+            'Manager.email' => 'required|email|unique:managers,managers.email',
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile',
             'Manager.description' => 'max:255',
-            'Manager.is_super' => '',
-            'Manager.is_active' => '',
         ], [
             'required' => ':attribute不能为空',
-            'required' => ':attribute不能为空',
-            'required' => ':attribute不能为空',
-            'required' => ':attribute不能为空',
-            'required' => ':attribute不能为空',
-            'required' => ':attribute不能为空',
-            'min' => ':attribute长度太短',
+            'alpha_dash' => ':attribute只能包含字母、数字、破折号（ - ）以及下划线（ _ ）',
+            'unique' => ':attribute已存在',
+            'confirmed' => ':attribute两次密码不一致',
+            'image' => ':attribute文件必须为图片格式（ jpeg、png、bmp、gif、 或 svg ）',
+            'email' => ':attribute邮箱格式错误',
+            'digits' => ':attribute长度必须11位',
             'max' => ':attribute长度太长',
         ], [
             'Manager.name' => '账号',
@@ -78,9 +96,8 @@ class ManagerController extends Controller
             'Manager.nickname' => '昵称',
             'Manager.avatar' => '头像',
             'Manager.email' => '邮箱',
-            'Manager.name' => '角色名',
-            'Manager.name' => '角色名',
-            'Manager.description' => '角色描述',
+            'Manager.mobile' => '手机',
+            'Manager.description' => '说明',
         ]);
         $data = $request->input('Manager');
         if (Manager::create($data)) {
@@ -125,6 +142,35 @@ class ManagerController extends Controller
     {
 
     }
+//    上传图片
+    public function uploadpic( $filename, $filepath)
+    {
+        //        1.首先检查文件是否存在
+        if ($request::hasFile($filename)){
+            //          2.获取文件
+            $file = $request::file($filename);
+            //          3.其次检查图片手否合法
+            if ($file->isValid()){
+//                先得到文件后缀,然后将后缀转换成小写,然后看是否在否和图片的数组内
+                if(in_array( strtolower($file->extension()),['jpeg','jpg','gif','gpeg','png'])){
+                    //          4.将文件取一个新的名字
+                    $newName = 'img'.time().rand(100000, 999999).$file->getClientOriginalName();
+                    //           5.移动文件,并修改名字
+                    if($file->move($filepath,$newName)){
+                        return $filepath.'/'.$newName;   //返回一个地址
+                    }else{
+                        return 4;
+                    }
+                }else{
+                    return 3;
+                }
 
+            }else{
+                return 2;
+            }
+        }else{
+            return 1;
+        }
+    }
 
 }

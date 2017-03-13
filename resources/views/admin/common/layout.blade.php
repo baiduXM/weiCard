@@ -5,9 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', '首页') - 微名片后台</title>
-    <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
-{{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('static/common/bootstrap-3.3.5-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('static/admin/css/bootstrap-table.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/common/uploadify/uploadify.css') }}" rel="stylesheet">
     <link href="{{ asset('static/admin/css/styles.css') }}" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -29,7 +30,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a>  <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
+            <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
@@ -62,9 +63,9 @@
         @yield('breadcrumb')
     </div>
     {{--<div class="row">--}}
-        {{--<div class="col-lg-12">--}}
-            {{--<h1 class="page-header">@yield('title')</h1>--}}
-        {{--</div>--}}
+    {{--<div class="col-lg-12">--}}
+    {{--<h1 class="page-header">@yield('title')</h1>--}}
+    {{--</div>--}}
     {{--</div><!--/.row-->--}}
     <div class="row">
         <div class="col-lg-12">
@@ -77,9 +78,10 @@
 </div><!--/.main-->
 
 
-<script src="{{ asset('static/common/js/vue.js') }}"></script>
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>
+<script src="{{ asset('static/common/js/vue.js') }}"></script>
 <script src="{{ asset('static/admin/js/chart.min.js') }}"></script>
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>--}}

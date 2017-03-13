@@ -14,10 +14,14 @@ Route::get('phpinfo', function () {
     echo phpinfo();
 });
 
+
+
 Route::get('/', function () {
-//    return redirect()->route('admin.role.index');
     return redirect()->route('index');
 });
+
+// 保存图片
+Route::post('/upload', ['as' => 'upload', 'uses' => 'Common\ImageController@saveImg']);
 
 // 前台登录
 Route::auth();
