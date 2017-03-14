@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
-//use Intervention\Image\Facades\Image;
+use Intervention\Image\Facades\Image;
 
 class ManagerController extends Controller
 {
@@ -38,7 +39,7 @@ class ManagerController extends Controller
     // GET 客服列表
     public function index()
     {
-        $managers = Manager::where('is_active', 1)->paginate();
+        $managers = Manager::paginate();
         return view('admin.manager.index')->with([
             'managers' => $managers
         ]);
@@ -54,31 +55,32 @@ class ManagerController extends Controller
     // POST
     public function store(Request $request)
     {
-
-        dd($request->all());
-        $file = $request->file('Manager.avatar');
-        $extension = $file->extension();   //"jpeg
-        $path = $file->path();   //"/private/var/tmp/phpAF4CTc"
-        var_dump($extension);
-        var_dump($path);
-        $file->getRealPath();
-        Input::file('name')->getClientOriginalName();
-        Input::file('name')->getClientOriginalExtension();
-        Input::file('name')->getSize();
-        Input::file('name')->getMimeType();
-
-        if ($file->isValid()) {
-            $img = Image::make($file);
-            dd($img);
-
+//        $path = public_path().'/uploads/images';
+//
+//        dd($path);
+//        dd($request->file('Manager.avatar'));
+////        exit;
+////
+//
+////        $destinationPath = '/uploads/images'; // upload path
+//        $extension = $request->file('Manager.avatar')->getClientOriginalExtension(); // getting image extension
+//        dd($extension);
+//        $fileName = rand(11111, 99999) . '.' . $extension; // renameing image
+//        dd($request->file('Manager.avatar')->move($destinationPath, $fileName)); // uploading file to given path
+//        // sending back with message
+////        Session::flash('success', 'Upload successfully');
+////        return Redirect::to('upload');
+        if ($request->hasFile('Manager.avatar')) {
+            $data['avatar'] = UploadController::save($request->file('Manager.avatar'),'admin');
         }
-        exit;
+        dd($data);
         $this->validate($request, [
             'Manager.name' => 'required|alpha_dash|unique:managers,managers.name',
+            'Manager.email' => 'required|email|unique:managers,managers.email',
             'Manager.password' => 'required|confirmed',
             'Manager.nickname' => 'alpha_dash',
-            'Manager.avatar' => 'image',
-            'Manager.email' => 'required|email|unique:managers,managers.email',
+            'Manager.avatar' => 'image|max:2*1024*1024',//最大2MB
+            'Manager.avatar' => 'image|size:2*1024*1024',//文件必须2MB
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile',
             'Manager.description' => 'max:255',
         ], [
@@ -89,7 +91,7 @@ class ManagerController extends Controller
             'image' => ':attribute文件必须为图片格式（ jpeg、png、bmp、gif、 或 svg ）',
             'email' => ':attribute邮箱格式错误',
             'digits' => ':attribute长度必须11位',
-            'max' => ':attribute长度太长',
+            'max' => ':attribute长度太长或文件过大',
         ], [
             'Manager.name' => '账号',
             'Manager.password' => '密码',
@@ -99,7 +101,13 @@ class ManagerController extends Controller
             'Manager.mobile' => '手机',
             'Manager.description' => '说明',
         ]);
+//        dd($request->all('Manager'));
+//        dd($request->input('Manager'));
         $data = $request->input('Manager');
+        if ($request->hasFile('Manager.avatar')) {
+            $data['avatar'] = UploadController::save($request->file('Manager.avatar'));
+        }
+        dd($data);
         if (Manager::create($data)) {
             return redirect('admin/manager')->with('success', '添加成功');
         } else {
@@ -142,33 +150,34 @@ class ManagerController extends Controller
     {
 
     }
+
 //    上传图片
-    public function uploadpic( $filename, $filepath)
+    public function uploadpic($filename, $filepath)
     {
         //        1.首先检查文件是否存在
-        if ($request::hasFile($filename)){
+        if ($request::hasFile($filename)) {
             //          2.获取文件
             $file = $request::file($filename);
             //          3.其次检查图片手否合法
-            if ($file->isValid()){
+            if ($file->isValid()) {
 //                先得到文件后缀,然后将后缀转换成小写,然后看是否在否和图片的数组内
-                if(in_array( strtolower($file->extension()),['jpeg','jpg','gif','gpeg','png'])){
+                if (in_array(strtolower($file->extension()), ['jpeg', 'jpg', 'gif', 'gpeg', 'png'])) {
                     //          4.将文件取一个新的名字
-                    $newName = 'img'.time().rand(100000, 999999).$file->getClientOriginalName();
+                    $newName = 'img' . time() . rand(100000, 999999) . $file->getClientOriginalName();
                     //           5.移动文件,并修改名字
-                    if($file->move($filepath,$newName)){
-                        return $filepath.'/'.$newName;   //返回一个地址
-                    }else{
+                    if ($file->move($filepath, $newName)) {
+                        return $filepath . '/' . $newName;   //返回一个地址
+                    } else {
                         return 4;
                     }
-                }else{
+                } else {
                     return 3;
                 }
 
-            }else{
+            } else {
                 return 2;
             }
-        }else{
+        } else {
             return 1;
         }
     }

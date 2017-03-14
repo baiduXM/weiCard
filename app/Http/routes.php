@@ -20,8 +20,11 @@ Route::get('/', function () {
     return redirect()->route('index');
 });
 
+//Route::group(['prefix' => 'upload'], function () {
+//
+//});
 // 保存图片
-Route::post('/upload', ['as' => 'upload', 'uses' => 'Common\ImageController@saveImg']);
+Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
 
 // 前台登录
 Route::auth();
