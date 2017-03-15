@@ -50,7 +50,7 @@ Route::get('admin/logout', function () {
 });
 
 // 后台管理界面
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // 首页
     Route::get('/', ['as' => 'admin', function () {
@@ -59,16 +59,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
     // 用户管理
-    Route::group(['prefix' => 'user'], function () {
-        Route::get('/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
-        Route::any('create', ['as' => 'admin.user.create', 'uses' => 'Admin\UserController@create']);
-        Route::any('update/{id}', ['as' => 'admin.user.update', 'uses' => 'Admin\UserController@update'])
-            ->where(['id' => '[0-9]+']);
-        Route::any('delete/{id}', ['as' => 'admin.user.delete', 'uses' => 'Admin\UserController@delete'])
-            ->where(['id' => '[0-9]+']);
-        Route::get('detail/{id}', ['as' => 'admin.user.detail', 'uses' => 'Admin\UserController@detail'])
-            ->where(['id' => '[0-9]+']);
-    });
+    Route::resource('user', 'Admin\UserController');
+//    Route::group(['prefix' => 'user'], function () {
+//        Route::get('/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
+
+//        Route::any('create', ['as' => 'admin.user.create', 'uses' => 'Admin\UserController@create']);
+//        Route::any('update/{id}', ['as' => 'admin.user.update', 'uses' => 'Admin\UserController@update'])
+//            ->where(['id' => '[0-9]+']);
+//        Route::any('delete/{id}', ['as' => 'admin.user.delete', 'uses' => 'Admin\UserController@delete'])
+//            ->where(['id' => '[0-9]+']);
+//        Route::get('detail/{id}', ['as' => 'admin.user.detail', 'uses' => 'Admin\UserController@detail'])
+//            ->where(['id' => '[0-9]+']);
+//    });
 
     // 公司管理
     Route::group(['prefix' => 'company'], function () {

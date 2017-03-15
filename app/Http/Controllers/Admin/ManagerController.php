@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class ManagerController extends Controller
 {
@@ -71,7 +70,8 @@ class ManagerController extends Controller
 ////        Session::flash('success', 'Upload successfully');
 ////        return Redirect::to('upload');
         if ($request->hasFile('Manager.avatar')) {
-            $data['avatar'] = UploadController::save($request->file('Manager.avatar'),'admin');
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('Manager.avatar'), 'admin');
         }
         dd($data);
         $this->validate($request, [

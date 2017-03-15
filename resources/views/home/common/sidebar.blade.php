@@ -31,6 +31,16 @@
             <li class="{{ Request::path() == 'user' || Request::is('user/*') ? 'current' : '' }}">
                 <a class=" xz" href="{{ url('/user') }}">个人中心</a>
             </li>
+
+            @if(Auth::user()->name == 'admin' || Auth::user()->is_admin === 1)
+                <li class="">
+                    <a class=" xz" href="{{ url('/admin') }}">管理后台</a>
+                </li>
+            @endif
+            <li class="">
+                <a class=" xz" href="{{ url('/logout') }}">退出</a>
+            </li>
+
             <div class="clear"></div>
         </ul>
     </div>

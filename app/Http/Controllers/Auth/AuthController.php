@@ -24,8 +24,8 @@ class AuthController extends Controller
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
     protected $redirectTo = '/index';
-    protected $loginView = 'home.auth.login';
-    protected $registerView = 'home.auth.register';
+    protected $loginView = 'auth.login';
+    protected $registerView = 'auth.register';
 
     public function __construct()
     {
@@ -35,9 +35,20 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+        ],[
+            'required' => ':attribute为必填项',
+            'email' => ':attribute格式不正确',
+            'min' => ':attribute长度太短',
+            'max' => ':attribute长度太长',
+            'confirmed' => '两次:attribute不一致',
+            'unique' => ':attribute已被使用'
+        ],[
+            'name' => '用户名',
+            'email' => '邮箱',
+            'password' => '密码',
         ]);
     }
 

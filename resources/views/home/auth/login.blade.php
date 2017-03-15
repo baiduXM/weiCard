@@ -14,6 +14,7 @@
               </span>
                 <input class="dl" type="submit" value="登录">
                 <a href="{{ url('password/reset') }}" class="forget">忘记密码？</a>
+                <a href="{{ url('register') }}" class="register">注册</a>
             </div>
         </form>
         <div id="footer">

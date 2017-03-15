@@ -18,13 +18,16 @@ class UserController extends Controller
     // 用户列表
     public function index()
     {
-        $users = User::paginate();
+        $users = User::where('name', '!=', 'admin')->where('is_admin', '!=', 1)->paginate();
         return view('admin.user.index')->with('users', $users);
     }
 
     // 新增用户
-    public function create(Request $request)
+    public function create()
     {
+
+        $user = new User;
+        return view('admin.user.create')->with('user', $user);
         if ($request->isMethod('POST')) {
             $this->validate($request, [
                 'Users.name' => 'required|max:20|unique:users',
