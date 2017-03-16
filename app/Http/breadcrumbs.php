@@ -9,29 +9,7 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push("首页", route('admin'));
 });
 
-// 首页 > 用户列表
-Breadcrumbs::register('admin.user', function ($breadcrumbs) {
-    $breadcrumbs->parent('admin');
-    $breadcrumbs->push('用户列表', route('admin.user'));
-});
 
-// 首页 > 用户列表 > 用户详情
-Breadcrumbs::register('admin.user.detail', function ($breadcrumbs, $id) {
-    $breadcrumbs->parent('admin.user');
-    $breadcrumbs->push('用户详情', route('admin.user.detail', $id));
-});
-
-// 首页 > 用户列表 > 修改用户
-Breadcrumbs::register('admin.user.update', function ($breadcrumbs, $id) {
-    $breadcrumbs->parent('admin.user');
-    $breadcrumbs->push('修改用户', route('admin.user.update', $id));
-});
-
-// 首页 > 用户列表 > 添加用户
-Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
-    $breadcrumbs->parent('admin.user');
-    $breadcrumbs->push('添加用户', route('admin.user.create'));
-});
 
 //// 首页 > 客服列表
 //Breadcrumbs::register('admin.manager', function ($breadcrumbs) {

@@ -5,15 +5,40 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\User;
 use Illuminate\Http\Request;
+use Breadcrumbs;
 
 
 class UserController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
+    public function __construct()
+    {
+
+        // 首页 > 用户列表
+        Breadcrumbs::register('admin.user', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin');
+            $breadcrumbs->push('用户列表', route('admin.user.index'));
+        });
+
+        // 首页 > 用户列表 > 用户详情
+        Breadcrumbs::register('admin.user.detail', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.user');
+            $breadcrumbs->push('用户详情', route('admin.user.detail', $id));
+        });
+
+        // 首页 > 用户列表 > 修改用户
+        Breadcrumbs::register('admin.user.update', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.user');
+            $breadcrumbs->push('修改用户', route('admin.user.update', $id));
+        });
+
+        // 首页 > 用户列表 > 添加用户
+        Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin.user');
+            $breadcrumbs->push('添加用户', route('admin.user.create'));
+        });
+
+    }
 
     // 用户列表
     public function index()

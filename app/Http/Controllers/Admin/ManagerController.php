@@ -87,7 +87,7 @@ class ManagerController extends Controller
             'required' => ':attribute不能为空',
             'alpha_dash' => ':attribute只能包含字母、数字、破折号（ - ）以及下划线（ _ ）',
             'unique' => ':attribute已存在',
-            'confirmed' => ':attribute两次密码不一致',
+            'confirmed' => '两次:attribute不一致',
             'image' => ':attribute文件必须为图片格式（ jpeg、png、bmp、gif、 或 svg ）',
             'email' => ':attribute邮箱格式错误',
             'digits' => ':attribute长度必须11位',

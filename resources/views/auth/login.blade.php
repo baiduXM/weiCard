@@ -1,66 +1,34 @@
-@extends('layouts.app')
-@section('title', '后台登录')
+@extends('layouts.login-layout')
+@section('title', '登录')
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">邮箱</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">密码</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> 记住我
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i> 登录
-                                </button>
-
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">忘记密码?</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <div class="login">
+        <form action="{{ url('/login') }}" method="post">
+            {{ csrf_field() }}
+            <h1>微名片登录</h1>
+            <div class="user input">
+                <img src="{{ asset('static/home/image/icon.png') }}" alt="" title="账号">
+                <input type="text" name="username" placeholder="用户名/邮箱">
             </div>
-        </div>
+            <div class="pass input">
+                <img src="{{ asset('static/home/image/icon3.png') }}" alt="" title="密码">
+                <input type="password" name="password" placeholder="密码">
+            </div>
+
+            @if ($errors->has())
+                <p class="pass-error">账号密码不匹配</p>
+            @endif
+
+            <button type="submit">登录</button>
+            <div class="txt">
+                <span class="lt"><a href="{{ url('/register') }}">注册</a></span>
+                <span class="rt"><a href="{{ url('/password/reset') }}">忘记密码？</a></span>
+            </div>
+            <p class="three"><b style="margin-right:10px;"></b>使用第三方账号登录<b style="margin-left:10px;"></b></p>
+            <ul class="lo-icon">
+                <li class="icon-q"><a href=""></a></li>
+                <li class="icon-m"><a href=""></a></li>
+                <li class="icon-w"><a href=""></a></li>
+            </ul>
+        </form>
     </div>
-</div>
-@endsection
+@stop
