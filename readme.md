@@ -1,8 +1,7 @@
-# 微名片
+# 微名片 
 
 - laravel 5.2
 - php 5.6
-
 
 ### 初始化配置
 
@@ -18,7 +17,7 @@ composer install
 APP_KEY=base64:Bhrr6VfOTOSjZ2JUdHCCeu+bJNA2aDyjtppeZWioQuk=    
 CACHE_DRIVER=array
 
-/* 邮箱配置 */
+/*===email config example===*/
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.qq.com
 MAIL_PORT=465

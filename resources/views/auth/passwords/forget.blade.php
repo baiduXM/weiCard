@@ -5,11 +5,13 @@
         <form action="{{ url('password/email') }}" method="post">
             {{ csrf_field() }}
             <h1>找回密码</h1>
+
+            @if (session('status'))
+                <p style="color: darkolivegreen;">{{ session('status') }}</p>
+            @endif
             <div class="mail input">
                 <img src="{{ asset('static/home/image/icon5.png') }}" alt="">
                 <input type="text" name="email" placeholder="邮箱" value="{{ old('email') }}">
-                {{--<span>邮箱 :</span>--}}
-                {{--<input type="text">--}}
             </div>
             @if ($errors->has('email'))
                 <p class="pass-error">{{ $errors->first('email') }}</p>

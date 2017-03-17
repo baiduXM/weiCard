@@ -22,7 +22,9 @@ class PasswordController extends Controller
     use ResetsPasswords;
 
     protected $redirectTo = '/';
-//    protected $linkRequestView = 'auth.passwords.forget';
+    protected $linkRequestView = 'auth.passwords.forget'; // 忘记密码
+    protected $resetView = 'auth.passwords.reset-new'; // 重置密码
+
 
     public function __construct()
     {
