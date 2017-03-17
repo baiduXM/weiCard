@@ -26,8 +26,8 @@ Route::get('/', function () {
 Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
 
 // 前台登录
-//Route::auth();
-// 登录、注册模块
+Route::auth();
+// 覆盖登录、注册模块
 Route::get('login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('register', 'Auth\AuthController@getRegister');
@@ -36,6 +36,8 @@ Route::get('logout', function () {
     Auth::logout();
     return redirect()->to('/index');
 });
+
+
 
 
 // 前台路由组

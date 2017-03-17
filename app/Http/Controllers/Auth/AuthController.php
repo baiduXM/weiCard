@@ -33,7 +33,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware('guest', ['except' => 'logout']);
     }
 
 
@@ -56,7 +56,9 @@ class AuthController extends Controller
         ]);
 
         // ？登录次数限制
-        $throttles = $this->isUsingThrottlesLoginsTrait();
+        $throttles = in_array(
+            ThrottlesLogins::class, class_uses_recursive(static::class)
+        );
         if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
@@ -110,43 +112,18 @@ class AuthController extends Controller
 
         // 创建
         $user = $request->input('User');
-        echo User::create([
-//            'name' => $user->name,
-            'name' => time(),
-            'password' => bcrypt($user->password),
-        ]);
-        dd(11);
-//        dd($userm);
-
         // 登录
-        Auth::guard($this->getGuard())->login($this->create($request->all()));
+        Auth::guard($this->getGuard())->login(
+            User::create([
+                'name' => $user['name'],
+                'password' => bcrypt($user['password']),
+            ]));
         return redirect($this->redirectPath());
 
     }
 
 
-    /**
-     * 登录验证
-     *
-     * @param array $data
-     * @return mixed
-     */
-
-
-    protected function validateLogin(array $data)
-    {
-
-        return Validator::make($data, [
-            'username' => 'required',
-            'password' => 'required',
-        ], [
-            'required' => ':attribute为必填项',
-        ], [
-            'username' => '账号',
-            'password' => '密码',
-        ]);
-    }
-
+    /*===重写后，不使用===*/
 
     /**
      * 注册验证
@@ -154,27 +131,26 @@ class AuthController extends Controller
      * @param array $data
      * @return mixed
      */
-    protected function validator(array $data)
-    {
-
-        return Validator::make($data, [
-            'User.name' => 'required|max:255|unique:users,users.name',
-            'User.email' => 'required|email|max:255|unique:users,users.email',
-            'User.password' => 'required|min:6|confirmed',
-        ], [
-            'required' => ':attribute为必填项',
-            'email' => ':attribute格式不正确',
-            'min' => ':attribute长度太短',
-            'max' => ':attribute长度太长',
-            'confirmed' => '两次:attribute不一致',
-            'unique' => ':attribute已被使用'
-        ], [
-            'User.name' => '用户名',
-            'User.email' => '邮箱',
-            'User.password' => '密码',
-        ]);
-    }
-
+//    protected function validator(array $data)
+//    {
+//
+//        return Validator::make($data, [
+//            'name' => 'required|max:255|unique:users,users.name',
+//            'email' => 'required|email|max:255|unique:users,users.email',
+//            'password' => 'required|min:6|confirmed',
+//        ], [
+//            'required' => ':attribute为必填项',
+//            'email' => ':attribute格式不正确',
+//            'min' => ':attribute长度太短',
+//            'max' => ':attribute长度太长',
+//            'confirmed' => '两次:attribute不一致',
+//            'unique' => ':attribute已被使用'
+//        ], [
+//            'name' => '用户名',
+//            'email' => '邮箱',
+//            'password' => '密码',
+//        ]);
+//    }
 
     /**
      * 注册创建用户
@@ -182,11 +158,13 @@ class AuthController extends Controller
      * @param array $data
      * @return static
      */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'password' => bcrypt($data['password']),
-        ]);
-    }
+//    protected function create(array $data)
+//    {
+//        return User::create([
+//            'name' => $data['name'],
+//            'password' => bcrypt($data['password']),
+//        ]);
+//    }
+
+
 }

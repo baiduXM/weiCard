@@ -20,8 +20,8 @@
 
             <button type="submit">登录</button>
             <div class="txt">
-                <span class="lt"><a href="{{ url('/register') }}">注册</a></span>
-                <span class="rt"><a href="{{ url('/password/reset') }}">忘记密码？</a></span>
+                <span class="lt"><a href="{{ url('register') }}">注册</a></span>
+                <span class="rt"><a href="{{ url('password/reset') }}">忘记密码？</a></span>
             </div>
             <p class="three"><b style="margin-right:10px;"></b>使用第三方账号登录<b style="margin-left:10px;"></b></p>
             <ul class="lo-icon">

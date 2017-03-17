@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Validator;
 
 class PasswordController extends Controller
 {
@@ -17,16 +19,29 @@ class PasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-
     use ResetsPasswords;
 
-    /**
-     * Create a new password controller instance.
-     *
-     * @return void
-     */
+    protected $redirectTo = '/';
+//    protected $linkRequestView = 'auth.passwords.forget';
+
     public function __construct()
     {
         $this->middleware('guest');
     }
+
+
+    protected function validateSendResetLinkEmail($data)
+    {
+        return Validator::make($data, [
+            'email' => 'required|email|max:255',
+        ], [
+            'required' => ':attribute为必填项',
+            'email' => ':attribute格式不正确',
+            'max' => ':attribute长度太长',
+        ], [
+            'email' => '邮箱',
+        ]);
+    }
+
+
 }

@@ -66,7 +66,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+//    'locale' => 'en',
+    'locale' => 'zh-CN',
 
     /*
     |--------------------------------------------------------------------------
@@ -146,6 +147,7 @@ return [
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
+//        Overtrue\LaravelLang\TranslationServiceProvider::class, // added 语言包扩展
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
@@ -201,7 +203,7 @@ return [
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
         //'Schema' => Illuminate\Support\Facades\Schema::class,
-        'Schema' => zedisdog\LaravelSchemaExtend\Schema::class,
+        'Schema' => zedisdog\LaravelSchemaExtend\Schema::class, // added 数据迁移表注释
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'URL' => Illuminate\Support\Facades\URL::class,
