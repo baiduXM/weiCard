@@ -30,18 +30,18 @@ class PasswordController extends Controller
     }
 
 
-    protected function validateSendResetLinkEmail($data)
-    {
-        return Validator::make($data, [
-            'email' => 'required|email|max:255',
-        ], [
-            'required' => ':attribute为必填项',
-            'email' => ':attribute格式不正确',
-            'max' => ':attribute长度太长',
-        ], [
-            'email' => '邮箱',
-        ]);
-    }
+//    protected function validateSendResetLinkEmail($data)
+//    {
+//        return Validator::make($data, [
+//            'email' => 'required|email|max:255',
+//        ], [
+//            'required' => ':attribute为必填项',
+//            'email' => ':attribute格式不正确',
+//            'max' => ':attribute长度太长',
+//        ], [
+//            'email' => '邮箱',
+//        ]);
+//    }
 
 
 }
