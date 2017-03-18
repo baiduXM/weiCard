@@ -25,20 +25,9 @@ Route::get('/', function () {
 // 保存图片
 Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
 
-// 前台登录
+// 登录模块
 Route::auth();
-// 覆盖登录、注册模块
-Route::get('login', 'Auth\AuthController@getLogin');
-Route::post('login', 'Auth\AuthController@postLogin');
-Route::get('register', 'Auth\AuthController@getRegister');
-Route::post('register', 'Auth\AuthController@postRegister');
-Route::get('logout', function () {
-    Auth::logout();
-    return redirect()->to('/index');
-});
-
-
-
+Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
 // 前台路由组
 Route::group(['middleware' => ['web', 'auth']], function () {
@@ -50,7 +39,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('employee', 'Home\EmployeeController');
 });
 
-
 // 后台管理界面
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
@@ -60,25 +48,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     }]);
     Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
-    // 用户管理
-    Route::resource('user', 'Admin\UserController');
+//    Route::get(['/', 'index'], ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
-    // 公司管理
-    Route::resource('company', 'Admin\CompanyController');
-
-    // 模板管理
-    Route::resource('template', 'Admin\TemplateController');
-
-    // 客服管理
-    Route::group(['prefix' => 'manager'], function () {
-        Route::match(['get', 'post'], '{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@setRole']);
-        Route::match(['get', 'post'], '{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@setPermission']);
+    Route::resource('user', 'Admin\UserController'); // 用户管理
+    Route::resource('company', 'Admin\CompanyController'); // 公司管理
+    Route::resource('template', 'Admin\TemplateController'); // 模板管理
+    Route::group(['prefix' => 'manager'], function () { // 客服管理
+        Route::get('{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@getRole']);
+        Route::post('{id}/role', ['as' => 'admin.manager.setRole', 'uses' => 'Admin\ManagerController@postRole']);
+        Route::get('{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@getPermission']);
+        Route::post('{id}/permission', ['as' => 'admin.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
     });
     Route::resource('manager', 'Admin\ManagerController');
-    // 角色管理
-    Route::resource('role', 'Admin\RoleController');
-    // 权限管理
-    Route::resource('permission', 'Admin\PermissionController');
+    Route::resource('role', 'Admin\RoleController'); // 角色管理
+    Route::resource('permission', 'Admin\PermissionController'); // 权限管理
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {

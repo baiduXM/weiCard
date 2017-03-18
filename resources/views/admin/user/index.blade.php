@@ -144,16 +144,21 @@
                                             {{--<td>{{ $user->getRole($user->id) }}</td>--}}
                                             {{--<td>{{ $user->getPermission($user->id) }}</td>--}}
                                             <td>
-                                                <span><a href="{{ url('admin/manager/detail', ['id' => $user->id]) }}">详情</a></span>
+                                                <span><a href="{{ url('admin/user/'.$user->id) }}">详情</a></span> -
+                                                <span><a href="{{ url('admin/user/'. $user->id .'/edit') }}">编辑</a></span>
                                                 -
-                                                <span><a href="{{ url('admin/manager/update', ['id' => $user->id]) }}">编辑</a></span>
+                                                <span><a href="{{ url('admin/user/'. $user->id .'/role') }}">分配角色</a></span>
                                                 -
-                                                <span><a href="{{ url('admin/manager/update', ['id' => $user->id]) }}">分配角色</a></span>
+                                                <span><a href="{{ url('admin/user/'. $user->id .'/permission') }}">分配权限</a></span>
                                                 -
-                                                <span><a href="{{ url('admin/manager/update', ['id' => $user->id]) }}">分配权限</a></span>
-                                                -
-                                                <span><a href="{{ url('admin/manager/delete', ['id' => $user->id]) }}"
-                                                         onclick="if (confirm('确认删除？') == false) return false;">删除</a></span>
+                                                <span>
+                                                    <a href="#confirmModel" data-toggle="modal"
+                                                       data-target="#confirmModal"
+                                                       data-id="{{ $user->id }}"
+                                                       data-name="{{ $user->name }}">删除</a>
+                                                    {{--<a href="{{ url('admin/user/delete', ['id' => $user->id]) }}"--}}
+                                                    {{--onclick="if (confirm('确认删除？') == false) return false;">删除</a>--}}
+                                                </span>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -195,11 +200,25 @@
         </div>
     </div><!--/.row-->
 @stop
+
+{{--@include('admin.common.modal')--}}
+
 @section('javascript')
     <script>
         $(function () {
             $(".operate-add").click(function () {
                 location.href = "{{ url('admin/user/create') }}";
+            });
+
+            $('#confirmModal').on('show.bs.modal', function (event) {
+                var relatedTarget = $(event.relatedTarget);
+                var _name = relatedTarget.data('name');
+                var _id = relatedTarget.data('id');
+                var modal = $(this);
+                modal.find('.modal-title').text('删除确认');
+                modal.find('.modal-body').text('是否删除' + _name + '角色？');
+                modal.find('form').attr('action', '/admin/user/' + _id);
+                modal.find("[name='_method']").val('DELETE');
             });
         });
     </script>

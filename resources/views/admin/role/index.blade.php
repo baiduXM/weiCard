@@ -67,7 +67,7 @@
     </div><!--/.row-->
 @stop
 
-@include('admin.common.modal')
+@include('common.modal')
 
 @section('javascript')
 

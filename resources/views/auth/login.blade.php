@@ -9,13 +9,16 @@
                 <img src="{{ asset('static/home/image/icon.png') }}" alt="" title="账号">
                 <input type="text" name="username" placeholder="用户名/邮箱">
             </div>
+            @if ($errors->has('username'))
+                <p class="pass-error">{{ $errors->first('username') }}</p>
+            @endif
+
             <div class="pass input">
                 <img src="{{ asset('static/home/image/icon3.png') }}" alt="" title="密码">
                 <input type="password" name="password" placeholder="密码">
             </div>
-
-            @if ($errors->has())
-                <p class="pass-error">账号密码不匹配</p>
+            @if ($errors->has('email'))
+                <p class="pass-error">{{ $errors->first('email') }}</p>
             @endif
 
             <button type="submit">登录</button>

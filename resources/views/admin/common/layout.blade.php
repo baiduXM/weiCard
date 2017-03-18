@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', '首页') - 微名片后台</title>
-    <link href="{{ asset('static/common/bootstrap-3.3.5-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/common/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}" rel="stylesheet">
     {{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
+    {{--<link href="{{ asset('static/common/uploadify/uploadify.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('static/admin/css/bootstrap-table.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/common/uploadify/uploadify.css') }}" rel="stylesheet">
     <link href="{{ asset('static/admin/css/styles.css') }}" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -76,13 +76,14 @@
 
     @show
 </div><!--/.main-->
+@include('common.modal')
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/common/bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>
-<script src="{{ asset('static/common/js/vue.js') }}"></script>
-<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>
+<script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+{{--<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>--}}
+{{--<script src="{{ asset('static/common/js/vue.js') }}"></script>--}}
+{{--<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>--}}

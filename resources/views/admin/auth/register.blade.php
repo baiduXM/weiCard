@@ -1,4 +1,4 @@
-@extends('admin.common.app')
+@extends('admin.common.app-old')
 @section('title', '注册用户')
 @section('content')
 <div class="container">

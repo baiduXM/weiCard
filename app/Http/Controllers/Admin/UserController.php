@@ -7,13 +7,11 @@ use App\Models\Admin\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 
-
 class UserController extends Controller
 {
 
     public function __construct()
     {
-
         // 首页 > 用户列表
         Breadcrumbs::register('admin.user', function ($breadcrumbs) {
             $breadcrumbs->parent('admin');
@@ -50,35 +48,80 @@ class UserController extends Controller
     // 新增用户
     public function create()
     {
-
         $user = new User;
         return view('admin.user.create')->with('user', $user);
-        if ($request->isMethod('POST')) {
-            $this->validate($request, [
-                'Users.name' => 'required|max:20|unique:users',
-                'Users.email' => 'required|email|max:255|unique:users',
-                'Users.password' => 'required|min:6|confirmed',
-            ], [
-                'required' => ':attribute为必填项',
-                'min' => ':attribute长度太短',
-                'max' => ':attribute长度太长',
-                'email' => ':attribute格式不正确',
-                'confirmed' => '两次:attribute不一致',
-            ], [
-                'Users.name' => '用户名',
-                'Users.email' => '邮箱',
-                'Users.password' => '密码',
-            ]);
+    }
 
-            $data = $request->input('Users');
-            if (User::create($data)) {
-                return redirect('admin/user')->with('success', '添加成功');
-            } else {
-                return redirect()->back();
-            }
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'Users.name' => 'required|max:20|unique:users',
+            'Users.email' => 'required|email|max:255|unique:users',
+            'Users.password' => 'required|min:6|confirmed',
+        ], [
+            'required' => ':attribute为必填项',
+            'min' => ':attribute长度太短',
+            'max' => ':attribute长度太长',
+            'email' => ':attribute格式不正确',
+            'confirmed' => '两次:attribute不一致',
+        ], [
+            'Users.name' => '用户名',
+            'Users.email' => '邮箱',
+            'Users.password' => '密码',
+        ]);
+
+        $data = $request->input('Users');
+        if (User::create($data)) {
+            return redirect('admin/user')->with('success', '添加成功');
+        } else {
+            return redirect()->back();
         }
-//        $user = new User();
-        return view('admin.user.create');
+    }
+
+
+    public function show($id)
+    {
+
+    }
+
+    public function edit($id)
+    {
+
+    }
+
+    public function update(Request $request, $id)
+    {
+
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        if ($user->delete()) {
+            return redirect('user')->with('success', '删除成功 - ' . $user->name);
+        } else {
+            return redirect('user')->with('error', '删除失败 - ' . $user->name);
+        }
+    }
+
+    public function getRole()
+    {
+
+    }
+
+    public function postRole()
+    {
+
+    }
+
+    public function getPermission()
+    {
+
+    }
+
+    public function postPermission()
+    {
+
     }
 
     // 用户详情
@@ -91,7 +134,7 @@ class UserController extends Controller
     }
 
     // 修改用户
-    public function update(Request $request, $id)
+    public function update1(Request $request, $id)
     {
         $user = User::find($id);
         if ($request->isMethod('POST')) {
@@ -130,9 +173,9 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user->delete()) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $user->id);
+            return redirect('/admin/user')->with('success', '删除成功 - ' . $user->id);
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $user->id);
+            return redirect('/admin/user')->with('error', '删除失败 - ' . $user->id);
         }
 
     }

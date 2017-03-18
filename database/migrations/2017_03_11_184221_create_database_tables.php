@@ -12,9 +12,9 @@ class InitDatabaseTables extends Migration
      */
     public function up()
     {
-        // if (Schema::hasTable('users')) {
-        //     //
-        // }
+//         if (Schema::hasTable('users')) {
+//             // TODO
+//         }
         // if (Schema::hasColumn('users', 'email')) {
         //     //
         // }

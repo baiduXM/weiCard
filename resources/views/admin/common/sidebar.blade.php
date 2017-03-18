@@ -55,7 +55,7 @@
         <li role="presentation" class="divider"></li>
 
         <li>
-            <a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-stats"></span>登出</a>
+            <a href="{{ url('logout') }}"><span class="glyphicon glyphicon-stats"></span>登出</a>
         </li>
     </ul>
 </div>

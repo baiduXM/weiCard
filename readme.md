@@ -1,7 +1,13 @@
 # 微名片 
 
-- laravel 5.2
-- php 5.6
+### 使用框架 
+
+- laravel 5.2.45
+- php >5.6
+- bootstrap 3.3.7
+- jquery 1.11.3
+- jquery.Uploadify 	v3.2.1(-未使用)
+- vue.js v2.2.1(-未使用)
 
 ### 初始化配置
 

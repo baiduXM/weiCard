@@ -32,6 +32,9 @@
             @endif
 
             <button type="submit">重置密码</button>
+            <div class="txt" style="text-align: center;">
+                <span><a href="{{ url('login') }}">返回登录</a></span>
+            </div>
 
         </form>
     </div>

@@ -5,13 +5,13 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">@yield('modal_title', 'title')</h4>
+                <h4 class="modal-title" id="myModalLabel">标题</h4>
             </div>
             <div class="modal-body">
-                @yield('modal_content', 'content')
+                内容
             </div>
             <div class="modal-footer">
-                <form>
+                <form action="" method="post">
                     {{ method_field('DELETE') }}
                     {{ csrf_field() }}
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
