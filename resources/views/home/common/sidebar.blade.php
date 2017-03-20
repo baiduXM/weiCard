@@ -34,7 +34,7 @@
 
             @if(Auth::user()->name == 'admin' || Auth::user()->is_admin === 1)
                 <li class="">
-                    <a class=" xz" href="{{ url('/admin') }}">管理后台</a>
+                    <a class=" xz" href="{{ url('/admin') }}" target="_blank">管理后台</a>
                 </li>
             @endif
             <li class="">

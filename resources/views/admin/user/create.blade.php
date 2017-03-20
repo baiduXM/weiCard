@@ -9,149 +9,146 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/manager') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('admin/user') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
-                        <div class="form-group {{ $errors->has('Manager.name') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="name">账号 <span
+                        {{--{{ var_dump(old()) }}--}}
+                        {{--{{ var_dump($errors) }}--}}
+                        <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="name">用户名<span
                                         class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="name" name="Manager[name]" type="text" placeholder="输入用户名"
-                                       class="form-control" value="{{ old('Manager.name') }}">
+                                <input id="name" name="User[name]" type="text" placeholder="输入用户名"
+                                       class="form-control" value="{{ old('User.name') }}">
                             </div>
-                            @if ($errors->has('Manager.name'))
+                            @if ($errors->has('User.name'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.name') }}</strong>
+                                    <strong>{{ $errors->first('User.name') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="email">邮箱 <span
-                                        class="text-danger">*</span></label>
-                            <div class="col-md-6">
-                                <input id="email" name="Manager[email]" type="text" placeholder="输入邮箱"
-                                       class="form-control" value="{{ old('Manager.email') }}">
-                            </div>
-                            @if ($errors->has('Manager.email'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.password') ? ' has-error' : '' }}">
+                        </div><!-- name用户名 -->
+                        <div class="form-group {{ $errors->has('User.password') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password">密码 <span
                                         class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="password" name="Manager[password]" type="password" placeholder="输入密码"
+                                <input id="password" name="User[password]" type="password" placeholder="输入密码"
                                        class="form-control">
                             </div>
-                            @if ($errors->has('Manager.password'))
+                            @if ($errors->has('User.password'))
                                 <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('Manager.password') }}</strong>
+                                        <strong>{{ $errors->first('User.password') }}</strong>
                                     </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.password_confirmation') ? ' has-error' : '' }}">
+                        </div><!-- password密码 -->
+                        <div class="form-group {{ $errors->has('User.password_confirmation') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password-confirm">确认密码 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="password-confirm" name="Manager[password_confirmation]" type="password"
+                                <input id="password-confirm" name="User[password_confirmation]" type="password"
                                        placeholder="再次输入密码"
                                        class="form-control">
                             </div>
-                            @if ($errors->has('Manager.password_confirmation'))
+                            @if ($errors->has('User.password_confirmation'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('User.password_confirmation') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.nickname') ? ' has-error' : '' }}">
+                        </div><!-- password_confirmation确认密码 -->
+                        <div class="form-group {{ $errors->has('User.email') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="email">邮箱</label>
+                            <div class="col-md-6">
+                                <input id="email" name="User[email]" type="text" placeholder="输入邮箱"
+                                       class="form-control" value="{{ old('User.email') }}">
+                            </div>
+                            @if ($errors->has('User.email'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('User.email') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- email邮箱 -->
+                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="nickname">昵称</label>
                             <div class="col-md-6">
-                                <input id="name" name="Manager[nickname]" type="text" placeholder="输入用户名(6~20个字符)"
-                                       class="form-control" value="{{ old('Manager.nickname') }}">
+                                <input id="name" name="User[nickname]" type="text" placeholder="输入昵称"
+                                       class="form-control" value="{{ old('User.nickname') }}">
                             </div>
-                            @if ($errors->has('Manager.nickname'))
+                            @if ($errors->has('User.nickname'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.nickname') }}</strong>
+                                    <strong>{{ $errors->first('User.nickname') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.avatar') ? ' has-error' : '' }}">
+                        </div><!-- nickname昵称 -->
+                        <div class="form-group {{ $errors->has('User.avatar') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="avatar">头像</label>
                             <div class="col-md-6">
-                                <input id="avatar" name="Manager[avatar]" type="file">
-                                {{--<input name="Manager[avatar]" type="hidden" value="">--}}
-                                {{--<input id="avatar" class="file_upload" type="file" value="">--}}
+                                <input id="avatar" name="User[avatar]" type="file">
                             </div>
-                            <img src="" alt="" class="img-circle" id="avatar-img">
-                            @if ($errors->has('Manager.avatar'))
+                            @if ($errors->has('User.avatar'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.avatar') }}</strong>
+                                    <strong>{{ $errors->first('User.avatar') }}</strong>
                                 </span>
                             @endif
-                        </div>
-
-                        <div class="form-group {{ $errors->has('Manager.mobile') ? ' has-error' : '' }}">
+                        </div><!-- avatar头像 -->
+                        <div class="form-group {{ $errors->has('User.mobile') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="mobile">手机</label>
                             <div class="col-md-6">
-                                <input id="mobile" name="Manager[mobile]" type="text" placeholder="输入手机号"
-                                       class="form-control" value="{{ old('Manager.mobile') }}">
+                                <input id="mobile" name="User[mobile]" type="text" placeholder="输入手机号"
+                                       class="form-control" value="{{ old('User.mobile') }}">
                             </div>
-                            @if ($errors->has('Manager.mobile'))
+                            @if ($errors->has('User.mobile'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.mobile') }}</strong>
+                                    <strong>{{ $errors->first('User.mobile') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.description') ? ' has-error' : '' }}">
+                        </div><!-- mobile手机 -->
+                        <div class="form-group {{ $errors->has('User.description') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="description">个性签名</label>
                             <div class="col-md-6">
-                                <textarea id="description" name="Manager[description]" class="form-control"
-                                          rows="3"></textarea>
+                                <textarea id="description" name="User[description]" class="form-control"
+                                          rows="3">{{ old('User.description') }}</textarea>
                             </div>
-                            @if ($errors->has('Manager.password_confirmation'))
+                            @if ($errors->has('User.password_confirmation'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('User.password_confirmation') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.is_super') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="is_super">超级管理员</label>
+                        </div><!-- description个性签名 -->
+                        <div class="form-group {{ $errors->has('User.is_admin') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="is_admin">管理员</label>
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="Manager[is_super]" value="1">是
+                                        <input type="checkbox" name="User[is_admin]" value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是
                                     </label>
                                 </div>
                             </div>
-                            @if ($errors->has('Manager.is_super'))
+                            @if ($errors->has('User.is_admin'))
                                 <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('Manager.is_super') }}</strong>
+                                        <strong>{{ $errors->first('User.is_admin') }}</strong>
                                     </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.is_active') ? ' has-error' : '' }}">
+                        </div><!-- is_admin是否是管理员 -->
+                        <div class="form-group {{ $errors->has('User.is_active') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">
                                 @foreach($user->isActive() as $item => $value)
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="Manager[is_active]"
-                                                   value="{{ $item }}" {{ old('Manager.is_active') == $item ? 'checked' : '' }}>{{ $value }}
+                                            <input type="radio" name="User[is_active]"
+                                                   value="{{ $item }}" {{ old('User.is_active') == $item ? 'checked' : '' }}>{{ $value }}
                                         </label>
                                     </div>
                                 @endforeach
                             </div>
-                            @if ($errors->has('Manager.is_active'))
+                            @if ($errors->has('User.is_active'))
                                 <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('Manager.is_active') }}</strong>
+                                        <strong>{{ $errors->first('User.is_active') }}</strong>
                                     </span>
                             @endif
-                        </div>
+                        </div><!-- is_active是否可用 -->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url('admin/manager/create') }}" type="reset"
+                                <a href="{{ url('admin/user/create') }}" type="reset"
                                    class="btn btn-default btn-md">重置</a>
                             </div>
                         </div>

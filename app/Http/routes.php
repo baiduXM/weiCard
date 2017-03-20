@@ -19,11 +19,9 @@ Route::get('/', function () {
     return redirect()->to('/index');
 });
 
-//Route::group(['prefix' => 'upload'], function () {
-//
-//});
+
 // 保存图片
-Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
+//Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
 
 // 登录模块
 Route::auth();

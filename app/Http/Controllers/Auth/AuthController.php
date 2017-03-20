@@ -38,6 +38,7 @@ class AuthController extends Controller
 
     /**
      * 重写登录方法
+     * 账号可以是用户名（name）或邮箱（email）
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
@@ -93,20 +94,8 @@ class AuthController extends Controller
     {
 
         return Validator::make($data, [
-            'name' => 'required|max:255|unique:users,users.name',
-            'email' => 'required|email|max:255|unique:users,users.email',
+            'name' => 'required|min:4|max:255|unique:users,users.name',
             'password' => 'required|min:6|confirmed',
-        ], [
-            'required' => ':attribute为必填项',
-            'email' => ':attribute格式不正确',
-            'min' => ':attribute长度太短',
-            'max' => ':attribute长度太长',
-            'confirmed' => '两次:attribute不一致',
-            'unique' => ':attribute已被使用'
-        ], [
-            'name' => '用户名',
-            'email' => '邮箱',
-            'password' => '密码',
         ]);
     }
 
