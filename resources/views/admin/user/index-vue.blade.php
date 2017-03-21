@@ -134,6 +134,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     @foreach($users as $user)
                                         <tr>
                                             <td>
@@ -156,8 +157,6 @@
                                                 @endif
                                             </td><!--状态-->
                                             <td>{{ $user->created_at }}</td><!--创建时间-->
-                                            {{--<td>{{ $user->getRole($user->id) }}</td>--}}
-                                            {{--<td>{{ $user->getPermission($user->id) }}</td>--}}
                                             <td>
                                                 <a href="{{ url('admin/user/'.$user->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
@@ -176,8 +175,6 @@
                                                    data-id="{{ $user->id }}" data-name="{{ $user->name }}" title="删除">
                                                     <i class="glyphicon glyphicon-pencil"></i>删除
                                                 </a>
-                                                {{--<a href="{{ url('admin/user/delete', ['id' => $user->id]) }}"--}}
-                                                {{--onclick="if (confirm('确认删除？') == false) return false;">删除</a>--}}
                                             </td><!--操作-->
                                         </tr>
                                     @endforeach
@@ -225,11 +222,9 @@
 @section('javascript')
     <script>
         $(function () {
-            /* 添加 */
             $(".operate-add").click(function () {
                 location.href = "{{ url('admin/user/create') }}";
-            });
-            /* 弹窗 */
+            });/* 添加 */
             $('#confirmModal').on('show.bs.modal', function (event) {
                 var relatedTarget = $(event.relatedTarget);
                 var _name = relatedTarget.data('name');
@@ -239,25 +234,11 @@
                 modal.find('.modal-body').text('是否删除' + _name + '用户？');
                 modal.find('form').attr('action', '/admin/user/' + _id);
                 modal.find("[name='_method']").val('DELETE');
+            });/* 弹窗 */
+
+            $("[name='btSelectAll']").click(function(){
+                alert(1)
             });
-
-
-            /* 全选checkbox */
-            $("[name='btSelectAll']").prop("click", function () {
-                co
-                if (this.checked) {
-                    $(".selectall-item").attr("checked", true);
-                } else {
-                    $(".selectall-item").attr("checked", false);
-                }
-            });
-
-            /* 批量删除 */
-            $(".operate-delete").click(function () {
-
-                alert("批量删除");
-            });
-
 
         });
     </script>

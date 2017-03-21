@@ -12,8 +12,6 @@
                     <form class="form-horizontal" action="{{ url('admin/user') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
-                        {{--{{ var_dump(old()) }}--}}
-                        {{--{{ var_dump($errors) }}--}}
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">用户名<span
                                         class="text-danger">*</span></label>
@@ -104,7 +102,7 @@
                             <label class="col-md-3 control-label" for="description">个性签名</label>
                             <div class="col-md-6">
                                 <textarea id="description" name="User[description]" class="form-control"
-                                          rows="3">{{ old('User.description') }}</textarea>
+                                          rows="3" placeholder="个性签名">{{ old('User.description') }}</textarea>
                             </div>
                             @if ($errors->has('User.password_confirmation'))
                                 <span class="help-block col-md-3">
@@ -112,22 +110,18 @@
                                 </span>
                             @endif
                         </div><!-- description个性签名 -->
-                        <div class="form-group {{ $errors->has('User.is_admin') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <label class="col-md-3 control-label" for="is_admin">管理员</label>
                             <div class="col-md-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="User[is_admin]" value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是
+                                        <input type="checkbox" name="User[is_admin]"
+                                               value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是
                                     </label>
                                 </div>
                             </div>
-                            @if ($errors->has('User.is_admin'))
-                                <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('User.is_admin') }}</strong>
-                                    </span>
-                            @endif
                         </div><!-- is_admin是否是管理员 -->
-                        <div class="form-group {{ $errors->has('User.is_active') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">
                                 @foreach($user->isActive() as $item => $value)
@@ -139,17 +133,13 @@
                                     </div>
                                 @endforeach
                             </div>
-                            @if ($errors->has('User.is_active'))
-                                <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('User.is_active') }}</strong>
-                                    </span>
-                            @endif
                         </div><!-- is_active是否可用 -->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url('admin/user/create') }}" type="reset"
-                                   class="btn btn-default btn-md">重置</a>
+                                <button type="reset" class="btn btn-warning btn-md">重置</button>
+                                <a href="{{ url('admin/user') }}" type="button" role="button"
+                                   class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </form>

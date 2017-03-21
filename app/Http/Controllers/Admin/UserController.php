@@ -41,7 +41,13 @@ class UserController extends Controller
     // 用户列表
     public function index()
     {
-        $users = User::where('name', '!=', 'admin')->where('is_admin', '!=', 1)->paginate();
+
+//        $users = User::where('name', '!=', 'admin')->paginate();
+//        dd($users);
+        $query = User::query();
+        $query->where('name', '!=', 'admin');
+        $users = $query->paginate();
+//        dd($users);
         return view('admin.user.index')->with('users', $users);
     }
 
@@ -88,10 +94,10 @@ class UserController extends Controller
                 $data[$key] = bcrypt($value);
             }
         }
-
         if ($request->hasFile('User.avatar')) {
             $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
         }
+
         if (User::create($data)) {
             return redirect('admin/user')->with('success', '添加成功');
         } else {
@@ -114,7 +120,50 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = User::find($id);
+        $this->validate($request, [
+            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
+            'User.email' => 'email|unique:users,users.email,' . $id,
+            'User.nickname' => 'max:30',
+            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.description' => 'max:255',
+        ], [], [
+            'User.name' => '账号',
+            'User.email' => '邮箱',
+            'User.nickname' => '昵称',
+            'User.avatar' => '头像',
+            'User.mobile' => '手机',
+            'User.description' => '说明',
+        ]);
+        $data = $request->input('User');
+        foreach ($data as $key => $value) {
+            if ($value == '') {
+                $data[$key] = null;
+            }
+            if ($key == 'password') {
+                $data[$key] = bcrypt($value);
+            }
+        }
+        if ($request->hasFile('User.avatar')) {
+            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
+            $user->avatar = $data['avatar'];
+        }
+//        dd($data);
+//        $user = $data;
 
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->nickname = $data['nickname'];
+        $user->mobile = $data['mobile'];
+        $user->description = $data['description'];
+        $user->is_admin = isset($data['is_admin']) ? 1 : 0;
+        $user->is_active = $data['is_active'];
+        if ($user->save()) {
+            return redirect('admin/user')->with('success', '修改成功');
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function destroy($id)

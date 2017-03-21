@@ -31,7 +31,7 @@ class User extends Model
     {
         $array = [
             self::IS_ACTIVE => '激活',
-            self::IS_ACTIVE_NOT => '不激活',
+            self::IS_ACTIVE_NOT => '停用',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : $array[self::IS_ACTIVE];
