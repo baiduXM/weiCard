@@ -1,4 +1,0 @@
-项目框架        Laravel         5.2.*(5.2.45)
-php版本         PHP 			   >5.6.x(扩展要求)
-jquery版本      JQuery 		   1.11.3
-前端框架        Bootstrap 	   3.3.7

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Validator;
 
 class PasswordController extends Controller
 {
@@ -17,16 +18,16 @@ class PasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-
     use ResetsPasswords;
 
-    /**
-     * Create a new password controller instance.
-     *
-     * @return void
-     */
+    protected $redirectTo = '/';
+    protected $linkRequestView = 'auth.passwords.forget'; // 忘记密码
+    protected $resetView = 'auth.passwords.reset'; // 重置密码
+
+
     public function __construct()
     {
         $this->middleware('guest');
     }
+
 }

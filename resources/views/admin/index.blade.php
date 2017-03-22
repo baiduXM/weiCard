@@ -1,11 +1,18 @@
 @extends('admin.common.layout')
 @section('title', '首页')
 @section('content')
+    {{--<div class="row">--}}
+        {{--<div id="app-6">--}}
+            {{--<p>@{{ message }}</p>--}}
+            {{--<input v-model="message">--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">首页</h1>
         </div>
     </div><!--/.row-->
+
     <div class="row">
         <div class="col-xs-12 col-md-6 col-lg-3">
             <div class="panel panel-blue panel-widget ">
@@ -282,26 +289,38 @@
 
         </div><!--/.col-->
     </div><!--/.row-->
+
+
 @stop
 
 @section('javascript')
-    <script src="{{ asset('static/admin/js/chart-data.js') }}"></script>
-    <script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>
-    <script>
-        $('#calendar').datepicker({});
+    {{--<script>--}}
+        {{--var app6 = new Vue({--}}
+            {{--el: '#app-6',--}}
+            {{--data: {--}}
+                {{--message: 'Hello Vue!'--}}
+            {{--}--}}
+        {{--});--}}
+    {{--</script>--}}
 
-        !function ($) {
-            $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
-                $(this).find('em:first').toggleClass("glyphicon-minus");
-            });
-            $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-        }(window.jQuery);
+    {{--<script src="{{ asset('static/admin/js/chart-data.js') }}"></script>--}}
+    {{--<script src="{{ asset('static/admin/js/easypiechart-data.js') }}"></script>--}}
+    {{--<script>--}}
 
-        $(window).on('resize', function () {
-            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-        })
-        $(window).on('resize', function () {
-            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-        })
-    </script>
+        {{--$('#calendar').datepicker({});--}}
+
+        {{--!function ($) {--}}
+            {{--$(document).on("click", "ul.nav li.parent > a > span.icon", function () {--}}
+                {{--$(this).find('em:first').toggleClass("glyphicon-minus");--}}
+            {{--});--}}
+            {{--$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");--}}
+        {{--}(window.jQuery);--}}
+
+        {{--$(window).on('resize', function () {--}}
+            {{--if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')--}}
+        {{--})--}}
+        {{--$(window).on('resize', function () {--}}
+            {{--if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')--}}
+        {{--})--}}
+    {{--</script>--}}
 @stop

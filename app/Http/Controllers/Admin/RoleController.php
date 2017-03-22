@@ -2,8 +2,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Admin\Role;
+use Breadcrumbs;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -15,6 +16,29 @@ class RoleController extends Controller
     //PUT/PATCH /photo/{photo} update photo.update  更新
     //DELETE /photo/{photo} destroy photo.destroy   删除
 
+    public function __construct()
+    {
+        // 首页 > 角色管理
+        Breadcrumbs::register('admin.role', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin');
+            $breadcrumbs->push('角色管理', route('admin.role.index'));
+        });
+        // 首页 > 角色管理 > 添加角色
+        Breadcrumbs::register('admin.role.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin.role');
+            $breadcrumbs->push('添加角色', route('admin.role.create'));
+        });
+        // 首页 > 角色管理 > 角色详情
+        Breadcrumbs::register('admin.role.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.role');
+            $breadcrumbs->push('角色详情', route('admin.role.show', $id));
+        });
+        // 首页 > 角色管理 > 编辑角色
+        Breadcrumbs::register('admin.role.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.role');
+            $breadcrumbs->push('编辑角色', route('admin.role.edit', $id));
+        });
+    }
 
     public function index()
     {
@@ -32,27 +56,25 @@ class RoleController extends Controller
     // POST
     public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $this->validate($request, [
-                'Roles.name' => 'required|unique:roles|alpha_num',
-                'Roles.display_name' => 'required|min:2|max:30',
-                'Roles.description' => 'max:255',
-            ], [
-                'alpha_num' => ':attribute必须是字母或数字',
-                'required' => ':attribute不能为空',
-                'min' => ':attribute长度太短',
-                'max' => ':attribute长度太长',
-            ], [
-                'Roles.name' => '角色名',
-                'Roles.display_name' => '可读的角色名',
-                'Roles.description' => '角色描述',
-            ]);
-            $data = $request->input('Roles');
-            if (Role::create($data)) {
-                return redirect('admin/role')->with('success', '添加成功');
-            } else {
-                return redirect()->back();
-            }
+        $this->validate($request, [
+            'Roles.name' => 'required|unique:roles|alpha_num',
+            'Roles.display_name' => 'required|min:2|max:30',
+            'Roles.description' => 'max:255',
+        ], [
+            'alpha_num' => ':attribute必须是字母或数字',
+            'required' => ':attribute不能为空',
+            'min' => ':attribute长度太短',
+            'max' => ':attribute长度太长',
+        ], [
+            'Roles.name' => '角色名',
+            'Roles.display_name' => '可读的角色名',
+            'Roles.description' => '角色描述',
+        ]);
+        $data = $request->input('Roles');
+        if (Role::create($data)) {
+            return redirect('admin/role')->with('success', '添加成功');
+        } else {
+            return redirect()->back();
         }
     }
 
@@ -90,10 +112,10 @@ class RoleController extends Controller
                 'Roles.description' => '角色描述',
             ]);
             $data = $request->input('Roles');
-            $role->name=$data['name'];
-            $role->display_name=$data['display_name'];
-            $role->description=$data['description'];
-            $role->type=$data['type'];
+            $role->name = $data['name'];
+            $role->display_name = $data['display_name'];
+            $role->description = $data['description'];
+            $role->type = $data['type'];
             if ($role->save()) {
                 return redirect('admin/role')->with('success', '修改成功');
             } else {

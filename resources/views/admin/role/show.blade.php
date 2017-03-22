@@ -4,7 +4,6 @@
     {!! Breadcrumbs::render('admin.role.show', $role->id) !!}
 @stop
 @section('content')
-
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -42,4 +41,8 @@
             </div>
         </div><!--/.col-->
     </div><!--/.row-->
+@stop
+
+
+@section('javascript')
 @stop

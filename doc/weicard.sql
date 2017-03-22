@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-03-03 15:51:54
+Date: 2017-03-18 12:03:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,11 +22,12 @@ DROP TABLE IF EXISTS `wc_companies`;
 CREATE TABLE `wc_companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '公司名',
+  `logo` varchar(255) DEFAULT NULL COMMENT '公司logo',
   `address` varchar(255) NOT NULL COMMENT '地址',
   `telephone` varchar(255) NOT NULL COMMENT '公司电话',
   `description` varchar(255) DEFAULT NULL COMMENT '公司描述',
   `code` varchar(255) DEFAULT NULL COMMENT '公司代码（唯一）',
-  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-未认证，1-认证中，2-认证通过',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-认证中，1-认证通过，2-认证失败',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -57,12 +58,28 @@ CREATE TABLE `wc_contacts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='通讯录';
 
 -- ----------------------------
+-- Table structure for wc_departments
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_departments`;
+CREATE TABLE `wc_departments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL COMMENT '所属公司id',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属上级部门',
+  `employee_id` int(10) unsigned NOT NULL COMMENT '部门主管',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '部门名字',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='部门表';
+
+-- ----------------------------
 -- Table structure for wc_employees
 -- ----------------------------
 DROP TABLE IF EXISTS `wc_employees`;
 CREATE TABLE `wc_employees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL COMMENT '公司id',
+  `department_id` int(10) unsigned NOT NULL COMMENT '部门id',
   `number` int(10) unsigned NOT NULL COMMENT '工号',
   `name` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
   `title` varchar(255) DEFAULT NULL COMMENT '职位头衔',
@@ -81,21 +98,23 @@ CREATE TABLE `wc_employees` (
 DROP TABLE IF EXISTS `wc_managers`;
 CREATE TABLE `wc_managers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL COMMENT '用户名',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `name` varchar(255) DEFAULT NULL COMMENT '用户名',
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '？记住登录',
-  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称',
-  `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-失效，1-活动',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '头像',
+  `description` varchar(255) DEFAULT NULL COMMENT '个性签名',
+  `is_super` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否是超级管理员',
+  `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否激活，0-停用，1-活动',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `manager_name_unique` (`name`) USING BTREE,
   UNIQUE KEY `manager_email_unique` (`email`) USING BTREE,
+  UNIQUE KEY `manager_name_unique` (`name`) USING BTREE,
   UNIQUE KEY `manager_mobile_unique` (`mobile`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Table structure for wc_migrations
@@ -104,7 +123,7 @@ DROP TABLE IF EXISTS `wc_migrations`;
 CREATE TABLE `wc_migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='laravel 数据迁移表';
 
 -- ----------------------------
 -- Table structure for wc_password_resets
@@ -116,7 +135,7 @@ CREATE TABLE `wc_password_resets` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `password_resets_email_index` (`email`),
   KEY `password_resets_token_index` (`token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='laravel 密码重置';
 
 -- ----------------------------
 -- Table structure for wc_permissions
@@ -155,12 +174,12 @@ CREATE TABLE `wc_roles` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '角色唯一名称',
   `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '可读的角色名',
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '角色的详细描述',
-  `type` tinyint(4) DEFAULT '0' COMMENT '角色类型，0-前台，1-后台',
+  `type` tinyint(4) unsigned DEFAULT '0' COMMENT '角色类型，0-前台角色(users表)，1-后台角色(managers表)',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for wc_role_user
@@ -210,21 +229,24 @@ DROP TABLE IF EXISTS `wc_users`;
 CREATE TABLE `wc_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '用户名',
-  `email` varchar(255) NOT NULL COMMENT '邮箱',
+  `email` varchar(255) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
-  `sex` tinyint(4) DEFAULT NULL,
-  `age` tinyint(4) DEFAULT NULL,
+  `sex` tinyint(4) unsigned DEFAULT NULL COMMENT '性别，0-未知，1-男，2-女',
+  `age` tinyint(4) unsigned DEFAULT NULL COMMENT '年龄',
   `nickname` varchar(255) DEFAULT NULL COMMENT '姓名称呼',
   `avatar` text COMMENT '头像',
   `description` varchar(255) DEFAULT NULL COMMENT '个人描述',
-  `company_id` int(10) unsigned NOT NULL COMMENT '关联公司id',
-  `employee_id` int(10) unsigned NOT NULL COMMENT '关联雇员id',
+  `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用，0-停用，1-可用',
+  `is_admin` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '是否管理员：0-否，1-是',
+  `company_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联公司id',
+  `employee_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '关联雇员id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_name_unique` (`name`),
+  UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_mobile_unique` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='用户表';

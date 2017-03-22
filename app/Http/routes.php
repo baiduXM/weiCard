@@ -14,13 +14,18 @@ Route::get('phpinfo', function () {
     echo phpinfo();
 });
 
+
 Route::get('/', function () {
-//    return redirect()->route('admin.role.index');
-    return redirect()->route('index');
+    return redirect()->to('/index');
 });
 
-// 前台登录
+
+// 保存图片
+//Route::any('/upload', ['as' => 'upload', 'uses' => 'Common\UploadController@saveImg']);
+
+// 登录模块
 Route::auth();
+Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
 // 前台路由组
 Route::group(['middleware' => ['web', 'auth']], function () {
@@ -32,18 +37,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('employee', 'Home\EmployeeController');
 });
 
-// 后台登录
-Route::get('admin/login', 'Admin\AuthController@getLogin');
-Route::post('admin/login', 'Admin\AuthController@postLogin');
-Route::get('admin/register', 'Admin\AuthController@getRegister');
-Route::post('admin/register', 'Admin\AuthController@postRegister');
-Route::get('admin/logout', function () {
-    Auth::guard('admin')->logout();
-    return redirect()->to('/admin');
-});
-
 // 后台管理界面
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // 首页
     Route::get('/', ['as' => 'admin', function () {
@@ -51,51 +46,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     }]);
     Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
-    // 用户管理
-    Route::group(['prefix' => 'user'], function () {
-        Route::get('/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
-        Route::any('create', ['as' => 'admin.user.create', 'uses' => 'Admin\UserController@create']);
-        Route::any('update/{id}', ['as' => 'admin.user.update', 'uses' => 'Admin\UserController@update'])
-            ->where(['id' => '[0-9]+']);
-        Route::any('delete/{id}', ['as' => 'admin.user.delete', 'uses' => 'Admin\UserController@delete'])
-            ->where(['id' => '[0-9]+']);
-        Route::get('detail/{id}', ['as' => 'admin.user.detail', 'uses' => 'Admin\UserController@detail'])
-            ->where(['id' => '[0-9]+']);
-    });
+//    Route::get(['/', 'index'], ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
-    // 公司管理
-    Route::group(['prefix' => 'company'], function () {
-        Route::get('/', ['as' => 'admin.company.index', 'uses' => 'Admin\CompanyController@index']);
-        Route::any('create', ['as' => 'admin.company.create', 'uses' => 'Admin\CompanyController@create']);
-        Route::any('update/{id}', ['as' => 'admin.company.update', 'uses' => 'Admin\CompanyController@update']);
-        Route::any('delete/{id}', ['as' => 'admin.company.delete', 'uses' => 'Admin\CompanyController@delete']);
-        Route::get('detail/{id}', ['as' => 'admin.company.detail', 'uses' => 'Admin\CompanyController@detail']);
+    Route::resource('user', 'Admin\UserController'); // 用户管理
+    Route::resource('company', 'Admin\CompanyController'); // 公司管理
+    Route::resource('template', 'Admin\TemplateController'); // 模板管理
+    Route::group(['prefix' => 'manager'], function () { // 客服管理
+        Route::get('{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@getRole']);
+        Route::post('{id}/role', ['as' => 'admin.manager.setRole', 'uses' => 'Admin\ManagerController@postRole']);
+        Route::get('{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@getPermission']);
+        Route::post('{id}/permission', ['as' => 'admin.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
     });
-
-    // 模板管理
-    Route::group(['prefix' => 'template'], function () {
-        Route::get('/', ['as' => 'admin.template.index', 'uses' => 'Admin\TemplateController@index']);
-        Route::any('create', ['as' => 'admin.template.create', 'uses' => 'Admin\TemplateController@create']);
-        Route::any('update/{id}', ['as' => 'admin.template.update', 'uses' => 'Admin\TemplateController@update'])
-            ->where(['id' => '[0-9]+']);
-        Route::any('delete/{id}', ['as' => 'admin.template.delete', 'uses' => 'Admin\TemplateController@delete'])
-            ->where(['id' => '[0-9]+']);
-        Route::get('detail/{id}', ['as' => 'admin.template.detail', 'uses' => 'Admin\TemplateController@detail'])
-            ->where(['id' => '[0-9]+']);
-    });
-
-    // 客服管理
-    Route::group(['prefix' => 'manager'], function () {
-        Route::get('/', ['as' => 'admin.manager', 'uses' => 'Admin\ManagerController@index']);
-        Route::any('/create', ['as' => 'admin.manager.create', 'uses' => 'Admin\ManagerController@create']);
-        Route::any('/update/{id}', ['as' => 'admin.manager.update', 'uses' => 'Admin\ManagerController@update']);
-        Route::any('/delete/{id}', ['as' => 'admin.manager.delete', 'uses' => 'Admin\ManagerController@delete']);
-        Route::get('/detail/{id}', ['as' => 'admin.manager.detail', 'uses' => 'Admin\ManagerController@detail']);
-    });
-
-    // 角色管理
-    Route::resource('role', 'Admin\RoleController');
-    Route::resource('permission', 'Admin\PermissionController');
+    Route::resource('manager', 'Admin\ManagerController');
+    Route::resource('role', 'Admin\RoleController'); // 角色管理
+    Route::resource('permission', 'Admin\PermissionController'); // 权限管理
 
     // 设置
     Route::group(['prefix' => 'setting'], function () {
