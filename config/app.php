@@ -162,6 +162,7 @@ return [
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Zizaco\Entrust\EntrustServiceProvider::class, // added 权限管理
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
+        Overtrue\LaravelWechat\ServiceProvider::class, // added 微信SDK
 
     ],
 
