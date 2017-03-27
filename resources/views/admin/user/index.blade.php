@@ -16,13 +16,15 @@
                         {{--表单功能栏--}}
                         <div class="fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
-                                <button class="btn btn-default operate-delete" type="button" name="operate-delete"
-                                        title="删除">
+                                <button class="btn btn-default operate-batch-delete" type="button"
+                                        name="operate-batch-delete"
+                                        data-toggle="modal" data-target="#confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
+                                <!--
                                 <button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"
                                         title="批量添加">
                                     <i class="glyphicon glyphicon-plus-sign"></i>
@@ -31,46 +33,61 @@
                                         title="导入文件">
                                     <i class="glyphicon glyphicon-file"></i>
                                 </button>
+                                -->
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
-                                <button class="btn btn-default" type="button" name="refresh" title="Refresh"><i
+                                <button class="btn btn-default operate-refresh" type="button" name="refresh"
+                                        title="刷新"><i
                                             class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default" type="button" name="toggle" title="Toggle"><i
-                                            class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>
-                                <div class="keep-open btn-group" title="Columns">
-                                    <button type="button" class="btn btn-default dropdown-toggle"
-                                            data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span
-                                                class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><label><input type="checkbox" data-field="id" value="1" checked="checked">
-                                                Item ID</label></li>
-                                        <li><label><input type="checkbox" data-field="name" value="2" checked="checked">
-                                                Item Name</label></li>
-                                        <li><label><input type="checkbox" data-field="price" value="3"
-                                                          checked="checked"> Item Price</label></li>
-                                    </ul>
-                                </div>
+                                {{--<button class="btn btn-default" type="button" name="toggle" title="Toggle"><i--}}
+                                            {{--class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>--}}
+                                {{--<div class="keep-open btn-group" title="Columns">--}}
+                                    {{--<button type="button" class="btn btn-default dropdown-toggle"--}}
+                                            {{--data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span--}}
+                                                {{--class="caret"></span></button>--}}
+                                    {{--<ul class="dropdown-menu" role="menu">--}}
+                                        {{--<li><label><input type="checkbox" data-field="id" value="1" checked="checked">--}}
+                                                {{--Item ID</label></li>--}}
+                                        {{--<li><label><input type="checkbox" data-field="name" value="2" checked="checked">--}}
+                                                {{--Item Name</label></li>--}}
+                                        {{--<li><label><input type="checkbox" data-field="price" value="3"--}}
+                                                          {{--checked="checked"> Item Price</label></li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
                             </div><!--显示-->
-                            <div class="input-group pull-right col-md-6">
-                                <div class="input-group-btn btn-group keep-open">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">昵称 <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">昵称</a></li>
-                                        <li><a href="#">账号</a></li>
-                                        <li><a href="#">邮箱</a></li>
-                                        <li><a href="#">手机</a></li>
-                                        <li><a href="#">角色</a></li>
-                                        <li><a href="#">权限</a></li>
-                                    </ul>
-                                </div><!-- /btn-group -->
-                                <input class="form-control search" type="text" placeholder="Search">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" title="查找"><i
-                                                class="glyphicon glyphicon-search"></i></button>
-                                </span>
-                            </div><!--查找-->
+                            <form name="form_search" action="{{ url('/admin/user') }}" method="get">
+                                <div class="input-group pull-right col-md-6">
+                                    {{--{{ csrf_field() }}--}}
+                                    <div class="input-group-btn btn-group keep-open">
+                                        <button name="search_column" type="button"
+                                                class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">用户名
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" id="columnDropdown">
+                                            <li><a class="dropdown-item" data-column="name" name="column_name"
+                                                   style="cursor: pointer;">用户名</a></li>
+                                            <li><a class="dropdown-item" data-column="nickname" name="column_nickname"
+                                                   style="cursor: pointer;">昵称</a></li>
+                                            <li><a class="dropdown-item" data-column="mobile" name="column_mobile"
+                                                   style="cursor: pointer;">手机</a></li>
+                                            <li><a class="dropdown-item" data-column="email" name="column_email"
+                                                   style="cursor: pointer;">邮箱</a></li>
+                                            {{--<li><a href="#">角色</a></li>--}}
+                                            {{--<li><a href="#">权限</a></li>--}}
+                                        </ul>
+                                    </div><!-- /btn-group -->
+                                    <input type="hidden" name="column" value="name"/>
+                                    <input class="form-control search" type="text" name="keyword"
+                                           placeholder="Search"/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default operate-search" type="submit" title="查找">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form><!--查找-->
                         </div>
                         {{--表单容器--}}
                         <div class="fixed-table-container">
@@ -87,7 +104,9 @@
                                     <thead>
                                     <tr>
                                         <th class="bs-checkbox " style="width: 36px; ">
-                                            <div class="th-inner "><input name="btSelectAll" type="checkbox"></div>
+                                            <div class="th-inner ">
+                                                <input id="btSelectAll" name="btSelectAll" type="checkbox">
+                                            </div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
@@ -138,7 +157,7 @@
                                         <tr>
                                             <td>
                                                 <div class="ckbox ckbox-default">
-                                                    <input type="checkbox" name="id" id="id-{{ $user->id }}"
+                                                    <input type="checkbox" name="id" id="id-{{ $user->id }} "
                                                            value="{{ $user->id }}" class="selectall-item">
                                                     <label for="id-{{ $user->id }}"></label>
                                                 </div>
@@ -165,19 +184,17 @@
                                                 <a href="{{ url('admin/user/'. $user->id .'/edit') }}"
                                                    class="btn btn-white btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                <a href="{{ url('admin/user/'. $user->id .'/role') }}"
-                                                   class="btn btn-white btn-xs" title="分配角色"><i
-                                                            class="glyphicon glyphicon-user"></i>分配角色</a>
-                                                <a href="{{ url('admin/user/'. $user->id .'/permission') }}"
-                                                   class="btn btn-white btn-xs" title="分配权限"><i
-                                                            class="glyphicon glyphicon-sunglasses"></i>分配权限</a>
-                                                <a href="#confirmModel" class="btn btn-danger btn-xs"
+                                                {{--<a href="{{ url('admin/user/'. $user->id .'/role') }}"--}}
+                                                {{--class="btn btn-white btn-xs" title="分配角色"><i--}}
+                                                {{--class="glyphicon glyphicon-user"></i>分配角色</a>--}}
+                                                {{--<a href="{{ url('admin/user/'. $user->id .'/permission') }}"--}}
+                                                {{--class="btn btn-white btn-xs" title="分配权限"><i--}}
+                                                {{--class="glyphicon glyphicon-sunglasses"></i>分配权限</a>--}}
+                                                <a href="#confirmModel" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target="#confirmModal"
                                                    data-id="{{ $user->id }}" data-name="{{ $user->name }}" title="删除">
-                                                    <i class="glyphicon glyphicon-pencil"></i>删除
+                                                    <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
-                                                {{--<a href="{{ url('admin/user/delete', ['id' => $user->id]) }}"--}}
-                                                {{--onclick="if (confirm('确认删除？') == false) return false;">删除</a>--}}
                                             </td><!--操作-->
                                         </tr>
                                     @endforeach
@@ -226,39 +243,109 @@
     <script>
         $(function () {
             /* 添加 */
-            $(".operate-add").click(function () {
-                location.href = "{{ url('admin/user/create') }}";
-            });
-            /* 弹窗 */
-            $('#confirmModal').on('show.bs.modal', function (event) {
-                var relatedTarget = $(event.relatedTarget);
-                var _name = relatedTarget.data('name');
-                var _id = relatedTarget.data('id');
-                var modal = $(this);
-                modal.find('.modal-title').text('删除确认');
-                modal.find('.modal-body').text('是否删除' + _name + '用户？');
-                modal.find('form').attr('action', '/admin/user/' + _id);
-                modal.find("[name='_method']").val('DELETE');
+            $('.operate-add').click(function () {
+                location.href = '{{ url('admin/user/create') }}';
             });
 
+            /* 弹窗 */
+            $('.operate-delete').click(function () {
+                $('#confirmModal').on('show.bs.modal', function (event) {
+                    var relatedTarget = $(event.relatedTarget);
+                    var _name = relatedTarget.data('name');
+                    var _id = relatedTarget.data('id');
+                    var modal = $(this);
+                    modal.find('.modal-title').text('删除确认');
+                    modal.find('.modal-body').text('是否删除' + _name + '用户？');
+                    modal.find('form').attr('action', '/admin/user/' + _id);
+                    modal.find('[name="_method"]').val('DELETE');
+                });
+            })
 
             /* 全选checkbox */
-            $("[name='btSelectAll']").prop("click", function () {
-                co
+            $('#btSelectAll').click(function () {
                 if (this.checked) {
-                    $(".selectall-item").attr("checked", true);
+                    $(".selectall-item").prop("checked", true);
                 } else {
-                    $(".selectall-item").attr("checked", false);
+                    $(".selectall-item").prop("checked", false);
+                }
+            });
+
+            /* 单选 */
+            $('.selectall-item').click(function () {
+                var length = $('.selectall-item').length;
+                var select_length = $('.selectall-item:checked').length;
+                if (length == select_length) {
+                    $('#btSelectAll').prop('checked', true);
+                } else {
+                    $('#btSelectAll').prop('checked', false);
                 }
             });
 
             /* 批量删除 */
-            $(".operate-delete").click(function () {
-
-                alert("批量删除");
+            $(".operate-batch-delete").click(function () {
+                var length = $('.selectall-item:checked').length;
+                if (length == 0) {
+                    alert('未选择');
+                    return false;
+                } else {
+                    var ids_arr = new Array;
+                    $('.selectall-item:checked').each(function () {
+                        ids_arr.push($(this).val());
+                    });
+                    var ids_str = ids_arr.join(',');
+                    $('#confirmModal').on('show.bs.modal', function (event) {
+                        var modal = $(this);
+                        modal.find('.modal-title').text('删除确认');
+                        modal.find('.modal-body').text('是否删除' + ids_str + '用户？');
+                        modal.find('form').attr('action', '/admin/user/batch');
+                        modal.find('[name="_method"]').val('DELETE');
+                        modal.find('form').append('<input type="hidden" name="ids" value="' + ids_str + '"/>');
+                    });
+                }
             });
 
+            /* 搜索 */
+//            $('.operate-search').click(function () {
+//                $('[name="form_search"]').submit();
+//            });
 
+            /* 搜索选择列名 */
+            $('.dropdown-item').click(function () {
+                console.log($(this).text());
+                var column = $(this).data('column');
+                var txt = $(this).text() + ' <span class="caret"></span>';
+                $('[name="search_column"]').html(txt);
+                $('[name="column"]').val(column);
+            });
+
+            /* 刷新 */
+            $('.operate-refresh').click(function () {
+                location.href = '{{ url('admin/user') }}';
+            });
+
+            /* 初始化 */
+            function init() {
+                var column = getQueryString('column');
+                var keyword = getQueryString('keyword');
+                column = (column != null) ? column : 'name';
+                keyword = (keyword != null) ? keyword : '';
+                var txt = $('[name="column_' + column + '"]').text() + ' <span class="caret"></span>';
+                $('[name="search_column"]').html(txt);
+                $('[name="keyword"]').val(keyword);
+            }
+
+            /* 获取url参数 */
+            function getQueryString(name) {
+                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return (r[2]);
+                }
+                return null;
+            }
+
+            /* 运行 */
+            init();
         });
     </script>
 @stop

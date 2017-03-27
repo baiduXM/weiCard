@@ -46,18 +46,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     }]);
     Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
-//    Route::get(['/', 'index'], ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
+    Route::group(['prefix' => 'user'], function () { // 用户管理.补充
+        Route::delete('batch', ['as' => 'user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
+    });
     Route::resource('user', 'Admin\UserController'); // 用户管理
     Route::resource('company', 'Admin\CompanyController'); // 公司管理
     Route::resource('template', 'Admin\TemplateController'); // 模板管理
-    Route::group(['prefix' => 'manager'], function () { // 客服管理
+    Route::group(['prefix' => 'manager'], function () { // 客服管理.补充
         Route::get('{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@getRole']);
         Route::post('{id}/role', ['as' => 'admin.manager.setRole', 'uses' => 'Admin\ManagerController@postRole']);
         Route::get('{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@getPermission']);
         Route::post('{id}/permission', ['as' => 'admin.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
     });
-    Route::resource('manager', 'Admin\ManagerController');
+    Route::resource('manager', 'Admin\ManagerController'); // 客服管理
     Route::resource('role', 'Admin\RoleController'); // 角色管理
     Route::resource('permission', 'Admin\PermissionController'); // 权限管理
 

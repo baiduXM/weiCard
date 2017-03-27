@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -38,35 +39,45 @@ class UserController extends Controller
         });
     }
 
-    // 用户列表
+    /**
+     * 根据条件获取数据
+     *
+     * @return $this
+     */
     public function index()
     {
-
-//        $users = User::where('name', '!=', 'admin')->paginate();
-//        dd($users);
         $query = User::query();
+        $params = Input::query();
+        if ($params) {
+            $column = $params['column'];
+            $keyword = $params['keyword'];
+            $query->where($column, 'like', '%' . $keyword . '%');
+        }
         $query->where('name', '!=', 'admin');
         $users = $query->paginate();
-//        dd($users);
         return view('admin.user.index')->with('users', $users);
     }
 
-    // 新增用户
+    /**
+     * 添加页面
+     *
+     * @return $this
+     */
     public function create()
     {
         $user = new User;
         return view('admin.user.create')->with('user', $user);
     }
 
+    /**
+     * 添加
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-//        if ($request->hasFile('User.avatar')) {
-//            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
-//
-////            $data['avatar'] = UploadController()->saveImg($request->file('User.avatar'));
-//        }
-//        dd($data);
-
+        /* 验证 */
         $this->validate($request, [
             'User.name' => 'required|alpha_dash|unique:users,users.name',
             'User.password' => 'required|confirmed',
@@ -85,19 +96,23 @@ class UserController extends Controller
             'User.description' => '说明',
         ]);
 
+        /* 获取字段类型 */
         $data = $request->input('User');
         foreach ($data as $key => $value) {
             if ($value == '') {
-                $data[$key] = null;
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
             if ($key == 'password') {
-                $data[$key] = bcrypt($value);
+                $data[$key] = bcrypt($value);// 对密码加密
             }
         }
+
+        /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
             $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
         }
 
+        /* 添加 */
         if (User::create($data)) {
             return redirect('admin/user')->with('success', '添加成功');
         } else {
@@ -105,19 +120,37 @@ class UserController extends Controller
         }
     }
 
-
+    /**
+     * 详情
+     *
+     * @param $id
+     * @return $this
+     */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('admin.user.show')->with('user', $user);
     }
 
+    /**
+     * 更新页面
+     *
+     * @param $id
+     * @return $this
+     */
     public function edit($id)
     {
         $user = User::find($id);
         return view('admin.user.edit')->with('user', $user);
     }
 
+    /**
+     * 更新
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $user = User::find($id);
@@ -145,12 +178,11 @@ class UserController extends Controller
                 $data[$key] = bcrypt($value);
             }
         }
+
         if ($request->hasFile('User.avatar')) {
             $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
             $user->avatar = $data['avatar'];
         }
-//        dd($data);
-//        $user = $data;
 
         $user->name = $data['name'];
         $user->email = $data['email'];
@@ -166,6 +198,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 删除
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         $user = User::find($id);
@@ -173,6 +211,25 @@ class UserController extends Controller
             return redirect('admin/user')->with('success', '删除成功 - ' . $user->name);
         } else {
             return redirect('admin/user')->with('error', '删除失败 - ' . $user->name);
+        }
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param array $ids
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function batchDestroy(Request $request, $ids = array())
+    {
+        if ($ids == null) {
+            $ids = explode(',', $request['ids']);
+        }
+        $res = User::whereIn('id', $ids)->delete();
+        if ($res) {
+            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
@@ -193,62 +250,6 @@ class UserController extends Controller
 
     public function postPermission()
     {
-
-    }
-
-    // 用户详情
-    public function detail($id)
-    {
-        $user = User::find($id);
-        return view('admin.user.detail', [
-            'user' => $user
-        ]);
-    }
-
-    // 修改用户
-    public function update1(Request $request, $id)
-    {
-        $user = User::find($id);
-        if ($request->isMethod('POST')) {
-            $this->validate($request, [
-                'User.name' => 'required|min:6|max:20',
-                'User.email' => 'required|email|max:255',
-            ], [
-                'required' => ':attribute为必填项',
-                'min' => ':attribute长度太短',
-                'max' => ':attribute长度太长',
-                'email' => ':attribute格式不正确',
-            ], [
-                'User.name' => '用户名',
-                'User.email' => '邮箱',
-            ]);
-            $data = $request->input('User');
-            $user->name = $data['name'];
-            $user->email = $data['email'];
-            $user->role = $data['role'];
-            if ($user->save()) {
-                return redirect('admin/user')->with('success', '修改成功');
-            } else {
-                return redirect()->back();
-            }
-
-        }
-
-
-        return view('admin.user.update', [
-            'user' => $user
-        ]);
-    }
-
-    // 删除用户
-    public function delete($id)
-    {
-        $user = User::find($id);
-        if ($user->delete()) {
-            return redirect('/admin/user')->with('success', '删除成功 - ' . $user->id);
-        } else {
-            return redirect('/admin/user')->with('error', '删除失败 - ' . $user->id);
-        }
 
     }
 

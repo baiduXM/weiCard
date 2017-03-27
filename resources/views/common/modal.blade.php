@@ -1,3 +1,4 @@
+{{--确认模态框confirmModal--}}
 <div class="modal fade" tabindex="-1" role="dialog" id="confirmModal" aria-labelledby="myModalLabel"
      aria-describedby="myModalContent">
     <div class="modal-dialog" role="document">
@@ -14,6 +15,7 @@
                 <form action="" method="post">
                     {{ method_field('DELETE') }}
                     {{ csrf_field() }}
+                    {{--<input type="hidden" name="ids" value="">--}}
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-primary">确认</button>
                 </form>

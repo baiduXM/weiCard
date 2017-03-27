@@ -30,9 +30,7 @@
                             <tr>
                                 <th class="text-right">头像</th>
                                 <td>
-                                    {{--<div class="col-md-2">--}}
-                                        <img src="{{ asset($user->avatar) }}" class="img-responsive" style="max-height: 200px;max-width: 200px;">
-                                    {{--</div>--}}
+                                    <img src="{{ $user->avatar ? asset($user->avatar) : ''}}" class="img-responsive" style="max-height: 200px;max-width: 200px;">
                                 </td>
                             </tr>
                             <tr>
