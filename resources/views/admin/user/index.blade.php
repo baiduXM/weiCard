@@ -24,7 +24,7 @@
                                 <button class="btn btn-default operate-add" type="button" name="operate-add" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
-                                <!--
+                                {{--
                                 <button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"
                                         title="批量添加">
                                     <i class="glyphicon glyphicon-plus-sign"></i>
@@ -33,27 +33,29 @@
                                         title="导入文件">
                                     <i class="glyphicon glyphicon-file"></i>
                                 </button>
-                                -->
+                                --}}
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         title="刷新"><i
                                             class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                {{--<button class="btn btn-default" type="button" name="toggle" title="Toggle"><i--}}
-                                            {{--class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>--}}
-                                {{--<div class="keep-open btn-group" title="Columns">--}}
-                                    {{--<button type="button" class="btn btn-default dropdown-toggle"--}}
-                                            {{--data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span--}}
-                                                {{--class="caret"></span></button>--}}
-                                    {{--<ul class="dropdown-menu" role="menu">--}}
-                                        {{--<li><label><input type="checkbox" data-field="id" value="1" checked="checked">--}}
-                                                {{--Item ID</label></li>--}}
-                                        {{--<li><label><input type="checkbox" data-field="name" value="2" checked="checked">--}}
-                                                {{--Item Name</label></li>--}}
-                                        {{--<li><label><input type="checkbox" data-field="price" value="3"--}}
-                                                          {{--checked="checked"> Item Price</label></li>--}}
-                                    {{--</ul>--}}
-                                {{--</div>--}}
+                                {{--
+                                <button class="btn btn-default" type="button" name="toggle" title="Toggle"><i
+                                            class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>
+                                <div class="keep-open btn-group" title="Columns">
+                                    <button type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span
+                                                class="caret"></span></button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><label><input type="checkbox" data-field="id" value="1" checked="checked">
+                                                Item ID</label></li>
+                                        <li><label><input type="checkbox" data-field="name" value="2" checked="checked">
+                                                Item Name</label></li>
+                                        <li><label><input type="checkbox" data-field="price" value="3"
+                                                          checked="checked"> Item Price</label></li>
+                                    </ul>
+                                </div>
+                                --}}
                             </div><!--显示-->
                             <form name="form_search" action="{{ url('/admin/user') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
@@ -91,15 +93,13 @@
                         </div>
                         {{--表单容器--}}
                         <div class="fixed-table-container">
-                            {{--？--}}
                             <div class="fixed-table-header">
                                 <table></table>
-                            </div>
-                            {{--表单内容--}}
+                            </div><!--表单头部-->
                             <div class="fixed-table-body">
-                                <div class="fixed-table-loading" style="top: 37px; display: none;">Loading, please
-                                    wait…
-                                </div>
+                                <div class="fixed-table-loading" style="top: 37px; display: none;">
+                                    Loading, please wait…
+                                </div><!--无内容显示-->
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -110,37 +110,38 @@
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner">用户名</div>
+                                            <div class="th-inner" data-name="name">用户名</div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner">昵称</div>
+                                            <div class="th-inner" data-name="nickname">昵称</div>
                                             <div class="fht-cell"></div>
                                         </th>
-
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner">邮箱</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th>--}}
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner">手机</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th>--}}
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner sortable">所属角色</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th>--}}
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner sortable">特殊权限</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th>--}}
+                                        {{--
                                         <th style="">
-                                            <div class="th-inner">状态</div>
+                                            <div class="th-inner">邮箱</div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner sortable">创建时间
-                                                <span class="order">
+                                            <div class="th-inner">手机</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable">所属角色</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable">特殊权限</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        --}}
+                                        <th style="">
+                                            <div class="th-inner" data-name="is_active">状态</div>
+                                            <div class="fht-cell"></div>
+                                        </th>
+                                        <th style="">
+                                            <div class="th-inner sortable" data-name="created_at">创建时间
+                                                <span class="order color-orange dropup"><!--dropup-->
                                                     <span class="caret" style="margin: 10px 5px;"></span>
                                                 </span>
                                             </div>
@@ -175,8 +176,10 @@
                                                 @endif
                                             </td><!--状态-->
                                             <td>{{ $user->created_at }}</td><!--创建时间-->
-                                            {{--<td>{{ $user->getRole($user->id) }}</td>--}}
-                                            {{--<td>{{ $user->getPermission($user->id) }}</td>--}}
+                                            {{--
+                                            <td>{{ $user->getRole($user->id) }}</td>
+                                            <td>{{ $user->getPermission($user->id) }}</td>
+                                            --}}
                                             <td>
                                                 <a href="{{ url('admin/user/'.$user->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
@@ -184,12 +187,14 @@
                                                 <a href="{{ url('admin/user/'. $user->id .'/edit') }}"
                                                    class="btn btn-white btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                {{--<a href="{{ url('admin/user/'. $user->id .'/role') }}"--}}
-                                                {{--class="btn btn-white btn-xs" title="分配角色"><i--}}
-                                                {{--class="glyphicon glyphicon-user"></i>分配角色</a>--}}
-                                                {{--<a href="{{ url('admin/user/'. $user->id .'/permission') }}"--}}
-                                                {{--class="btn btn-white btn-xs" title="分配权限"><i--}}
-                                                {{--class="glyphicon glyphicon-sunglasses"></i>分配权限</a>--}}
+                                                {{--
+                                                <a href="{{ url('admin/user/'. $user->id .'/role') }}"
+                                                   class="btn btn-white btn-xs" title="分配角色"><i
+                                                            class="glyphicon glyphicon-user"></i>分配角色</a>
+                                                <a href="{{ url('admin/user/'. $user->id .'/permission') }}"
+                                                   class="btn btn-white btn-xs" title="分配权限"><i
+                                                            class="glyphicon glyphicon-sunglasses"></i>分配权限</a>
+                                                            --}}
                                                 <a href="#confirmModel" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target="#confirmModal"
                                                    data-id="{{ $user->id }}" data-name="{{ $user->name }}" title="删除">
@@ -200,34 +205,33 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                            </div>
-                            {{--页码--}}
+                            </div><!--表单内容-->
                             <div class="fixed-table-pagination">
-                                {{--每页几条--}}
-                                <div class="pull-left pagination-detail">
-                                    <span class="pagination-info">每页显示
-                                        <span class="page-list">
-                                            <span class="btn-group dropup">
-                                                <button type="button"
-                                                        class="btn btn-default dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                    <span class="page-size">10</span> <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li class="active"><a href="javascript:void(0);">10</a></li>
-                                                    <li><a href="javascript:void(0);">25</a></li>
-                                                    <li><a href="javascript:void(0);">50</a></li>
-                                                    <li><a href="javascript:void(0);">100</a></li>
-                                                </ul>
-                                            </span>
-                                        </span> 条
-                                    </span>
-                                </div>
-                                {{--跳转页码--}}
+                                {{--
+                                    <div class="pull-left pagination-detail">
+                                        <span class="pagination-info">每页显示
+                                            <span class="page-list">
+                                                <span class="btn-group dropup">
+                                                    <button type="button"
+                                                            class="btn btn-default dropdown-toggle"
+                                                            data-toggle="dropdown">
+                                                        <span class="page-size">10</span> <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li class="active"><a href="javascript:void(0);">10</a></li>
+                                                        <li><a href="javascript:void(0);">25</a></li>
+                                                        <li><a href="javascript:void(0);">50</a></li>
+                                                        <li><a href="javascript:void(0);">100</a></li>
+                                                    </ul>
+                                                </span>
+                                            </span> 条
+                                        </span>
+                                    </div><!--每页几条-->
+                                    --}}
                                 <div class="pull-right pagination">
                                     {!! $users->render() !!}
-                                </div>
-                            </div>
+                                </div><!--跳转页码-->
+                            </div><!--页码-->
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -309,13 +313,30 @@
 //                $('[name="form_search"]').submit();
 //            });
 
-            /* 搜索选择列名 */
+            /* 搜索下拉框 */
             $('.dropdown-item').click(function () {
                 console.log($(this).text());
                 var column = $(this).data('column');
                 var txt = $(this).text() + ' <span class="caret"></span>';
                 $('[name="search_column"]').html(txt);
                 $('[name="column"]').val(column);
+            });
+
+            /* 排序 */
+            $('.sortable').click(function () {
+                var _this = $(this).children('.order')
+                _this.toggleClass('dropup');
+                var _column = $(this).data('name');
+                var _form = $('[name="form_search"]');
+                var _sort = 'desc';
+                if (_this.hasClass('dropup')) { // 正序
+                    _sort = 'asc';
+                } else { // 倒序
+                    _sort = 'desc';
+                }
+                _form.append('<input type="hidden" name="sort_column" value="' + _column + '"/>');
+                _form.append('<input type="hidden" name="sort_way" value="' + _sort + '"/>');
+                _form.submit();
             });
 
             /* 刷新 */
@@ -328,10 +349,18 @@
                 var column = getQueryString('column');
                 var keyword = getQueryString('keyword');
                 column = (column != null) ? column : 'name';
-                keyword = (keyword != null) ? keyword : '';
+                keyword = (keyword != null) ? decodeURIComponent(keyword) : '';
                 var txt = $('[name="column_' + column + '"]').text() + ' <span class="caret"></span>';
                 $('[name="search_column"]').html(txt);
+                $('[name="column"]').val(column);
                 $('[name="keyword"]').val(keyword);
+
+                // todo
+                var sort_column = getQueryString('sort_column');
+                var sort_way = getQueryString('sort_way');
+                sort_column = (sort_column != null) ? sort_column : '';
+                sort_way = (sort_way != null) ? sort_way : 'asc';
+
             }
 
             /* 获取url参数 */

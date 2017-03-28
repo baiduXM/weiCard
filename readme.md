@@ -21,9 +21,9 @@ composer install
 
 ```php
 APP_KEY=base64:Bhrr6VfOTOSjZ2JUdHCCeu+bJNA2aDyjtppeZWioQuk=      
-CACHE_DRIVER=array // ?为什么file也可以了？
+//CACHE_DRIVER=array // ?为什么file也可以了？
 
-/*===email config example===*/
+/* email config example */
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.qq.com
 MAIL_PORT=465
