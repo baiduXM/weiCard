@@ -1,47 +1,51 @@
 @extends('home.common.layout')
-@section('title', '用户')
+@section('title', '名片')
 @section('content')
-    <div class="side-right wow bounceInRight animated">
-        <div class="mess">
-            <span>账号：
-                <input name="name" type="text" class="inputt" value="{{ $user->name }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>邮箱：
-                <input name="email" type="text" class="inputt" value="{{ $user->email }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>电话：
-                <input name="mobile" type="text" class="inputt" value="{{ $user->mobile }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>头像：
-                <img src="{{ asset($user->avatar) }}"/>
-                <a href="javascript:;" class="file"><input type="file" class="logoimg" value="" disabled="disabled">上传图片</a>
-            </span>
-            <span>性别：
-                <input name="sex" type="text" class="inputt" value="{{ $user->sex }}" onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>年龄：
-                <input name="age" type="text" class="inputt" value="{{ $user->age }}" onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>昵称：
-                <input name="nickname" type="text" class="inputt" value="{{ $user->nickname }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>个人简介：
-                <input name="description" type="text" class="inputt" value="{{ $user->description }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <div class="inp">
-                <a href="{{ url('user/'.$user->id.'/edit') }}"><input type="submit" class="sub" value="编辑"></a>
+    <div id="myCard">
+        <ul class="cont-nav rt">
+            <li><a href="">我的名片 > </a></li>
+            <li class="cont-nav-act"><a href="">我的名片</a></li>
+        </ul>
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a href="">我的名片</a>
+            </li>
+        </ul>
+        <div class="myCard-content  main-cont">
+            <div class="tab-pane card-a">
+                <div class="card-cont">
+                    <span>我的名片</span>
+                    <div class="card-text">
+                        <img class="lt" src="image/front-icon.png" alt="">
+                        <span>林先生</span>
+                        <div>
+                            <span>电话 :</span>
+                            <input type="text">
+                        </div>
+                        <div>
+                            <span>手机 :</span>
+                            <input type="text">
+                        </div>
+                        <div>
+                            <span>地址 :</span>
+                            <input type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-share">
+                    <span class="lt">分享到 : </span>
+                    <div class="lt bshare-custom">
+                        <div class="bsPromo bsPromo2"></div>
+                        <a title="分享到新浪微博" class="bshare-sinaminiblog"></a>
+                        <a title="分享到微信" class="bshare-weixin"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a>
+                        <a title="分享到QQ空间" class="bshare-qzone"></a><a title="更多平台"
+                                                                       class="bshare-more bshare-more-icon more-style-addthis"></a>
+                    </div>
+                    <script type="text/javascript" charset="utf-8"
+                            src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+                    <script type="text/javascript" charset="utf-8"
+                            src="http://static.bshare.cn/b/bshareC0.js"></script>
+                </div>
             </div>
         </div>
     </div>

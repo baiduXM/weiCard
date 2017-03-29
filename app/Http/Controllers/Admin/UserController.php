@@ -48,24 +48,21 @@ class UserController extends Controller
     {
         $query = User::query();
         $params = Input::query();
-        $search = array();
-        $sort = array();
-        if ($params) {
-            $search['column'] = isset($params['column']) ? $params['column'] : '';
-            $search['keyword'] = isset($params['keyword']) ? $params['keyword'] : '';
-            $sort['column'] = isset($params['sort_column']) ? $params['sort_column'] : '';
-            $sort['order'] = isset($params['sort_way']) ? $params['sort_way'] : 'desc';
+        if (!empty($params)) {
+            if (!empty($params['column']) && !empty($params['keyword'])) {
+                $search['column'] = $params['column'];
+                $search['keyword'] = $params['keyword'];
+            }
+            if (!empty($params['sort_column']) && !empty($params['sort_way'])) {
+                $sort['column'] = $params['sort_column'];
+                $sort['order'] = $params['sort_way'];
+            }
         }
-        if (!emptyArray($search) && !in_array('', $search)) {
+        if (isset($search)) {
             $query->where($search['column'], 'like', '%' . $search['keyword'] . '%');
         }
-
-        // todo
-
-        if (!emptyArray($sort) && !in_array('', $sort)) {
+        if (isset($sort)) {
             $query->orderBy($sort['column'], $sort['order']);
-        } else {
-//            $query->orderBy('created_at', 'desc');
         }
         $query->where('name', '!=', 'admin');
         $users = $query->paginate();

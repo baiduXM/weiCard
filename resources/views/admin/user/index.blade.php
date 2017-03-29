@@ -37,7 +37,7 @@
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        title="刷新"><i
+                                        title="重置刷新"><i
                                             class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                                 {{--
                                 <button class="btn btn-default" type="button" name="toggle" title="Toggle"><i
@@ -136,14 +136,18 @@
                                         </th>
                                         --}}
                                         <th style="">
-                                            <div class="th-inner" data-name="is_active">状态</div>
+                                            <div class="th-inner sortable" data-name="is_active">状态
+                                                <span class="order">
+                                                    <span class="caret" style="margin: 10px 5px;"></span>
+                                                </span>
+                                            </div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
-                                                <span class="order color-orange dropup"><!--dropup-->
+                                                <span class="order">
                                                     <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span>
+                                                </span><!--dropup-->
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th>
@@ -309,9 +313,9 @@
             });
 
             /* 搜索 */
-//            $('.operate-search').click(function () {
-//                $('[name="form_search"]').submit();
-//            });
+            $('.operate-search').click(function () {
+                $('[name="form_search"]').submit();
+            });
 
             /* 搜索下拉框 */
             $('.dropdown-item').click(function () {
@@ -324,12 +328,18 @@
 
             /* 排序 */
             $('.sortable').click(function () {
-                var _this = $(this).children('.order')
-                _this.toggleClass('dropup');
-                var _column = $(this).data('name');
+                var _this = $(this);
+                var _chidren = $(this).children('.order');
+                if (_this.hasClass('color-orange')) {
+                    _chidren.toggleClass('dropup');
+                } else {
+                    $('.sortable').removeClass('color-orange');
+                    _this.addClass('color-orange');
+                }
+                var _column = _this.data('name');
                 var _form = $('[name="form_search"]');
                 var _sort = 'desc';
-                if (_this.hasClass('dropup')) { // 正序
+                if (_chidren.hasClass('dropup')) { // 正序
                     _sort = 'asc';
                 } else { // 倒序
                     _sort = 'desc';
@@ -346,6 +356,7 @@
 
             /* 初始化 */
             function init() {
+                // 搜索初始值
                 var column = getQueryString('column');
                 var keyword = getQueryString('keyword');
                 column = (column != null) ? column : 'name';
@@ -354,13 +365,16 @@
                 $('[name="search_column"]').html(txt);
                 $('[name="column"]').val(column);
                 $('[name="keyword"]').val(keyword);
-
-                // todo
+                // 排序初始值
                 var sort_column = getQueryString('sort_column');
                 var sort_way = getQueryString('sort_way');
-                sort_column = (sort_column != null) ? sort_column : '';
-                sort_way = (sort_way != null) ? sort_way : 'asc';
-
+                if (sort_column != null) {
+                    var _column = $('[data-name="' + sort_column + '"]');
+                    _column.addClass('color-orange');
+                    if (sort_way != null && sort_way == 'asc') {
+                        _column.children('.order').addClass('dropup');
+                    }
+                }
             }
 
             /* 获取url参数 */

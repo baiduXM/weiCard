@@ -7,11 +7,15 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /*
+     * 我的名片
+     */
 
     public function index()
     {
-        $user = User::find(Auth::id());
-        return view('home.user.index')->with('user', $user);
+        return view('home.user.index');
+//        $user = User::find(Auth::id());
+//        return view('home.user.index')->with('user', $user);
     }
 
     public function create()

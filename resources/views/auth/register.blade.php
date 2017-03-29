@@ -1,5 +1,5 @@
 @extends('layouts.login-layout')
-@section('title', '注册账号')
+@section('title', '注册')
 @section('content')
     <div class="login">
         <form action="{{ url('/register') }}" method="post">
