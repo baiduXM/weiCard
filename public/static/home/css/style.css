@@ -43,7 +43,7 @@ label{ display: inline-block;
     margin-bottom:0;
 
     cursor: pointer;
-   }
+}
 label i{  width: 14px;
     height: 14px;
     line-height:14px;
@@ -54,7 +54,6 @@ label i{  width: 14px;
     font-size:12px;display: inline-block;vertical-align: top;margin-top:7px;;}
 input[type='checkbox']:checked+label i{color:#fff; background-color: #1da1dc;border:1px solid #1da1dc;  }
 .label-bg{background-color: #1da1dc;}
-
 
 #login{width:100%;height:100%;position:absolute;top:0;left:0;}
 .login{text-align:center;position:absolute;top:50%;left:50%;width:322px;height:495px;margin-top:-247px;margin-left:-161px; }
@@ -105,7 +104,6 @@ input[type='checkbox']:checked+label i{color:#fff; background-color: #1da1dc;bor
     .login{
         height: auto;
     }
-
 }
 @media screen and (max-width: 370px){
     .login{
@@ -149,8 +147,8 @@ a:hover{text-decoration: none;}
     #myTab{display: none;}
     #myCard .myCard-content{border-top:1px solid #c5c5c5;padding:0;}
     /*body{width:100%;height:100%;}*/
-     .navbar {border-radius: 0;}
-     .main .main-content{padding:10px;}
+    .navbar {border-radius: 0;}
+    .main .main-content{padding:10px;}
     .main .navbar-default{background-color: transparent;position:absolute;}
     .main .main-nav{    position: absolute;  top: 0;  z-index: 1;}
     .myCard-content form{float:none;text-align: center;padding:20px 0;}
@@ -161,7 +159,7 @@ a:hover{text-decoration: none;}
     .main-cont form div.input div input{width:59%;}
     .main-cont form div.input div.user-j textarea{width:59%;}
     .nav-mod{background-color: rgba(000,000,000,.5);}
-   .card-a .card-cont .card-text>img{width:60px;height:60px;float:none;}
+    .card-a .card-cont .card-text>img{width:60px;height:60px;float:none;}
     .myCard-content .phone-show{display: block;}
 }
 .navbar {border-radius: 0;margin-bottom:0;}
@@ -209,7 +207,7 @@ a:hover{text-decoration: none;}
 .nav-list .tree_box h3 i.nav-j{float:right;margin-top:19px;width:6px;height:11px;background:url(../image/icon-10.png);}
 .tree_one li.li-active{background-color: #1592c9;}
 .tree_one li a{color:#fff;height:50px;width:100%;display: inline-block;}
-.tree_one li.active{ background: #0c7cb5;}
+.tree_one li.active,.tree_one li:hover{ background: #0c7cb5;}
 .tree_one li.active a{color: #f5e79e;}
 .main-content{overflow: hidden;}
 .main-content ul.nav-tabs li{width:160px;height:47px;text-align: center;background-color:#e6e6e6;}
@@ -234,8 +232,7 @@ a:hover{text-decoration: none;}
 .main-cont  div.input div.user-j textarea{width:278px;height:100px;vertical-align: top;border:1px solid #c4c4c4;}
 .main-cont form div.input div.user-j span{vertical-align: top;}
 
-
- .card-cont{ background-image: url(../image/Front.png);background-size:100% 100%;
+.card-cont{ background-image: url(../image/Front.png);background-size:100% 100%;
     max-width:405px;max-height:240px;padding:25px;width:100%;height:100%;overflow: hidden;}
 .card-cont span{color:#333;font-size:14px;border-bottom:1px solid #c1cdd5;padding-bottom:8px;}
 .card-cont .card-text div>span{border:none;color:#c1cdd5;}
@@ -329,7 +326,6 @@ a:hover{text-decoration: none;}
 .clickMore {text-align: center;color:#b1b1b1;}
 .clickMore a{color:#b1b1b1;}
 
-
 /******************tiyg****************************************/
 .add-icon a i{display: inline-block;margin-top:18px;}
 .td-img a{display:inline-block;width:50px;height:60px;border:1px solid #ddd;border-radius: 3px;padding:2px;background-color: #fff;}
@@ -405,7 +401,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 .zh-cont>a span{}
 .zh-cont>a:hover{background-color: #3cb035;color:#fff;border:none;}
 .zh-cont>input{width:300px;height:50px;line-height:50px;text-align: center;
-   background-color: #1da1dc;border-radius:3px;color:#fff;font-size:18px;}
+    background-color: #1da1dc;border-radius:3px;color:#fff;font-size:18px;}
 .t-s div h6{color:#ff2a1f;margin:-20px 0 18px 100px;}
 
 @media (max-width: 1175px){
@@ -442,8 +438,8 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
     .b-table tr .b-td-hide{display: none;}
     .b-table tr .b-td-show{display: block;  }
 
-   table.b-table thead tr th.b-phone-w{width:10%;}
-   table.b-table thead tr th.b-phone-w2{width:30%;}
+    table.b-table thead tr th.b-phone-w{width:10%;}
+    table.b-table thead tr th.b-phone-w2{width:30%;}
     .b-table tr{height:22px;}
     .b-button li .b-sort{width:23%;}
     .clickMore{display: block;}
@@ -484,7 +480,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 @media (max-width:367px){
     .b-button li.b-btn-bg i{margin-right:3px;}
     .b-button li.b-btn-bor a{padding:0 0 0 5px;text-align: left;}
-   #myCard div .b-button>li>a{padding:0;}
+    #myCard div .b-button>li>a{padding:0;}
 
     li.b-search  .b-input{width:180px;}
     .table>tbody>tr>td, .table>thead>tr>th{padding:8px 0;}
@@ -506,8 +502,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 .modal1 .modal-body{background-color: #fff;margin:5px 5px 0 5px;border:1px solid #ddd;padding-top:24px;}
 .modal1 .modal-body p{text-align: center;margin-bottom:14px;}
 .modal1 .modal-body p span{color:#333;}
-.modal1 .modal-body form>p input{width:241px;height:28px;line-height:28px;border:1px solid #b1b1b1;
-    padding-left:5px;border-radius: 3px;}
+.modal1 .modal-body form>p input{width:241px;height:28px;line-height:28px;border:1px solid #b1b1b1;padding-left:5px;border-radius: 3px;}
 .modal .modal-footer{border-radius: 0 0 3px 3px;background-color: #fff;margin:0 5px 5px 5px;border:1px solid #ddd;border-top:none;text-align: center;}
 .modal .modal-footer input{width:80px;height:28px;border-radius: 3px;background-color: #4dbef1;color:#fff;margin:0 12px;}
 .modal .modal-footer input:hover{background-color: #1da1dc;}
@@ -557,7 +552,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 .modal8{height:524px;}
 .modal8 .modal-body div.modal-address p input{border:1px solid #ddd;border-radius: 3px;}
 input[type=file] {
- display: inline-block;border:none!important;
+    display: inline-block;border:none!important;
 }
 .modal8 .modal-body div.modal-address p.m8{margin-bottom:37px;}
 .modal8 .modal-body div.modal-address p.m8 textarea{height:88px;width:200px;border:1px solid #ddd;}
@@ -568,6 +563,21 @@ input[type=file] {
 .modal10{width:549px;height:358px;position: absolute;top:-250px;left:-260px;}
 .modal10 button{position: absolute;right:-10px;top:-10px;opacity: 1;}
 .modal10 button:hover{opacity: 1;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .foot-txt{font-size:14px;color:#666;text-align: center;padding:10px 5px;line-height: 22px;}
 

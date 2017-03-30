@@ -11,7 +11,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" action="{{ url('admin/user/' . $user->id) }}" method="post"
                           enctype="multipart/form-data">
-                        {{ method_field('patch') }}
+                        {{ method_field('put') }}
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">用户名</label>

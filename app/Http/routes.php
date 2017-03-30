@@ -17,9 +17,8 @@ Route::get('phpinfo', function () {
 
 /* 默认首页 */
 Route::get('/', function () {
-    return redirect()->to('/index');
+    return redirect()->to('user');
 });
-Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
 
 /* 登录 */
 Route::auth();
@@ -28,10 +27,23 @@ Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 /* 用户界面 */
 Route::group(['middleware' => ['web', 'auth']], function () {
 
-    /* 我的名片 */
+    /* 首页 */
+    Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
+
+    /* 用户中心 */
     Route::resource('user', 'Home\UserController');
 
+    /* 我的名片 */
+    Route::resource('card', 'Home\UserController');
+
     /* 我的公司 */
+    Route::group(['prefix' => 'company'], function () {
+        Route::get('group', ['as' => 'company.group', 'uses' => 'Home\CompanyController@group']);
+        Route::get('register', ['as' => 'company.register', 'uses' => 'Home\CompanyController@register']);
+        Route::get('department', ['as' => 'company.department', 'uses' => 'Home\CompanyController@department']);
+        Route::get('employee', ['as' => 'company.employee', 'uses' => 'Home\CompanyController@employee']);
+        Route::get('workmate', ['as' => 'company.workmate', 'uses' => 'Home\CompanyController@workmate']);
+    });
     Route::resource('company', 'Home\CompanyController');
 
     /* 我的公司->员工 */

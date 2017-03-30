@@ -69,14 +69,14 @@
     {{--</div><!--/.row-->--}}
     <div class="row">
         <div class="col-lg-12">
-            @include('common.message')
+            @include('admin.common.message')
         </div>
     </div><!--/.row-->
     @section('content')
 
     @show
 </div><!--/.main-->
-@include('common.modal')
+@include('admin.common.modal')
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>

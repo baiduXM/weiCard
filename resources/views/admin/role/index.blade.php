@@ -67,7 +67,7 @@
     </div><!--/.row-->
 @stop
 
-@include('common.modal')
+@include('admin.common.modal')
 
 @section('javascript')
 
@@ -81,7 +81,6 @@
                 modal.find('.modal-title').text('删除确认');
                 modal.find('.modal-body').text('是否删除' + _name + '角色？');
                 modal.find('form').attr('action', '/admin/role/' + _id);
-
             });
         });
     </script>
