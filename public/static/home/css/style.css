@@ -217,6 +217,7 @@ a:hover{text-decoration: none;}
 .main-content .myCard-content{background-color:#fff;border:1px solid #c5c5c5;
     border-top:none;overflow: hidden;border-radius: 0 4px 4px 4px;}
 .cont-nav{margin-top:15px;}
+.cont-nav>li+li:before{padding: 0 5px;color: #ccc;content: ">\00a0";}
 .cont-nav li{float:left;}
 .cont-nav li a{color:#808080;}
 .cont-nav li.cont-nav-act a{color:#0096da;}

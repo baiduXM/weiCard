@@ -38,8 +38,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     /* 我的公司 */
     Route::group(['prefix' => 'company'], function () {
+        Route::resource('register', 'Home\CompanyController');
+        Route::get('register', ['as' => 'company.register.create', 'uses' => 'Home\CompanyController@register']);
+        Route::post('register', ['as' => 'company.register.store', 'uses' => 'Home\CompanyController@postRegister']);
         Route::get('group', ['as' => 'company.group', 'uses' => 'Home\CompanyController@group']);
-        Route::get('register', ['as' => 'company.register', 'uses' => 'Home\CompanyController@register']);
         Route::get('department', ['as' => 'company.department', 'uses' => 'Home\CompanyController@department']);
         Route::get('employee', ['as' => 'company.employee', 'uses' => 'Home\CompanyController@employee']);
         Route::get('workmate', ['as' => 'company.workmate', 'uses' => 'Home\CompanyController@workmate']);

@@ -3,7 +3,7 @@
 @section('content')
     <div id="myCard">
         @section('breadcrumb')
-            {!! Breadcrumbs::render('company.register') !!}
+            {!! Breadcrumbs::render('company.create') !!}
         @show
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
@@ -12,11 +12,10 @@
         </ul>
         <div class="myCard-content  main-cont">
             <p class="phone-show">注册公司</p>
-            <form action="" class="lt">
-
-
+            <form action="{{ url('company') }}" class="lt" method="post">
+                {{ csrf_field() }}
                 <div class="file-img rt  col-sm-12">
-                    <img src="{{ asset('static/home/image/icon12.png') }}" alt="">
+                    <img src="{{ asset('static/home/image/icon12.png') }}" alt="" onerror="{{ asset('static/home/image/icon12.png') }}">
                 </div>
                 <div class="input rt">
                     <div>

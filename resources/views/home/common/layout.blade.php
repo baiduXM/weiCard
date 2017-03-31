@@ -37,11 +37,11 @@
         @include('home.common.sidebar')
         <div class="main-content">
             @section('content')
-
+                {{--内容--}}
             @show
             <p class="foot-txt">copyright© 厦门易尔通网络科技有限公司 版权所有</p>
             @section('content-extend')
-
+                {{--modal扩展--}}
             @show
 
         </div>
