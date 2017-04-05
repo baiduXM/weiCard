@@ -24,6 +24,8 @@ Route::get('/', function () {
 Route::auth();
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
+//Route::group();
+
 /* 用户界面 */
 Route::group(['middleware' => ['web', 'auth']], function () {
 
@@ -63,7 +65,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 });
 
 /* 后台管理界面 */
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
     Route::get('/', ['as' => 'admin', function () {
@@ -91,12 +93,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::post('{id}/permission', ['as' => 'admin.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
     });
     Route::resource('manager', 'Admin\ManagerController');
-
-    /* 角色管理 */
-    Route::resource('role', 'Admin\RoleController');
-
-    /* 权限管理 */
-    Route::resource('permission', 'Admin\PermissionController');
 
     /* 设置 */
     Route::group(['prefix' => 'setting'], function () {

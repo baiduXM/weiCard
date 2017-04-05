@@ -8,7 +8,6 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
-        "zizaco/entrust": "5.2.x-dev",
         "intervention/image": "^2.3",
         "zedisdog/laravel-schema-extend": "~0.5",
         "overtrue/laravel-lang": "~3.0",

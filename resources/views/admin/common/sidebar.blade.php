@@ -23,12 +23,6 @@
             <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
                 <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
             </li>
-            <li class="{{ Request::path() == 'admin/role' || Request::is('admin/role/*') ? 'active' : '' }}">
-                <a href="{{ url('admin/role') }}"><span class="glyphicon glyphicon-stats"></span>角色管理</a>
-            </li>
-            <li class="{{ Request::path() == 'admin/permission' || Request::is('admin/permission/*') ? 'active' : '' }}">
-                <a href="{{ url('admin/permission') }}"><span class="glyphicon glyphicon-stats"></span>权限管理</a>
-            </li>
         @endif
         <li class="parent {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'active' : '' }}">
             <a href="#">
