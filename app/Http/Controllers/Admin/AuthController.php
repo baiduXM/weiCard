@@ -27,7 +27,6 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255|unique:managers',
-            'email' => 'required|email|max:255|unique:managers',
             'password' => 'required|confirmed',
         ]);
     }
@@ -36,7 +35,6 @@ class AuthController extends Controller
     {
         return Admin::create([
             'name' => $data['name'],
-            'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'is_super' => $data['name'] == 'admin' ? 1 : 0,
         ]);
