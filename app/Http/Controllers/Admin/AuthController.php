@@ -34,7 +34,6 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
-
         return Admin::create([
             'name' => $data['name'],
             'email' => $data['email'],
