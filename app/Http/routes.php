@@ -27,6 +27,9 @@ Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 /* 后台登录 */
 Route::get('admin/login', 'Admin\AuthController@getLogin');
 Route::post('admin/login', 'Admin\AuthController@postLogin');
+//Route::post('admin/login', function () {
+//    dd(1);
+//});
 Route::get('admin/register', 'Admin\AuthController@getRegister');
 Route::post('admin/register', 'Admin\AuthController@postRegister');
 Route::get('admin/logout', function () {

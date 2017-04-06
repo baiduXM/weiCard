@@ -30,6 +30,7 @@ class AuthController extends Controller
     protected $loginView = 'auth.login';
     protected $registerView = 'auth.register';
     protected $username = 'username';
+    protected $redirectAfterLogout = '/';
 
     public function __construct()
     {

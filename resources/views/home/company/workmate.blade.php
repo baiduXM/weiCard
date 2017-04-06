@@ -93,7 +93,7 @@
     </div>
 @stop
 
-@section('content-extend')
+@section('modal-extend')
 <!-- 添加联系人modal -->
 <div class="modal fade bs1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">

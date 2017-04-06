@@ -14,30 +14,57 @@
             <p class="phone-show">注册公司</p>
             <form action="{{ url('company') }}" class="lt" method="post">
                 {{ csrf_field() }}
-                <div class="file-img rt  col-sm-12">
-                    <img src="{{ asset('static/home/image/icon12.png') }}" alt="" onerror="{{ asset('static/home/image/icon12.png') }}">
-                </div>
+
                 <div class="input rt">
+
                     <div>
-                        <span>公司名称 : </span>
-                        <input type="text">
+                        <span><i class="" style="color: red;">*</i>公司名称:</span>
+                        <input type="text" name="Company[name]" value="{{ old('Company.name') }}" placeholder="公司名称(至少4字符)">
                     </div>
+                    @if ($errors->has('Company.name'))
+                        <p class="pass-error show">{{ $errors->first('Company.name') }}</p>
+                    @endif
+
+                    <div>
+                        <span><i class="" style="color: red;">*</i>公司代码:</span>
+                        <input type="text" name="Company[code]" value="{{ old('Company.code') }}" placeholder="唯一代码(字母、数字至少5个字符)">
+                    </div>
+                    @if ($errors->has('Company.code'))
+                        <p class="pass-error show">{{ $errors->first('Company.code') }}</p>
+                    @endif
+
                     <div class="file">
-                        <span>logo : </span>
-                        <input type="file">
+                        <span>图标: </span>
+                        <input type="file" name="Company[logo]">
                     </div>
+                    @if ($errors->has('Company.logo'))
+                        <p class="pass-error show">{{ $errors->first('Company.logo') }}</p>
+                    @endif
+
                     <div>
-                        <span>地址 : </span>
-                        <input type="text">
+                        <span>地址: </span>
+                        <input type="text" name="Company[address]" value="{{ old('Company.address') }}" placeholder="">
                     </div>
+                    @if ($errors->has('Company.address'))
+                        <p class="pass-error show">{{ $errors->first('Company.address') }}</p>
+                    @endif
+
                     <div>
-                        <span>联系电话 : </span>
-                        <input type="text">
+                        <span>联系电话: </span>
+                        <input type="text" name="Company[telephone]" value="{{ old('Company.telephone') }}" placeholder="">
                     </div>
+                    @if ($errors->has('Company.telephone'))
+                        <p class="pass-error show">{{ $errors->first('Company.telephone') }}</p>
+                    @endif
+
                     <div class="user-j">
-                        <span>公司简介 : </span>
-                        <textarea name="" id=""></textarea>
+                        <span>公司简介: </span>
+                        <textarea name="Company[description]" id=""></textarea>
                     </div>
+                    @if ($errors->has('Company.description'))
+                        <p class="pass-error show">{{ $errors->first('Company.description') }}</p>
+                    @endif
+
                     <input type="submit" value="确认">
                 </div>
 

@@ -5,7 +5,6 @@
         </div>
     </form>
 
-
     <ul class="nav menu">
         <li class="{{ Request::path() == 'admin/index' ? 'active' : '' }}">
             <a href="{{ url('admin/index') }}"><span class="glyphicon glyphicon-dashboard"></span>首页</a>
@@ -19,7 +18,7 @@
         <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
         </li>
-        @if(Auth::user()->name == 'admin')
+        @if(Auth::guard('admin')->user()->name == 'admin')
             <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
                 <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
             </li>
@@ -49,7 +48,7 @@
         <li role="presentation" class="divider"></li>
 
         <li>
-            <a href="{{ url('logout') }}"><span class="glyphicon glyphicon-stats"></span>登出</a>
+            <a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-stats"></span>登出</a>
         </li>
     </ul>
 </div>

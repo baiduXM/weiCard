@@ -45,7 +45,7 @@
         </div>
     </div>
 @stop
-@section('content-extend')
+@section('modal-extend')
     <!-- 确认删除吗modal -->
     <div class="modal fade bs3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">

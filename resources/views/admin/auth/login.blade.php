@@ -10,15 +10,15 @@
                     <form class="form-horizontal" role="form" method="POST" action="">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">账号</label>
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <label for="username" class="col-md-4 control-label">账号</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}">
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -54,7 +54,7 @@
                                     <i class="fa fa-btn fa-sign-in"></i> 登录
                                 </button>
 
-                                <a class="btn btn-link" href="{{ url('admin/password/reset') }}">忘记密码</a>
+                                {{--<a class="btn btn-link" href="{{ url('admin/password/reset') }}">忘记密码</a>--}}
                             </div>
                         </div>
                     </form>

@@ -33,13 +33,13 @@
             <a class="navbar-brand" href="#"><span>微名片</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::guest())
+                @if(Auth::guard('admin')->guest())
                     <li><a href="{{ url('login') }}">登录</a></li>
                     <li><a href="{{ url('register') }}">注册</a></li>
                 @else
                     <li class="dropdown pull-right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                                    class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }}
+                                    class="glyphicon glyphicon-user"></span> {{ Auth::guard('admin')->user()->name }}
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ url('admin/setting/person') }}"><span
@@ -47,7 +47,7 @@
                                     Profile</a></li>
                             <li><a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-cog"></span>
                                     Settings</a></li>
-                            <li><a href="{{ url('logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                            <li><a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
                                     Logout</a></li>
                         </ul>
                     </li>

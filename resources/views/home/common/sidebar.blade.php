@@ -57,8 +57,8 @@
             <ul class="tree_one" {{ Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
                 <li {{ Request::path() == 'company' ? 'class=active' : '' }}>
                     <a href="{{ url('company') }}">我的公司</a></li>
-                <li {{ Request::path() == 'company/register' ? 'class=active' : '' }}>
-                    <a href="{{ url('company/register') }}">注册公司</a></li>
+                <li {{ Request::path() == 'company/create' ? 'class=active' : '' }}>
+                    <a href="{{ url('company/create') }}">注册公司</a></li>
                 <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                     <a href="{{ url('company/department') }}">公司部门</a></li>
                 <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>

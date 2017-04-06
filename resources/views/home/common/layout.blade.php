@@ -23,11 +23,10 @@
         <img src="{{ asset('static/home/image/logo.png') }}" alt="">
         <ul class="rt">
             <li><a href="{{ url('user') }}"><img src="{{ asset('static/home/image/hed-icon1.png') }}" alt=""></a></li>
-            <li class="had-name had-nav-name"><a href="javascript:void(0);">林先生，欢迎您登录</a></li>
-            @if(Auth::user()->name == 'admin' || Auth::user()->is_admin === 1)
-                <li class="had-name"><a href="{{ url('admin') }}" target="_blank">后台管理</a></li>
-            @endif
-            <li><a href="{{ url('logout') }}"><img src="{{ asset('static/home/image/hed-icon2.png') }}" alt=""></a></li>
+            <li class="had-name had-nav-name">
+                <a href="javascript:void(0);">{{ Auth::user()->nickname != null ? (Auth::user()->nickname) : Auth::user()->name }}，欢迎您登录</a>
+            </li>
+            <li><a href="{{ url('logout') }}"><img src="{{ asset('static/home/image/hed-icon2.png') }}" alt="退出" title="退出"></a></li>
         </ul>
     </div>
 </header>
@@ -40,7 +39,7 @@
                 {{--内容--}}
             @show
             <p class="foot-txt">copyright© 厦门易尔通网络科技有限公司 版权所有</p>
-            @section('content-extend')
+            @section('modal-extend')
                 {{--modal扩展--}}
             @show
 

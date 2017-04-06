@@ -66,7 +66,7 @@
                         <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="nickname">昵称</label>
                             <div class="col-md-6">
-                                <input id="name" name="User[nickname]" type="text" placeholder="输入昵称"
+                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
                                        class="form-control" value="{{ old('User.nickname') }}">
                             </div>
                             @if ($errors->has('User.nickname'))
