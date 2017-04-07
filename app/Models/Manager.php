@@ -1,5 +1,6 @@
 <?php
-namespace App\Models\Admin;
+
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +16,14 @@ class Manager extends Model
     ];
 
 
-
+    public function getName($id)
+    {
+        if ($id != 0) {
+            return Manager::findOrFail($id)->name;
+        } else {
+            return '无';
+        }
+    }
 
 
 }

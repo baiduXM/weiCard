@@ -81,8 +81,9 @@
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
 <script src="{{ asset('static/common/js/vue.js') }}"></script>
+<script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
+<script src="{{ asset('static/admin/js/admin-operation.js') }}"></script>
 {{--<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}

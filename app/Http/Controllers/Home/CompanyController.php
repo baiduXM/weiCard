@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\Home\Company;
-use App\Models\Home\User;
+use App\Models\Company;
+use App\Models\User;
 use Breadcrumbs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Common\UploadController;
 
@@ -43,7 +44,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        if ($this->isCompany(Auth::id())) {
+        if ($this->hasCompany(Auth::id())) {
             $company = Company::findOrFail($this->company_id);
         } else {
             $company = null;
@@ -69,25 +70,26 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|alpha_dash|unique:users,users.name',
-            'Company.password' => 'required|confirmed',
-            'Company.email' => 'email|unique:users,users.email',
-            'Company.nickname' => 'alpha_dash',
-            'Company.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.mobile' => 'digits:11|unique:users,users.mobile',
+            'Company.name' => 'required|unique:companies,companies.name',
+            'Company.code' => 'required|alpha_num|unique:companies,companies.code',
+            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.address' => 'max:255',
+            'Company.email' => 'email|unique:companies,companies.email',
+            'Company.telephone' => 'unique:companies,companies.telephone',
             'Company.description' => 'max:255',
         ], [], [
-            'Company.name' => '账号',
-            'Company.password' => '密码',
-            'Company.email' => '邮箱',
-            'Company.nickname' => '昵称',
-            'Company.avatar' => '头像',
-            'Company.mobile' => '手机',
+            'Company.name' => '公司名称',
+            'Company.code' => '公司代码',
+            'Company.logo' => '公司logo',
+            'Company.address' => '公司地址',
+            'Company.email' => '公司邮箱',
+            'Company.telephone' => '公司电话',
             'Company.description' => '说明',
         ]);
-
+        dd(123);
         /* 获取字段类型 */
         $data = $request->input('Company');
+        dd($data);
         foreach ($data as $key => $value) {
             if ($value == '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
@@ -193,7 +195,7 @@ class CompanyController extends Controller
      *      没关联：返回0
      *      有关联：返回公司id
      */
-    protected function isCompany($id)
+    protected function hasCompany($id)
     {
         return $this->company_id = User::findOrFail($id, ['company_id'])->company_id;
     }

@@ -16,10 +16,9 @@
                 {{ csrf_field() }}
 
                 <div class="input rt">
-
                     <div>
                         <span><i class="" style="color: red;">*</i>公司名称:</span>
-                        <input type="text" name="Company[name]" value="{{ old('Company.name') }}" placeholder="公司名称(至少4字符)">
+                        <input type="text" name="Company[name]" value="{{ old('Company.name') }}" placeholder="(中文名称)">
                     </div>
                     @if ($errors->has('Company.name'))
                         <p class="pass-error show">{{ $errors->first('Company.name') }}</p>
@@ -27,7 +26,7 @@
 
                     <div>
                         <span><i class="" style="color: red;">*</i>公司代码:</span>
-                        <input type="text" name="Company[code]" value="{{ old('Company.code') }}" placeholder="唯一代码(字母、数字至少5个字符)">
+                        <input type="text" name="Company[code]" value="{{ old('Company.code') }}" placeholder="(字母、数字)">
                     </div>
                     @if ($errors->has('Company.code'))
                         <p class="pass-error show">{{ $errors->first('Company.code') }}</p>
@@ -50,8 +49,16 @@
                     @endif
 
                     <div>
+                        <span>邮箱: </span>
+                        <input type="email" name="Company[email]" value="{{ old('Company.email') }}" placeholder="">
+                    </div>
+                    @if ($errors->has('Company.email'))
+                        <p class="pass-error show">{{ $errors->first('Company.email') }}</p>
+                    @endif
+
+                    <div>
                         <span>联系电话: </span>
-                        <input type="text" name="Company[telephone]" value="{{ old('Company.telephone') }}" placeholder="">
+                        <input type="tel" name="Company[telephone]" value="{{ old('Company.telephone') }}" placeholder="">
                     </div>
                     @if ($errors->has('Company.telephone'))
                         <p class="pass-error show">{{ $errors->first('Company.telephone') }}</p>

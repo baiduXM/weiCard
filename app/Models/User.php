@@ -1,14 +1,10 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * Class User 后台获取用户信息
- *
- * @package App\Models\Admin
- */
+
 class User extends Model
 {
 
@@ -37,5 +33,14 @@ class User extends Model
             return array_key_exists($index, $array) ? $array[$index] : $array[self::IS_ACTIVE];
         }
         return $array;
+    }
+
+    public function getName($id)
+    {
+        if ($id != 0) {
+            return User::findOrFail($id)->name;
+        } else {
+            return '无';
+        }
     }
 }

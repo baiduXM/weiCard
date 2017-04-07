@@ -27,19 +27,16 @@ Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 /* 后台登录 */
 Route::get('admin/login', 'Admin\AuthController@getLogin');
 Route::post('admin/login', 'Admin\AuthController@postLogin');
-//Route::post('admin/login', function () {
-//    dd(1);
-//});
 Route::get('admin/register', 'Admin\AuthController@getRegister');
 Route::post('admin/register', 'Admin\AuthController@postRegister');
 Route::get('admin/logout', function () {
     Auth::guard('admin')->logout();
     return redirect()->to('/admin');
 });
-//Route::group();
 
 /* 用户界面 */
-Route::group(['middleware' => ['web', 'auth']], function () {
+Route::group(['middleware' => 'auth'], function () {
+//Route::group(['middleware' => ['auth', 'web']], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
@@ -51,15 +48,15 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('card', 'Home\UserController');
 
     /* 我的公司 */
-    Route::group(['prefix' => 'company'], function () {
-        Route::resource('register', 'Home\CompanyController');
-        Route::get('register', ['as' => 'company.register.create', 'uses' => 'Home\CompanyController@register']);
-        Route::post('register', ['as' => 'company.register.store', 'uses' => 'Home\CompanyController@postRegister']);
-        Route::get('group', ['as' => 'company.group', 'uses' => 'Home\CompanyController@group']);
-        Route::get('department', ['as' => 'company.department', 'uses' => 'Home\CompanyController@department']);
-        Route::get('employee', ['as' => 'company.employee', 'uses' => 'Home\CompanyController@employee']);
-        Route::get('workmate', ['as' => 'company.workmate', 'uses' => 'Home\CompanyController@workmate']);
-    });
+//    Route::group(['prefix' => 'company'], function () {
+//        Route::resource('register', 'Home\CompanyController');
+//        Route::get('register', ['as' => 'company.register.create', 'uses' => 'Home\CompanyController@register']);
+//        Route::post('register', ['as' => 'company.register.store', 'uses' => 'Home\CompanyController@postRegister']);
+//        Route::get('group', ['as' => 'company.group', 'uses' => 'Home\CompanyController@group']);
+//        Route::get('department', ['as' => 'company.department', 'uses' => 'Home\CompanyController@department']);
+//        Route::get('employee', ['as' => 'company.employee', 'uses' => 'Home\CompanyController@employee']);
+//        Route::get('workmate', ['as' => 'company.workmate', 'uses' => 'Home\CompanyController@workmate']);
+//    });
     Route::resource('company', 'Home\CompanyController');
 
     /* 我的公司->员工 */

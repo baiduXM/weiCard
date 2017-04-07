@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Input;
@@ -242,26 +242,6 @@ class UserController extends Controller
         } else {
             return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
-    }
-
-    public function getRole()
-    {
-
-    }
-
-    public function postRole()
-    {
-
-    }
-
-    public function getPermission()
-    {
-
-    }
-
-    public function postPermission()
-    {
-
     }
 
 
