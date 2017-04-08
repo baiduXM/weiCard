@@ -14,6 +14,7 @@ class CompanyController extends Controller
 {
 
     protected $company_id; // 公司id
+    protected $path_type = 'company'; // 公司id
 
     public function __construct()
     {
@@ -71,7 +72,7 @@ class CompanyController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Company.name' => 'required|unique:companies,companies.name',
-            'Company.code' => 'required|alpha_num|unique:companies,companies.code',
+            'Company.code' => 'required|alpha_num|unique:companies,companies.code|regex:/^(?!([A-Za-z]+|d\d+)$)[A-Za-z\d]$/',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.address' => 'max:255',
             'Company.email' => 'email|unique:companies,companies.email',
@@ -86,27 +87,26 @@ class CompanyController extends Controller
             'Company.telephone' => '公司电话',
             'Company.description' => '说明',
         ]);
-        dd(123);
         /* 获取字段类型 */
         $data = $request->input('Company');
-        dd($data);
+
         foreach ($data as $key => $value) {
             if ($value == '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-            if ($key == 'password') {
-                $data[$key] = bcrypt($value);// 对密码加密
-            }
         }
+        $data['user_id'] = Auth::id();
+        $data['status'] = 0;
 
         /* 获取文件类型 */
-        if ($request->hasFile('Company.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('Company.avatar'));
+        if ($request->hasFile('Company.logo')) {
+            $uploadController = new UploadController();
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['code']);
         }
 
         /* 添加 */
         if (Company::create($data)) {
-            return redirect('admin/user')->with('success', '添加成功');
+            return redirect('company')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }

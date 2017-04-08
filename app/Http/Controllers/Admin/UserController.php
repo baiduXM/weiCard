@@ -120,7 +120,8 @@ class UserController extends Controller
 
         /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'));
         }
 
         /* 添加 */
@@ -191,7 +192,8 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'));
             $user->avatar = $data['avatar'];
         }
 

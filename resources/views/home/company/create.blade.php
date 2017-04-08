@@ -12,7 +12,7 @@
         </ul>
         <div class="myCard-content  main-cont">
             <p class="phone-show">注册公司</p>
-            <form action="{{ url('company') }}" class="lt" method="post">
+            <form action="{{ url('company') }}" class="lt" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                 <div class="input rt">

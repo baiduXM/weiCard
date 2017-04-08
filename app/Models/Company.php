@@ -18,8 +18,13 @@ class Company extends Model
     const VERIFIED_FAILED = 2; // 认证失败
     const VERIFIED_UPDATED = 3; // 资料变更
 
+//    public $timestamps = false;
+
+//    protected $dateFormat = 'U';
+
     protected $fillable = [
-        'name', 'display_name',
+        'user_id', 'name', 'code', 'logo', 'address', 'email', 'telephone', 'description', 'manager_id', 'status',
+        'created_at', 'updated_at', 'verified_at', 'deleted_at',
     ];
 
     protected $hidden = [
