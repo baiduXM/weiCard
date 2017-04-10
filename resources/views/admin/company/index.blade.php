@@ -25,39 +25,12 @@
                                         data-url="company/create" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
-                                {{--
-                                <button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"
-                                        title="批量添加">
-                                    <i class="glyphicon glyphicon-plus-sign"></i>
-                                </button>
-                                <button class="btn btn-default operate-add-file" type="button" name="operate-add-file"
-                                        title="导入文件">
-                                    <i class="glyphicon glyphicon-file"></i>
-                                </button>
-                                --}}
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="company"
                                         title="重置刷新"><i
                                             class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                {{--
-                                <button class="btn btn-default" type="button" name="toggle" title="Toggle"><i
-                                            class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>
-                                <div class="keep-open btn-group" title="Columns">
-                                    <button type="button" class="btn btn-default dropdown-toggle"
-                                            data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span
-                                                class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><label><input type="checkbox" data-field="id" value="1" checked="checked">
-                                                Item ID</label></li>
-                                        <li><label><input type="checkbox" data-field="name" value="2" checked="checked">
-                                                Item Name</label></li>
-                                        <li><label><input type="checkbox" data-field="price" value="3"
-                                                          checked="checked"> Item Price</label></li>
-                                    </ul>
-                                </div>
-                                --}}
                             </div><!--显示-->
                             <form name="form_search" action="{{ url('/admin/company') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
@@ -78,8 +51,6 @@
                                                    style="cursor: pointer;">手机</a></li>
                                             <li><a class="dropdown-item" data-column="email" name="column_email"
                                                    style="cursor: pointer;">邮箱</a></li>
-                                            {{--<li><a href="#">角色</a></li>--}}
-                                            {{--<li><a href="#">权限</a></li>--}}
                                         </ul>
                                     </div><!-- /btn-group -->
                                     <input type="hidden" name="column" value="name"/>
@@ -163,44 +134,44 @@
                                     </thead>
                                     <tbody>
                                     @if($companies)
-                                        @foreach($companies as $company)
+                                        @foreach($companies as $item)
                                             <tr>
                                                 <td>
                                                     <div class="ckbox ckbox-default">
-                                                        <input type="checkbox" name="id" id="id-{{ $company->id }} "
-                                                               value="{{ $company->id }}" class="selectall-item">
-                                                        <label for="id-{{ $company->id }}"></label>
+                                                        <input type="checkbox" name="id" id="id-{{ $item->id }} "
+                                                               value="{{ $item->id }}" class="selectall-item">
+                                                        <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <td>{{ $company->id }}</td>
-                                                <td>{{ $company->name }}</td>
-                                                <td>{{ $company->code }}</td>
-                                                <td>{{ $user->getName($company->user_id) }}</td>
+                                                <td>{{ $item->id }}</td>
+                                                <td>{{ $item->name }}</td>
+                                                <td>{{ $item->code }}</td>
+                                                <td>{{ $common->getValue('users', $item->user_id, 'name') }}</td>
                                                 <td>
-                                                    @if($company->status == 0)
-                                                        <span class="label label-primary">{{ $company->getStatus($company->status) }}</span>
-                                                    @elseif($company->status == 1)
-                                                        <span class="label label-success">{{ $company->getStatus($company->status) }}</span>
-                                                    @elseif($company->status == 2)
-                                                        <span class="label label-warning">{{ $company->getStatus($company->status) }}</span>
-                                                    @elseif($company->status == 3)
-                                                        <span class="label label-default">{{ $company->getStatus($company->status) }}</span>
+                                                    @if($item->status == 0)
+                                                        <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
+                                                    @elseif($item->status == 1)
+                                                        <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
+                                                    @elseif($item->status == 2)
+                                                        <span class="label label-warning">{{ $item->getStatus($item->status) }}</span>
+                                                    @elseif($item->status == 3)
+                                                        <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $manager->getName($company->manager_id) }}</td>
-                                                <td>{{ $company->created_at }}</td>
-                                                <td>{{ $company->verified_at }}</td>
+                                                <td>{{ $common->getValue('managers', $item->manager_id, 'name') }}</td>
+                                                <td>{{ $item->created_at }}</td>
+                                                <td>{{ $item->verified_at }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/company/'.$company->id) }}"
+                                                    <a href="{{ url('admin/company/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/company/'. $company->id .'/edit') }}"
+                                                    <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
                                                        class="btn btn-white btn-xs" title="编辑"><i
                                                                 class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                     <a href="#confirmModel" class="btn btn-danger btn-xs operate-delete"
                                                        data-toggle="modal" data-target="#confirmModal"
-                                                       data-name="{{ $company->name }}"
-                                                       data-url="company/{{ $company->id }}"
+                                                       data-id="{{ $item->id }}"
+                                                       data-url="company/{{ $item->id }}"
                                                        title="删除">
                                                         <i class="glyphicon glyphicon-trash"></i>删除
                                                     </a>

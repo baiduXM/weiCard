@@ -57,7 +57,7 @@ class UploadController extends BaseController
      * 获取文件夹路径
      *
      * @param $path_type        路径类型
-     * @param null $name 底层文件夹名
+     * @param null $name        底层文件夹名
      * @return bool|string
      */
     public function getPath($path_type, $name = null)

@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
+use App\Models\Common;
 use App\Models\Company;
-use App\Models\Manager;
-use App\Models\User;
 use Breadcrumbs;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -49,14 +49,13 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::paginate();
-        $user = new User();
-        $manager = new Manager();
+        $common = new Common();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'user' => $user,
-            'manager' => $manager,
+            'common' => $common,
         ]);
     }
+
     /**
      * 添加页面
      *
@@ -64,7 +63,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-         $company = new Company();
+        $company = new Company();
         return view('admin.company.create')->with([
             'company' => $company,
         ]);
@@ -80,42 +79,46 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name',
-            'User.password' => 'required|confirmed',
-            'User.email' => 'email|unique:users,users.email',
-            'User.nickname' => 'alpha_dash',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.mobile' => 'digits:11|unique:users,users.mobile',
-            'User.description' => 'max:255',
+            'Company.name' => 'required|max:255|unique:companies,companies.name',
+            'Company.code' => 'required|max:255|unique:companies,companies.code',
+            'Company.user_id' => 'required|numeric',
+            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.email' => 'email|max:255|unique:companies,companies.email',
+            'Company.telephone' => 'unique:companies,companies.telephone',
+            'Company.address' => 'max:255',
+            'Company.description' => 'max:255',
+            'Company.manager_id' => 'numeric',
+            'Company.status' => '',
         ], [], [
-            'User.name' => '账号',
-            'User.password' => '密码',
-            'User.email' => '邮箱',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.mobile' => '手机',
-            'User.description' => '说明',
+            'Company.name' => '公司名',
+            'Company.code' => '公司代码',
+            'Company.user_id' => '注册人ID',
+            'Company.logo' => '公司LOGO',
+            'Company.email' => '公司邮箱',
+            'Company.telephone' => '公司电话',
+            'Company.address' => '公司地址',
+            'Company.description' => '公司简介',
+            'Company.manager_id' => '审核人ID',
+            'Company.status' => '审核状态',
         ]);
 
-        /* 获取字段类型 */
-        $data = $request->input('User');
+        /* 获取字段 */
+        $data = $request->input('Company');
         foreach ($data as $key => $value) {
             if ($value == '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-            if ($key == 'password') {
-                $data[$key] = bcrypt($value);// 对密码加密
-            }
         }
 
-        /* 获取文件类型 */
-        if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
+        /* 获取文件 */
+        if ($request->hasFile('Company.logo')) {
+            $uploadController = new UploadController();
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['code']);
         }
 
         /* 添加 */
-        if (User::create($data)) {
-            return redirect('admin/user')->with('success', '添加成功');
+        if (Company::create($data)) {
+            return redirect('admin/company')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -129,8 +132,8 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.user.show')->with('user', $user);
+        $company = Company::findOrFail($id);
+        return view('admin.company.show')->with('company', $company);
     }
 
     /**
@@ -141,8 +144,8 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('admin.user.edit')->with('user', $user);
+        $company = Company::find($id);
+        return view('admin.company.edit')->with('company', $company);
     }
 
     /**
@@ -154,23 +157,23 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = Company::find($id);
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email' => 'email|unique:users,users.email,' . $id,
-            'User.nickname' => 'max:30',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
-            'User.description' => 'max:255',
+            'Company.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
+            'Company.email' => 'email|unique:users,users.email,' . $id,
+            'Company.nickname' => 'max:30',
+            'Company.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'Company.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
-            'User.email' => '邮箱',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.mobile' => '手机',
-            'User.description' => '说明',
+            'Company.name' => '账号',
+            'Company.email' => '邮箱',
+            'Company.nickname' => '昵称',
+            'Company.avatar' => '头像',
+            'Company.mobile' => '手机',
+            'Company.description' => '说明',
         ]);
-        $data = $request->input('User');
+        $data = $request->input('Company');
         foreach ($data as $key => $value) {
             if ($value == '') {
                 $data[$key] = null;
@@ -180,8 +183,8 @@ class CompanyController extends Controller
             }
         }
 
-        if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('User.avatar'));
+        if ($request->hasFile('Company.avatar')) {
+            $data['avatar'] = UploadController::saveImg($request->file('Company.avatar'));
             $user->avatar = $data['avatar'];
         }
 
@@ -193,7 +196,7 @@ class CompanyController extends Controller
         $user->is_admin = isset($data['is_admin']) ? 1 : 0;
         $user->is_active = $data['is_active'];
         if ($user->save()) {
-            return redirect('admin/user')->with('success', '修改成功');
+            return redirect('admin/company')->with('success', '修改成功');
         } else {
             return redirect()->back();
         }
@@ -207,7 +210,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = Company::find($id);
         if ($user->delete()) {
             return redirect('admin/user')->with('success', '删除成功 - ' . $user->name);
         } else {
@@ -226,7 +229,7 @@ class CompanyController extends Controller
         if ($ids == null) {
             $ids = explode(',', $request['ids']);
         }
-        $res = User::whereIn('id', $ids)->delete();
+        $res = Company::whereIn('id', $ids)->delete();
         if ($res) {
             return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
         } else {

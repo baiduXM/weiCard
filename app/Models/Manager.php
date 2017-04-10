@@ -16,14 +16,4 @@ class Manager extends Model
     ];
 
 
-    public function getName($id)
-    {
-        if ($id != 0) {
-            return Manager::findOrFail($id)->name;
-        } else {
-            return '无';
-        }
-    }
-
-
 }

@@ -13,8 +13,8 @@ use App\Http\Controllers\Common\UploadController;
 class CompanyController extends Controller
 {
 
-    protected $company_id; // 公司id
-    protected $path_type = 'company'; // 公司id
+    protected $company_id = null; // 公司id
+    protected $path_type = 'company'; // 文件路径保存分类
 
     public function __construct()
     {
@@ -41,12 +41,18 @@ class CompanyController extends Controller
 
     /**
      * 公司首页
-     * @return $this
+     *      判断用户是否注册或绑定公司
+     *      Y是:显示公司资料
+     *          检查公司认证状态
+     *          查看是否是公司注册人
+     *      N否:提示注册或绑定
+     * @return view
      */
     public function index()
     {
-        if ($this->hasCompany(Auth::id())) {
-            $company = Company::findOrFail($this->company_id);
+        $this->company_id = Auth::user()->company_id;
+        if ($this->company_id) {
+            $company = Company::find($this->company_id);
         } else {
             $company = null;
         }
@@ -57,11 +63,23 @@ class CompanyController extends Controller
     }
 
     /*
+     *
+     */
+
+    /**
      * 注册公司
+     *      判断用户是否没有绑定公司
+     *      Y没有:显示注册界面
+     *      N绑定过:返回公司首页
+     * @return view
      */
     public function create()
     {
-        return view('home.company.create');
+//        if (!Auth::user()->company_id) {
+            return view('home.company.create');
+//        } else {
+//            return redirect()->back();
+//        }
     }
 
     /*
@@ -69,10 +87,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+
         /* 验证 */
         $this->validate($request, [
             'Company.name' => 'required|unique:companies,companies.name',
-            'Company.code' => 'required|alpha_num|unique:companies,companies.code|regex:/^(?!([A-Za-z]+|d\d+)$)[A-Za-z\d]$/',
+            'Company.code' => 'required|alpha_num|unique:companies,companies.code',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.address' => 'max:255',
             'Company.email' => 'email|unique:companies,companies.email',
@@ -105,7 +124,10 @@ class CompanyController extends Controller
         }
 
         /* 添加 */
-        if (Company::create($data)) {
+        if ($company = Company::create($data)) {
+            $user = User::find(Auth::id());
+            $user->company_id = $company->id;
+            $user->save();
             return redirect('company')->with('success', '添加成功');
         } else {
             return redirect()->back();
@@ -197,7 +219,7 @@ class CompanyController extends Controller
      */
     protected function hasCompany($id)
     {
-        return $this->company_id = User::findOrFail($id, ['company_id'])->company_id;
+        return $this->company = Company::where('user_id', $id)->first();
     }
 
 }

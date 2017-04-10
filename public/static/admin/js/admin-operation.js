@@ -32,11 +32,11 @@ $(function () {
     $('.operate-delete').click(function () {
         $('#confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _name = relatedTarget.data('name');
+            var _id = relatedTarget.data('id');
             var _url = relatedTarget.data('url');
             var modal = $(this);
             modal.find('.modal-title').text('删除确认');
-            modal.find('.modal-body').text('是否删除' + _name + '用户？');
+            modal.find('.modal-body').text('是否删除' + _id + '用户？');
             modal.find('form').attr('action', _url);
             modal.find('[name="_method"]').val('DELETE');
         });

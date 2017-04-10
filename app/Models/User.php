@@ -22,7 +22,12 @@ class User extends Model
         'password', 'remember_token',
     ];
 
-    // 判断是否可用
+    /**
+     * 判断是否可用
+     *
+     * @param null $index
+     * @return array|mixed
+     */
     public function isActive($index = null)
     {
         $array = [
@@ -35,12 +40,5 @@ class User extends Model
         return $array;
     }
 
-    public function getName($id)
-    {
-        if ($id != 0) {
-            return User::findOrFail($id)->name;
-        } else {
-            return '无';
-        }
-    }
+
 }

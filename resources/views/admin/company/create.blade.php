@@ -13,132 +13,131 @@
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('Company.name') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="name">用户名<span
-                                        class="text-danger">*</span></label>
+                            <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
+                                公司名</label>
                             <div class="col-md-6">
-                                <input id="name" name="User[name]" type="text" placeholder="输入用户名"
+                                <input id="name" name="Company[name]" type="text" placeholder="输入公司名"
                                        class="form-control" value="{{ old('Company.name') }}">
                             </div>
-                            @if ($errors->has('User.name'))
+                            @if ($errors->has('Company.name'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.name') }}</strong>
+                                    <strong>{{ $errors->first('Company.name') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- name用户名 -->
-                        <div class="form-group {{ $errors->has('User.password') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="password">密码 <span
-                                        class="text-danger">*</span></label>
+                        </div><!-- name公司名 -->
+                        <div class="form-group {{ $errors->has('Company.code') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="code"><span class="text-danger">*</span> 公司代码</label>
                             <div class="col-md-6">
-                                <input id="password" name="User[password]" type="password" placeholder="输入密码"
-                                       class="form-control">
+                                <input id="code" name="Company[code]" type="text" placeholder="公司代码"
+                                       class="form-control" value="{{ old('Company.code') }}">
                             </div>
-                            @if ($errors->has('User.password'))
+                            @if ($errors->has('Company.code'))
                                 <span class="help-block col-md-3">
-                                        <strong>{{ $errors->first('User.password') }}</strong>
-                                    </span>
-                            @endif
-                        </div><!-- password密码 -->
-                        <div class="form-group {{ $errors->has('User.password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="password-confirm">确认密码 <span class="text-danger">*</span></label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" name="User[password_confirmation]" type="password"
-                                       placeholder="再次输入密码"
-                                       class="form-control">
-                            </div>
-                            @if ($errors->has('User.password_confirmation'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('Company.code') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- password_confirmation确认密码 -->
-                        <div class="form-group {{ $errors->has('User.email') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="email">邮箱</label>
+                        </div><!-- code公司代码 -->
+                        <div class="form-group {{ $errors->has('Company.user_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="user_id"><span class="text-danger">*</span> 公司注册人id</label>
                             <div class="col-md-6">
-                                <input id="email" name="User[email]" type="text" placeholder="输入邮箱"
-                                       class="form-control" value="{{ old('User.email') }}">
+                                <input id="user_id" name="Company[user_id]" type="number" placeholder="公司注册人"
+                                       class="form-control" value="{{ old('Company.user_id') }}">
                             </div>
-                            @if ($errors->has('User.email'))
+                            @if ($errors->has('Company.user_id'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.email') }}</strong>
+                                    <strong>{{ $errors->first('Company.user_id') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- email邮箱 -->
-                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="nickname">昵称</label>
+                        </div><!-- user_id公司注册人id -->
+                        <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="logo">Logo</label>
                             <div class="col-md-6">
-                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
-                                       class="form-control" value="{{ old('User.nickname') }}">
+                                <input id="logo" name="Company[logo]" type="file">
                             </div>
-                            @if ($errors->has('User.nickname'))
+                            @if ($errors->has('Company.logo'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.nickname') }}</strong>
+                                    <strong>{{ $errors->first('Company.logo') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- nickname昵称 -->
-                        <div class="form-group {{ $errors->has('User.avatar') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="avatar">头像</label>
+                        </div><!-- logo公司Logo -->
+                        <div class="form-group {{ $errors->has('Company.email') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="email">公司邮箱</label>
                             <div class="col-md-6">
-                                <input id="avatar" name="User[avatar]" type="file">
+                                <input id="email" name="Company[email]" type="text" placeholder="输入公司邮箱"
+                                       class="form-control" value="{{ old('Company.email') }}">
                             </div>
-                            @if ($errors->has('User.avatar'))
+                            @if ($errors->has('Company.email'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.avatar') }}</strong>
+                                    <strong>{{ $errors->first('Company.email') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- avatar头像 -->
-                        <div class="form-group {{ $errors->has('User.mobile') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="mobile">手机</label>
+                        </div><!-- email公司邮箱 -->
+                        <div class="form-group {{ $errors->has('Company.telephone') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="telephone">公司电话</label>
                             <div class="col-md-6">
-                                <input id="mobile" name="User[mobile]" type="text" placeholder="输入手机号"
-                                       class="form-control" value="{{ old('User.mobile') }}">
+                                <input id="telephone" name="Company[telephone]" type="text" placeholder="输入公司电话"
+                                       class="form-control" value="{{ old('Company.telephone') }}">
                             </div>
-                            @if ($errors->has('User.mobile'))
+                            @if ($errors->has('Company.telephone'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.mobile') }}</strong>
+                                    <strong>{{ $errors->first('Company.telephone') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- mobile手机 -->
-                        <div class="form-group {{ $errors->has('User.description') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="description">个性签名</label>
+                        </div><!-- telephone公司电话 -->
+                        <div class="form-group {{ $errors->has('Company.address') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="address">公司地址</label>
                             <div class="col-md-6">
-                                <textarea id="description" name="User[description]" class="form-control"
-                                          rows="3" placeholder="个性签名">{{ old('User.description') }}</textarea>
+                                <input id="address" name="Company[address]" type="text" placeholder="输入公司地址"
+                                       class="form-control" value="{{ old('Company.address') }}">
                             </div>
-                            @if ($errors->has('User.password_confirmation'))
+                            @if ($errors->has('Company.address'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('Company.address') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- description个性签名 -->
+                        </div><!-- address公司地址 -->
+                        <div class="form-group {{ $errors->has('Company.description') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="description">公司简介</label>
+                            <div class="col-md-6">
+                                <textarea id="description" name="Company[description]" class="form-control"
+                                          rows="3" placeholder="个性签名">{{ old('Company.description') }}</textarea>
+                            </div>
+                            @if ($errors->has('Company.password_confirmation'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Company.password_confirmation') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- description公司简介 -->
+                        <div class="form-group {{ $errors->has('Company.manager_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="manager_id">公司审核人id</label>
+                            <div class="col-md-6">
+                                <input id="manager_id" name="Company[manager_id]" type="number" placeholder="公司审核人"
+                                       class="form-control" value="{{ old('Company.manager_id') }}">
+                            </div>
+                            @if ($errors->has('Company.manager_id'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Company.manager_id') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- manager_id公司审核人id -->
                         <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_admin">管理员</label>
+                            <label class="col-md-3 control-label" for="status">审核状态</label>
                             <div class="col-md-6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="User[is_admin]"
-                                               value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是
-                                    </label>
-                                </div>
-                            </div>
-                        </div><!-- is_admin是否是管理员 -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_active">账号状态</label>
-                            <div class="col-md-6">
-                                @foreach($user->isActive() as $item => $value)
+                                @foreach($company->getStatus() as $item => $value)
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="User[is_active]"
-                                                   value="{{ $item }}" {{ old('User.is_active') == $item ? 'checked' : '' }}>{{ $value }}
+                                            <input type="radio" name="Company[status]"
+                                                   value="{{ $item }}" {{ old('Company.status') == $item ? 'checked' : '' }}>{{ $value }}
                                         </label>
                                     </div>
                                 @endforeach
                             </div>
-                        </div><!-- is_active是否可用 -->
+                        </div><!-- status审核状态 -->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url('admin/user') }}" type="button" role="button"
+                                <a href="{{ url('admin/company') }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
