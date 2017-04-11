@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers\Common;
 
-//use App\Models\Admin\Company;
-//use App\Models\Admin\Template;
-//use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Routing\Controller as BaseController;
-
 
 /*
  * 路径规则
@@ -21,7 +17,6 @@ use Illuminate\Routing\Controller as BaseController;
  * 公司   company     public/uploads/company/{$code}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
  * 模板   template    public/template/{$code}/...                 url可访问
- *
  */
 
 class UploadController extends BaseController
@@ -57,14 +52,11 @@ class UploadController extends BaseController
      * 获取文件夹路径
      *
      * @param $path_type        路径类型
-     * @param null $name        底层文件夹名
+     * @param null $name 底层文件夹名
      * @return bool|string
      */
     public function getPath($path_type, $name = null)
     {
-        if ($name) {
-            $name = iconv('utf-8', 'gbk', $name);
-        }
         switch ($path_type) {
             case 'user':
                 $targetPath = 'uploads/user/' . $name;
@@ -79,7 +71,7 @@ class UploadController extends BaseController
                 $targetPath = 'uploads/website';
                 break;
             case 'template':
-                $targetPath = 'template/' . $name;// .模板编号
+                $targetPath = 'uploads/template/' . $name;// .模板编号
                 break;
             default:
                 return false;
@@ -125,7 +117,7 @@ class UploadController extends BaseController
     private function hasFolder($path)
     {
         if (!file_exists($path)) {
-            mkdir(iconv('utf-8', 'gbk', $path), 0777, true);
+            mkdir($path, 0777, true);
         }
     }
 }

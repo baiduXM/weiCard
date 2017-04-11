@@ -28,9 +28,11 @@
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="company"
-                                        title="重置刷新"><i
-                                            class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+                                        data-url="company" title="重置刷新">
+                                    <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+                                <button class="btn btn-default operate-retweet" type="button" name="retweet"
+                                        data-url="company" title="垃圾箱">
+                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
                             </div><!--显示-->
                             <form name="form_search" action="{{ url('/admin/company') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
@@ -53,7 +55,7 @@
                                                    style="cursor: pointer;">邮箱</a></li>
                                         </ul>
                                     </div><!-- /btn-group -->
-                                    <input type="hidden" name="column" value="name"/>
+                                    {{--<input type="hidden" name="column" value="name"/>--}}
                                     <input class="form-control search" type="text" name="keyword"
                                            placeholder="Search"/>
                                     <span class="input-group-btn">
@@ -91,9 +93,9 @@
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="code">公司代码</div>
+                                            <div class="th-inner" data-name="display_name">显示名称</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--code-->
+                                        </th><!--display_name-->
                                         <th style="">
                                             <div class="th-inner" data-name="user_name">注册人</div>
                                             <div class="fht-cell"></div>
@@ -107,10 +109,6 @@
                                             <div class="fht-cell"></div>
                                         </th><!--status-->
                                         <th style="">
-                                            <div class="th-inner" data-name="manager_name">审核人</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--manager_name-->
-                                        <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
                                                     <span class="caret" style="margin: 10px 5px;"></span>
@@ -118,14 +116,6 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--created_at-->
-                                        <th style="">
-                                            <div class="th-inner sortable" data-name="verified_at">审核时间
-                                                <span class="order">
-                                                    <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span><!--dropup-->
-                                            </div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--verified_at-->
                                         <th style="">
                                             <div class="th-inner">操作</div>
                                             <div class="fht-cell"></div>
@@ -145,36 +135,61 @@
                                                 </td><!--checkbox-->
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->name }}</td>
-                                                <td>{{ $item->code }}</td>
+                                                <td>{{ $item->display_name }}</td>
                                                 <td>{{ $common->getValue('users', $item->user_id, 'name') }}</td>
                                                 <td>
-                                                    @if($item->status == 0)
-                                                        <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
-                                                    @elseif($item->status == 1)
-                                                        <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
-                                                    @elseif($item->status == 2)
-                                                        <span class="label label-warning">{{ $item->getStatus($item->status) }}</span>
-                                                    @elseif($item->status == 3)
-                                                        <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
+                                                    @if($item->deleted_at != null)
+                                                        <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
+                                                    @else
+                                                        @if($item->is_active == 1)
+                                                            <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
+                                                        @else
+                                                            <span class="label label-default">{{ $common->isActive($item->is_active) }}</span>
+                                                        @endif
+                                                        @if($item->status == $modal::VERIFIED_ING)
+                                                            <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
+                                                        @elseif($item->status == $modal::VERIFIED_SUCCEED)
+                                                            <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
+                                                        @elseif($item->status == $modal::VERIFIED_FAILED)
+                                                            <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
+                                                        @elseif($item->status == $modal::VERIFIED_UPDATED)
+                                                            <span class="label label-warning">{{ $item->getStatus($item->status) }}</span>
+                                                        @endif
                                                     @endif
                                                 </td>
-                                                <td>{{ $common->getValue('managers', $item->manager_id, 'name') }}</td>
                                                 <td>{{ $item->created_at }}</td>
-                                                <td>{{ $item->verified_at }}</td>
                                                 <td>
                                                     <a href="{{ url('admin/company/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
-                                                       class="btn btn-white btn-xs" title="编辑"><i
-                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                    <a href="#confirmModel" class="btn btn-danger btn-xs operate-delete"
-                                                       data-toggle="modal" data-target="#confirmModal"
-                                                       data-id="{{ $item->id }}"
-                                                       data-url="company/{{ $item->id }}"
-                                                       title="删除">
-                                                        <i class="glyphicon glyphicon-trash"></i>删除
-                                                    </a>
+                                                    @if($item->deleted_at == null)
+                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
+                                                           class="btn btn-primary btn-xs" title="编辑"><i
+                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                        @if($item->status != $modal::VERIFIED_SUCCEED)
+                                                            <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
+                                                               class="btn btn-success btn-xs" title="审核"><i
+                                                                        class="glyphicon glyphicon-list-alt"></i>审核</a>
+                                                        @endif
+                                                        <a href="#confirmModel"
+                                                           class="btn btn-danger btn-xs operate-delete"
+                                                           data-toggle="modal" data-target="#confirmModal"
+                                                           data-id="{{ $item->id }}"
+                                                           data-url="company/{{ $item->id }}"
+                                                           title="删除">
+                                                            <i class="glyphicon glyphicon-trash"></i>删除
+                                                        </a>
+                                                    @else
+                                                        <a href="#confirmModel"
+                                                           class="btn btn-warning btn-xs operate-recover"
+                                                           {{--data-toggle="modal" data-target="#confirmModal"--}}
+                                                           {{--data-id="{{ $item->id }}"--}}
+                                                           {{--data-url="company/{{ $item->id }}"--}}
+                                                           title="恢复">
+                                                            <i class="glyphicon glyphicon-trash"></i>恢复
+                                                        </a>
+                                                    @endif
+
                                                 </td><!--操作-->
                                             </tr>
                                         @endforeach
@@ -187,27 +202,6 @@
                                 </table>
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
-                                {{--
-                                    <div class="pull-left pagination-detail">
-                                        <span class="pagination-info">每页显示
-                                            <span class="page-list">
-                                                <span class="btn-group dropup">
-                                                    <button type="button"
-                                                            class="btn btn-default dropdown-toggle"
-                                                            data-toggle="dropdown">
-                                                        <span class="page-size">10</span> <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li class="active"><a href="javascript:void(0);">10</a></li>
-                                                        <li><a href="javascript:void(0);">25</a></li>
-                                                        <li><a href="javascript:void(0);">50</a></li>
-                                                        <li><a href="javascript:void(0);">100</a></li>
-                                                    </ul>
-                                                </span>
-                                            </span> 条
-                                        </span>
-                                    </div><!--每页几条-->
-                                    --}}
                                 <div class="pull-right pagination">
                                     {!! $companies->render() !!}
                                 </div><!--跳转页码-->

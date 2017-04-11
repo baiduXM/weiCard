@@ -121,7 +121,7 @@ class UserController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'));
+            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), 'user', $data['name']);
         }
 
         /* 添加 */
@@ -230,6 +230,7 @@ class UserController extends Controller
     /**
      * 批量删除
      *
+     * @param Request $request
      * @param array $ids
      * @return \Illuminate\Http\RedirectResponse
      */

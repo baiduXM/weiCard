@@ -42,6 +42,21 @@ $(function () {
         });
     });
 
+    /* 恢复 */
+    $('.operate-recover').click(function () {
+        alert('功能待开发');
+        // $('#confirmModal').on('show.bs.modal', function (event) {
+        //     var relatedTarget = $(event.relatedTarget);
+        //     var _id = relatedTarget.data('id');
+        //     var _url = relatedTarget.data('url');
+        //     var modal = $(this);
+        //     modal.find('.modal-title').text('恢复确认');
+        //     modal.find('.modal-body').text('是否恢复' + _id + '用户？');
+        //     modal.find('form').attr('action', _url);
+        //     modal.find('[name="_method"]').val('put');
+        // });
+    });
+
     /* 批量删除 */
     $(".operate-batch-delete").click(function () {
         var length = $('.selectall-item:checked').length;
@@ -109,6 +124,10 @@ $(function () {
         location.href = _url;
     });
 
+    /* 查看垃圾箱 */
+    $('.operate-retweet').click(function () {
+        alert('功能待开发');
+    });
 
     /* 初始化 */
     function init() {

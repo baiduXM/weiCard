@@ -9,9 +9,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
+
+    use SoftDeletes;
 
     const VERIFIED_ING = 0; // 认证中
     const VERIFIED_SUCCEED = 1; // 认证通过
@@ -22,9 +25,9 @@ class Company extends Model
 
 //    protected $dateFormat = 'U';
 
-    protected $fillable = [
-        'user_id', 'name', 'code', 'logo', 'address', 'email', 'telephone', 'description', 'manager_id', 'status',
-        'created_at', 'updated_at', 'verified_at', 'deleted_at',
+
+    protected $guarded = [
+        'id', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $hidden = [
@@ -40,13 +43,13 @@ class Company extends Model
     public function getStatus($index = null)
     {
         $array = [
-            self::VERIFIED_ING => '认证中',
-            self::VERIFIED_SUCCEED => '认证通过',
-            self::VERIFIED_FAILED => '认证失败',
-            self::VERIFIED_UPDATED => '资料变更',
+            self::VERIFIED_ING => '审核中',
+            self::VERIFIED_SUCCEED => '审核通过',
+            self::VERIFIED_FAILED => '审核失败',
+            self::VERIFIED_UPDATED => '重新审核',
         ];
         if ($index !== null) {
-            return array_key_exists($index, $array) ? $array[$index] : $array[self::VERIFIED_ING];
+            return array_key_exists($index, $array) ? $array[$index] : reset($array);
         }
         return $array;
     }

@@ -9,6 +9,7 @@ use App\Models\Common;
 use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -18,25 +19,31 @@ class CompanyController extends Controller
         // 首页 > 公司列表
         Breadcrumbs::register('admin.company', function ($breadcrumbs) {
             $breadcrumbs->parent('admin');
-            $breadcrumbs->push('公司列表', route('admin.user.index'));
+            $breadcrumbs->push('公司列表', route('admin.company.index'));
         });
 
-        // 首页 > 公司列表 > 添加公司
+        // 首页 > 公司列表 > 添加
         Breadcrumbs::register('admin.company.create', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('添加公司', route('admin.company.create'));
+            $breadcrumbs->push('添加', route('admin.company.create'));
         });
 
-        // 首页 > 公司列表 > 公司详情（审核）
+        // 首页 > 公司列表 > 详情
         Breadcrumbs::register('admin.company.show', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('用户详情', route('admin.company.show', $id));
+            $breadcrumbs->push('详情', route('admin.company.show', $id));
         });
 
-        // 首页 > 公司列表 > 修改公司（审核）
+        // 首页 > 公司列表 > 编辑
         Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('修改用户', route('admin.company.edit', $id));
+            $breadcrumbs->push('修改', route('admin.company.edit', $id));
+        });
+
+        // 首页 > 公司列表 > 审核
+        Breadcrumbs::register('admin.company.verified', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.company');
+            $breadcrumbs->push('审核', route('admin.company.verified', $id));
         });
     }
 
@@ -44,15 +51,17 @@ class CompanyController extends Controller
     /**
      * 索引
      *
-     * @return $this
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $companies = Company::paginate();
+        $modal = new Company();
+        $companies = $modal::withTrashed()->paginate();
         $common = new Common();
         return view('admin.company.index')->with([
             'companies' => $companies,
             'common' => $common,
+            'modal' => $modal,
         ]);
     }
 
@@ -64,8 +73,10 @@ class CompanyController extends Controller
     public function create()
     {
         $company = new Company();
+        $common = new Common();
         return view('admin.company.create')->with([
             'company' => $company,
+            'common' => $common,
         ]);
     }
 
@@ -80,8 +91,8 @@ class CompanyController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Company.name' => 'required|max:255|unique:companies,companies.name',
-            'Company.code' => 'required|max:255|unique:companies,companies.code',
-            'Company.user_id' => 'required|numeric',
+            'Company.display_name' => 'max:255|unique:companies,companies.display_name',
+            'Company.user_id' => 'required|numeric|exists:users,id,is_active,1',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email',
             'Company.telephone' => 'unique:companies,companies.telephone',
@@ -89,9 +100,10 @@ class CompanyController extends Controller
             'Company.description' => 'max:255',
             'Company.manager_id' => 'numeric',
             'Company.status' => '',
+            'Company.is_active' => '',
         ], [], [
-            'Company.name' => '公司名',
-            'Company.code' => '公司代码',
+            'Company.name' => '公司名称',
+            'Company.display_name' => '显示名称',
             'Company.user_id' => '注册人ID',
             'Company.logo' => '公司LOGO',
             'Company.email' => '公司邮箱',
@@ -100,6 +112,7 @@ class CompanyController extends Controller
             'Company.description' => '公司简介',
             'Company.manager_id' => '审核人ID',
             'Company.status' => '审核状态',
+            'Company.is_active' => '激活状态',
         ]);
 
         /* 获取字段 */
@@ -113,7 +126,7 @@ class CompanyController extends Controller
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['code']);
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['name']);
         }
 
         /* 添加 */
@@ -133,7 +146,11 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = Company::findOrFail($id);
-        return view('admin.company.show')->with('company', $company);
+        $common = new Common();
+        return view('admin.company.show')->with([
+            'company' => $company,
+            'common' => $common,
+        ]);
     }
 
     /**
@@ -145,7 +162,15 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $company = Company::find($id);
-        return view('admin.company.edit')->with('company', $company);
+        if ($company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
+            $common = new Common();
+            return view('admin.company.edit')->with([
+                'company' => $company,
+                'common' => $common,
+            ]);
+        } else {
+            return redirect('admin/company')->with('error', '您不是审核者，无法修改！');
+        }
     }
 
     /**
@@ -157,46 +182,47 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Company::find($id);
+        $company = Company::find($id);
         $this->validate($request, [
-            'Company.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'Company.email' => 'email|unique:users,users.email,' . $id,
-            'Company.nickname' => 'max:30',
-            'Company.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
+            'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
+            'Company.user_id' => 'required|numeric|exists:users,id,is_active,1',
+            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.email' => 'email|max:255|unique:companies,companies.email,' . $id,
+            'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
+            'Company.address' => 'max:255',
             'Company.description' => 'max:255',
+            'Company.is_active' => '',
         ], [], [
-            'Company.name' => '账号',
-            'Company.email' => '邮箱',
-            'Company.nickname' => '昵称',
-            'Company.avatar' => '头像',
-            'Company.mobile' => '手机',
-            'Company.description' => '说明',
+            'Company.name' => '公司名称',
+            'Company.display_name' => '显示名称',
+            'Company.user_id' => '注册人ID',
+            'Company.logo' => '公司LOGO',
+            'Company.email' => '公司邮箱',
+            'Company.telephone' => '公司电话',
+            'Company.address' => '公司地址',
+            'Company.description' => '公司简介',
+            'Company.is_active' => '激活状态',
         ]);
         $data = $request->input('Company');
+
+
+        /* 获取文件 */
+        if ($request->hasFile('Company.logo')) {
+            $uploadController = new UploadController();
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['name']);
+        }
+        $data['status'] = Company::VERIFIED_UPDATED;
+
+
         foreach ($data as $key => $value) {
-            if ($value == '') {
-                $data[$key] = null;
-            }
-            if ($key == 'password') {
-                $data[$key] = bcrypt($value);
+            if ($value != '') {
+                $company->$key = $data[$key];
             }
         }
-
-        if ($request->hasFile('Company.avatar')) {
-            $data['avatar'] = UploadController::saveImg($request->file('Company.avatar'));
-            $user->avatar = $data['avatar'];
-        }
-
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->nickname = $data['nickname'];
-        $user->mobile = $data['mobile'];
-        $user->description = $data['description'];
-        $user->is_admin = isset($data['is_admin']) ? 1 : 0;
-        $user->is_active = $data['is_active'];
-        if ($user->save()) {
-            return redirect('admin/company')->with('success', '修改成功');
+//        dd($company);
+        if ($company->save()) {
+            return redirect('admin/company')->with('success', '修改成功 - ' . $company->id);
         } else {
             return redirect()->back();
         }
@@ -210,32 +236,86 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $user = Company::find($id);
-        if ($user->delete()) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $user->name);
+        $company = Company::find($id);
+        $company->delete();
+        if ($company->trashed()) {
+            return redirect('admin/company')->with('success', '删除成功 - ' . $company->id);
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $user->name);
+            return redirect('admin/company')->with('error', '删除失败 - ' . $company->id);
         }
     }
 
     /**
      * 批量删除
      *
-     * @param array $ids
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function batchDestroy(Request $request, $ids = array())
+    public function batchDestroy(Request $request)
     {
-        if ($ids == null) {
-            $ids = explode(',', $request['ids']);
-        }
+        $ids = explode(',', $request['ids']);
         $res = Company::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('admin/company')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('admin/company')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
+
+    /**
+     *
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function getVerified($id)
+    {
+        $company = Company::find($id);
+        if ($company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
+            $common = new Common();
+            return view('admin.company.verified')->with([
+                'company' => $company,
+                'common' => $common,
+            ]);
+        } else {
+            return redirect('admin/company')->with('error', '您不是审核者！');
+        }
+    }
+
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function putVerified(Request $request, $id)
+    {
+        $model = new Company();
+        $company = $model::find($id);
+        $this->validate($request, [
+            'Company.status' => 'required',
+            'Company.reason' => 'required_if:Company.status,' . $model::VERIFIED_FAILED . '|max:255',
+        ], [
+            'required_if' => '当 :other 为 ' . $model->getStatus($model::VERIFIED_FAILED) . ' 时 :attribute 不能为空。',
+        ], [
+            'Company.status' => '审核状态',
+            'Company.reason' => '失败原因',
+        ]);
+        $data = $request->input('Company');
+
+        $data['manager_id'] = Auth::guard('admin')->id();
+        $data['verified_at'] = date('Y-m-d H:i:s', time());
+
+        foreach ($data as $key => $value) {
+            if ($value != '') {
+                $company->$key = $data[$key];
+            }
+        }
+        if ($company->save()) {
+            return redirect('admin/company')->with('info', '审核完成 - ' . $company->id);
+        } else {
+            return redirect()->back();
+        }
+    }
 
 }

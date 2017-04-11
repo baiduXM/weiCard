@@ -27,3 +27,10 @@
         <strong>危险!</strong> {{ Session::get('danger') }}
     </div>
 @endif
+@if( Session::get('error'))
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <strong>错误!</strong> {{ Session::get('error') }}
+    </div>
+@endif

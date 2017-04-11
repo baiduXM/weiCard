@@ -89,6 +89,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('user', 'Admin\UserController');
 
     /* 公司管理 */
+    Route::group(['prefix' => 'company'], function () {
+        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\CompanyController@batchDestroy']);
+        Route::get('{id}/verified', ['as' => 'admin.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
+        Route::match(['put', 'patch'], '{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@putVerified']);
+    });
     Route::resource('company', 'Admin\CompanyController');
 
     /* 模板管理 */

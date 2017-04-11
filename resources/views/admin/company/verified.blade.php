@@ -1,13 +1,59 @@
 @extends('admin.common.layout')
-@section('title', '公司详情')
+@section('title', '审核资料')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.show', $company->id) !!}
+    {!! Breadcrumbs::render('admin.company.verified', $company->id) !!}
 @stop
 @section('content')
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading">详细信息</div>
+                <div class="panel-heading">审核资料</div>
+                <div class="panel-body">
+                    <form class="form-horizontal" action="{{ url('admin/company/' . $company->id . '/verified') }}"
+                          method="post"
+                          enctype="multipart/form-data">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="status">审核状态</label>
+                            <div class="col-md-6">
+                                @foreach($company->getStatus() as $item => $value)
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Company[status]" value="{{ $item }}"
+                                            @if(old('Company.status') === null)
+                                                {{ $company->status == $item ? 'checked' : '' }}
+                                                    @else
+                                                {{ old('Company.status') == $item ? 'checked' : '' }}
+                                                    @endif
+                                            >{{ $value }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div><!-- status审核状态 -->
+                        <div class="form-group {{ $errors->has('Company.reason') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="reason">失败原因</label>
+                            <div class="col-md-6">
+                                <textarea id="reason" name="Company[reason]" class="form-control"
+                                          rows="3" placeholder="审核失败原因">{{ old('Company.reason') }}</textarea>
+                            </div>
+                            @if ($errors->has('Company.reason'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Company.reason') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- reason失败原因 -->
+                        <div class="form-group">
+                            <div class="col-md-12 widget-left">
+                                <button type="submit" class="btn btn-primary btn-md">确认</button>
+                                <button type="reset" class="btn btn-warning btn-md">重置</button>
+                                <a href="{{ url('admin/company') }}" type="button" role="button"
+                                   class="btn btn-danger btn-md">返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
@@ -16,12 +62,12 @@
                                 <td class="col-md-9">{{ $company->id }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司名称</th>
-                                <td class="">{{ $company->name }}</td>
+                                <th class="text-right col-md-3">公司名称</th>
+                                <td class="col-md-9">{{ $company->name }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司显示名称</th>
-                                <td>{{ $company->display_name }}</td>
+                                <td>{{ $company->display }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">LOGO</th>
@@ -44,7 +90,7 @@
                             </tr>
                             <tr>
                                 <th class="text-right">注册人ID</th>
-                                <td>{{ $company->user_id . ' - ' . $common->getValue('users', $company->user_id) }}</td>
+                                <td>{{ $company->user_id }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">激活状态</th>
@@ -72,42 +118,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-right">审核人ID</th>
-                                <td>{{ $company->manager_id . ' - ' . $common->getValue('managers', $company->manager_id) }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核失败原因</th>
-                                <td>{{ $company->reason }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核通过时间</th>
-                                <td>{{ $company->verified_at }}</td>
-                            </tr>
-                            <tr>
                                 <th class="text-right">创建时间</th>
                                 <td>{{ $company->created_at }}</td>
                             </tr>
-                            <tr>
-                                <th class="text-right">更新时间</th>
-                                <td>{{ $company->updated_at }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">删除时间</th>
-                                <td>{{ $company->deleted_at }}</td>
-                            </tr>
                         </table>
-                        <div class="form-group">
-                            <div class="col-md-12 widget-left">
-                                @if($company->status != $company::VERIFIED_SUCCEED)
-                                    <a href="{{ url('admin/company/' . $company->id . '/verified') }}" type="button"
-                                       class="btn btn-success btn-md">审核</a>
-                                @endif
-                                <a href="{{ url('admin/company/' . $company->id . '/edit') }}" type="button"
-                                   class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url('admin/company') }}" type="button" role="button"
-                                   class="btn btn-danger btn-md">返回</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -116,8 +130,5 @@
 @stop
 @section('javascript')
     <script>
-        $(".verify-failed").click(function () {
-            alert({{ $company->id }});
-        });
     </script>
 @stop

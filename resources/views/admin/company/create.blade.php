@@ -12,11 +12,12 @@
                     <form class="form-horizontal" action="{{ url('admin/company') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
+
                         <div class="form-group {{ $errors->has('Company.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
-                                公司名</label>
+                                公司名称</label>
                             <div class="col-md-6">
-                                <input id="name" name="Company[name]" type="text" placeholder="输入公司名"
+                                <input id="name" name="Company[name]" type="text" placeholder="公司名（字母或数字）"
                                        class="form-control" value="{{ old('Company.name') }}">
                             </div>
                             @if ($errors->has('Company.name'))
@@ -24,21 +25,23 @@
                                     <strong>{{ $errors->first('Company.name') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- name公司名 -->
-                        <div class="form-group {{ $errors->has('Company.code') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="code"><span class="text-danger">*</span> 公司代码</label>
+                        </div><!-- name公司代码 -->
+                        <div class="form-group {{ $errors->has('Company.display_name') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="display_name"><span class="text-danger">*</span>
+                                显示名称</label>
                             <div class="col-md-6">
-                                <input id="code" name="Company[code]" type="text" placeholder="公司代码"
-                                       class="form-control" value="{{ old('Company.code') }}">
+                                <input id="display_name" name="Company[display_name]" type="text" placeholder="输入公司显示名称"
+                                       class="form-control" value="{{ old('Company.display_name') }}">
                             </div>
-                            @if ($errors->has('Company.code'))
+                            @if ($errors->has('Company.display_name'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Company.code') }}</strong>
+                                    <strong>{{ $errors->first('Company.display_name') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- code公司代码 -->
+                        </div><!-- display_name公司名 -->
                         <div class="form-group {{ $errors->has('Company.user_id') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="user_id"><span class="text-danger">*</span> 公司注册人id</label>
+                            <label class="col-md-3 control-label" for="user_id"><span class="text-danger">*</span>
+                                公司注册人ID</label>
                             <div class="col-md-6">
                                 <input id="user_id" name="Company[user_id]" type="number" placeholder="公司注册人"
                                        class="form-control" value="{{ old('Company.user_id') }}">
@@ -50,7 +53,7 @@
                             @endif
                         </div><!-- user_id公司注册人id -->
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="logo">Logo</label>
+                            <label class="col-md-3 control-label" for="logo">LOGO</label>
                             <div class="col-md-6">
                                 <input id="logo" name="Company[logo]" type="file">
                             </div>
@@ -133,6 +136,19 @@
                                 @endforeach
                             </div>
                         </div><!-- status审核状态 -->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="is_active">账号状态</label>
+                            <div class="col-md-6">
+                                @foreach($common->isActive() as $item => $value)
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Company[is_active]"
+                                                   value="{{ $item }}" {{ old('Company.is_active') == $item ? 'checked' : '' }}>{{ $value }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div><!-- is_active是否可用 -->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
