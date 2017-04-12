@@ -23,7 +23,7 @@
 
             <div class="pass2 input">
                 <img src="{{ asset('static/home/image/icon3.png') }}" alt="" title="重复密码">
-                <input type="password" name="User[password_confirmation]" placeholder="重复密码">
+                <input type="password" name="password_confirmation" placeholder="重复密码">
             </div>
             <button type="submit">注册</button>
             <div class="txt" style="text-align: center;">

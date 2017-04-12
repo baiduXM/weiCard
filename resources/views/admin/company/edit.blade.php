@@ -58,7 +58,8 @@
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">Logo</label>
                             <div class="col-md-6">
-                                <input id="logo" name="Company[logo]" type="file">
+                                <input id="logo" name="Company[logo]" type="file" >
+{{--                                       value="{{ old('Company.logo') ? old('Company.logo') : $company->logo }}">--}}
                             </div>
                             @if ($errors->has('Company.logo'))
                                 <span class="help-block col-md-3">

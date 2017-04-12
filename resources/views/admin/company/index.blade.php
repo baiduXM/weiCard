@@ -1,5 +1,5 @@
 @extends('admin.common.layout')
-@section('title', '用户管理')
+@section('title', '公司管理')
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.company') !!}
 @stop
@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    用户管理
+                    公司管理
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -152,8 +152,6 @@
                                                             <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
                                                         @elseif($item->status == $modal::VERIFIED_FAILED)
                                                             <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $modal::VERIFIED_UPDATED)
-                                                            <span class="label label-warning">{{ $item->getStatus($item->status) }}</span>
                                                         @endif
                                                     @endif
                                                 </td>
@@ -163,14 +161,14 @@
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
                                                     @if($item->deleted_at == null)
-                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
-                                                           class="btn btn-primary btn-xs" title="编辑"><i
-                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                         @if($item->status != $modal::VERIFIED_SUCCEED)
                                                             <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
                                                                class="btn btn-success btn-xs" title="审核"><i
                                                                         class="glyphicon glyphicon-list-alt"></i>审核</a>
                                                         @endif
+                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
+                                                           class="btn btn-primary btn-xs" title="编辑"><i
+                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                         <a href="#confirmModel"
                                                            class="btn btn-danger btn-xs operate-delete"
                                                            data-toggle="modal" data-target="#confirmModal"

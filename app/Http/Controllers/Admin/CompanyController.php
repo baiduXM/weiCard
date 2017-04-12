@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Common;
@@ -11,8 +10,11 @@ use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class CompanyController extends Controller
 {
+
+    protected $path_type = 'company'; // 文件路径保存分类
 
     public function __construct()
     {
@@ -90,43 +92,40 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name',
-            'Company.display_name' => 'max:255|unique:companies,companies.display_name',
-            'Company.user_id' => 'required|numeric|exists:users,id,is_active,1',
+            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email',
             'Company.telephone' => 'unique:companies,companies.telephone',
             'Company.address' => 'max:255',
             'Company.description' => 'max:255',
-            'Company.manager_id' => 'numeric',
-            'Company.status' => '',
             'Company.is_active' => '',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
-            'Company.user_id' => '注册人ID',
             'Company.logo' => '公司LOGO',
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
             'Company.description' => '公司简介',
-            'Company.manager_id' => '审核人ID',
-            'Company.status' => '审核状态',
             'Company.is_active' => '激活状态',
         ]);
 
         /* 获取字段 */
         $data = $request->input('Company');
         foreach ($data as $key => $value) {
-            if ($value == '') {
+            if ($value === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
+        $data['user_id'] = 0;
+        $data['manager_id'] = Auth::guard('admin')->id();
+        $data['status'] = 0;
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['name']);
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         /* 添加 */
@@ -145,7 +144,9 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::findOrFail($id);
+        if (!$company = Company::find($id)) {
+            return redirect('admin/company')->with('warning', '公司不存在');
+        }
         $common = new Common();
         return view('admin.company.show')->with([
             'company' => $company,
@@ -161,7 +162,9 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::find($id);
+        if (!$company = Company::find($id)) {
+            return redirect('admin/company')->with('warning', '公司不存在');
+        }
         if ($company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
             $common = new Common();
             return view('admin.company.edit')->with([
@@ -182,7 +185,7 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company = Company::find($id);
+
         $this->validate($request, [
             'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
@@ -206,21 +209,20 @@ class CompanyController extends Controller
         ]);
         $data = $request->input('Company');
 
-
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), 'company', $data['name']);
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
         }
-        $data['status'] = Company::VERIFIED_UPDATED;
+        $data['status'] = Company::VERIFIED_ING;
 
-
+        $company = Company::find($id);
         foreach ($data as $key => $value) {
-            if ($value != '') {
+            if ($value !== '') {
                 $company->$key = $data[$key];
             }
         }
-//        dd($company);
+
         if ($company->save()) {
             return redirect('admin/company')->with('success', '修改成功 - ' . $company->id);
         } else {
@@ -307,7 +309,7 @@ class CompanyController extends Controller
         $data['verified_at'] = date('Y-m-d H:i:s', time());
 
         foreach ($data as $key => $value) {
-            if ($value != '') {
+            if ($value !== '') {
                 $company->$key = $data[$key];
             }
         }

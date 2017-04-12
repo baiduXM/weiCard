@@ -1,12 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hsieh
- * Date: 2017/4/5
- * Time: 16:13
+/*
+ * 全局变量设定
+ * 读取config('global.xxx')
  */
 return [
 
-    'SUPER_ADMINISTRATOR_NAME' => 'admin', // 超级管理员默认名字
+    'product_name' => '微名片', // 项目名
+    'super_administrator_name' => 'admin', // 超级管理员默认名字
 
 ];

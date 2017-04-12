@@ -39,19 +39,6 @@
                                 </span>
                             @endif
                         </div><!-- display_name公司名 -->
-                        <div class="form-group {{ $errors->has('Company.user_id') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="user_id"><span class="text-danger">*</span>
-                                公司注册人ID</label>
-                            <div class="col-md-6">
-                                <input id="user_id" name="Company[user_id]" type="number" placeholder="公司注册人"
-                                       class="form-control" value="{{ old('Company.user_id') }}">
-                            </div>
-                            @if ($errors->has('Company.user_id'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Company.user_id') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- user_id公司注册人id -->
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">LOGO</label>
                             <div class="col-md-6">
@@ -111,31 +98,6 @@
                                 </span>
                             @endif
                         </div><!-- description公司简介 -->
-                        <div class="form-group {{ $errors->has('Company.manager_id') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="manager_id">公司审核人id</label>
-                            <div class="col-md-6">
-                                <input id="manager_id" name="Company[manager_id]" type="number" placeholder="公司审核人"
-                                       class="form-control" value="{{ old('Company.manager_id') }}">
-                            </div>
-                            @if ($errors->has('Company.manager_id'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Company.manager_id') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- manager_id公司审核人id -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="status">审核状态</label>
-                            <div class="col-md-6">
-                                @foreach($company->getStatus() as $item => $value)
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="Company[status]"
-                                                   value="{{ $item }}" {{ old('Company.status') == $item ? 'checked' : '' }}>{{ $value }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div><!-- status审核状态 -->
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">

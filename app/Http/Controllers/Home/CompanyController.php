@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Common;
 use App\Models\Company;
 use App\Models\User;
 use Breadcrumbs;
@@ -10,10 +11,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Common\UploadController;
 
+/*
+ * index
+ * 判断是否
+ */
+
 class CompanyController extends Controller
 {
 
-    protected $company_id = null; // 公司id
     protected $path_type = 'company'; // 文件路径保存分类
 
     public function __construct()
@@ -32,6 +37,28 @@ class CompanyController extends Controller
             $breadcrumbs->push('公司注册', route('company.create'));
         });
 
+        // 我的公司 > 编辑资料
+        Breadcrumbs::register('company.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('编辑资料', route('company.edit', $id));
+        });
+
+        // 我的公司 > 查看资料
+        Breadcrumbs::register('company.show', function ($breadcrumbs) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('查看资料', route('company.show'));
+        });
+
+//        // 我的公司 > 公司注册
+//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
+//            $breadcrumbs->parent('company');
+//            $breadcrumbs->push('公司注册', route('company.create'));
+//        });// 我的公司 > 公司注册
+//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
+//            $breadcrumbs->parent('company');
+//            $breadcrumbs->push('公司注册', route('company.create'));
+//        });
+
 //        // 我的公司 > 公司部门
 //        Breadcrumbs::register('company.department', function ($breadcrumbs) {
 //            $breadcrumbs->parent('company');
@@ -39,47 +66,58 @@ class CompanyController extends Controller
 //        });
     }
 
-    /**
-     * 公司首页
-     *      判断用户是否注册或绑定公司
-     *      Y是:显示公司资料
-     *          检查公司认证状态
-     *          查看是否是公司注册人
-     *      N否:提示注册或绑定
-     * @return view
+    /*
+     * 我的公司
+     *
+     * 判断用户是否绑定公司
+     *  Y:判断公司是否存在
+     *      Y:判断是否公司注册人
+     *          Y:判断公司审核状态
+     *              0审核中：
+     *                  查看资料
+     *                  更改资料
+     *              1审核通过：显示资料
+     *                  注销公司
+     *                  更改资料
+     *              2审核失败：显示失败原因
+     *                  查看资料
+     *                  更改资料
+     *                  放弃注册
+     *          N:判断公司审核状态
+     *              0审核中：等待
+     *              1审核通过：显示资料
+     *                  退出公司
+     *              2审核失败：显示失败原因
+     *                  绑定公司
+     *      N:
+     *      绑定公司
+     *      注册公司
+     *  N:
+     *  注册公司
+     *  绑定公司
      */
     public function index()
     {
-        $this->company_id = Auth::user()->company_id;
-        if ($this->company_id) {
-            $company = Company::find($this->company_id);
-        } else {
-            $company = null;
-        }
+        $company = Company::find(Auth::user()->company_id);
         return view('home.company.index')->with([
             'company' => $company,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'common' => new Common(),
         ]);
     }
 
     /*
-     *
-     */
-
-    /**
-     * 注册公司
-     *      判断用户是否没有绑定公司
-     *      Y没有:显示注册界面
-     *      N绑定过:返回公司首页
-     * @return view
+     * 判断是否绑定公司
+     *  Y:返回首页
+     *  N:显示注册页面
      */
     public function create()
     {
-//        if (!Auth::user()->company_id) {
+        if (!Auth::user()->company_id) {
             return view('home.company.create');
-//        } else {
-//            return redirect()->back();
-//        }
+        } else {
+            return redirect('company')->with('warning', '您已绑定公司，无法注册新公司');
+        }
     }
 
     /*
@@ -87,11 +125,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|unique:companies,companies.name',
-            'Company.code' => 'required|alpha_num|unique:companies,companies.code',
+            'Company.name' => 'required|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Company.display_name' => 'required|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.address' => 'max:255',
             'Company.email' => 'email|unique:companies,companies.email',
@@ -99,18 +136,17 @@ class CompanyController extends Controller
             'Company.description' => 'max:255',
         ], [], [
             'Company.name' => '公司名称',
-            'Company.code' => '公司代码',
-            'Company.logo' => '公司logo',
+            'Company.display_name' => '显示名称',
+            'Company.logo' => '公司LOGO',
             'Company.address' => '公司地址',
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
-            'Company.description' => '说明',
+            'Company.description' => '公司简介',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Company');
-
         foreach ($data as $key => $value) {
-            if ($value == '') {
+            if ($value === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
@@ -143,13 +179,24 @@ class CompanyController extends Controller
     }
 
     /*
-     * 编辑公司
+     * 判断公司是否存在
+     *  Y:判断是否创始人
+     *      Y:显示界面
+     *      N:返回
+     *  N:返回
      */
     public function edit($id)
     {
-        // TODO
-        $user = Company::find($id);
-        return view('home.user.edit')->with('user', $user);
+        if (!$company = Company::find($id)) {
+            return redirect('company')->with('warning', '公司不存在');
+        }
+        if ($company->user_id != Auth::id()) {
+            return redirect('company')->with('error', '您不是该公司创始人，无法修改');
+        }
+        return view('home.company.edit')->with([
+            'user' => Auth::user(),
+            'company' => $company,
+        ]);
     }
 
     /*
@@ -157,7 +204,48 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // TODO
+        /* 验证 */
+        $this->validate($request, [
+            'Company.name' => 'required|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
+            'Company.display_name' => 'required|unique:companies,companies.display_name,' . $id,
+            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.address' => 'max:255',
+            'Company.email' => 'email|unique:companies,companies.email,' . $id,
+            'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
+            'Company.description' => 'max:255',
+        ], [], [
+            'Company.name' => '公司名称',
+            'Company.display_name' => '显示名称',
+            'Company.logo' => '公司LOGO',
+            'Company.address' => '公司地址',
+            'Company.email' => '公司邮箱',
+            'Company.telephone' => '公司电话',
+            'Company.description' => '公司简介',
+        ]);
+        /* 获取字段类型 */
+        $data = $request->input('Company');
+
+        /* 获取文件类型 */
+        if ($request->hasFile('Company.logo')) {
+            $uploadController = new UploadController();
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['code']);
+        }
+
+        $data['status'] = Company::VERIFIED_ING;
+
+        $company = Company::find($id);
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $company->$key = $data[$key];
+            }
+        }
+
+        if ($company->save()) {
+            return redirect('company')->with('success', '修改成功 - ' . $company->id);
+        } else {
+            return redirect()->back();
+        }
+
     }
 
     /*
@@ -169,11 +257,21 @@ class CompanyController extends Controller
     }
 
     /*
-     * 绑定公司
+     * 判断是否绑定公司
+     *  Y:返回首页
+     *  N:显示绑定页面
      */
     public function binding()
     {
         // TODO
+    }
+
+    /*
+     *
+     */
+    public function postBinding()
+    {
+
     }
 
 

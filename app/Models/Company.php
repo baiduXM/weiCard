@@ -19,7 +19,6 @@ class Company extends Model
     const VERIFIED_ING = 0; // 认证中
     const VERIFIED_SUCCEED = 1; // 认证通过
     const VERIFIED_FAILED = 2; // 认证失败
-    const VERIFIED_UPDATED = 3; // 资料变更
 
 //    public $timestamps = false;
 
@@ -46,7 +45,6 @@ class Company extends Model
             self::VERIFIED_ING => '审核中',
             self::VERIFIED_SUCCEED => '审核通过',
             self::VERIFIED_FAILED => '审核失败',
-            self::VERIFIED_UPDATED => '重新审核',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : reset($array);

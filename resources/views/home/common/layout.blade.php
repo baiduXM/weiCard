@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', '首页') - 微名片</title>
+    <title>@yield('title', '首页') - {{ config('global.product_name') }}</title>
     <link href="{{ asset('static/common/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/home/css/style.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -35,6 +35,7 @@
     <div class="container-fluid">
         @include('home.common.sidebar')
         <div class="main-content">
+            @include('common.message')
             @section('content')
                 {{--内容--}}
             @show
@@ -50,6 +51,7 @@
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/js/common.js') }}"></script>
 <script src="{{ asset('static/home/js/tree-box.js') }}"></script>
 
 @section('javascript')

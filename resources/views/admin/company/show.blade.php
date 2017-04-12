@@ -57,6 +57,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th class="text-right">审核人ID</th>
+                                <td>{{ $company->manager_id . ' - ' . $common->getValue('managers', $company->manager_id) }}</td>
+                            </tr>
+                            <tr>
                                 <th class="text-right">审核状态</th>
                                 <td>
                                     @if($company->status == 0)
@@ -70,10 +74,6 @@
                                     @endif
                                     {{--                                    {{ $company->getStatus($company->status) }}--}}
                                 </td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核人ID</th>
-                                <td>{{ $company->manager_id . ' - ' . $common->getValue('managers', $company->manager_id) }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核失败原因</th>
