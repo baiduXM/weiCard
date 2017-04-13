@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
+use App\Models\Common;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
+
+    protected $path_type = 'user'; // 文件路径保存分类
 
     public function __construct()
     {
@@ -66,7 +69,10 @@ class UserController extends Controller
         }
         $query->where('name', '!=', 'admin');
         $users = $query->paginate();
-        return view('admin.user.index')->with('users', $users);
+        return view('admin.user.index')->with([
+            'users' => $users,
+            'common' => new Common(),
+        ]);
     }
 
     /**
@@ -76,8 +82,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $user = new User;
-        return view('admin.user.create')->with('user', $user);
+        return view('admin.user.create')->with([
+            'common' => new Common(),
+        ]);
     }
 
     /**
@@ -90,27 +97,31 @@ class UserController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name',
+            'User.name' => 'required|unique:users,users.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'User.password' => 'required|confirmed',
             'User.email' => 'email|unique:users,users.email',
-            'User.nickname' => 'alpha_dash',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'User.mobile' => 'digits:11|unique:users,users.mobile',
+            'User.nickname' => 'max:30',
+            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.sex' => '',
+            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
             'User.name' => '账号',
             'User.password' => '密码',
             'User.email' => '邮箱',
+            'User.mobile' => '手机',
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
-            'User.mobile' => '手机',
-            'User.description' => '说明',
+            'User.sex' => '性别',
+            'User.age' => '年龄',
+            'User.description' => '个性签名',
         ]);
 
         /* 获取字段类型 */
         $data = $request->input('User');
         foreach ($data as $key => $value) {
-            if ($value == '') {
+            if ($value === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
             if ($key == 'password') {
@@ -140,8 +151,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.user.show')->with('user', $user);
+        if (!$user = User::find($id)) {
+            return redirect('admin/user')->with('warning', '用户不存在');
+        }
+        return view('admin.user.show')->with([
+            'user' => $user,
+            'common' => new Common(),
+        ]);
     }
 
     /**
@@ -152,8 +168,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('admin.user.edit')->with('user', $user);
+        if (!$user = User::find($id)) {
+            return redirect('admin/user')->with('warning', '用户不存在');
+        }
+        return view('admin.user.edit')->with([
+            'user' => $user,
+            'common' => new Common(),
+        ]);
     }
 
     /**
@@ -165,47 +186,40 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
         $this->validate($request, [
             'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
             'User.email' => 'email|unique:users,users.email,' . $id,
+            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
             'User.nickname' => 'max:30',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.sex' => '',
+            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
             'User.name' => '账号',
             'User.email' => '邮箱',
+            'User.mobile' => '手机',
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
-            'User.mobile' => '手机',
+            'User.sex' => '性别',
+            'User.age' => '年龄',
             'User.description' => '说明',
         ]);
         $data = $request->input('User');
-        foreach ($data as $key => $value) {
-            if ($value == '') {
-                $data[$key] = null;
-            }
-            if ($key == 'password') {
-                $data[$key] = bcrypt($value);
-            }
-        }
 
+        /* 获取文件 */
         if ($request->hasFile('User.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'));
-            $user->avatar = $data['avatar'];
+            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
         }
-
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->nickname = $data['nickname'];
-        $user->mobile = $data['mobile'];
-        $user->description = $data['description'];
-        $user->is_admin = isset($data['is_admin']) ? 1 : 0;
-        $user->is_active = $data['is_active'];
+        $user = User::find($id);
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $user->$key = $data[$key];
+            }
+        }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', '修改成功');
+            return redirect('admin/user')->with('success', '修改成功' . ' - ' . $user->id);
         } else {
             return redirect()->back();
         }
@@ -245,6 +259,30 @@ class UserController extends Controller
         } else {
             return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
+    }
+
+
+    /*
+     * 识别绑定代码类别(前台)/绑定公司ID(后台)
+     *  公司ID/公司代码：判断公司是否有创始人
+     *      Y有:绑定公司，创建并关联员工
+     *      N无:无法绑定
+     *  员工代码：判断员工是否存在
+     *      Y:判断员工是否已绑定
+     *          Y有:无法绑定，返回
+     *          N无:绑定公司，关联员工
+     *      N:无法绑定，返回
+     */
+    public function binding(Request $request, $id)
+    {
+        $this->validate($request, [
+            'code' => 'required',
+        ], [], [
+            'code' => '绑定代码',
+        ]);
+        $code = $request->input('code');
+        dd($code);
+//        return $code;
     }
 
 

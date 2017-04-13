@@ -92,7 +92,7 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Company.name' => 'required|max:255|unique:companies,companies.name,null,,|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email',

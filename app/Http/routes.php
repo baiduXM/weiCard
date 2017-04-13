@@ -84,7 +84,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 用户管理 */
     Route::group(['prefix' => 'user'], function () {
-        Route::delete('batch', ['as' => 'user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
+        Route::delete('batch', ['as' => 'admin.user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
+        Route::post('{id}/binding', ['as' => 'admin.user.binding', 'uses' => 'Admin\UserController@binding']);
     });
     Route::resource('user', 'Admin\UserController');
 

@@ -30,7 +30,7 @@ $(function () {
 
     /* 删除 */
     $('.operate-delete').click(function () {
-        $('#confirmModal').on('show.bs.modal', function (event) {
+        $('.confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _id = relatedTarget.data('id');
             var _url = relatedTarget.data('url');
@@ -57,6 +57,11 @@ $(function () {
         // });
     });
 
+    /* 彻底删除 */
+    $('.operate-destroy').click(function () {
+        alert('功能待开发');
+    });
+
     /* 批量删除 */
     $(".operate-batch-delete").click(function () {
         var length = $('.selectall-item:checked').length;
@@ -70,7 +75,7 @@ $(function () {
                 ids_arr.push($(this).val());
             });
             var ids_str = ids_arr.join(',');
-            $('#confirmModal').on('show.bs.modal', function (event) {
+            $('.confirmModal').on('show.bs.modal', function (event) {
                 var modal = $(this);
                 modal.find('.modal-title').text('删除确认');
                 modal.find('.modal-body').text('是否删除' + ids_str + '用户？');
@@ -80,6 +85,32 @@ $(function () {
             });
         }
     });
+    /* 用户绑定公司 */
+    $(".operate-binding").click(function () {
+        $('.formModal').on('show.bs.modal', function (event) {
+            var relatedTarget = $(event.relatedTarget);
+            var _url = relatedTarget.data('url');
+            var modal = $(this);
+            modal.find('.modal-title').text('绑定公司');
+            modal.find('form').attr('action', _url);
+        });
+    });
+
+    /* 用户解绑公司 */
+    $(".operate-unbinding").click(function () {
+        $('.confirmModal').on('show.bs.modal', function (event) {
+            var relatedTarget = $(event.relatedTarget);
+            var _id = relatedTarget.data('id');
+            var _company = relatedTarget.data('name');
+            var _url = relatedTarget.data('url');
+            var modal = $(this);
+            modal.find('.modal-title').text('解绑确认');
+            modal.find('.modal-body').text('是否解除' + _id + '用户与' + _company +'公司的绑定？');
+            modal.find('form').attr('action', _url);
+            modal.find('[name="_method"]').val('DELETE');
+        });
+    });
+
 
     /* 搜索 */
     $('.operate-search').click(function () {
@@ -88,7 +119,6 @@ $(function () {
 
     /* 搜索下拉框 */
     $('.dropdown-item').click(function () {
-        console.log($(this).text());
         var column = $(this).data('column');
         var txt = $(this).text() + ' <span class="caret"></span>';
         $('[name="search_column"]').html(txt);
@@ -97,25 +127,26 @@ $(function () {
 
     /* 排序 */
     $('.sortable').click(function () {
-        var _this = $(this);
-        var _chidren = $(this).children('.order');
-        if (_this.hasClass('color-orange')) {
-            _chidren.toggleClass('dropup');
-        } else {
-            $('.sortable').removeClass('color-orange');
-            _this.addClass('color-orange');
-        }
-        var _column = _this.data('name');
-        var _form = $('[name="form_search"]');
-        var _sort = 'desc';
-        if (_chidren.hasClass('dropup')) { // 正序
-            _sort = 'asc';
-        } else { // 倒序
-            _sort = 'desc';
-        }
-        _form.append('<input type="hidden" name="sort_column" value="' + _column + '"/>');
-        _form.append('<input type="hidden" name="sort_way" value="' + _sort + '"/>');
-        _form.submit();
+        console.log('排序功能待开发');
+    //     var _this = $(this);
+    //     var _chidren = $(this).children('.order');
+    //     if (_this.hasClass('color-orange')) {
+    //         _chidren.toggleClass('dropup');
+    //     } else {
+    //         $('.sortable').removeClass('color-orange');
+    //         _this.addClass('color-orange');
+    //     }
+    //     var _column = _this.data('name');
+    //     var _form = $('[name="form_search"]');
+    //     var _sort = 'desc';
+    //     if (_chidren.hasClass('dropup')) { // 正序
+    //         _sort = 'asc';
+    //     } else { // 倒序
+    //         _sort = 'desc';
+    //     }
+    //     _form.append('<input type="hidden" name="sort_column" value="' + _column + '"/>');
+    //     _form.append('<input type="hidden" name="sort_way" value="' + _sort + '"/>');
+    //     _form.submit();
     });
 
     /* 刷新 */

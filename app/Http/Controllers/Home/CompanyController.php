@@ -156,7 +156,7 @@ class CompanyController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['code']);
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         /* 添加 */

@@ -18,7 +18,7 @@
                             <div class="columns btn-group pull-left">
                                 <button class="btn btn-default operate-batch-delete" type="button"
                                         name="operate-batch-delete" data-url="company/batch"
-                                        data-toggle="modal" data-target="#confirmModal" title="删除">
+                                        data-toggle="modal" data-target=".confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
@@ -171,7 +171,7 @@
                                                                     class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                         <a href="#confirmModel"
                                                            class="btn btn-danger btn-xs operate-delete"
-                                                           data-toggle="modal" data-target="#confirmModal"
+                                                           data-toggle="modal" data-target=".confirmModal"
                                                            data-id="{{ $item->id }}"
                                                            data-url="company/{{ $item->id }}"
                                                            title="删除">
@@ -180,11 +180,19 @@
                                                     @else
                                                         <a href="#confirmModel"
                                                            class="btn btn-warning btn-xs operate-recover"
-                                                           {{--data-toggle="modal" data-target="#confirmModal"--}}
+                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
                                                            {{--data-id="{{ $item->id }}"--}}
                                                            {{--data-url="company/{{ $item->id }}"--}}
                                                            title="恢复">
-                                                            <i class="glyphicon glyphicon-trash"></i>恢复
+                                                            <i class="glyphicon glyphicon-repeat"></i>恢复
+                                                        </a>
+                                                        <a href="#confirmModel"
+                                                           class="btn btn-danger btn-xs operate-destroy"
+                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                           {{--data-id="{{ $item->id }}"--}}
+                                                           {{--data-url="company/{{ $item->id }}"--}}
+                                                           title="彻底删除">
+                                                            <i class="glyphicon glyphicon-trash"></i>彻底删除
                                                         </a>
                                                     @endif
 

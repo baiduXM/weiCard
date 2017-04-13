@@ -48,6 +48,7 @@
 
     </div>
 </div>
+@include('home.common.modal')
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>

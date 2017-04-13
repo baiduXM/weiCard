@@ -12,8 +12,12 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <tr>
-                                <th class="text-right col-md-3">用户名</th>
-                                <td class="col-md-9">{{ $user->name }}</td>
+                                <th class="text-right col-md-3">ID</th>
+                                <td class="col-md-9">{{ $user->id }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">用户名</th>
+                                <td>{{ $user->name }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">邮箱</th>
@@ -30,8 +34,17 @@
                             <tr>
                                 <th class="text-right">头像</th>
                                 <td>
-                                    <img src="{{ $user->avatar ? asset($user->avatar) : ''}}" class="img-responsive" style="max-height: 200px;max-width: 200px;">
+                                    <img src="{{ $user->avatar ? asset($user->avatar) : ''}}" class="img-responsive"
+                                         style="max-height: 200px;max-width: 200px;">
                                 </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">性别</th>
+                                <td>{{ $common->getSex($user->sex) }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">年龄</th>
+                                <td>{{ $user->age }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">个性签名</th>
@@ -39,19 +52,21 @@
                             </tr>
                             <tr>
                                 <th class="text-right">绑定公司</th>
-                                <td>{{ $user->company_id }}</td>
+                                <td>{{ $user->company_id . ' - ' . $common->getValue('companies', $user->company_id)}}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定员工</th>
-                                <td>{{ $user->employee_id }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">管理员</th>
-                                <td>{{ $user->is_admin == 1 ? '是' : '否' }}</td>
+                                <td>{{ $user->employee_id . ' - ' . $common->getValue('employees', $user->employee_id) }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">状态</th>
-                                <td>{{ $user->isActive($user->is_active) }}</td>
+                                <td>
+                                    @if($user->is_active == $common::IS_ACTIVE)
+                                        <span class="label label-success">{{ $common->isActive($user->is_active) }}</span>
+                                    @else
+                                        <span class="label label-default">{{ $common->isActive($user->is_active) }}</span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>

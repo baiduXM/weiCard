@@ -46,7 +46,7 @@
                                 公司注册人ID</label>
                             <div class="col-md-6">
                                 <input id="user_id" name="Company[user_id]" type="number" placeholder="公司注册人"
-                                       class="form-control" readonly
+                                       class="form-control"
                                        value="{{ old('Company.user_id') ? old('Company.user_id') : $company->user_id }}">
                             </div>
                             @if ($errors->has('Company.user_id'))

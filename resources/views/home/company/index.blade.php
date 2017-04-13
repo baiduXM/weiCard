@@ -41,6 +41,7 @@
                         审核通过（公司资料）
                     </p>
                     <p class="add-btn">
+                        <a href="javascript:" data-toggle="modal" data-target=".bs13"><i class="iconFont">&#xe6d3;</i></a>
                         <button class="btnDestroy">注销公司</button>
                         <button class="btnEdit">更改资料</button>
                     </p>

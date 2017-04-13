@@ -63,6 +63,18 @@
                                 </span>
                             @endif
                         </div><!-- email邮箱 -->
+                        <div class="form-group {{ $errors->has('User.mobile') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="mobile">手机</label>
+                            <div class="col-md-6">
+                                <input id="mobile" name="User[mobile]" type="text" placeholder="输入手机号"
+                                       class="form-control" value="{{ old('User.mobile') }}">
+                            </div>
+                            @if ($errors->has('User.mobile'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('User.mobile') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- mobile手机 -->
                         <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="nickname">昵称</label>
                             <div class="col-md-6">
@@ -86,18 +98,36 @@
                                 </span>
                             @endif
                         </div><!-- avatar头像 -->
-                        <div class="form-group {{ $errors->has('User.mobile') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="mobile">手机</label>
+                        <div class="form-group {{ $errors->has('User.sex') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="sex">性别</label>
                             <div class="col-md-6">
-                                <input id="mobile" name="User[mobile]" type="text" placeholder="输入手机号"
-                                       class="form-control" value="{{ old('User.mobile') }}">
+                                @foreach($common->getSex() as $item => $value)
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="User[sex]"
+                                                   value="{{ $item }}" {{ old('User.sex') == $item ? 'checked' : '' }}>{{ $value }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
-                            @if ($errors->has('User.mobile'))
+                            @if ($errors->has('User.sex'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.mobile') }}</strong>
+                                    <strong>{{ $errors->first('User.sex') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- mobile手机 -->
+                        </div><!-- sex性别 -->
+                        <div class="form-group {{ $errors->has('User.age') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="age">年龄</label>
+                            <div class="col-md-6">
+                                <input id="age" name="User[age]" type="number" placeholder="输入年龄"
+                                       class="form-control" value="{{ old('User.age') }}">
+                            </div>
+                            @if ($errors->has('User.age'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('User.age') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- age年龄 -->
                         <div class="form-group {{ $errors->has('User.description') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="description">个性签名</label>
                             <div class="col-md-6">
@@ -110,21 +140,21 @@
                                 </span>
                             @endif
                         </div><!-- description个性签名 -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_admin">管理员</label>
-                            <div class="col-md-6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="User[is_admin]"
-                                               value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是
-                                    </label>
-                                </div>
-                            </div>
-                        </div><!-- is_admin是否是管理员 -->
+                        {{--<div class="form-group">--}}
+                            {{--<label class="col-md-3 control-label" for="is_admin">管理员</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<div class="checkbox">--}}
+                                    {{--<label>--}}
+                                        {{--<input type="checkbox" name="User[is_admin]"--}}
+                                               {{--value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是--}}
+                                    {{--</label>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div><!-- is_admin是否是管理员 -->--}}
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">
-                                @foreach($user->isActive() as $item => $value)
+                                @foreach($common->isActive() as $item => $value)
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="User[is_active]"
