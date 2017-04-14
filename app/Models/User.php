@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Company;
 
 class User extends Model
 {
@@ -18,6 +18,23 @@ class User extends Model
         'password', 'remember_token',
     ];
 
+
+    /**
+     * 获取关联到用户的公司，即公司创始人
+     */
+    public function company()
+    {
+        return $this->hasOne('Company');
+//        return $this->hasOne('App\Models\Company');
+    }
+
+    /**
+     * 获取关联到用户的员工，即用户绑定员工
+     */
+    public function employee()
+    {
+        return $this->hasOne('App\Models\Employee');
+    }
 
 
 }

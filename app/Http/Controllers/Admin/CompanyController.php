@@ -189,7 +189,7 @@ class CompanyController extends Controller
         $this->validate($request, [
             'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
-            'Company.user_id' => 'required|numeric|exists:users,id,is_active,1',
+            'Company.user_id' => 'required|numeric',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email,' . $id,
             'Company.telephone' => 'unique:companies,companies.telephone,' . $id,

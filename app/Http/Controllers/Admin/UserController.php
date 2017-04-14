@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Common;
+use App\Models\Company;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
@@ -263,26 +266,64 @@ class UserController extends Controller
 
 
     /*
-     * 识别绑定代码类别(前台)/绑定公司ID(后台)
-     *  公司ID/公司代码：判断公司是否有创始人
+     *  公司名称：判断公司是否有创始人
      *      Y有:绑定公司，创建并关联员工
      *      N无:无法绑定
-     *  员工代码：判断员工是否存在
+     *  员工工号：判断员工是否存在
      *      Y:判断员工是否已绑定
      *          Y有:无法绑定，返回
      *          N无:绑定公司，关联员工
      *      N:无法绑定，返回
      */
-    public function binding(Request $request, $id)
+    /**
+     * @param Request $request
+     * @param $user_id
+     * @return a
+     */
+    public function binding(Request $request, $user_id)
     {
-        $this->validate($request, [
-            'code' => 'required',
-        ], [], [
-            'code' => '绑定代码',
-        ]);
         $code = $request->input('code');
-        dd($code);
-//        return $code;
+        $param = array(
+            'company' => '',
+            'employee' => '',
+        );
+        $code = explode('/', $code);
+        $count = count($code);
+        $user = User::find($user_id);
+        if ($count == 1) { // 公司代码
+            $param['company'] = $code[0];
+            $company = Company::where('name', $param['company'])->first();
+            if ($company && !$company->user_id) { // 有公司，且无创始人
+                $company->user_id = $user_id;
+                $company->save();
+                $user->company_id = $company->id;
+                // 添加员工
+                $data['company_id'] = $company->id;
+                $data['name'] = $user->nickname != null ? $user->nickname : $user->name;
+                $data['number'] = $company->id . '-' . $user_id;
+                $data['title'] = '创始人';
+                $data['mobile'] = $user->mobile;
+                $data['description'] = $user->description;
+                $employee = Employee::create($data);
+                $user->employee_id = $employee->id;
+                $user->save();
+                return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $user->company_id . ' + 员工' . $user->employee_id);
+            }
+            return redirect('admin/user')->with('error', '绑定失败 - 绑定代码不完整');
+        } elseif ($count == 2) { // 公司代码+员工代码
+            $param['company'] = $code[0];
+            $param['employee'] = $code[1];
+            $company = Company::where('name', $param['company'])->first();
+            $employee = Employee::where('number', $param['employee'])->where('company_id', $company->id)->first();
+            if ($company && $employee) { // 有公司有员工
+                $user->company_id = $company->id;
+                $user->employee_id = $employee->id;
+                $user->save();
+                return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $user->company_id . ' + 员工' . $user->employee_id);
+            }
+            return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+        }
+        return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
     }
 
 

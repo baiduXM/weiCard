@@ -32,6 +32,21 @@ class Company extends Model
     protected $hidden = [
     ];
 
+    /**
+     * 获取公司对应的用户（创始人）
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * 获取公司拥有的员工
+     */
+    public function employees()
+    {
+        return $this->hasMany('App\Models\Employee');
+    }
 
     /**
      * 获取状态
