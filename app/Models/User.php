@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Company;
 
 class User extends Model
 {
@@ -24,8 +23,7 @@ class User extends Model
      */
     public function company()
     {
-        return $this->hasOne('Company');
-//        return $this->hasOne('App\Models\Company');
+        return $this->hasOne('App\Models\Company');
     }
 
     /**

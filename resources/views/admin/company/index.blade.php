@@ -137,6 +137,7 @@
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
                                                 <td>{{ $common->getValue('users', $item->user_id, 'name') }}</td>
+                                                {{--<td>{{ $item->user->name }}</td>--}}
                                                 <td>
                                                     @if($item->deleted_at != null)
                                                         <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
@@ -146,11 +147,11 @@
                                                         @else
                                                             <span class="label label-default">{{ $common->isActive($item->is_active) }}</span>
                                                         @endif
-                                                        @if($item->status == $modal::VERIFIED_ING)
+                                                        @if($item->status == $item::VERIFIED_ING)
                                                             <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $modal::VERIFIED_SUCCEED)
+                                                        @elseif($item->status == $item::VERIFIED_SUCCEED)
                                                             <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $modal::VERIFIED_FAILED)
+                                                        @elseif($item->status == $item::VERIFIED_FAILED)
                                                             <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
                                                         @endif
                                                     @endif
@@ -161,7 +162,7 @@
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
                                                     @if($item->deleted_at == null)
-                                                        @if($item->status != $modal::VERIFIED_SUCCEED)
+                                                        @if($item->status != $item::VERIFIED_SUCCEED)
                                                             <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
                                                                class="btn btn-success btn-xs" title="审核"><i
                                                                         class="glyphicon glyphicon-list-alt"></i>审核</a>

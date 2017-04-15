@@ -57,13 +57,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $modal = new Company();
-        $companies = $modal::withTrashed()->paginate();
-        $common = new Common();
+        $companies = Company::with('user', 'employees')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'common' => $common,
-            'modal' => $modal,
+            'common' => new Common(),
         ]);
     }
 
@@ -92,7 +89,7 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name,null,,|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email',
@@ -118,7 +115,7 @@ class CompanyController extends Controller
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
-        $data['user_id'] = 0;
+//        $data['user_id'] = 0;
         $data['manager_id'] = Auth::guard('admin')->id();
         $data['status'] = 0;
 
@@ -239,8 +236,8 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::find($id);
-        $company->delete();
-        if ($company->trashed()) {
+//        $company->trashed(); // 软删除
+        if ($company->delete()) {
             return redirect('admin/company')->with('success', '删除成功 - ' . $company->id);
         } else {
             return redirect('admin/company')->with('error', '删除失败 - ' . $company->id);

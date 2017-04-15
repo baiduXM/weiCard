@@ -1,5 +1,5 @@
 {{--确认模态框confirmModal--}}
-<div class="modal fade confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div class="modal fade confirmModal" tabindex="-1" role="dialog" id="confirmModal" aria-labelledby="myModalLabel"
      aria-describedby="myModalContent">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -15,7 +15,6 @@
                     内容
                 </div>
                 <div class="modal-footer">
-                    {{--<input type="hidden" name="ids" value="">--}}
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-primary">确认</button>
                 </div>
@@ -51,7 +50,6 @@
                     </div><!-- code绑定代码 -->
                 </div>
                 <div class="modal-footer">
-                    {{--<input type="hidden" name="ids" value="">--}}
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="submit" class="btn btn-primary">确认</button>
                 </div>

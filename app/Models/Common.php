@@ -43,6 +43,12 @@ class Common extends Model
         }
     }
 
+
+    public function hasValue($object, $model)
+    {
+
+    }
+
     /**
      * 判断是否可用
      *

@@ -36,7 +36,7 @@ $(function () {
             var _url = relatedTarget.data('url');
             var modal = $(this);
             modal.find('.modal-title').text('删除确认');
-            modal.find('.modal-body').text('是否删除' + _id + '用户？');
+            modal.find('.modal-body').text('是否删除 ' + _id + ' 用户？');
             modal.find('form').attr('action', _url);
             modal.find('[name="_method"]').val('DELETE');
         });
@@ -78,7 +78,7 @@ $(function () {
             $('.confirmModal').on('show.bs.modal', function (event) {
                 var modal = $(this);
                 modal.find('.modal-title').text('删除确认');
-                modal.find('.modal-body').text('是否删除' + ids_str + '用户？');
+                modal.find('.modal-body').text('是否删除 ' + ids_str + ' 用户？');
                 modal.find('form').attr('action', _url);
                 modal.find('[name="_method"]').val('DELETE');
                 modal.find('form').append('<input type="hidden" name="ids" value="' + ids_str + '"/>');
@@ -101,13 +101,14 @@ $(function () {
         $('.confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _id = relatedTarget.data('id');
-            var _company = relatedTarget.data('name');
+            var _info = relatedTarget.data('info');
             var _url = relatedTarget.data('url');
             var modal = $(this);
             modal.find('.modal-title').text('解绑确认');
-            modal.find('.modal-body').text('是否解除' + _id + '用户与' + _company +'公司的绑定？');
+            modal.find('.modal-body').text('是否解除与 ' + _info +' 公司的绑定？');
             modal.find('form').attr('action', _url);
             modal.find('[name="_method"]').val('DELETE');
+            modal.find('form').append('<input type="hidden" name="id" value="' + _id + '"/>');
         });
     });
 

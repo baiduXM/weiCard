@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
 
-    use SoftDeletes;
+//    use SoftDeletes;
 
     const VERIFIED_ING = 0; // 认证中
     const VERIFIED_SUCCEED = 1; // 认证通过

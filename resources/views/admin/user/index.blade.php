@@ -173,8 +173,13 @@
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->name }}</td><!--用户名-->
                                             <td>{{ $item->nickname }}</td><!--昵称-->
-                                            <td>{{ $item->company_id . ' - ' . $common->getValue('companies', $item->company_id) }}</td>
-                                            <!--公司-->
+                                            <td>
+                                                @if(isset($item->company))
+                                                    {{ $item->company->id . ' - ' . $item->company->name }}
+                                                @else
+                                                    {{ '0 - <null>' }}
+                                                @endif
+                                            </td><!--公司-->
                                             <td>
                                                 @if($item->is_active == $common::IS_ACTIVE)
                                                     <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
@@ -190,16 +195,17 @@
                                                 <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(!$item->company_id)
+{{--                                                {{ var_dump($item->employee->user_id) }}--}}
+                                                @if(!isset($item->company))
                                                     <a href="" class="btn btn-success btn-xs operate-binding"
                                                        data-toggle="modal" data-target=".formModal"
                                                        data-url="user/{{ $item->id }}/binding" title="绑定">
                                                         <i class="glyphicon glyphicon-link"></i>绑定</a>
                                                 @else
-                                                    <a href="javascript:;" class="btn btn-warning btn-xs operate-unbinding"
-                                                       data-toggle="modal" data-target=".confirmModel"
-                                                       data-url="user/{{ $item->id }}" data-id="{{ $item->id }}"
-                                                       data-name="{{ $common->getValue('companies', $item->company_id) }}" title="解绑">
+                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-info="{{ $item->company->name }}"
+                                                       data-url="user/{{ $item->id }}/binding" title="解绑">
                                                         <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                 @endif
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"
