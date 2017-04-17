@@ -39,7 +39,7 @@ class CompanyController extends Controller
         // 首页 > 公司列表 > 编辑
         Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('修改', route('admin.company.edit', $id));
+            $breadcrumbs->push('编辑', route('admin.company.edit', $id));
         });
 
         // 首页 > 公司列表 > 审核
@@ -48,7 +48,6 @@ class CompanyController extends Controller
             $breadcrumbs->push('审核', route('admin.company.verified', $id));
         });
     }
-
 
     /**
      * 索引
@@ -96,7 +95,6 @@ class CompanyController extends Controller
             'Company.telephone' => 'unique:companies,companies.telephone',
             'Company.address' => 'max:255',
             'Company.description' => 'max:255',
-            'Company.is_active' => '',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -105,7 +103,6 @@ class CompanyController extends Controller
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
             'Company.description' => '公司简介',
-            'Company.is_active' => '激活状态',
         ]);
 
         /* 获取字段 */
@@ -115,8 +112,6 @@ class CompanyController extends Controller
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
-//        $data['user_id'] = 0;
-        $data['manager_id'] = Auth::guard('admin')->id();
         $data['status'] = 0;
 
         /* 获取文件 */
@@ -186,23 +181,19 @@ class CompanyController extends Controller
         $this->validate($request, [
             'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
-            'Company.user_id' => 'required|numeric',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.email' => 'email|max:255|unique:companies,companies.email,' . $id,
             'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
             'Company.address' => 'max:255',
             'Company.description' => 'max:255',
-            'Company.is_active' => '',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
-            'Company.user_id' => '注册人ID',
             'Company.logo' => '公司LOGO',
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
             'Company.description' => '公司简介',
-            'Company.is_active' => '激活状态',
         ]);
         $data = $request->input('Company');
 
@@ -261,6 +252,57 @@ class CompanyController extends Controller
         }
     }
 
+    /*
+    *  公司名称：判断公司是否有创始人
+    *      Y有:绑定公司，创建并关联员工
+    *      N无:无法绑定
+    *  员工工号：判断员工是否存在
+    *      Y:判断员工是否已绑定
+    *          Y有:无法绑定，返回
+    *          N无:绑定公司，关联员工
+    *      N:无法绑定，返回
+    */
+    /**
+     * 关联公司
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function binding(Request $request, $id)
+    {
+        $code = $request->input('code');
+        $user = User::with('company', 'employee')->find($id);
+        $company = Company::with(['employees' => function ($query) {
+            $query->where('user_id', '!=', null);
+        }])->where('name', $code)->first(); // 获取该公司未绑定的员工
+        if ($company && !$company->user_id) { // 有公司，且无创始人
+            $user->company()->save($company); // 绑定公司
+            return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $company->id);
+        }
+        return redirect('admin/user')->with('error', '绑定失败 - 公司不存在/公司已被绑定');
+//        return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+    }
+
+    /**
+     * 解绑公司
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function unbinding($id)
+    {
+        $user = User::with('company', 'employee')->find($id);
+        if ($user->company) {
+            $user->company->user_id = null;
+            $user->company->save();
+        }
+        if ($user->employee) {
+            $user->employee->user_id = null;
+            $user->employee->save();
+        }
+        return redirect('admin/user')->with('success', '解绑成功 - ' . $id);
+    }
 
     /**
      *
@@ -316,5 +358,6 @@ class CompanyController extends Controller
             return redirect()->back();
         }
     }
+
 
 }

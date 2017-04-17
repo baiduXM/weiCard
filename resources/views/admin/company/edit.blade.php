@@ -41,20 +41,6 @@
                                 </span>
                             @endif
                         </div><!-- display_name公司名 -->
-                        <div class="form-group {{ $errors->has('Company.user_id') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="user_id"><span class="text-danger">*</span>
-                                公司注册人ID</label>
-                            <div class="col-md-6">
-                                <input id="user_id" name="Company[user_id]" type="number" placeholder="公司注册人"
-                                       class="form-control"
-                                       value="{{ old('Company.user_id') ? old('Company.user_id') : $company->user_id }}">
-                            </div>
-                            @if ($errors->has('Company.user_id'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Company.user_id') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- user_id公司注册人id -->
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">Logo</label>
                             <div class="col-md-6">
@@ -126,24 +112,6 @@
                                 </span>
                             @endif
                         </div><!-- description公司简介 -->
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_active">账号状态</label>
-                            <div class="col-md-6">
-                                @foreach($common->isActive() as $item => $value)
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="Company[is_active]" value="{{ $item }}"
-                                            @if(old('Company.is_active') === null)
-                                                {{ $company->is_active == $item ? 'checked' : '' }}
-                                                    @else
-                                                {{ old('Company.is_active') == $item ? 'checked' : '' }}
-                                                    @endif
-                                            >{{ $value }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div><!-- is_active是否可用 -->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>

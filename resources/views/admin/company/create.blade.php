@@ -99,19 +99,6 @@
                             @endif
                         </div><!-- description公司简介 -->
                         <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_active">账号状态</label>
-                            <div class="col-md-6">
-                                @foreach($common->isActive() as $item => $value)
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="Company[is_active]"
-                                                   value="{{ $item }}" {{ old('Company.is_active') == $item ? 'checked' : '' }}>{{ $value }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div><!-- is_active是否可用 -->
-                        <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>

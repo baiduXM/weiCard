@@ -8,5 +8,3 @@
 Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push("首页", route('admin'));
 });
-
-

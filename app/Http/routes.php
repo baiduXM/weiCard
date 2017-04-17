@@ -103,6 +103,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     });
     Route::resource('company', 'Admin\CompanyController');
 
+    /* 员工管理 */
+    Route::resource('employee', 'Admin\EmployeeController');
+
     /* 模板管理 */
     Route::resource('template', 'Admin\TemplateController');
 

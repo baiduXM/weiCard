@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
 
-//    use SoftDeletes;
+//    use SoftDeletes; // 软删除
 
-    const VERIFIED_ING = 0; // 认证中
-    const VERIFIED_SUCCEED = 1; // 认证通过
-    const VERIFIED_FAILED = 2; // 认证失败
+    const VERIFIED_ING = 0; // 待审核
+    const VERIFIED_SUCCEED = 1; // 审核通过
+    const VERIFIED_FAILED = 2; // 审核失败
 
 //    public $timestamps = false;
 
@@ -41,11 +41,27 @@ class Company extends Model
     }
 
     /**
+     * 审核者（管理员）
+     */
+    public function manager()
+    {
+        return $this->belongsTo('App\Models\Manager');
+    }
+
+    /**
      * 获取公司拥有的员工
      */
     public function employees()
     {
         return $this->hasMany('App\Models\Employee');
+    }
+
+    /**
+     * 获取公司部门
+     */
+    public function departments()
+    {
+        return $this->hasMany('App\Models\Department');
     }
 
     /**
@@ -57,7 +73,7 @@ class Company extends Model
     public function getStatus($index = null)
     {
         $array = [
-            self::VERIFIED_ING => '审核中',
+            self::VERIFIED_ING => '待审核',
             self::VERIFIED_SUCCEED => '审核通过',
             self::VERIFIED_FAILED => '审核失败',
         ];

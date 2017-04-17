@@ -15,5 +15,11 @@ class Manager extends Model
         'password', 'remember_token',
     ];
 
-
+    /**
+     * 获取审核过的公司
+     */
+    public function companies()
+    {
+        return $this->hasMany('App\Models\Company');
+    }
 }

@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '公司详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.show', $company->id) !!}
+    {!! Breadcrumbs::render('admin.employee.show', $employee->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -13,86 +13,96 @@
                         <table class="table table-hover table-bordered">
                             <tr>
                                 <th class="text-right col-md-3">ID</th>
-                                <td class="col-md-9">{{ $company->id }}</td>
+                                <td class="col-md-9">{{ $employee->id }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司名称</th>
-                                <td class="">{{ $company->name }}</td>
+                                <td class="">{{ $employee->name }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司显示名称</th>
-                                <td>{{ $company->display_name }}</td>
+                                <td>{{ $employee->display_name }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">LOGO</th>
                                 <td>
-                                    <img src="{{ $company->logo ? asset($company->logo) : ''}}" class="img-responsive"
+                                    <img src="{{ $employee->logo ? asset($employee->logo) : ''}}" class="img-responsive"
                                          style="max-height: 200px;max-width: 200px;">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司地址</th>
-                                <td>{{ $company->address }}</td>
+                                <td>{{ $employee->address }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司电话</th>
-                                <td>{{ $company->telephone }}</td>
+                                <td>{{ $employee->telephone }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司简介</th>
-                                <td>{{ $company->description }}</td>
+                                <td>{{ $employee->description }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">注册人ID</th>
-                                <td>{{ $company->user_id . ' - ' . $common->getValue('users', $company->user_id) }}</td>
+                                <td>{{ $employee->user_id . ' - ' . $common->getValue('users', $employee->user_id) }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">激活状态</th>
+                                <td>
+                                    @if($employee->is_active == 1)
+                                        <span class="label label-success">{{ $common->isActive($employee->is_active) }}</span>
+                                    @else
+                                        <span class="label label-default">{{ $common->isActive($employee->is_active) }}</span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核人ID</th>
-                                <td>{{ $company->manager_id . ' - ' . $common->getValue('managers', $company->manager_id) }}</td>
+                                <td>{{ $employee->manager_id . ' - ' . $common->getValue('managers', $employee->manager_id) }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核状态</th>
                                 <td>
-                                    @if($company->status == 0)
-                                        <span class="label label-primary">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 1)
-                                        <span class="label label-success">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 2)
-                                        <span class="label label-default">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 3)
-                                        <span class="label label-warning">{{ $company->getStatus($company->status) }}</span>
+                                    @if($employee->status == 0)
+                                        <span class="label label-primary">{{ $employee->getStatus($employee->status) }}</span>
+                                    @elseif($employee->status == 1)
+                                        <span class="label label-success">{{ $employee->getStatus($employee->status) }}</span>
+                                    @elseif($employee->status == 2)
+                                        <span class="label label-default">{{ $employee->getStatus($employee->status) }}</span>
+                                    @elseif($employee->status == 3)
+                                        <span class="label label-warning">{{ $employee->getStatus($employee->status) }}</span>
                                     @endif
-                                    {{--                                    {{ $company->getStatus($company->status) }}--}}
+                                    {{--                                    {{ $employee->getStatus($employee->status) }}--}}
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核失败原因</th>
-                                <td>{{ $company->reason }}</td>
+                                <td>{{ $employee->reason }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核通过时间</th>
-                                <td>{{ $company->verified_at }}</td>
+                                <td>{{ $employee->verified_at }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>
-                                <td>{{ $company->created_at }}</td>
+                                <td>{{ $employee->created_at }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">更新时间</th>
-                                <td>{{ $company->updated_at }}</td>
+                                <td>{{ $employee->updated_at }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">删除时间</th>
-                                <td>{{ $company->deleted_at }}</td>
+                                <td>{{ $employee->deleted_at }}</td>
                             </tr>
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                @if($company->status != $company::VERIFIED_SUCCEED)
-                                    <a href="{{ url('admin/company/' . $company->id . '/verified') }}" type="button"
+                                @if($employee->status != $employee::VERIFIED_SUCCEED)
+                                    <a href="{{ url('admin/company/' . $employee->id . '/verified') }}" type="button"
                                        class="btn btn-success btn-md">审核</a>
                                 @endif
-                                <a href="{{ url('admin/company/' . $company->id . '/edit') }}" type="button"
+                                <a href="{{ url('admin/company/' . $employee->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
                                 <a href="{{ url('admin/company') }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
@@ -107,7 +117,7 @@
 @section('javascript')
     <script>
         $(".verify-failed").click(function () {
-            alert({{ $company->id }});
+            alert({{ $employee->id }});
         });
     </script>
 @stop

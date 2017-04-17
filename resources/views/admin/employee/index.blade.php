@@ -1,10 +1,9 @@
 @extends('admin.common.layout')
 @section('title', '公司管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company') !!}
+    {!! Breadcrumbs::render('admin.employee') !!}
 @stop
 @section('content')
-    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -123,90 +122,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($companies)
-                                        @foreach($companies as $item)
-                                            <tr>
-                                                <td>
-                                                    <div class="ckbox ckbox-default">
-                                                        <input type="checkbox" name="id" id="id-{{ $item->id }} "
-                                                               value="{{ $item->id }}" class="selectall-item">
-                                                        <label for="id-{{ $item->id }}"></label>
-                                                    </div>
-                                                </td><!--checkbox-->
-                                                <td>{{ $item->id }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->display_name }}</td>
-                                                <td>{{ $common->getValue('users', $item->user_id, 'name') }}</td>
-                                                {{--<td>{{ $item->user->name }}</td>--}}
-                                                <td>
-                                                    @if($item->deleted_at != null)
-                                                        <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
-                                                    @else
-                                                        @if($item->status == $item::VERIFIED_ING)
-                                                            <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_SUCCEED)
-                                                            <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_FAILED)
-                                                            <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
-                                                        @endif
-                                                    @endif
-                                                </td>
-                                                <td>{{ $item->created_at }}</td>
-                                                <td>
-                                                    <a href="{{ url('admin/company/'.$item->id) }}"
-                                                       class="btn btn-white btn-xs" title="详情"><i
-                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    @if($item->deleted_at == null)
-                                                        @if($item->status != $item::VERIFIED_SUCCEED)
-                                                            <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
-                                                               class="btn btn-success btn-xs" title="审核"><i
-                                                                        class="glyphicon glyphicon-bookmark"></i>审核</a>
-                                                        @endif
-                                                        @if(!isset($item->user))
-                                                            <a href="" class="btn btn-success btn-xs operate-binding"
-                                                               data-toggle="modal" data-target="#bindingModal"
-                                                               data-url="user/{{ $item->id }}/binding" title="绑定">
-                                                                <i class="glyphicon glyphicon-link"></i>绑定</a>
-                                                        @else
-                                                            <a href="" class="btn btn-warning btn-xs operate-unbinding"
-                                                               data-toggle="modal" data-target=".confirmModal"
-                                                               data-info="{{ $item->company->name }}"
-                                                               data-url="user/{{ $item->id }}/binding" title="解绑">
-                                                                <i class="glyphicon glyphicon-link"></i>解绑</a>
-                                                        @endif
-                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
-                                                           class="btn btn-primary btn-xs" title="编辑"><i
-                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-delete"
-                                                           data-toggle="modal" data-target=".confirmModal"
-                                                           data-id="{{ $item->id }}"
-                                                           data-url="company/{{ $item->id }}"
-                                                           title="删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>删除
-                                                        </a>
-                                                    @else
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-warning btn-xs operate-recover"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="恢复">
-                                                            <i class="glyphicon glyphicon-repeat"></i>恢复
-                                                        </a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-destroy"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="彻底删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>销毁
-                                                        </a>
-                                                    @endif
-
-                                                </td><!--操作-->
-                                            </tr>
-                                        @endforeach
+                                    @if($employees)
                                     @else
                                         <tr>
                                             <td colspan="10">无数据</td>
@@ -217,7 +133,7 @@
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $companies->render() !!}
+                                    {!! $employees->render() !!}
                                 </div><!--跳转页码-->
                             </div><!--页码-->
                         </div>
@@ -228,7 +144,6 @@
         </div>
     </div><!--/.row-->
 @stop
-
 @section('javascript')
     <script>
         $(function () {

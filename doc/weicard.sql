@@ -10,28 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-04-15 12:13:46
+Date: 2017-04-17 17:34:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for wc_card
--- ----------------------------
-DROP TABLE IF EXISTS `wc_card`;
-CREATE TABLE `wc_card` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT '所属人id',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '名片别名',
-  `template_id` int(10) unsigned DEFAULT NULL COMMENT '模板id',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='名片表';
-
--- ----------------------------
--- Records of wc_card
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for wc_companies
@@ -40,6 +22,7 @@ DROP TABLE IF EXISTS `wc_companies`;
 CREATE TABLE `wc_companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '创始人id',
+  `manager_id` int(10) unsigned DEFAULT NULL COMMENT '审核者id',
   `name` varchar(255) DEFAULT NULL COMMENT '公司名',
   `display_name` varchar(255) DEFAULT NULL COMMENT '显示名',
   `logo` varchar(255) DEFAULT NULL COMMENT '公司logo',
@@ -47,24 +30,25 @@ CREATE TABLE `wc_companies` (
   `email` varchar(255) DEFAULT NULL COMMENT '公司邮箱',
   `telephone` varchar(255) DEFAULT NULL COMMENT '公司电话',
   `description` varchar(255) DEFAULT NULL COMMENT '公司描述',
-  `manager_id` int(10) unsigned DEFAULT NULL COMMENT '审核者id',
-  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-认证中，1-认证通过，2-认证失败',
+  `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-待审核，1-审核通过，2-审核失败',
   `reason` varchar(255) DEFAULT NULL COMMENT '审核失败原因',
-  `is_active` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否可用，0-停用，1-可用',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL COMMENT '认证时间',
   `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `companies_name_unique` (`name`) USING BTREE,
-  KEY `wc_companies_ibfk_1` (`user_id`),
-  CONSTRAINT `wc_companies_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  KEY `wc_companies_user_id` (`user_id`),
+  KEY `wc_companies_manager_id` (`manager_id`),
+  CONSTRAINT `wc_companies_manager_id` FOREIGN KEY (`manager_id`) REFERENCES `wc_managers` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `wc_companies_user_id` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='公司表';
 
 -- ----------------------------
 -- Records of wc_companies
 -- ----------------------------
-INSERT INTO `wc_companies` VALUES ('27', '25', 'work', '工作室', null, null, null, null, null, '1', '0', null, '1', '2017-04-15 10:26:02', '2017-04-15 11:51:53', null, null);
+INSERT INTO `wc_companies` VALUES ('27', null, '1', 'work', '工作室', null, null, null, null, null, '0', null, '2017-04-15 10:26:02', '2017-04-17 17:33:06', '2017-04-17 17:33:03', null);
+INSERT INTO `wc_companies` VALUES ('29', null, null, 'youmeihao', '有哦没好', null, null, null, null, null, '0', null, '2017-04-17 17:25:29', '2017-04-17 17:25:29', null, null);
 
 -- ----------------------------
 -- Table structure for wc_contacts
@@ -119,11 +103,11 @@ CREATE TABLE `wc_departments` (
 DROP TABLE IF EXISTS `wc_employees`;
 CREATE TABLE `wc_employees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) unsigned NOT NULL COMMENT '公司ID',
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID',
-  `department_id` int(10) unsigned NOT NULL COMMENT '部门id',
-  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `company_id` int(10) unsigned DEFAULT NULL COMMENT '公司ID',
+  `department_id` int(10) unsigned DEFAULT NULL COMMENT '部门ID',
   `number` varchar(255) DEFAULT NULL COMMENT '工号',
+  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
   `title` varchar(255) DEFAULT NULL COMMENT '职位头衔',
   `telephone` varchar(255) DEFAULT NULL COMMENT '座机',
   `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
@@ -133,13 +117,17 @@ CREATE TABLE `wc_employees` (
   PRIMARY KEY (`id`),
   KEY `wc_employees_company_id` (`company_id`),
   KEY `wc_employees_user_id` (`user_id`),
+  KEY `wc_employees_department_id` (`department_id`),
   CONSTRAINT `wc_employees_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `wc_employees_department_id` FOREIGN KEY (`department_id`) REFERENCES `wc_departments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_user_id` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='员工表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='员工表';
 
 -- ----------------------------
 -- Records of wc_employees
 -- ----------------------------
+INSERT INTO `wc_employees` VALUES ('2', null, '27', null, '0001', null, null, null, null, null, null, '2017-04-17 16:04:54');
+INSERT INTO `wc_employees` VALUES ('3', null, '27', null, '0002', null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for wc_managers
@@ -237,7 +225,7 @@ CREATE TABLE `wc_template_user` (
   KEY `template_user_user_id_foreign` (`user_id`),
   CONSTRAINT `template_user_template_id_foreign` FOREIGN KEY (`template_id`) REFERENCES `wc_templates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `template_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='模板-用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='模板-用户 关系表';
 
 -- ----------------------------
 -- Records of wc_template_user
@@ -267,29 +255,10 @@ CREATE TABLE `wc_users` (
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_mobile_unique` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of wc_users
 -- ----------------------------
-INSERT INTO `wc_users` VALUES ('25', 'Hsieh', null, null, '$2y$10$jpTeJSulu4uz6gfDtYIs0eBQ.XJLTFIYTgDk968UYYXC.qrBTrVxa', 'm16B5GnWpYT2SYnFCCR4QjjDDqIpmxoEVbOy1PTFFeGBIJOm6hrYVwZULSKv', null, null, '0', null, null, '1', '2017-04-15 11:51:44', '2017-04-15 12:06:13', null);
-INSERT INTO `wc_users` VALUES ('26', 'guess', null, null, '$2y$10$3HpSqJiS9O41f.wxCqwl7.hLcQjIBp67x2o.3szGMnxBievgs1p72', null, null, null, '0', null, null, '1', '2017-04-15 12:05:37', '2017-04-15 12:05:37', null);
 INSERT INTO `wc_users` VALUES ('27', 'cchenjei', null, null, '$2y$10$QCroeRuZdaElsObl2aPuKOg33NUnD2F7j1lK9BP.TqaBqNU3WM0ou', null, null, null, '0', null, null, '1', '2017-04-15 12:10:38', '2017-04-15 12:10:38', null);
-
--- ----------------------------
--- Table structure for wc_user_company_employee
--- ----------------------------
-DROP TABLE IF EXISTS `wc_user_company_employee`;
-CREATE TABLE `wc_user_company_employee` (
-  `user_id` int(10) unsigned NOT NULL,
-  `company_id` int(10) unsigned DEFAULT NULL,
-  `employee_id` int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_employee` (`user_id`,`employee_id`) USING BTREE,
-  KEY `user_company` (`user_id`,`company_id`) USING BTREE,
-  KEY `company_employee` (`company_id`,`employee_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户-公司-员工 关系表';
-
--- ----------------------------
--- Records of wc_user_company_employee
--- ----------------------------
+INSERT INTO `wc_users` VALUES ('28', 'test', null, null, '$2y$10$m/oE/naGmLdgch8lYBF1c.JzaIdV6ArVj03Z1CPybFluCNW62otfy', null, null, null, '0', null, null, '1', '2017-04-17 14:27:15', '2017-04-17 16:06:25', null);

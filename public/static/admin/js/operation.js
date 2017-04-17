@@ -30,7 +30,7 @@ $(function () {
 
     /* 删除 */
     $('.operate-delete').click(function () {
-        $('.confirmModal').on('show.bs.modal', function (event) {
+        $('#confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _id = relatedTarget.data('id');
             var _url = relatedTarget.data('url');
@@ -45,16 +45,6 @@ $(function () {
     /* 恢复 */
     $('.operate-recover').click(function () {
         alert('功能待开发');
-        // $('#confirmModal').on('show.bs.modal', function (event) {
-        //     var relatedTarget = $(event.relatedTarget);
-        //     var _id = relatedTarget.data('id');
-        //     var _url = relatedTarget.data('url');
-        //     var modal = $(this);
-        //     modal.find('.modal-title').text('恢复确认');
-        //     modal.find('.modal-body').text('是否恢复' + _id + '用户？');
-        //     modal.find('form').attr('action', _url);
-        //     modal.find('[name="_method"]').val('put');
-        // });
     });
 
     /* 彻底删除 */
@@ -75,7 +65,7 @@ $(function () {
                 ids_arr.push($(this).val()); // 遍历checkbox，有checked的加到ids_arr数组中
             });
             var ids_str = ids_arr.join(','); // 将数组用','连接成字符串
-            $('.confirmModal').on('show.bs.modal', function (event) {
+            $('#confirmModal').on('show.bs.modal', function (event) {
                 var modal = $(this);
                 modal.find('.modal-title').text('删除确认');
                 modal.find('.modal-body').text('是否删除 ' + ids_str + ' 用户？');
@@ -87,7 +77,7 @@ $(function () {
     });
     /* 用户绑定公司 */
     $(".operate-binding").click(function () {
-        $('.formModal').on('show.bs.modal', function (event) {
+        $('#bindingModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _url = relatedTarget.data('url');
             var modal = $(this);
@@ -98,7 +88,7 @@ $(function () {
 
     /* 用户解绑公司 */
     $(".operate-unbinding").click(function () {
-        $('.confirmModal').on('show.bs.modal', function (event) {
+        $('#confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _id = relatedTarget.data('id');
             var _info = relatedTarget.data('info');

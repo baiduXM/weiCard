@@ -29,19 +29,19 @@ class UserController extends Controller
         // 首页 > 用户列表 > 添加用户
         Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('添加用户', route('admin.user.create'));
+            $breadcrumbs->push('添加', route('admin.user.create'));
         });
 
-        // 首页 > 用户列表 > 用户详情
+        // 首页 > 用户列表 > 详情
         Breadcrumbs::register('admin.user.show', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('用户详情', route('admin.user.show', $id));
+            $breadcrumbs->push('详情', route('admin.user.show', $id));
         });
 
-        // 首页 > 用户列表 > 修改用户
+        // 首页 > 用户列表 > 编辑
         Breadcrumbs::register('admin.user.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('修改用户', route('admin.user.edit', $id));
+            $breadcrumbs->push('编辑', route('admin.user.edit', $id));
         });
     }
 
@@ -70,9 +70,7 @@ class UserController extends Controller
         if (isset($sort)) {
             $query->orderBy($sort['column'], $sort['order']);
         }
-        $query->where('name', '!=', 'admin');
         $users = $query->with('company', 'employee')->paginate();
-//dd($users);
         return view('admin.user.index')->with([
             'users' => $users,
             'common' => new Common(),
@@ -277,66 +275,45 @@ class UserController extends Controller
      *      N:无法绑定，返回
      */
     /**
-     * 关联公司/员工
+     * 关联公司
      *
      * @param Request $request
-     * @param $user_id
+     * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function binding(Request $request, $user_id)
+    public function binding(Request $request, $id)
     {
         $code = $request->input('code');
-        $param = array(
-            'company' => '',
-            'employee' => '',
-        );
-        $code = explode('/', $code);
-        $count = count($code);
-        $user = User::with('company', 'employee')->find($user_id);
-        if ($count == 1) { // 公司代码
-            $param['company'] = $code[0];
-            $company = Company::where('name', $param['company'])->first();
-//            $company = $user->company;
-//            dd($company);
-            if ($company && !$company->user_id) { // 有公司，且无创始人
-                // 绑定公司
-                $user->company()->save($company);
-//                // 添加员工
-//                $data['name'] = $user->nickname != null ? $user->nickname : $user->name;
-//                $data['number'] = $company->id . '-' . $user_id;
-//                $data['title'] = '创始人';
-//                $data['mobile'] = $user->mobile;
-//                $data['description'] = $user->description;
-//                $employee = Employee::create($data);
-//                $user->employee()->save($employee);
-//                $company->employees()->save($employee);
-//                $user->employee_id = $employee->id;
-                return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $company->id);
-            }
-            return redirect('admin/user')->with('error', '绑定失败 - 公司不存在/公司已被绑定');
-        } elseif ($count == 2) { // 公司代码+员工代码
-            $param['company'] = $code[0];
-            $param['employee'] = $code[1];
-            $company = Company::where('name', $param['company'])->first();
-            $employee = Employee::where('number', $param['employee'])->where('company_id', $company->id)->first();
-            if ($company && $employee) { // 有公司有员工
-                $user->company_id = $company->id;
-                $user->employee_id = $employee->id;
-                $user->save();
-                return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $user->company_id . ' + 员工' . $user->employee_id);
-            }
-            return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+        $user = User::with('company', 'employee')->find($id);
+        $company = Company::with(['employees' => function ($query) {
+            $query->where('user_id', '!=', null);
+        }])->where('name', $code)->first(); // 获取该公司未绑定的员工
+        if ($company && !$company->user_id) { // 有公司，且无创始人
+            $user->company()->save($company); // 绑定公司
+            return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $company->id);
         }
-        return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+        return redirect('admin/user')->with('error', '绑定失败 - 公司不存在/公司已被绑定');
+//        return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
     }
 
-
     /**
-     * 解绑公司/员工
+     * 解绑公司
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function unbinding(Request $request, $user_id)
+    public function unbinding($id)
     {
-        dd($user_id);
+        $user = User::with('company', 'employee')->find($id);
+        if ($user->company) {
+            $user->company->user_id = null;
+            $user->company->save();
+        }
+        if ($user->employee) {
+            $user->employee->user_id = null;
+            $user->employee->save();
+        }
+        return redirect('admin/user')->with('success', '解绑成功 - ' . $id);
     }
 
 }

@@ -15,6 +15,9 @@
         <li class="{{ Request::path() == 'admin/company' || Request::is('admin/company/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/company') }}"><span class="glyphicon glyphicon-stats"></span>公司管理</a>
         </li>
+        <li class="{{ Request::path() == 'admin/employee' || Request::is('admin/employee/*')  ? 'active' : '' }}">
+            <a href="{{ url('admin/employee') }}"><span class="glyphicon glyphicon-stats"></span>员工管理</a>
+        </li>
         <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
         </li>

@@ -29,4 +29,12 @@ class Employee extends Model
     {
         return $this->belongsTo('App\Models\Company');
     }
+
+    /**
+     * 获取员工所属的部门
+     */
+    public function department()
+    {
+        return $this->belongsTo('App\Models\Department');
+    }
 }

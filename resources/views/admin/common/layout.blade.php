@@ -58,21 +58,14 @@
 </nav>
 @include('admin.common.sidebar')
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    {{--面包削--}}
     <div class="row">
         @yield('breadcrumb')
-    </div>
-    {{--<div class="row">--}}
-    {{--<div class="col-lg-12">--}}
-    {{--<h1 class="page-header">@yield('title')</h1>--}}
-    {{--</div>--}}
-    {{--</div><!--/.row-->--}}
+    </div><!--面包削-->
     <div class="row">
         <div class="col-lg-12">
-{{--            @include('admin.common.message')--}}
             @include('common.message')
         </div>
-    </div><!--/.row-->
+    </div><!--提示框-->
     @section('content')
 
     @show

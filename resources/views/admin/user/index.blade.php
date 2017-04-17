@@ -4,7 +4,6 @@
     {!! Breadcrumbs::render('admin.user') !!}
 @stop
 @section('content')
-    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -107,37 +106,23 @@
                                                 <input id="btSelectAll" name="btSelectAll" type="checkbox">
                                             </div>
                                             <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--checkbox-->
                                         <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">用户名</div>
                                             <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="">
-                                            <div class="th-inner" data-name="nickname">昵称</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--用户名-->
                                         <th style="">
                                             <div class="th-inner">绑定公司</div>
                                             <div class="fht-cell"></div>
-                                        </th>
-                                        {{--
+                                        </th><!--绑定公司-->
                                         <th style="">
-                                            <div class="th-inner">手机</div>
+                                            <div class="th-inner">绑定员工</div>
                                             <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="">
-                                            <div class="th-inner sortable">所属角色</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                        <th style="">
-                                            <div class="th-inner sortable">特殊权限</div>
-                                            <div class="fht-cell"></div>
-                                        </th>
-                                        --}}
+                                        </th><!--绑定员工-->
                                         <th style="">
                                             <div class="th-inner sortable" data-name="is_active">状态
                                                 <span class="order">
@@ -145,7 +130,7 @@
                                                 </span>
                                             </div>
                                             <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--状态-->
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
@@ -153,11 +138,11 @@
                                                 </span><!--dropup-->
                                             </div>
                                             <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--创建时间-->
                                         <th style="">
                                             <div class="th-inner">操作</div>
                                             <div class="fht-cell"></div>
-                                        </th>
+                                        </th><!--操作-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -172,7 +157,6 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->name }}</td><!--用户名-->
-                                            <td>{{ $item->nickname }}</td><!--昵称-->
                                             <td>
                                                 @if(isset($item->company))
                                                     {{ $item->company->id . ' - ' . $item->company->name }}
@@ -180,6 +164,13 @@
                                                     {{ '0 - <null>' }}
                                                 @endif
                                             </td><!--公司-->
+                                            <td>
+                                                @if(isset($item->employee))
+                                                    {{ $item->employee->id . ' - ' . $item->employee->number }}
+                                                @else
+                                                    {{ '0 - <null>' }}
+                                                @endif
+                                            </td><!--员工-->
                                             <td>
                                                 @if($item->is_active == $common::IS_ACTIVE)
                                                     <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
@@ -198,7 +189,7 @@
 {{--                                                {{ var_dump($item->employee->user_id) }}--}}
                                                 @if(!isset($item->company))
                                                     <a href="" class="btn btn-success btn-xs operate-binding"
-                                                       data-toggle="modal" data-target=".formModal"
+                                                       data-toggle="modal" data-target="#bindingModal"
                                                        data-url="user/{{ $item->id }}/binding" title="绑定">
                                                         <i class="glyphicon glyphicon-link"></i>绑定</a>
                                                 @else
@@ -254,9 +245,6 @@
         </div>
     </div><!--/.row-->
 @stop
-
-{{--@include('admin.common.modal')--}}
-
 @section('javascript')
     <script>
         $(function () {

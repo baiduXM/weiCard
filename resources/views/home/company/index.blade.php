@@ -85,7 +85,7 @@
             window.location.href = 'company/create';
         });
         $('.btnBinding').click(function () { // 绑定
-            window.location.href = 'company/banding';
+            window.location.href = 'company/binding';
         });
         $('.btnShow').click(function () { // 查看
             var company_id = $('#company').data('id');
