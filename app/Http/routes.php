@@ -36,7 +36,6 @@ Route::get('admin/logout', function () {
 
 /* 用户界面 */
 Route::group(['middleware' => 'auth'], function () {
-//Route::group(['middleware' => ['auth', 'web']], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
@@ -44,31 +43,37 @@ Route::group(['middleware' => 'auth'], function () {
     /* 用户中心 */
     Route::resource('user', 'Home\UserController');
 
-    /* 我的名片 */
-    Route::resource('card', 'Home\UserController');
-
     /* 我的公司 */
-//    Route::group(['prefix' => 'company'], function () {
-//        Route::resource('register', 'Home\CompanyController');
-//        Route::get('register', ['as' => 'company.register.create', 'uses' => 'Home\CompanyController@register']);
-//        Route::post('register', ['as' => 'company.register.store', 'uses' => 'Home\CompanyController@postRegister']);
-//        Route::get('group', ['as' => 'company.group', 'uses' => 'Home\CompanyController@group']);
-//        Route::get('department', ['as' => 'company.department', 'uses' => 'Home\CompanyController@department']);
-//        Route::get('employee', ['as' => 'company.employee', 'uses' => 'Home\CompanyController@employee']);
-//        Route::get('workmate', ['as' => 'company.workmate', 'uses' => 'Home\CompanyController@workmate']);
-//    });
+    Route::group(['prefix' => 'company'], function () {
+        /* 我的公司->部门 */
+        Route::resource('department', 'Home\DepartmentController');
+        /* 我的公司->员工 */
+        Route::resource('employee', 'Home\EmployeeController');
+    });
     Route::resource('company', 'Home\CompanyController');
 
-    /* 我的公司->员工 */
-    Route::resource('employee', 'Home\EmployeeController');
+    /* 通讯录 */
+    Route::group(['prefix' => 'contact'], function () {
+        /* 通讯录->分组 */
+        Route::resource('group', 'Home\GroupController');
+    });
+    Route::resource('contact', 'Home\ContactController');
 
     /* 模板中心 */
     Route::resource('template', 'Home\TemplateController');
 
-    /* 通讯录 */
-    Route::resource('contact', 'Home\ContactController');
-
     /* 安全中心 */
+    Route::group(['prefix' => 'security'], function () {
+        /* 安全中心->验证邮箱 */
+        Route::get('email', ['as' => 'security.email', 'uses' => 'Home\SecurityController@email']);
+        Route::post('email', ['as' => 'security.post-email', 'uses' => 'Home\SecurityController@postEmail']);
+        /* 安全中心->绑定第三方 */
+        Route::get('binding', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
+        Route::post('binding', ['as' => 'security.post-binding', 'uses' => 'Home\SecurityController@postBinding']);
+        /* 安全中心->修改密码 */
+        Route::get('password', ['as' => 'security.password', 'uses' => 'Home\SecurityController@password']);
+        Route::post('password', ['as' => 'security.post-password', 'uses' => 'Home\SecurityController@postPassword']);
+    });
     Route::resource('security', 'Home\SecurityController');
 
 });

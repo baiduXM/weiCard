@@ -20,9 +20,9 @@
             </h3>
             <ul class="tree_one" {{ Request::path() == 'user' || Request::is('user/*') ? 'style=display:block;' : '' }}>
                 <li {{ Request::path() == 'user' ? 'class=active' : '' }}>
-                    <a href="{{ url('user') }}">个人信息</a></li>
-                <li {{ Request::path() == 'user/card' ? 'class=active' : '' }}>
-                    <a href="{{ url('user/card') }}">我的名片</a></li>
+                    <a href="{{ url('user') }}">我的名片</a></li>
+                <li {{ Request::path() == 'user/show' ? 'class=active' : '' }}>
+                    <a href="{{ url('user/' . Auth::id() ) }}">个人信息</a></li>
             </ul>
         </div><!--我的名片-->
         <div class="tree_box nav ">
@@ -59,10 +59,10 @@
                     <a href="{{ url('company') }}">我的公司</a></li>
                 <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                     <a href="{{ url('company/department') }}">公司部门</a></li>
+                <li {{ Request::path() == 'company/employee/create' ? 'class=active' : '' }}>
+                    <a href="{{ url('company/employee/create') }}">添加员工</a></li>
                 <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
-                    <a href="{{ url('company/employee') }}">添加员工</a></li>
-                <li {{ Request::path() == 'company/workmate' ? 'class=active' : '' }}>
-                    <a href="{{ url('company/workmate') }}">我的同事</a></li>
+                    <a href="{{ url('company/employee') }}">我的同事</a></li>
             </ul>
         </div><!--我的公司-->
         <div class="tree_box nav ">
@@ -76,10 +76,10 @@
                 </a>
             </h3>
             <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
-                <li {{ Request::path() == 'template/charge' ? 'class=active' : '' }}>
-                    <a href="{{ url('template/charge') }}">收费模板</a></li>
-                <li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>
-                    <a href="{{ url('template/free') }}">免费模板</a></li>
+                <li {{ Request::path() == 'template' ? 'class=active' : '' }}>
+                    <a href="{{ url('template') }}">收费模板</a></li>
+                {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
+                    {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
             </ul>
         </div><!--模板中心-->
         <div class="tree_box nav ">
@@ -93,14 +93,14 @@
                 </a>
             </h3>
             <ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>
-                <li {{ Request::path() == 'security/verify-center' ? 'class=active' : '' }}>
-                    <a href="{{ url('security/verify-center') }}">验证中心</a></li>
-                <li {{ Request::path() == 'security/verify-email' ? 'class=active' : '' }}>
-                    <a href="{{ url('security/verify-email') }}">验证邮箱</a></li>
-                <li {{ Request::path() == 'security/third-party' ? 'class=active' : '' }}>
-                    <a href="{{ url('security/third-party') }}">绑定第三方账号</a></li>
-                <li {{ Request::path() == 'security/modify' ? 'class=active' : '' }}>
-                    <a href="{{ url('security/modify') }}">修改密码</a></li>
+                <li {{ Request::path() == 'security' ? 'class=active' : '' }}>
+                    <a href="{{ url('security') }}">验证中心</a></li>
+                <li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>
+                    <a href="{{ url('security/email') }}">验证邮箱</a></li>
+                <li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>
+                <a href="{{ url('security/binding') }}">绑定第三方账号</a></li>
+                <li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>
+                    <a href="{{ url('security/password') }}">修改密码</a></li>
             </ul>
         </div><!--安全中心-->
     </div>

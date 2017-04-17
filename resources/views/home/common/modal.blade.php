@@ -1,13 +1,149 @@
+<!-- 添加联系人modal -->
+<div class="modal fade bs1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content modal1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >添加联系人</h4>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <p><span>姓名 : </span><input type="text"></p>
+                    <p><span>电话 : </span><input type="text"></p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="添加">
+                <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 通讯录-查看modal -->
+<div class="modal fade bs2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content modal1 modal2">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >通讯录-查看</h4>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="modal-address">
+                        <p><span>姓名 : </span><input type="text"></p>
+                        <p><span>固话 : </span><input type="text"></p>
+                        <p><span>手机 : </span><input type="text"></p>
+                        <p><span>传真 : </span><input type="text"></p>
+                        <p><span>邮箱 : </span><input type="text"></p>
+                        <p><span> Q Q : </span><input type="text"></p>
+                        <p><span>微信 : </span><input type="text"></p>
+                    </div>
+                    <div class="modal-address-img">
+                        <img src="image/icon12.png" alt="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="添加">
+                <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+</div>
 <!-- 确认删除吗modal -->
 <div class="modal fade bs3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content modal1 modal3">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <p><i class="iconFont">&#xe604;</i>确认彻底删除所选联系人吗？</p>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="添加">
+                <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加联系人到分组modal -->
+<div class="modal fade bs4" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modal1 modal4">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >添加联系人到分组</h4>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <p>添加“张三”到</p>
+                    <div class="add-name">
+                        <p><label for="radio1"><input type="radio" name="radio" id="radio1"><span>设计</span></label></p>
+                        <p><label for="radio2"><input type="radio" name="radio" id="radio2"><span>研发</span></label></p>
+                        <p><label for="radio3"><input type="radio" name="radio" id="radio3"><span>销售</span></label></p>
+                        <p><label for="radio4"><input type="radio" name="radio" id="radio4"><span>市场</span></label></p>
+                        <p><label for="radio5"><input type="radio" name="radio" id="radio5"><span>策划</span></label></p>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="添加">
+                <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 编辑组联系人-编辑modal -->
+<div class="modal fade bs5" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modal1 modal5">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >编辑组联系人</h4>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <p><span>姓名 : </span><input type="text"></p>
+                    <p><span>固话 : </span><input type="text"></p>
+                    <p><span>手机 : </span><input type="text"></p>
+                    <p class="remark"><span>备注 : </span><input type="text"></p>
+                    <p class="amend">
+                        <span>分组 : </span>
+                        <span class="set-design">设计
+                                    <button type="button" class="close" data-dismiss="set-design" ><span >&times;</span></button></span>
+                        <a href="javascript:" data-toggle="modal" data-target=".bs6">修改</a>
+                    </p>
+                    <p class="set-more"><i class="iconFont">&#xe609;</i><a href="">更多信息 :</a></p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="添加">
+                <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 编辑组联系人-编辑-修改组modal -->
+<div class="modal fade bs6" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modal1 modal4 modal6">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" >添加联系人到分组</h4>
+            </div>
+            <div class="modal-body modal6-body">
+                <form action="">
+                    <div class="add-name">
+                        <p><label for="radio6-1"><input type="radio" name="radio" id="radio6-1"><span>设计</span></label></p>
+                        <p><label for="radio6-2"><input type="radio" name="radio" id="radio6-2"><span>研发</span></label></p>
+                        <p><label for="radio6-3"><input type="radio" name="radio" id="radio6-3"><span>销售</span></label></p>
+                        <p><label for="radio6-4"><input type="radio" name="radio" id="radio6-4"><span>市场</span></label></p>
+                        <p><label for="radio6-5"><input type="radio" name="radio" id="radio6-5"><span>策划</span></label></p>
+                    </div>
+
+                </form>
             </div>
             <div class="modal-footer">
                 <input type="submit" value="添加">
@@ -100,28 +236,6 @@
         </div>
     </div>
 </div>
-<!-- 添加部门modal -->
-<div class="modal fade bs1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content modal1 modal11">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">添加部门</h4>
-            </div>
-            <div class="modal-body">
-                <form action="">
-                    <p><span>部门名称 : </span><input type="text"></p>
-                    <p><span>负责人 : </span><input type="text"></p>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="保存">
-                <input type="reset" data-dismiss="modal" value="取消">
-            </div>
-        </div>
-    </div>
-</div>
 <!-- 添加职位modal -->
 <div class="modal fade bs9" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -139,31 +253,6 @@
             <div class="modal-footer">
                 <input type="submit" value="保存">
                 <input type="reset" data-dismiss="modal" value="取消">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 确认删除吗modal -->
-<div class="modal fade bs13" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content modal1 modal3">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">标题</h4>
-            </div>
-            <div class="modal-body">
-                <p><i class="iconFont">&#xe604;</i>确认注销公司吗？</p>
-            </div>
-            <div class="modal-footer">
-                <form action="" method="post">
-                    {{ method_field('DELETE') }}
-                    {{ csrf_field() }}
-                    {{--<input type="hidden" name="ids" value="">--}}
-
-                    <input type="submit" value="确认">
-                    <input type="reset" data-dismiss="modal" value="取消">
-                </form>
             </div>
         </div>
     </div>
