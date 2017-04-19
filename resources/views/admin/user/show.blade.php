@@ -12,7 +12,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <tr>
-                                <th class="text-right col-md-3">ID</th>
+                                <th class="text-right col-sm-3">ID</th>
                                 <td class="col-md-9">{{ $user->id }}</td>
                             </tr>
                             <tr>
@@ -52,11 +52,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">绑定公司</th>
-                                <td>{{ $user->company_id . ' - ' . $common->getValue('companies', $user->company_id)}}</td>
+                                <td>{{ isset($user->company) ? $user->company->id . ' - ' . $user->company->name : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定员工</th>
-                                <td>{{ $user->employee_id . ' - ' . $common->getValue('employees', $user->employee_id) }}</td>
+                                <td>{{ isset($user->employee) ? $user->employee->id . ' - ' . $user->employee->number : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">状态</th>

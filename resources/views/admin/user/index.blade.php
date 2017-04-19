@@ -39,23 +39,6 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="user" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                {{--
-                                <button class="btn btn-default" type="button" name="toggle" title="Toggle"><i
-                                            class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i></button>
-                                <div class="keep-open btn-group" title="Columns">
-                                    <button type="button" class="btn btn-default dropdown-toggle"
-                                            data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span
-                                                class="caret"></span></button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><label><input type="checkbox" data-field="id" value="1" checked="checked">
-                                                Item ID</label></li>
-                                        <li><label><input type="checkbox" data-field="name" value="2" checked="checked">
-                                                Item Name</label></li>
-                                        <li><label><input type="checkbox" data-field="price" value="3"
-                                                          checked="checked"> Item Price</label></li>
-                                    </ul>
-                                </div>
-                                --}}
                             </div><!--显示-->
                             <form name="form_search" action="{{ url('/admin/user') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
@@ -70,12 +53,12 @@
                                         <ul class="dropdown-menu" id="columnDropdown">
                                             <li><a class="dropdown-item" data-column="name" name="column_name"
                                                    style="cursor: pointer;">用户名</a></li>
-                                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
-                                            {{--style="cursor: pointer;">昵称</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
-                                            {{--style="cursor: pointer;">手机</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
-                                            {{--style="cursor: pointer;">邮箱</a></li>--}}
+                                            <li><a class="dropdown-item" data-column="nickname" name="column_nickname"
+                                                   style="cursor: pointer;">昵称</a></li>
+                                            <li><a class="dropdown-item" data-column="mobile" name="column_mobile"
+                                                   style="cursor: pointer;">手机</a></li>
+                                            <li><a class="dropdown-item" data-column="email" name="column_email"
+                                                   style="cursor: pointer;">邮箱</a></li>
                                         </ul>
                                     </div><!-- /btn-group -->
                                     <input type="hidden" name="column" value="name"/>
@@ -116,13 +99,13 @@
                                             <div class="fht-cell"></div>
                                         </th><!--用户名-->
                                         <th style="">
-                                            <div class="th-inner">绑定公司</div>
+                                            <div class="th-inner">公司</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--绑定公司-->
+                                        </th><!--公司-->
                                         <th style="">
-                                            <div class="th-inner">绑定员工</div>
+                                            <div class="th-inner">员工</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--绑定员工-->
+                                        </th><!--员工-->
                                         <th style="">
                                             <div class="th-inner sortable" data-name="is_active">状态
                                                 <span class="order">
@@ -157,20 +140,8 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->name }}</td><!--用户名-->
-                                            <td>
-                                                @if(isset($item->company))
-                                                    {{ $item->company->id . ' - ' . $item->company->name }}
-                                                @else
-                                                    {{ '0 - <null>' }}
-                                                @endif
-                                            </td><!--公司-->
-                                            <td>
-                                                @if(isset($item->employee))
-                                                    {{ $item->employee->id . ' - ' . $item->employee->number }}
-                                                @else
-                                                    {{ '0 - <null>' }}
-                                                @endif
-                                            </td><!--员工-->
+                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td><!--公司-->
+                                            <td>{!! isset($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->
                                             <td>
                                                 @if($item->is_active == $common::IS_ACTIVE)
                                                     <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
@@ -186,23 +157,22 @@
                                                 <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-{{--                                                {{ var_dump($item->employee->user_id) }}--}}
                                                 @if(!isset($item->company))
                                                     <a href="" class="btn btn-success btn-xs operate-binding"
                                                        data-toggle="modal" data-target="#bindingModal"
-                                                       data-url="user/{{ $item->id }}/binding" title="绑定">
+                                                       data-url="user/{{ $item->id }}/binding" title="绑定员工">
                                                         <i class="glyphicon glyphicon-link"></i>绑定</a>
                                                 @else
                                                     <a href="" class="btn btn-warning btn-xs operate-unbinding"
                                                        data-toggle="modal" data-target=".confirmModal"
                                                        data-info="{{ $item->company->name }}"
-                                                       data-url="user/{{ $item->id }}/binding" title="解绑">
+                                                       data-url="user/{{ $item->id }}/binding" title="解绑员工">
                                                         <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                 @endif
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="user/{{ $item->id }}"
-                                                   data-id="{{ $item->id }}" data-name="{{ $item->name }}" title="删除">
+                                                   data-url="user/{{ $item->id }}" data-info="{{ $item->name }} 用户"
+                                                   title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
                                             </td><!--操作-->
@@ -212,27 +182,6 @@
                                 </table>
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
-                                {{--
-                                    <div class="pull-left pagination-detail">
-                                        <span class="pagination-info">每页显示
-                                            <span class="page-list">
-                                                <span class="btn-group dropup">
-                                                    <button type="button"
-                                                            class="btn btn-default dropdown-toggle"
-                                                            data-toggle="dropdown">
-                                                        <span class="page-size">10</span> <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li class="active"><a href="javascript:void(0);">10</a></li>
-                                                        <li><a href="javascript:void(0);">25</a></li>
-                                                        <li><a href="javascript:void(0);">50</a></li>
-                                                        <li><a href="javascript:void(0);">100</a></li>
-                                                    </ul>
-                                                </span>
-                                            </span> 条
-                                        </span>
-                                    </div><!--每页几条-->
-                                    --}}
                                 <div class="pull-right pagination">
                                     {!! $users->render() !!}
                                 </div><!--跳转页码-->

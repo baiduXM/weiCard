@@ -99,11 +99,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::group(['prefix' => 'company'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\CompanyController@batchDestroy']);
         Route::get('{id}/verified', ['as' => 'admin.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
-        Route::match(['put', 'patch'], '{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@putVerified']);
+        Route::post('{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@postVerified']);
+        Route::post('{id}/binding', ['as' => 'admin.company.binding', 'uses' => 'Admin\CompanyController@binding']);
     });
     Route::resource('company', 'Admin\CompanyController');
 
     /* 员工管理 */
+    Route::group(['prefix' => 'employee'], function () {
+        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    });
     Route::resource('employee', 'Admin\EmployeeController');
 
     /* 模板管理 */

@@ -92,9 +92,9 @@
                                 <textarea id="description" name="Company[description]" class="form-control"
                                           rows="3" placeholder="个性签名">{{ old('Company.description') }}</textarea>
                             </div>
-                            @if ($errors->has('Company.password_confirmation'))
+                            @if ($errors->has('Company.description'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Company.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('Company.description') }}</strong>
                                 </span>
                             @endif
                         </div><!-- description公司简介 -->

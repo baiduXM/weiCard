@@ -8,7 +8,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    公司管理
+                    员工管理
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -16,24 +16,32 @@
                         <div class="fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
                                 <button class="btn btn-default operate-batch-delete" type="button"
-                                        name="operate-batch-delete" data-url="company/batch"
+                                        name="operate-batch-delete" data-url="employee/batch"
                                         data-toggle="modal" data-target=".confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="company/create" title="添加">
+                                        data-url="employee/create" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
+                                {{--<button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"--}}
+                                        {{--title="批量添加">--}}
+                                    {{--<i class="glyphicon glyphicon-plus-sign"></i>--}}
+                                {{--</button>--}}
+                                {{--<button class="btn btn-default operate-import" type="button" name="operate-add-file"--}}
+                                        {{--title="导入文件">--}}
+                                    {{--<i class="glyphicon glyphicon-file"></i>--}}
+                                {{--</button>--}}
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="company" title="重置刷新">
+                                        data-url="employee" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-retweet" type="button" name="retweet"
-                                        data-url="company" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-retweet" type="button" name="retweet"--}}
+                                        {{--data-url="employee" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet icon-retweet"></i></button>--}}
                             </div><!--显示-->
-                            <form name="form_search" action="{{ url('/admin/company') }}" method="get">
+                            <form name="form_search" action="{{ url('/admin/employee') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
                                     {{--{{ csrf_field() }}--}}
                                     <div class="input-group-btn btn-group keep-open">
@@ -67,13 +75,7 @@
                         </div>
                         {{--表单容器--}}
                         <div class="fixed-table-container">
-                            <div class="fixed-table-header">
-                                <table></table>
-                            </div><!--表单头部-->
                             <div class="fixed-table-body">
-                                <div class="fixed-table-loading" style="top: 37px; display: none;">
-                                    Loading, please wait…
-                                </div><!--无内容显示-->
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -86,27 +88,27 @@
                                         <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--id-->
+                                        </th><!--ID-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">公司名称</div>
+                                            <div class="th-inner" data-name="number">工号</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--number-->
+                                        <th style="">
+                                            <div class="th-inner" data-name="company">公司</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--company-->
+                                        <th style="">
+                                            <div class="th-inner" data-name="department">部门</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--department-->
+                                        <th style="">
+                                            <div class="th-inner" data-name="name">姓名</div>
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="display_name">显示名称</div>
+                                            <div class="th-inner" data-name="title">头衔</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--display_name-->
-                                        <th style="">
-                                            <div class="th-inner" data-name="user_name">注册人</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--user_name-->
-                                        <th style="">
-                                            <div class="th-inner sortable" data-name="status">状态
-                                                <span class="order">
-                                                    <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span>
-                                            </div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--status-->
+                                        </th><!--title-->
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
@@ -122,18 +124,44 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($employees)
-                                    @else
+                                    @foreach($employees as $item)
                                         <tr>
-                                            <td colspan="10">无数据</td>
+                                            <td>
+                                                <div class="ckbox ckbox-default">
+                                                    <input type="checkbox" name="id" id="id-{{ $item->id }} "
+                                                           value="{{ $item->id }}" class="selectall-item">
+                                                    <label for="id-{{ $item->id }}"></label>
+                                                </div>
+                                            </td><!--checkbox-->
+                                            <td>{{ $item->id }}</td><!--ID-->
+                                            <td>{{ $item->number }}</td><!--工号-->
+                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td><!--公司-->
+                                            <td>{!! isset($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td><!--部门-->
+                                            <td>{{ $item->name }}</td><!--姓名-->
+                                            <td>{{ $item->title }}</td><!--头衔-->
+                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
+                                            <td>
+                                                <a href="{{ url('admin/employee/'.$item->id) }}"
+                                                   class="btn btn-white btn-xs" title="详情"><i
+                                                            class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
+                                                   class="btn btn-primary btn-xs" title="编辑"><i
+                                                            class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                <a href="" class="btn btn-danger btn-xs operate-delete"
+                                                   data-toggle="modal" data-target=".confirmModal"
+                                                   data-url="employee/{{ $item->id }}"
+                                                   data-info="{{ $item->number }} 员工" title="删除">
+                                                    <i class="glyphicon glyphicon-trash"></i>删除
+                                                </a>
+                                            </td><!--操作-->
                                         </tr>
-                                    @endif
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $employees->render() !!}
+                                    {!! $employees->appends($params)->render() !!}
                                 </div><!--跳转页码-->
                             </div><!--页码-->
                         </div>

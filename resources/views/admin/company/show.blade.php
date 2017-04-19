@@ -12,7 +12,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <tr>
-                                <th class="text-right col-md-3">ID</th>
+                                <th class="text-right col-sm-3">ID</th>
                                 <td class="col-md-9">{{ $company->id }}</td>
                             </tr>
                             <tr>
@@ -43,11 +43,11 @@
                                 <td>{{ $company->description }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">注册人ID</th>
+                                <th class="text-right">注册人</th>
                                 <td>{{ $company->user_id . ' - ' . $common->getValue('users', $company->user_id) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">审核人ID</th>
+                                <th class="text-right">审核人</th>
                                 <td>{{ $company->manager_id . ' - ' . $common->getValue('managers', $company->manager_id) }}</td>
                             </tr>
                             <tr>
@@ -70,7 +70,7 @@
                                 <td>{{ $company->reason }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">审核通过时间</th>
+                                <th class="text-right">审核时间</th>
                                 <td>{{ $company->verified_at }}</td>
                             </tr>
                             <tr>

@@ -10,9 +10,7 @@
                 <div class="panel-heading">审核资料</div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="{{ url('admin/company/' . $company->id . '/verified') }}"
-                          method="post"
-                          enctype="multipart/form-data">
-                        {{ method_field('put') }}
+                          method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="status">审核状态</label>

@@ -13,6 +13,15 @@ class Employee extends Model
     protected $hidden = [
     ];
 
+    /**
+     * 允许url带参数查询字段
+     *
+     * @var array
+     */
+    public $query = [
+        'company_id',
+    ];
+
 
     /**
      * 获取员工对应的用户

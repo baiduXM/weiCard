@@ -97,7 +97,7 @@
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="user_name">注册人</div>
+                                            <div class="th-inner" data-name="user_name">创始人</div>
                                             <div class="fht-cell"></div>
                                         </th><!--user_name-->
                                         <th style="">
@@ -136,8 +136,7 @@
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
-                                                <td>{{ $common->getValue('users', $item->user_id, 'name') }}</td>
-                                                {{--<td>{{ $item->user->name }}</td>--}}
+                                                <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>
                                                 <td>
                                                     @if($item->deleted_at != null)
                                                         <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
@@ -156,8 +155,11 @@
                                                     <a href="{{ url('admin/company/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                    <a href="{{ url('admin/employee?company_id='.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="查看员工"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>员工</a>
                                                     @if($item->deleted_at == null)
-                                                        @if($item->status != $item::VERIFIED_SUCCEED)
+                                                        @if($item->status == $item::VERIFIED_ING)
                                                             <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
                                                                class="btn btn-success btn-xs" title="审核"><i
                                                                         class="glyphicon glyphicon-bookmark"></i>审核</a>
@@ -165,14 +167,8 @@
                                                         @if(!isset($item->user))
                                                             <a href="" class="btn btn-success btn-xs operate-binding"
                                                                data-toggle="modal" data-target="#bindingModal"
-                                                               data-url="user/{{ $item->id }}/binding" title="绑定">
+                                                               data-url="company/{{ $item->id }}/binding" title="绑定用户">
                                                                 <i class="glyphicon glyphicon-link"></i>绑定</a>
-                                                        @else
-                                                            <a href="" class="btn btn-warning btn-xs operate-unbinding"
-                                                               data-toggle="modal" data-target=".confirmModal"
-                                                               data-info="{{ $item->company->name }}"
-                                                               data-url="user/{{ $item->id }}/binding" title="解绑">
-                                                                <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                         @endif
                                                         <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
                                                            class="btn btn-primary btn-xs" title="编辑"><i
@@ -180,9 +176,8 @@
                                                         <a href="#confirmModel"
                                                            class="btn btn-danger btn-xs operate-delete"
                                                            data-toggle="modal" data-target=".confirmModal"
-                                                           data-id="{{ $item->id }}"
                                                            data-url="company/{{ $item->id }}"
-                                                           title="删除">
+                                                           data-info="{{ $item->name }} 公司" title="删除">
                                                             <i class="glyphicon glyphicon-trash"></i>删除
                                                         </a>
                                                     @else

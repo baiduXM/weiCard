@@ -12,6 +12,7 @@
                     <form class="form-horizontal" action="{{ url('admin/manager') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
+
                         <div class="form-group {{ $errors->has('Manager.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">账号 <span
                                         class="text-danger">*</span></label>
@@ -24,20 +25,7 @@
                                     <strong>{{ $errors->first('Manager.name') }}</strong>
                                 </span>
                             @endif
-                        </div>
-                        <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="email">邮箱 <span
-                                        class="text-danger">*</span></label>
-                            <div class="col-md-6">
-                                <input id="email" name="Manager[email]" type="text" placeholder="输入邮箱"
-                                       class="form-control" value="{{ old('Manager.email') }}">
-                            </div>
-                            @if ($errors->has('Manager.email'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                        </div><!--name-->
                         <div class="form-group {{ $errors->has('Manager.password') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password">密码 <span
                                         class="text-danger">*</span></label>
@@ -50,7 +38,7 @@
                                         <strong>{{ $errors->first('Manager.password') }}</strong>
                                     </span>
                             @endif
-                        </div>
+                        </div><!--password-->
                         <div class="form-group {{ $errors->has('Manager.password_confirmation') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password-confirm">确认密码 <span class="text-danger">*</span></label>
                             <div class="col-md-6">
@@ -63,7 +51,19 @@
                                     <strong>{{ $errors->first('Manager.password_confirmation') }}</strong>
                                 </span>
                             @endif
-                        </div>
+                        </div><!--password_confirmation-->
+                        <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="email">邮箱</label>
+                            <div class="col-md-6">
+                                <input id="email" name="Manager[email]" type="text" placeholder="输入邮箱"
+                                       class="form-control" value="{{ old('Manager.email') }}">
+                            </div>
+                            @if ($errors->has('Manager.email'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Manager.email') }}</strong>
+                                </span>
+                            @endif
+                        </div><!--email-->
                         <div class="form-group {{ $errors->has('Manager.nickname') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="nickname">昵称</label>
                             <div class="col-md-6">
@@ -75,7 +75,7 @@
                                     <strong>{{ $errors->first('Manager.nickname') }}</strong>
                                 </span>
                             @endif
-                        </div>
+                        </div><!--nickname-->
                         <div class="form-group {{ $errors->has('Manager.avatar') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="avatar">头像</label>
                             <div class="col-md-6">
@@ -89,8 +89,7 @@
                                     <strong>{{ $errors->first('Manager.avatar') }}</strong>
                                 </span>
                             @endif
-                        </div>
-
+                        </div><!--avatar-->
                         <div class="form-group {{ $errors->has('Manager.mobile') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="mobile">手机</label>
                             <div class="col-md-6">
@@ -102,19 +101,19 @@
                                     <strong>{{ $errors->first('Manager.mobile') }}</strong>
                                 </span>
                             @endif
-                        </div>
+                        </div><!--mobile-->
                         <div class="form-group {{ $errors->has('Manager.description') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="description">个性签名</label>
                             <div class="col-md-6">
                                 <textarea id="description" name="Manager[description]" class="form-control"
                                           rows="3"></textarea>
                             </div>
-                            @if ($errors->has('Manager.password_confirmation'))
+                            @if ($errors->has('Manager.description'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.password_confirmation') }}</strong>
+                                    <strong>{{ $errors->first('Manager.description') }}</strong>
                                 </span>
                             @endif
-                        </div>
+                        </div><!--description-->
                         <div class="form-group {{ $errors->has('Manager.is_super') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_super">超级管理员</label>
                             <div class="col-md-6">
@@ -129,11 +128,11 @@
                                         <strong>{{ $errors->first('Manager.is_super') }}</strong>
                                     </span>
                             @endif
-                        </div>
+                        </div><!--is_super-->
                         <div class="form-group {{ $errors->has('Manager.is_active') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_active">账号状态</label>
                             <div class="col-md-6">
-                                @foreach($manager->isActive() as $item => $value)
+                                @foreach($common->isActive() as $item => $value)
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="Manager[is_active]"
@@ -147,12 +146,13 @@
                                         <strong>{{ $errors->first('Manager.is_active') }}</strong>
                                     </span>
                             @endif
-                        </div>
+                        </div><!--is_active-->
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url('admin/manager/create') }}" type="reset"
-                                   class="btn btn-default btn-md">重置</a>
+                                <button type="reset" class="btn btn-warning btn-md">重置</button>
+                                <a href="{{ url('admin/manager') }}" type="button" role="button"
+                                   class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </form>

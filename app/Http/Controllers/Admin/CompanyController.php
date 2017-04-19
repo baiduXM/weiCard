@@ -6,6 +6,8 @@ use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Common;
 use App\Models\Company;
+use App\Models\Employee;
+use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,7 +114,11 @@ class CompanyController extends Controller
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
-        $data['status'] = 0;
+        
+        /* 默认添加审核通过 */
+        $data['status'] = 1;
+        $data['manager_id'] = Auth::guard('admin')->id();
+        $data['verified_at'] = date('Y-m-d H:i:s', time());
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
@@ -243,7 +249,7 @@ class CompanyController extends Controller
      */
     public function batchDestroy(Request $request)
     {
-        $ids = explode(',', $request['ids']);
+        $ids = explode(',', $request->input('ids'));
         $res = Company::whereIn('id', $ids)->delete();
         if ($res) {
             return redirect('admin/company')->with('success', '删除成功 - ' . $res . '条记录');
@@ -252,18 +258,8 @@ class CompanyController extends Controller
         }
     }
 
-    /*
-    *  公司名称：判断公司是否有创始人
-    *      Y有:绑定公司，创建并关联员工
-    *      N无:无法绑定
-    *  员工工号：判断员工是否存在
-    *      Y:判断员工是否已绑定
-    *          Y有:无法绑定，返回
-    *          N无:绑定公司，关联员工
-    *      N:无法绑定，返回
-    */
     /**
-     * 关联公司
+     * 公司关联用户
      *
      * @param Request $request
      * @param $id
@@ -272,39 +268,33 @@ class CompanyController extends Controller
     public function binding(Request $request, $id)
     {
         $code = $request->input('code');
-        $user = User::with('company', 'employee')->find($id);
-        $company = Company::with(['employees' => function ($query) {
-            $query->where('user_id', '!=', null);
-        }])->where('name', $code)->first(); // 获取该公司未绑定的员工
-        if ($company && !$company->user_id) { // 有公司，且无创始人
-            $user->company()->save($company); // 绑定公司
-            return redirect('admin/user')->with('success', '绑定成功 - ' . '公司' . $company->id);
+        $company = Company::find($id);
+        if ($company->user) { // 公司存在创始人
+            return redirect('admin/company')->with('error', '绑定失败 - 已绑定用户');
         }
-        return redirect('admin/user')->with('error', '绑定失败 - 公司不存在/公司已被绑定');
-//        return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+        $user = User::where('name', '=', $code)->where('is_active', 1)->first();
+        if (!$user) { // 不存在用户
+            return redirect('admin/company')->with('error', '绑定失败 - 用户不存在或未激活');
+        }
+        if ($user->company) { // 用户关联公司
+            return redirect('admin/company')->with('error', '绑定失败 - 用户已关联公司');
+        }
+        if (count($company->employees)) { // 公司关联员工
+            return redirect('admin/company')->with('error', '绑定失败 - 绑定码不完整');
+        }
+        $employee = new Employee();
+        $employee->number = strtoupper(substr($company->name, 0, 1)) . '00001';
+        $employee->name = $user->name;
+        $employee->title = '创始人';
+        $employee->mobile = $user->mobile;
+        $company->employees()->save($employee); // 员工关联公司
+        $user->company()->save($company); // 公司关联用户
+        $user->employee()->save($employee); // 员工关联用户
+        return redirect('admin/company')->with('success', '绑定成功 - ' . $company->id);
     }
 
     /**
-     * 解绑公司
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function unbinding($id)
-    {
-        $user = User::with('company', 'employee')->find($id);
-        if ($user->company) {
-            $user->company->user_id = null;
-            $user->company->save();
-        }
-        if ($user->employee) {
-            $user->employee->user_id = null;
-            $user->employee->save();
-        }
-        return redirect('admin/user')->with('success', '解绑成功 - ' . $id);
-    }
-
-    /**
+     * 审核
      *
      * @param $id
      * @return \Illuminate\View\View
@@ -323,13 +313,14 @@ class CompanyController extends Controller
         }
     }
 
-
     /**
+     * 提交审核
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function putVerified(Request $request, $id)
+    public function postVerified(Request $request, $id)
     {
         $model = new Company();
         $company = $model::find($id);
