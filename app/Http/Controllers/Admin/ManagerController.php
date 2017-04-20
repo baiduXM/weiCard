@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 class ManagerController extends Controller
 {
+    protected $path_type = 'admin'; // 文件路径保存分类
+
     public function __construct()
     {
         // 首页 > 客服管理
@@ -58,60 +60,43 @@ class ManagerController extends Controller
     // POST
     public function store(Request $request)
     {
-//        $path = public_path().'/uploads/images';
-//
-//        dd($path);
-//        dd($request->file('Manager.avatar'));
-////        exit;
-////
-//
-////        $destinationPath = '/uploads/images'; // upload path
-//        $extension = $request->file('Manager.avatar')->getClientOriginalExtension(); // getting image extension
-//        dd($extension);
-//        $fileName = rand(11111, 99999) . '.' . $extension; // renameing image
-//        dd($request->file('Manager.avatar')->move($destinationPath, $fileName)); // uploading file to given path
-//        // sending back with message
-////        Session::flash('success', 'Upload successfully');
-////        return Redirect::to('upload');
-        if ($request->hasFile('Manager.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('Manager.avatar'), 'admin');
-        }
-        dd($data);
+        /* 验证 */
         $this->validate($request, [
-            'Manager.name' => 'required|alpha_dash|unique:managers,managers.name',
-            'Manager.email' => 'required|email|unique:managers,managers.email',
+            'Manager.name' => 'required|unique:managers,managers.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Manager.password' => 'required|confirmed',
-            'Manager.nickname' => 'alpha_dash',
-            'Manager.avatar' => 'image|max:2*1024*1024',//最大2MB
-            'Manager.avatar' => 'image|size:2*1024*1024',//文件必须2MB
+            'Manager.email' => 'email|unique:managers,managers.email',
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile',
-            'Manager.description' => 'max:255',
-        ], [
-            'required' => ':attribute不能为空',
-            'alpha_dash' => ':attribute只能包含字母、数字、破折号（ - ）以及下划线（ _ ）',
-            'unique' => ':attribute已存在',
-            'confirmed' => '两次:attribute不一致',
-            'image' => ':attribute文件必须为图片格式（ jpeg、png、bmp、gif、 或 svg ）',
-            'email' => ':attribute邮箱格式错误',
-            'digits' => ':attribute长度必须11位',
-            'max' => ':attribute长度太长或文件过大',
-        ], [
+            'Manager.nickname' => 'max:30',
+            'Manager.is_super' => 'boolean',
+            'Manager.is_active' => 'boolean',
+        ], [], [
             'Manager.name' => '账号',
             'Manager.password' => '密码',
-            'Manager.nickname' => '昵称',
-            'Manager.avatar' => '头像',
             'Manager.email' => '邮箱',
             'Manager.mobile' => '手机',
-            'Manager.description' => '说明',
+            'Manager.nickname' => '昵称',
+            'Manager.is_super' => '超级管理员',
+            'Manager.is_active' => '激活状态',
         ]);
-//        dd($request->all('Manager'));
-//        dd($request->input('Manager'));
+
+        /* 获取字段类型 */
         $data = $request->input('Manager');
-        if ($request->hasFile('Manager.avatar')) {
-            $data['avatar'] = UploadController::save($request->file('Manager.avatar'));
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
+            }
+            if ($key == 'password') {
+                $data[$key] = bcrypt($value);// 对密码加密
+            }
         }
-        dd($data);
+
+        /* 获取文件类型 */
+        if ($request->hasFile('Manager.avatar')) {
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('Manager.avatar'), $this->path_type, $data['name']);
+        }
+
+        /* 添加 */
         if (Manager::create($data)) {
             return redirect('admin/manager')->with('success', '添加成功');
         } else {
@@ -120,27 +105,98 @@ class ManagerController extends Controller
     }
 
     // GET
-    public function show()
+    public function show($id)
     {
-
+        if (!$manager = Manager::find($id)) {
+            return redirect('admin/manager')->with('warning', '用户不存在');
+        }
+        return view('admin.manager.show')->with([
+            'manager' => $manager,
+            'common' => new Common(),
+        ]);
     }
 
-    // GET
-    public function edit()
-    {
 
+    // GET
+    public function edit($id)
+    {
+        if (!$manager = Manager::find($id)) {
+            return redirect('admin/manager')->with('warning', '用户不存在');
+        }
+        return view('admin.manager.edit')->with([
+            'manager' => $manager,
+            'common' => new Common(),
+        ]);
     }
 
     // PUT\PATCH
-    public function update()
+    public function update(Request $request, $id)
     {
-
+        $this->validate($request, [
+            'Manager.name' => 'required|unique:managers,managers.name,' . $id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Manager.email' => 'email|unique:managers,managers.email,' . $id,
+            'Manager.mobile' => 'digits:11|unique:managers,managers.mobile,' . $id,
+            'Manager.nickname' => 'max:30',
+            'Manager.is_super' => 'boolean',
+            'Manager.is_active' => 'boolean',
+        ], [], [
+            'Manager.name' => '账号',
+            'Manager.email' => '邮箱',
+            'Manager.mobile' => '手机',
+            'Manager.nickname' => '昵称',
+            'Manager.is_super' => '超级管理员',
+            'Manager.is_active' => '激活状态',
+        ]);
+        $data = $request->input('Manager');
+        $manager = Manager::find($id);
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $manager->$key = $data[$key];
+            }
+        }
+        if (!array_key_exists('is_super', $data)) {
+            $manager->is_super = 0;
+        }
+        if ($manager->save()) {
+            return redirect('admin/manager')->with('success', '修改成功' . ' - ' . $manager->id);
+        } else {
+            return redirect()->back();
+        }
     }
 
     // DELETE
-    public function destroy()
+    /**
+     * 删除
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
+        $manager = Manager::find($id);
+        if ($manager->delete()) {
+            return redirect('admin/manager')->with('success', '删除成功 - ' . $manager->name);
+        } else {
+            return redirect('admin/manager')->with('error', '删除失败 - ' . $manager->name);
+        }
+    }
 
+    /**
+     * 批量删除
+     *
+     * @param Request $request
+     * @param array $ids
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function batchDestroy(Request $request)
+    {
+        $ids = explode(',', $request->input('ids'));
+        $res = Manager::whereIn('id', $ids)->delete();
+        if ($res) {
+            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+        }
     }
 
 }

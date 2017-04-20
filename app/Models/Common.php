@@ -20,34 +20,6 @@ class Common extends Model
     const SEX_FEMALE = 2; // 女
     const IS_DELETED = '已删除';
 
-    /**
-     * 获取属性
-     *
-     * @param $table    表名
-     * @param $id       主键value
-     * @param string $attribute 属性名
-     * @param string $key 主键key
-     * @return string   属性值
-     */
-    public function getValue($table, $id, $attribute = 'name', $key = 'id')
-    {
-        if ($id) {
-            $data = DB::table($table)->where($key, $id)->first();
-            if ($data) {
-                return $data->$attribute;
-            } else {
-                return '<error>';
-            }
-        } else {
-            return '<null>';
-        }
-    }
-
-
-    public function hasValue($object, $model)
-    {
-
-    }
 
     /**
      * 判断是否可用
@@ -95,5 +67,26 @@ class Common extends Model
             return array_key_exists($index, $array) ? $array[$index] : reset($array);
         }
         return $array;
+    }
+
+    /**
+     * 生成代码
+     *
+     * @return mixed
+     */
+    public function createCode($str)
+    {
+//        urlencode()
+        return $str;
+    }
+
+    /**
+     * 解释代码
+     *
+     * @param $str
+     */
+    public function explainCode($str)
+    {
+
     }
 }

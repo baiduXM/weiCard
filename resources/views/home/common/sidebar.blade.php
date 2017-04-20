@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
         </button>
         <a href="#" class="navbar-brand"></a>
-    </div>
+    </div><!--手机导航-->
     <div class="nav-list main-nav collapse navbar-collapse " id="nav_list">
         <div class="tree_box nav ">
             <h3 {{ Request::path() == 'user' || Request::is('user/*') ? 'class=h3-active' : '' }}>
@@ -59,15 +59,15 @@
                     <a href="{{ url('company') }}">我的公司</a></li>
                 <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
                     <a href="{{ url('company/employee') }}">我的同事</a></li>
-{{--                @if(Auth::user()->company)--}}
+                @if(Auth::user()->company)
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
                     <li {{ Request::path() == 'company/employee/create' ? 'class=active' : '' }}>
                         <a href="{{ url('company/employee/create') }}">添加员工</a></li>
-                {{--@endif--}}
+                @endif
             </ul>
         </div><!--我的公司-->
-{{--        @if(Auth::user()->company)--}}
+        @if(Auth::user()->company)
             <div class="tree_box nav ">
                 <h3 {{ Request::path() == 'template' || Request::is('template/*') ? 'class=h3-active' : '' }}>
                     <a href="javascript:"><em class="iconFont">&#xe655;</em>模板中心
@@ -106,6 +106,6 @@
                         <a href="{{ url('security/password') }}">修改密码</a></li>
                 </ul>
             </div><!--安全中心-->
-        {{--@endif--}}
+        @endif
     </div>
 </div>

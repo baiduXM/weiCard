@@ -134,7 +134,7 @@ class UserController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), 'user', $data['name']);
+            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
         }
 
         /* 添加 */
@@ -261,7 +261,6 @@ class UserController extends Controller
         }
     }
 
-
     /*
      *  公司名称：判断公司是否有创始人
      *      Y有:绑定公司，创建并关联员工
@@ -287,7 +286,6 @@ class UserController extends Controller
             return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
         }
         $user = User::with('company', 'employee')->find($id);
-//        $user = User::with('company', 'employee')->find($id);
         $company = Company::where('name', '=', $code[0])->first();
         if (!$company) { // 无公司
             return redirect('admin/user')->with('error', '绑定失败 - 找不到公司信息');
@@ -318,14 +316,16 @@ class UserController extends Controller
         $user = User::with('company', 'employee')->find($id);
         if (!$user->company) {
             return redirect('admin/user')->with('error', '解绑失败 - 未绑定公司');
+        } else {
+            $user->company->user_id = null;
+            $user->company->save();
         }
         if (!$user->employee) {
             return redirect('admin/user')->with('error', '解绑失败 - 未绑定员工');
+        } else {
+            $user->employee->user_id = null;
+            $user->employee->save();
         }
-        $user->company->user_id = null;
-        $user->company->save();
-        $user->employee->user_id = null;
-        $user->employee->save();
         return redirect('admin/user')->with('success', '解绑成功 - ' . $id);
     }
 

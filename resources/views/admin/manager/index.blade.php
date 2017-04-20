@@ -4,7 +4,6 @@
     {!! Breadcrumbs::render('admin.manager') !!}
 @stop
 @section('content')
-    @parent
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -28,13 +27,13 @@
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="company" title="重置刷新">
+                                        data-url="manager" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                                 <button class="btn btn-default operate-retweet" type="button" name="retweet"
-                                        data-url="company" title="垃圾箱">
+                                        data-url="manager" title="垃圾箱">
                                     <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
                             </div><!--显示-->
-                            <form name="form_search" action="{{ url('/admin/company') }}" method="get">
+                            <form name="form_search" action="{{ url('/admin/manager') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
                                     {{--{{ csrf_field() }}--}}
                                     <div class="input-group-btn btn-group keep-open">

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Manager extends Model
+class Manager extends Authenticatable
 {
     const IS_SUPER = 1; // 超级管理员
     const IS_NOT_SUPER = 0; // 普通管理员
 
     protected $guarded = [
-        'id', 'created_at', 'updated_at', 'deleted_at',
+        'id', 'created_at', 'updated_at', 'deleted_at', 'password_confirmation',
     ];
     protected $hidden = [
         'password', 'remember_token',

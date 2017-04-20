@@ -496,14 +496,14 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 /*******************************通讯录摸态框*****************************************/
 .modal-dialog{position: absolute;top:50%;left:50%;}
 .modal h4{font-size:16px;}
-.modal1{width:418px;height:252px;margin-left:-209px;margin-top:-125px;border:1px solid #1da1dc;border-radius: 5px;background-color:#f5f5f5;}
+.modal1{width:418px;/*height:252px;*/margin-left:-209px;margin-top:-125px;border:1px solid #1da1dc;border-radius: 5px;background-color:#f5f5f5;}
 .modal1 .modal-header{background-color: #1da1dc;}
 .modal1 .modal-header button.close{color:#fff;opacity: 1;text-shadow: none;}
 .modal1 .modal-header h4{color:#fff;}
 .modal1 .modal-body{background-color: #fff;margin:5px 5px 0 5px;border:1px solid #ddd;padding-top:24px;}
 .modal1 .modal-body p{text-align: center;margin-bottom:14px;}
 .modal1 .modal-body p span{color:#333;}
-.modal1 .modal-body form>p input{width:241px;height:28px;line-height:28px;border:1px solid #b1b1b1;padding-left:5px;border-radius: 3px;}
+.modal1 form .modal-body input{width:241px;height:28px;line-height:28px;border:1px solid #b1b1b1;padding-left:5px;border-radius: 3px;}
 .modal .modal-footer{border-radius: 0 0 3px 3px;background-color: #fff;margin:0 5px 5px 5px;border:1px solid #ddd;border-top:none;text-align: center;}
 .modal .modal-footer input{width:80px;height:28px;border-radius: 3px;background-color: #4dbef1;color:#fff;margin:0 12px;}
 .modal .modal-footer input:hover{background-color: #1da1dc;}

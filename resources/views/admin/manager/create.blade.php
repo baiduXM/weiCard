@@ -64,32 +64,6 @@
                                 </span>
                             @endif
                         </div><!--email-->
-                        <div class="form-group {{ $errors->has('Manager.nickname') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="nickname">昵称</label>
-                            <div class="col-md-6">
-                                <input id="name" name="Manager[nickname]" type="text" placeholder="输入用户名(6~20个字符)"
-                                       class="form-control" value="{{ old('Manager.nickname') }}">
-                            </div>
-                            @if ($errors->has('Manager.nickname'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.nickname') }}</strong>
-                                </span>
-                            @endif
-                        </div><!--nickname-->
-                        <div class="form-group {{ $errors->has('Manager.avatar') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="avatar">头像</label>
-                            <div class="col-md-6">
-                                <input id="avatar" name="Manager[avatar]" type="file">
-                                {{--<input name="Manager[avatar]" type="hidden" value="">--}}
-                                {{--<input id="avatar" class="file_upload" type="file" value="">--}}
-                            </div>
-                            <img src="" alt="" class="img-circle" id="avatar-img">
-                            @if ($errors->has('Manager.avatar'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.avatar') }}</strong>
-                                </span>
-                            @endif
-                        </div><!--avatar-->
                         <div class="form-group {{ $errors->has('Manager.mobile') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="mobile">手机</label>
                             <div class="col-md-6">
@@ -102,18 +76,18 @@
                                 </span>
                             @endif
                         </div><!--mobile-->
-                        <div class="form-group {{ $errors->has('Manager.description') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="description">个性签名</label>
+                        <div class="form-group {{ $errors->has('Manager.nickname') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="nickname">昵称</label>
                             <div class="col-md-6">
-                                <textarea id="description" name="Manager[description]" class="form-control"
-                                          rows="3"></textarea>
+                                <input id="name" name="Manager[nickname]" type="text" placeholder="输入用户名(6~20个字符)"
+                                       class="form-control" value="{{ old('Manager.nickname') }}">
                             </div>
-                            @if ($errors->has('Manager.description'))
+                            @if ($errors->has('Manager.nickname'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Manager.description') }}</strong>
+                                    <strong>{{ $errors->first('Manager.nickname') }}</strong>
                                 </span>
                             @endif
-                        </div><!--description-->
+                        </div><!--nickname-->
                         <div class="form-group {{ $errors->has('Manager.is_super') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_super">超级管理员</label>
                             <div class="col-md-6">
@@ -154,7 +128,8 @@
                                 <a href="{{ url('admin/manager') }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
-                        </div>
+                        </div><!--button-->
+
                     </form>
                 </div>
             </div>
@@ -162,51 +137,6 @@
     </div><!--/.row-->
 @stop
 @section('javascript')
-
     <script>
-        <?php $timestamp = time();?>
-        $(function () {
-//            1、选择图片添加到队列。
-//            2、限制只能选择一张，可重新选择，选择后覆盖第一张。
-//            3、提交之前可预览图片，切显示图片名
-//            4、图片随着表单提交一起提交，图片路径保存数据库中。
-            console.log($("input[name='Manager[avatar]']").val());
-            $(".file_upload").uploadify({
-                "swf": "{{ asset('/static/common/uploadify/uploadify.swf') }}", // 指定上传控件的主体文件
-                "uploader": "{{ url('/upload') }}", // 图片处理文件
-                "checkExisting": "{{ asset('/static/common/uploadify/check-exists.php') }}",
-                "formData": {
-                    "timestamp": "<?php echo $timestamp;?>",
-                    "_token": "{{ csrf_token() }}"
-                },
-                "fileTypeDesc": "选择图片",
-                "fileTypeExts": "*.gif; *.jpg; *.png",
-                "removeCompleted": false,
-//                "auto": false,
-                "buttonText": "选择图片",
-                "onSelect": function (file) {
-//                    console.log(file);
-                    var count = $(".uploadify-queue-item").length;
-                    console.log(count);
-                    console.log(file);
-
-                    if (count > 1) {
-                        alert("只能选择一张图片");
-                        this.cancelUpload(file.id);//取消当前图片上传
-                        $("#" + file.id).remove();//从队列中删除当前图片状态
-                    }
-                },
-                "onCancel": function (file) {
-
-                },
-
-                "onUploadSuccess": function (file, data, response) {
-//                    console.log(file);
-                    console.log(data);
-                    $("input[name='Manager[avatar]']").val(data);
-                    $("#avatar-img").attr("scr", data);
-                }
-            });
-        });
     </script>
 @stop

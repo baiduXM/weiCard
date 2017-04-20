@@ -35,7 +35,7 @@
     <div class="container-fluid">
         @include('home.common.sidebar')
         <div class="main-content">
-            @include('common.message')
+            @include('home.common.message')
             @section('content')
                 {{--内容--}}
             @show
@@ -54,6 +54,7 @@
 <script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('static/common/js/common.js') }}"></script>
 <script src="{{ asset('static/home/js/tree-box.js') }}"></script>
+<script src="{{ asset('static/home/js/operation.js') }}"></script>
 
 @section('javascript')
 

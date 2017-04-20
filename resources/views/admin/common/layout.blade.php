@@ -63,7 +63,7 @@
     </div><!--面包削-->
     <div class="row">
         <div class="col-lg-12">
-            @include('common.message')
+            @include('admin.common.message')
         </div>
     </div><!--提示框-->
     @section('content')
