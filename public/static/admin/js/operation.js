@@ -96,10 +96,48 @@ $(function () {
             var _url = relatedTarget.data('url');
             var modal = $(this);
             modal.find('.modal-title').text('解绑确认');
-            modal.find('.modal-body').text('确定与 ' + _info +' 解除绑定？');
+            modal.find('.modal-body').text('确定与 ' + _info + ' 解除绑定？');
             modal.find('form').attr('action', _url);
             modal.find('[name="_method"]').val('DELETE');
             modal.find('form').append('<input type="hidden" name="id" value="' + _id + '"/>');
+        });
+    });
+
+    /* 分享 */
+    $(".operate-share").click(function () {
+        var is_success = 0;
+        $('#shareModal').on('show.bs.modal', function (event) {
+            var relatedTarget = $(event.relatedTarget);
+            var _info = relatedTarget.data('info');
+            // var _url_code = {{ url(_info) }};
+            var modal = $(this);
+            // 赋值
+            modal.find('.modal-title').text('员工绑定代码');
+            modal.find('#code-shareModal').val(_info);
+            modal.find('#url-code-shareModal').val('http://' + _info);
+
+            console.log(0)
+            var clipboard1 = new Clipboard("#copy-code");
+            // clipboard1.on('success', function (e) {
+            //     console.log(1)
+            //     is_success = 1;
+            // });
+            var clipboard2 = new Clipboard("#copy-url-code");
+            // clipboard2.on('success', function (e) {
+            //     console.log(2)
+            //     is_success = 1;
+            // });
+        });
+
+        $('#shareModal').on('hide.bs.modal', function (event) {
+            if (is_success == 1) {
+                var _modal = $('.hintModal');
+                _modal.modal('show');
+                _modal.find('.modal-body').text('复制成功');
+                _modal.oneTime('1s', function () {
+                    _modal.modal('hide');
+                });
+            }
         });
     });
 
@@ -120,25 +158,25 @@ $(function () {
     /* 排序 */
     $('.sortable').click(function () {
         console.log('排序功能待开发');
-    //     var _this = $(this);
-    //     var _chidren = $(this).children('.order');
-    //     if (_this.hasClass('color-orange')) {
-    //         _chidren.toggleClass('dropup');
-    //     } else {
-    //         $('.sortable').removeClass('color-orange');
-    //         _this.addClass('color-orange');
-    //     }
-    //     var _column = _this.data('name');
-    //     var _form = $('[name="form_search"]');
-    //     var _sort = 'desc';
-    //     if (_chidren.hasClass('dropup')) { // 正序
-    //         _sort = 'asc';
-    //     } else { // 倒序
-    //         _sort = 'desc';
-    //     }
-    //     _form.append('<input type="hidden" name="sort_column" value="' + _column + '"/>');
-    //     _form.append('<input type="hidden" name="sort_way" value="' + _sort + '"/>');
-    //     _form.submit();
+        //     var _this = $(this);
+        //     var _chidren = $(this).children('.order');
+        //     if (_this.hasClass('color-orange')) {
+        //         _chidren.toggleClass('dropup');
+        //     } else {
+        //         $('.sortable').removeClass('color-orange');
+        //         _this.addClass('color-orange');
+        //     }
+        //     var _column = _this.data('name');
+        //     var _form = $('[name="form_search"]');
+        //     var _sort = 'desc';
+        //     if (_chidren.hasClass('dropup')) { // 正序
+        //         _sort = 'asc';
+        //     } else { // 倒序
+        //         _sort = 'desc';
+        //     }
+        //     _form.append('<input type="hidden" name="sort_column" value="' + _column + '"/>');
+        //     _form.append('<input type="hidden" name="sort_way" value="' + _sort + '"/>');
+        //     _form.submit();
     });
 
     /* 刷新 */

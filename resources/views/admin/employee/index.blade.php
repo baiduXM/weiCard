@@ -1,5 +1,5 @@
 @extends('admin.common.layout')
-@section('title', '公司管理')
+@section('title', '员工管理')
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.employee') !!}
 @stop
@@ -37,9 +37,6 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="employee" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                {{--<button class="btn btn-default operate-retweet" type="button" name="retweet"--}}
-                                        {{--data-url="employee" title="垃圾箱">--}}
-                                    {{--<i class="glyphicon glyphicon-retweet icon-retweet"></i></button>--}}
                             </div><!--显示-->
                             <form name="form_search" action="{{ url('/admin/employee') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
@@ -147,7 +144,13 @@
                                                 <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                <a href="" class="btn btn-danger btn-xs operate-delete"
+                                                <a class="btn btn-primary btn-xs operate-share"
+                                                   data-toggle="modal" data-target="#shareModal"
+                                                   {{--data-url="employee/{{ $item->id }}/share"--}}
+                                                   data-info="{{ $item->company->name . '/' . $item->number }}" title="分享">
+                                                    <i class="glyphicon glyphicon-share-alt"></i>代码
+                                                </a>
+                                                <a href="javascript:void(0);" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
                                                    data-url="employee/{{ $item->id }}"
                                                    data-info="{{ $item->number }} 员工" title="删除">
