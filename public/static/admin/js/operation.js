@@ -105,8 +105,7 @@ $(function () {
 
     /* 分享 */
     $(".operate-share").click(function () {
-        var is_success = 0;
-        $('#shareModal').on('show.bs.modal', function (event) {
+        $('#shareModal').off().on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _info = relatedTarget.data('info');
             // var _url_code = {{ url(_info) }};
@@ -116,31 +115,29 @@ $(function () {
             modal.find('#code-shareModal').val(_info);
             modal.find('#url-code-shareModal').val('http://' + _info);
 
-            console.log(0)
             var clipboard1 = new Clipboard("#copy-code");
-            // clipboard1.on('success', function (e) {
-            //     console.log(1)
-            //     is_success = 1;
-            // });
+            clipboard1.on('success', function (e) {
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text("复制成功");
+                e.clearSelection();
+            });
             var clipboard2 = new Clipboard("#copy-url-code");
-            // clipboard2.on('success', function (e) {
-            //     console.log(2)
-            //     is_success = 1;
-            // });
-        });
-
-        $('#shareModal').on('hide.bs.modal', function (event) {
-            if (is_success == 1) {
-                var _modal = $('.hintModal');
-                _modal.modal('show');
-                _modal.find('.modal-body').text('复制成功');
-                _modal.oneTime('1s', function () {
-                    _modal.modal('hide');
-                });
-            }
+            clipboard2.on('success', function (e) {
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text("复制成功");
+                e.clearSelection();
+            });
         });
     });
 
+
+    /* 提示 - 1s后自动隐藏 */
+    $('.hintModal').on('show.bs.modal', function (event) {
+        var _modal = $(this);
+        _modal.oneTime('1s', function () {
+            _modal.modal('hide');
+        });
+    });
 
     /* 搜索 */
     $('.operate-search').click(function () {

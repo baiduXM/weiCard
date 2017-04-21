@@ -151,7 +151,7 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
-                内容
+                提示内容
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
