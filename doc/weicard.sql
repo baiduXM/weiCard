@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-04-20 17:34:00
+Date: 2017-04-22 13:13:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,9 +47,9 @@ CREATE TABLE `wc_companies` (
 -- ----------------------------
 -- Records of wc_companies
 -- ----------------------------
-INSERT INTO `wc_companies` VALUES ('27', null, '1', 'work', '工作室', null, null, null, null, null, '1', null, '2017-04-15 10:26:02', '2017-04-20 15:01:41', '2017-04-18 15:16:02', null);
-INSERT INTO `wc_companies` VALUES ('30', null, '1', 'adsg', 'adsg', null, null, null, null, null, '1', null, '2017-04-19 16:13:32', '2017-04-20 15:00:26', '2017-04-19 17:16:46', null);
-INSERT INTO `wc_companies` VALUES ('31', null, '1', 'watashi', 'わたし', null, 'sa', null, null, 'わたし', '1', '合资公司不通过\r\n', '2017-04-19 16:16:29', '2017-04-20 14:59:11', '2017-04-19 17:14:36', null);
+INSERT INTO `wc_companies` VALUES ('27', '29', '1', 'work', '工作室', null, null, null, null, null, '1', null, '2017-04-15 10:26:02', '2017-04-22 11:20:08', '2017-04-18 15:16:02', null);
+INSERT INTO `wc_companies` VALUES ('30', null, '1', 'adsg', 'adsg', null, null, null, null, null, '1', null, '2017-04-19 16:13:32', '2017-04-22 11:26:24', '2017-04-19 17:16:46', null);
+INSERT INTO `wc_companies` VALUES ('31', null, '1', 'watashi', 'わたし', null, 'sa', null, null, 'わたし', '1', '合资公司不通过\r\n', '2017-04-19 16:16:29', '2017-04-22 10:46:59', '2017-04-19 17:14:36', null);
 
 -- ----------------------------
 -- Table structure for wc_contacts
@@ -107,10 +107,8 @@ CREATE TABLE `wc_employees` (
   `company_id` int(10) unsigned DEFAULT NULL COMMENT '公司ID',
   `department_id` int(10) unsigned DEFAULT NULL COMMENT '部门ID',
   `number` varchar(255) DEFAULT NULL COMMENT '工号',
-  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
   `title` varchar(255) DEFAULT NULL COMMENT '职位头衔',
   `telephone` varchar(255) DEFAULT NULL COMMENT '座机',
-  `mobile` varchar(255) DEFAULT NULL COMMENT '手机',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -121,14 +119,14 @@ CREATE TABLE `wc_employees` (
   CONSTRAINT `wc_employees_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_department_id` FOREIGN KEY (`department_id`) REFERENCES `wc_departments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_user_id` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='员工表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='员工表';
 
 -- ----------------------------
 -- Records of wc_employees
 -- ----------------------------
-INSERT INTO `wc_employees` VALUES ('1', null, '31', null, 'W00001', 'Hsieh', '创始人', null, null, null, '2017-04-20 14:51:18', '2017-04-20 14:59:11');
-INSERT INTO `wc_employees` VALUES ('2', null, '30', null, 'A00001', 'test', '创始人', null, null, null, '2017-04-20 15:00:12', '2017-04-20 15:00:26');
-INSERT INTO `wc_employees` VALUES ('3', null, '27', null, 'W00001', 'Hsieh', '创始人', null, null, null, '2017-04-20 15:00:32', '2017-04-20 15:01:41');
+INSERT INTO `wc_employees` VALUES ('2', null, '30', null, 'A00001', '创始人', null, null, '2017-04-20 15:00:12', '2017-04-22 11:26:24');
+INSERT INTO `wc_employees` VALUES ('3', '29', '27', null, 'W00001', '创始人', null, null, '2017-04-20 15:00:32', '2017-04-22 11:20:08');
+INSERT INTO `wc_employees` VALUES ('5', null, '31', null, 'W00001', '创始人', null, null, '2017-04-22 09:53:20', '2017-04-22 10:46:59');
 
 -- ----------------------------
 -- Table structure for wc_managers
@@ -151,7 +149,7 @@ CREATE TABLE `wc_managers` (
   UNIQUE KEY `manager_name_unique` (`name`) USING BTREE,
   UNIQUE KEY `manager_email_unique` (`email`) USING BTREE,
   UNIQUE KEY `manager_mobile_unique` (`mobile`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员表';
 
 -- ----------------------------
 -- Records of wc_managers
@@ -261,7 +259,7 @@ CREATE TABLE `wc_users` (
 -- Records of wc_users
 -- ----------------------------
 INSERT INTO `wc_users` VALUES ('27', 'cchenjei', null, null, '$2y$10$QCroeRuZdaElsObl2aPuKOg33NUnD2F7j1lK9BP.TqaBqNU3WM0ou', null, null, null, '0', null, null, '1', '2017-04-15 12:10:38', '2017-04-15 12:10:38', null);
-INSERT INTO `wc_users` VALUES ('28', 'test', null, null, '$2y$10$m/oE/naGmLdgch8lYBF1c.JzaIdV6ArVj03Z1CPybFluCNW62otfy', null, null, null, '0', null, null, '1', '2017-04-17 14:27:15', '2017-04-17 16:06:25', null);
+INSERT INTO `wc_users` VALUES ('28', 'test', null, null, '$2y$10$m/oE/naGmLdgch8lYBF1c.JzaIdV6ArVj03Z1CPybFluCNW62otfy', 'kngZr0JhQoiv3IlJ0F54CMzZ0rU2LdJxdKChMnhIr1MFvvcU4geFonX7h6ca', null, null, '0', null, null, '1', '2017-04-17 14:27:15', '2017-04-22 11:25:10', null);
 INSERT INTO `wc_users` VALUES ('29', 'Hsieh', null, null, '$2y$10$DomPZsfw6Aj6BQKiP1I/LuMTAjaFaEBQ5RC2tVqPM0Y7LhXiUVrgq', null, null, null, '0', null, null, '1', '2017-04-19 11:02:58', '2017-04-19 11:04:20', null);
 INSERT INTO `wc_users` VALUES ('31', 'abc', null, null, '$2y$10$XYXAp6te03UQe7wUHJhCaO.a2GsFUBEi4MjJdjukfeCMJ2KGoxTAO', null, null, null, '0', null, null, '1', '2017-04-19 16:08:29', '2017-04-19 16:08:29', null);
 
