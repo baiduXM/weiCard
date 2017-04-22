@@ -25,12 +25,12 @@
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                                 {{--<button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"--}}
-                                        {{--title="批量添加">--}}
-                                    {{--<i class="glyphicon glyphicon-plus-sign"></i>--}}
+                                {{--title="批量添加">--}}
+                                {{--<i class="glyphicon glyphicon-plus-sign"></i>--}}
                                 {{--</button>--}}
                                 {{--<button class="btn btn-default operate-import" type="button" name="operate-add-file"--}}
-                                        {{--title="导入文件">--}}
-                                    {{--<i class="glyphicon glyphicon-file"></i>--}}
+                                {{--title="导入文件">--}}
+                                {{--<i class="glyphicon glyphicon-file"></i>--}}
                                 {{--</button>--}}
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
@@ -132,9 +132,12 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td><!--公司-->
-                                            <td>{!! isset($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td><!--部门-->
-                                            <td>{{ $item->name }}</td><!--姓名-->
+                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <!--公司-->
+                                            <td>{!! isset($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
+                                            <!--部门-->
+                                            <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>
+                                            <!--姓名-->
                                             <td>{{ $item->title }}</td><!--头衔-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
@@ -144,13 +147,16 @@
                                                 <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                <a class="btn btn-primary btn-xs operate-share"
-                                                   data-toggle="modal" data-target="#shareModal"
-                                                   {{--data-url="employee/{{ $item->id }}/share"--}}
-                                                   data-info="{{ $item->company->name . '/' . $item->number }}" title="分享">
-                                                    <i class="glyphicon glyphicon-share-alt"></i>代码
-                                                </a>
-                                                <a href="javascript:void(0);" class="btn btn-danger btn-xs operate-delete"
+                                                @if(!isset($item->user))
+                                                    <a class="btn btn-primary btn-xs operate-code"
+                                                       data-toggle="modal" data-target="#shareModal"
+                                                       data-code="{{ $item->company->name . '/' . $item->number }}"
+                                                       data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
+                                                       title="代码">
+                                                        <i class="glyphicon glyphicon-copy"></i>代码
+                                                    </a>
+                                                @endif
+                                                <a class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
                                                    data-url="employee/{{ $item->id }}"
                                                    data-info="{{ $item->number }} 员工" title="删除">

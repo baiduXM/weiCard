@@ -22,7 +22,7 @@
                 <li {{ Request::path() == 'user' ? 'class=active' : '' }}>
                     <a href="{{ url('user') }}">我的名片</a></li>
                 <li {{ Request::path() == 'user/show' ? 'class=active' : '' }}>
-                    <a href="{{ url('user/' . Auth::id() ) }}">个人信息</a></li>
+                    <a href="{{ url('user/show') }}">个人信息</a></li>
             </ul>
         </div><!--我的名片-->
         <div class="tree_box nav ">
@@ -82,7 +82,7 @@
                     <li {{ Request::path() == 'template' ? 'class=active' : '' }}>
                         <a href="{{ url('template') }}">收费模板</a></li>
                     {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
+                    {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
                 </ul>
             </div><!--模板中心-->
             <div class="tree_box nav ">
@@ -101,7 +101,7 @@
                     <li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>
                         <a href="{{ url('security/email') }}">验证邮箱</a></li>
                     <li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>
-                    <a href="{{ url('security/binding') }}">绑定第三方账号</a></li>
+                        <a href="{{ url('security/binding') }}">绑定第三方账号</a></li>
                     <li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>
                         <a href="{{ url('security/password') }}">修改密码</a></li>
                 </ul>

@@ -7,7 +7,7 @@
         @show
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
-                <a href="">我的名片</a>
+                <a>我的名片</a>
             </li>
         </ul><!--tab标签-->
         <div class="myCard-content  main-cont">

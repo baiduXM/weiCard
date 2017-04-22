@@ -103,17 +103,18 @@ $(function () {
         });
     });
 
-    /* 分享 */
-    $(".operate-share").click(function () {
+    /* 代码 */
+    $(".operate-code").click(function () {
         $('#shareModal').off().on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _info = relatedTarget.data('info');
-            // var _url_code = {{ url(_info) }};
+            var _code = relatedTarget.data('code');
+            var _url_code = relatedTarget.data('url-code');
+            console.log(_url_code);
             var modal = $(this);
             // 赋值
             modal.find('.modal-title').text('员工绑定代码');
-            modal.find('#code-shareModal').val(_info);
-            modal.find('#url-code-shareModal').val('http://' + _info);
+            modal.find('#code-shareModal').val(_code);
+            modal.find('#url-code-shareModal').val(_url_code);
 
             var clipboard1 = new Clipboard("#copy-code");
             clipboard1.on('success', function (e) {
@@ -131,7 +132,7 @@ $(function () {
     });
 
 
-    /* 提示 - 1s后自动隐藏 */
+    /* 提示 - 自动隐藏 */
     $('.hintModal').on('show.bs.modal', function (event) {
         var _modal = $(this);
         _modal.oneTime('1s', function () {

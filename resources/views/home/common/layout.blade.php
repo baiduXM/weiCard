@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', '首页') - {{ config('global.product_name') }}</title>
+    <title>@yield('title', '首页') - {{ config('global.website.product_name') }}</title>
     <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/home/css/style.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>

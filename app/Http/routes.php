@@ -41,11 +41,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
 
     /* 用户中心 */
-    Route::group(['prefix' => 'user'], function () {
-        Route::post('binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
-        Route::delete('binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
-    });
     Route::resource('user', 'Home\UserController');
+    Route::group(['prefix' => 'user'], function () {
+        Route::match(['get', 'post'], 'binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+        Route::delete('binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
+        Route::get('show', ['as' => 'user.show', 'uses' => 'Home\UserController@show']);
+    });
 
     /* 我的公司 */
     Route::group(['prefix' => 'company'], function () {

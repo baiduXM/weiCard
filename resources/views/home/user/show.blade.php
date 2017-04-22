@@ -1,26 +1,30 @@
 @extends('home.common.layout')
 @section('title', '用户')
 @section('content')
-    <div id="myCard" >
-        <ul class="cont-nav rt" >
-            <li><a href="">我的名片 > </a></li>
-            <li class="cont-nav-act"><a href="">个人信息</a></li>
-        </ul>
+    <div id="myCard">
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('user.show') !!}
+        @show
         <ul class="nav nav-tabs" id="myTab">
-            <li class="active" >
-                <a href=""   >个人信息</a>
+            <li class="active">
+                <a>个人信息</a>
             </li>
-        </ul>
+        </ul><!--tab标签-->
         <div class="myCard-content  main-cont">
             <p class="phone-show">个人信息</p>
-            <form  action="" class="lt">
+            <form action="" class="lt">
                 <div class="file-img rt  col-sm-12">
-                    <img src="image/icon12.png" alt="">
+                    @if(!empty($user->avatar))
+                        <img src="{{ asset($user->avatar) }}" alt="">
+                    @else
+                        <img src="{{ asset('static/home/image/icon12.png') }}" alt="">
+                    @endif
+
                 </div>
                 <div class="input rt ">
                     <div>
                         <span>个人姓名 : </span>
-                        <input type="text">
+                        <input type="text" value="{{ $user->name }}" readonly>
                     </div>
                     <div class="file">
                         <span>头像 : </span>

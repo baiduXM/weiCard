@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', '首页') - {{ config('global.product_name') }}后台</title>
+    <title>@yield('title', '首页') - {{ config('global.website.product_name') }}后台</title>
     <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
     {{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
     {{--<link href="{{ asset('static/common/uploadify/uploadify.css') }}" rel="stylesheet">--}}
@@ -30,7 +30,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>{{ config('global.product_name') }}</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
+            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
