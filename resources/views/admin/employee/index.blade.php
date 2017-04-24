@@ -132,11 +132,11 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! isset($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
-                                            <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
                                             <!--姓名-->
                                             <td>{{ $item->title }}</td><!--头衔-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->

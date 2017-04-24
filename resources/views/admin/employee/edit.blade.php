@@ -29,6 +29,20 @@
                             @endif
                         </div><!-- number工号 -->
 
+                        <div class="form-group {{ $errors->has('Employee.name') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
+                                姓名</label>
+                            <div class="col-md-6">
+                                <input id="name" name="Employee[name]" type="text" placeholder=""
+                                       class="form-control"
+                                       value="{{ old('Employee.name') ? old('Employee.name') : $employee->name }}">
+                            </div>
+                            @if ($errors->has('Employee.name'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.name') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- name姓名 -->
 
                         <div class="form-group {{ $errors->has('Employee.title') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="title">
@@ -44,6 +58,21 @@
                                 </span>
                             @endif
                         </div><!-- title头衔职务 -->
+
+                        <div class="form-group {{ $errors->has('Employee.mobile') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="mobile">
+                                手机</label>
+                            <div class="col-md-6">
+                                <input id="mobile" name="Employee[mobile]" type="text" placeholder=""
+                                       class="form-control"
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : $employee->mobile }}">
+                            </div>
+                            @if ($errors->has('Employee.mobile'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.mobile') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- mobile手机 -->
 
                         <div class="form-group {{ $errors->has('Employee.telephone') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="telephone">

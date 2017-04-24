@@ -70,15 +70,20 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
+
         /* 验证 */
         $this->validate($request, [
-            'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.name' => 'required',
             'Employee.title' => 'max:30',
+            'Employee.mobile' => 'numeric',
             'Employee.telephone' => 'numeric',
             'Employee.description' => 'max:255',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.title' => '职务',
+            'Employee.name' => '姓名',
+            'Employee.title' => '职位',
+            'Employee.mobile' => '手机',
             'Employee.telephone' => '座机',
             'Employee.description' => '个人简介',
         ]);
@@ -119,20 +124,25 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
+        $employee = Employee::find($id);
+//        dd($employee->company_id);
         $this->validate($request, [
-            'Employee.number' => 'required|unique:employees,employees.number,' . $id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.name' => 'required',
             'Employee.title' => 'max:30',
+            'Employee.mobile' => 'numeric',
             'Employee.telephone' => 'numeric',
             'Employee.description' => 'max:255',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.title' => '职务',
+            'Employee.name' => '姓名',
+            'Employee.title' => '职位',
+            'Employee.mobile' => '手机',
             'Employee.telephone' => '座机',
             'Employee.description' => '个人简介',
         ]);
         $data = $request->input('Employee');
 
-        $employee = Employee::find($id);
         foreach ($data as $key => $value) {
             if ($value !== '') {
                 $employee->$key = $data[$key];

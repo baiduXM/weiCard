@@ -49,11 +49,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
     Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
 
-    /* 我的公司->部门 */
-    Route::resource('company/department', 'Home\DepartmentController');
     /* 我的公司->员工 */
-    Route::resource('company/employee', 'Home\EmployeeController');
-//    });
+    Route::get('company/employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
+
+    /* 我的公司->部门 */
+    Route::get('company/department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
 
     /* 通讯录 */
     Route::group(['prefix' => 'contact'], function () {

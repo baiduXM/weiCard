@@ -32,6 +32,18 @@
                                 <td>{{ $employee->number }}</td>
                             </tr>
                             <tr>
+                                <th class="text-right">姓名</th>
+                                <td>{{ $employee->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">职位</th>
+                                <td>{{ $employee->title }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">手机</th>
+                                <td>{{ $employee->mobile }}</td>
+                            </tr>
+                            <tr>
                                 <th class="text-right">座机</th>
                                 <td>{{ $employee->telephone }}</td>
                             </tr>
