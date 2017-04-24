@@ -60,6 +60,14 @@ class Company extends Model
     }
 
     /**
+     * 关系模型 - 模板
+     */
+    public function templates()
+    {
+        return $this->morphToMany('App\Models\Template', 'useable');
+    }
+
+    /**
      * 获取状态
      *
      * @param null $index

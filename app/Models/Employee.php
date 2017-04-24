@@ -42,4 +42,11 @@ class Employee extends Model
         return $this->belongsTo('App\Models\Department');
     }
 
+    /**
+     * 关系模型 - 模板
+     */
+    public function templates()
+    {
+        return $this->morphToMany('App\Models\Template', 'useable');
+    }
 }

@@ -17,7 +17,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-
     /**
      * 关系模型 - 公司
      */
@@ -32,6 +31,14 @@ class User extends Authenticatable
     public function employee()
     {
         return $this->hasOne('App\Models\Employee');
+    }
+
+    /**
+     * 关系模型 - 模板
+     */
+    public function templates()
+    {
+        return $this->morphToMany('App\Models\Template', 'useable');
     }
 
     /**
