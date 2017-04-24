@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('binding', ['as' => 'security.post-binding', 'uses' => 'Home\SecurityController@postBinding']);
         /* 安全中心->修改密码 */
         Route::get('password', ['as' => 'security.password', 'uses' => 'Home\SecurityController@password']);
-        Route::post('password', ['as' => 'security.post-password', 'uses' => 'Home\SecurityController@postPassword']);
+        Route::any('postpassword', ['as' => 'security.postpassword', 'uses' => 'Home\SecurityController@postpassword']);
     });
     Route::resource('security', 'Home\SecurityController');
 
