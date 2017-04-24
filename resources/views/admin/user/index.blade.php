@@ -140,8 +140,8 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->name }}</td><!--用户名-->
-                                            <td>{!! isset($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td><!--公司-->
-                                            <td>{!! isset($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->
+                                            <td>{!! ($item->employee) ? '<a href="'.url('admin/company/'.$item->employee->company_id).'">'.$item->employee->company->name.'</a>' : '' !!}</td><!--公司-->
+                                            <td>{!! ($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->
                                             <td>
                                                 @if($item->is_active == $common::IS_ACTIVE)
                                                     <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
@@ -157,17 +157,17 @@
                                                 <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(!isset($item->company))
+                                                @if(($item->employee))
+                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-info="{{ $item->employee->company->name }}"
+                                                       data-url="user/{{ $item->id }}/binding" title="解绑员工">
+                                                        <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                @else
                                                     <a href="" class="btn btn-success btn-xs operate-binding"
                                                        data-toggle="modal" data-target="#bindingModal"
                                                        data-url="user/{{ $item->id }}/binding" title="绑定员工">
                                                         <i class="glyphicon glyphicon-link"></i>绑定</a>
-                                                @else
-                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
-                                                       data-toggle="modal" data-target=".confirmModal"
-                                                       data-info="{{ $item->company->name }}"
-                                                       data-url="user/{{ $item->id }}/binding" title="解绑员工">
-                                                        <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                 @endif
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"

@@ -41,21 +41,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
 
     /* 用户中心 */
-    Route::resource('user', 'Home\UserController');
-    Route::group(['prefix' => 'user'], function () {
-        Route::match(['get', 'post'], 'binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
-        Route::delete('binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
-        Route::get('show', ['as' => 'user.show', 'uses' => 'Home\UserController@show']);
-    });
+    Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
+    Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
+    Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
+
+//    Route::group(['prefix' => 'user'], function () {
+//        Route::match(['get', 'post'], 'binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+//        Route::delete('binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
+//        Route::get('show', ['as' => 'user.show', 'uses' => 'Home\UserController@show']);
+//    });
 
     /* 我的公司 */
-    Route::group(['prefix' => 'company'], function () {
-        /* 我的公司->部门 */
-        Route::resource('department', 'Home\DepartmentController');
-        /* 我的公司->员工 */
-        Route::resource('employee', 'Home\EmployeeController');
-    });
-    Route::resource('company', 'Home\CompanyController');
+    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
+    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
+//    Route::post('email', ['as' => 'security.post-email', 'uses' => 'Home\SecurityController@postEmail']);
+//    Route::delete('{id}/binding', ['as' => 'admin.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
+//    Route::resource('company', 'Home\CompanyController');
+//    Route::group(['prefix' => 'company'], function () {
+    /* 我的公司->部门 */
+    Route::resource('company/department', 'Home\DepartmentController');
+    /* 我的公司->员工 */
+    Route::resource('company/employee', 'Home\EmployeeController');
+//    });
 
     /* 通讯录 */
     Route::group(['prefix' => 'contact'], function () {

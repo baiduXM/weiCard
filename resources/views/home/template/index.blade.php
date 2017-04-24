@@ -27,7 +27,7 @@
             </ul>
             <div class="mb-main">
                 <dl class="col-lg-3 col-sm-4 col-md-6 col-xs-6">
-                    <dt><img src="{{ asset('static/home/image/mb1.png') }}" alt=""><a href=""><i class="iconFont">&#xe62e;</i></a></dt>
+                    <dt><img src="{{ asset('static/home/images/mb1.png') }}" alt=""><a href=""><i class="iconFont">&#xe62e;</i></a></dt>
                     <dd >
                         <a href="javascript:" data-toggle="modal" data-target=".bs10"><i class="iconFont">&#xe613;</i></a>
                         <a href=""><i class="iconFont">&#xe632;</i></a>

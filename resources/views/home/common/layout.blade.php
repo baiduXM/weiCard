@@ -20,13 +20,13 @@
 
 <header id="header">
     <div class="container-fluid">
-        <img src="{{ asset('static/home/image/logo.png') }}" alt="">
+        <img src="{{ asset('static/home/images/logo.png') }}" alt="">
         <ul class="rt">
-            <li><a href="{{ url('user') }}"><img src="{{ asset('static/home/image/hed-icon1.png') }}" alt=""></a></li>
+            <li><a href="{{ url('user') }}"><img src="{{ asset('static/home/images/hed-icon1.png') }}" alt=""></a></li>
             <li class="had-name had-nav-name">
                 <a href="javascript:void(0);">{{ Auth::user()->nickname != null ? (Auth::user()->nickname) : Auth::user()->name }}，欢迎您登录</a>
             </li>
-            <li><a href="{{ url('logout') }}"><img src="{{ asset('static/home/image/hed-icon2.png') }}" alt="退出" title="退出"></a></li>
+            <li><a href="{{ url('logout') }}"><img src="{{ asset('static/home/images/hed-icon2.png') }}" alt="退出" title="退出"></a></li>
         </ul>
     </div>
 </header>

@@ -10,71 +10,39 @@
                 <a href="">我的公司</a>
             </li>
         </ul><!--tab切换标签-->
-        <div class="myCard-content rt-main" id="company" data-id="{{ $user->company_id }}">
-            @if(!$user->company_id){{--判断是否没绑定公司--}}
-                <p>
+        <div class="myCard-content main-cont rt-main" id="company">
+            @if(!Auth::user()->employee){{--没绑定员工--}}
+                <div class="alert alert-info alert-dismissible" role="alert">
                     未发现您的公司信息
-                </p>
-                <p class="add-btn">
-                    <button class="btnCreate">注册公司</button>
-                    <button class="btnBinding">绑定公司</button>
-                </p>
-            @elseif(!$company){{--判断绑定的公司是否不存在--}}
+                </div>
                 <p>
-                    您关联的公司可能已被注销
+                    去 <a href="{{ url('user') }}">绑定员工</a> 或 联系客服注册公司
                 </p>
-                <p class="add-btn">
-                    <button class="btnCreate">注册公司</button>
-                    <button class="btnBinding">绑定公司</button>
-                </p>
-            @elseif($company->user_id == $user->id){{--判断是否是公司注册人--}}
-                @if($company->status == $company::VERIFIED_ING){{--判断审核状态--}}
-                    <p>
-                        审核中（{{ $company->updated_at->format('Y-m-d') }}）我们将在2~3个工作日内审核完成
-                    </p>
-                    <p class="add-btn">
-                        <button class="btnShow">查看资料</button>
-                        <button class="btnEdit">更改资料</button>
-                    </p>
-                @elseif($company->status == $company::VERIFIED_SUCCEED)
-                    <p>
-                        审核通过（公司资料）
-                    </p>
-                    <p class="add-btn">
-                        <a href="javascript:" data-toggle="modal" data-target=".bs13"><i class="iconFont">&#xe6d3;</i></a>
-                        <button class="btnDestroy">注销公司</button>
-                        <button class="btnEdit">更改资料</button>
-                    </p>
-                @elseif($company->status == $company::VERIFIED_FAILED)
-                    <p>
-                        审核失败（失败原因）
-                    </p>
-                    <p class="add-btn">
-                        <button class="btnEdit">更改资料</button>
-                        <button class="btnAbandon">放弃注册</button>
-                    </p>
+            @elseif(!Auth::user()->company){{--绑定员工/普通员工--}}
+                @if($company->status == $company::VERIFIED_SUCCEED)
+                    @include('home.company.show'){{--显示公司资料--}}
+                @else
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        公司未通过审核，暂时无法显示资料
+                    </div>
                 @endif
-            @else{{--不是公司注册人--}}
-                @if($company->status == $company::VERIFIED_ING){{--判断审核状态--}}
-                    <p>
-                        审核中（提交日期）我们将在2~3个工作日内审核完成
-                    </p>
+            @else{{--绑定员工/创始人--}}
+                @if($company->status == $company::VERIFIED_ING){{--判断公司审核状态--}}
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        审核中（提交日期:{{ $company->updated_at->format('Y-m-d') }}）我们将在2~3个工作日内审核完成
+                    </div>
                 @elseif($company->status == $company::VERIFIED_SUCCEED)
-                    <p>
-                        审核通过（公司资料）
-                    </p>
-                    <p class="add-btn">
-                        <button class="btnQuit">退出公司</button>
-                    </p>
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        审核通过（{{ $company->updated_at->format('Y-m-d') }}）
+                    </div>
                 @elseif($company->status == $company::VERIFIED_FAILED)
-                    <p>
-                        审核失败（失败原因）
-                    </p>
-                    <p class="add-btn">
-                        <button class="btnEdit">绑定公司</button>
-                    </p>
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        审核失败（原因：{{ $company->reason }}）
+                    </div>
                 @endif
+                @include('home.company.edit'){{--显示公司资料/可编辑--}}
             @endif
+
         </div><!--主要内容-->
     </div>
 @stop

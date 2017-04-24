@@ -10,7 +10,7 @@
                 <p style="color: darkolivegreen;">{{ session('status') }}</p>
             @endif
             <div class="mail input">
-                <img src="{{ asset('static/home/image/icon5.png') }}" alt="">
+                <img src="{{ asset('static/home/images/icon5.png') }}" alt="">
                 <input type="text" name="email" placeholder="邮箱" value="{{ old('email') }}">
             </div>
             @if ($errors->has('email'))

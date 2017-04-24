@@ -44,11 +44,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">注册人</th>
-                                <td>{{ isset($company->user) ? $company->user_id . ' - ' . $company->company->name : '' }}</td>
+                                <td>{{ ($company->user_id) ? $company->user_id . ' - ' . $company->user->name : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核人</th>
-                                <td>{{ isset($company->manager) ? $company->manager_id . ' - ' . $company->manager->name : '' }}</td>
+                                <td>{{ ($company->manager_id) ? $company->manager_id . ' - ' . $company->manager->name : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核状态</th>

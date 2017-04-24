@@ -31,23 +31,23 @@ class CompanyController extends Controller
             $breadcrumbs->push('我的公司', route('company.index'));
         });
 
-        // 我的公司 > 公司注册
-        Breadcrumbs::register('company.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('company');
-            $breadcrumbs->push('公司注册', route('company.create'));
-        });
-
-        // 我的公司 > 编辑资料
-        Breadcrumbs::register('company.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('company');
-            $breadcrumbs->push('编辑资料', route('company.edit', $id));
-        });
-
-        // 我的公司 > 查看资料
-        Breadcrumbs::register('company.show', function ($breadcrumbs) {
-            $breadcrumbs->parent('company');
-            $breadcrumbs->push('查看资料', route('company.show'));
-        });
+//        // 我的公司 > 公司注册
+//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
+//            $breadcrumbs->parent('company');
+//            $breadcrumbs->push('公司注册', route('company.create'));
+//        });
+//
+//        // 我的公司 > 编辑资料
+//        Breadcrumbs::register('company.edit', function ($breadcrumbs, $id) {
+//            $breadcrumbs->parent('company');
+//            $breadcrumbs->push('编辑资料', route('company.edit', $id));
+//        });
+//
+//        // 我的公司 > 查看资料
+//        Breadcrumbs::register('company.show', function ($breadcrumbs) {
+//            $breadcrumbs->parent('company');
+//            $breadcrumbs->push('查看资料', route('company.show'));
+//        });
 
 //        // 我的公司 > 公司注册
 //        Breadcrumbs::register('company.create', function ($breadcrumbs) {
@@ -67,41 +67,14 @@ class CompanyController extends Controller
     }
 
     /*
-     * 我的公司
-     *
-     * 判断用户是否绑定公司
-     *  Y:判断公司是否存在
-     *      Y:判断是否公司注册人
-     *          Y:判断公司审核状态
-     *              0审核中：
-     *                  查看资料
-     *                  更改资料
-     *              1审核通过：显示资料
-     *                  注销公司
-     *                  更改资料
-     *              2审核失败：显示失败原因
-     *                  查看资料
-     *                  更改资料
-     *                  放弃注册
-     *          N:判断公司审核状态
-     *              0审核中：等待
-     *              1审核通过：显示资料
-     *                  退出公司
-     *              2审核失败：显示失败原因
-     *                  绑定公司
-     *      N:
-     *      绑定公司
-     *      注册公司
-     *  N:
-     *  注册公司
-     *  绑定公司
+     * 有公司，显示公司信息，判断是否公司管理员，可编辑，判断是否审核通过
+     * 无公司，绑定员工，或联系客服注册/绑定公司
      */
     public function index()
     {
-        $company = Company::find(Auth::user()->company_id);
+        $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
         return view('home.company.index')->with([
             'company' => $company,
-            'user' => Auth::user(),
             'common' => new Common(),
         ]);
     }
@@ -113,7 +86,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        if (!Auth::user()->company_id) {
+        if (!Auth::user()->company) {
             return view('home.company.create');
         } else {
             return redirect('company')->with('warning', '您已绑定公司，无法注册新公司');
@@ -202,8 +175,9 @@ class CompanyController extends Controller
     /*
      * 编辑公司->更新
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id = Auth::user()->company->id;
         /* 验证 */
         $this->validate($request, [
             'Company.name' => 'required|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
@@ -228,7 +202,7 @@ class CompanyController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['code']);
+            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         $data['status'] = Company::VERIFIED_ING;

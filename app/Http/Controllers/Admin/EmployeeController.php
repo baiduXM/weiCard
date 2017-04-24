@@ -52,6 +52,7 @@ class EmployeeController extends Controller
             }
         }
         $employees = $query->with('company')->paginate();
+//        dd($employees);
         return view('admin.employee.index')->with([
             'employees' => $employees,
             'common' => new Common(),

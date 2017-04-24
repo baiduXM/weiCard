@@ -8,7 +8,7 @@
             <input type="hidden" name="token" value="{{ $token }}">
             <h1>密码重置</h1>
             <div class="user input">
-                <img src="{{ asset('static/home/image/icon.png') }}" alt="">
+                <img src="{{ asset('static/home/images/icon.png') }}" alt="">
                 <input type="text" name="email" placeholder="邮箱" value="{{ $email or old('email') }}" readonly>
             </div>
             @if ($errors->has('email'))
@@ -16,7 +16,7 @@
             @endif
 
             <div class="pass input">
-                <img src="{{ asset('static/home/image/icon3.png') }}" alt="">
+                <img src="{{ asset('static/home/images/icon3.png') }}" alt="">
                 <input type="password" name="password" placeholder="密码" >
             </div>
             @if ($errors->has('password'))
@@ -24,7 +24,7 @@
             @endif
 
             <div class="pass2 input">
-                <img src="{{ asset('static/home/image/icon3.png') }}" alt="">
+                <img src="{{ asset('static/home/images/icon3.png') }}" alt="">
                 <input type="password" name="password_confirmation" placeholder="确认密码" >
             </div>
             @if ($errors->has('password_confirmation'))

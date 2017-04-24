@@ -16,7 +16,7 @@
                     <div class="card-cont">
                         <span>我的名片</span>
                         <div class="card-text">
-                            <img class="lt" src="{{ asset('static/home/image/front-icon.png') }}" alt="">
+                            <img class="lt" src="{{ asset('static/home/images/front-icon.png') }}" alt="">
                             <span>林先生</span>
                             <div>
                                 <span>电话 :</span>

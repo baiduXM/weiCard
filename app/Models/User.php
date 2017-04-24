@@ -76,17 +76,15 @@ class User extends Authenticatable
     public function unbinding($id)
     {
         $user = User::with('company', 'employee')->find($id);
-        if (!$user->company) {
-            return 201;
-        } else {
-            $user->company->user_id = null;
-            $user->company->save();
-        }
         if (!$user->employee) {
             return 202;
         } else {
             $user->employee->user_id = null;
             $user->employee->save();
+        }
+        if ($user->company) {
+            $user->company->user_id = null;
+            $user->company->save();
         }
         return 200;
     }

@@ -14,7 +14,7 @@ use Illuminate\Routing\Controller as BaseController;
  * path_type 路径
  * 用户   user        public/uploads/user/{$name}/...             url可访问
  * 管理   admin       public/uploads/admin/{$name}/...            url可访问
- * 公司   company     public/uploads/company/{$code}/...          url可访问
+ * 公司   company     public/uploads/company/{$name}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
  * 模板   template    public/template/{$code}/...                 url可访问
  */

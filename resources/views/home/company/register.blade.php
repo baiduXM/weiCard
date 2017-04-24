@@ -16,7 +16,7 @@
 
 
                 <div class="file-img rt  col-sm-12">
-                    <img src="{{ asset('static/home/image/icon12.png') }}" alt="">
+                    <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
                 </div>
                 <div class="input rt">
                     <div>

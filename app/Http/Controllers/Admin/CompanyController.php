@@ -142,6 +142,7 @@ class CompanyController extends Controller
         if (!$company = Company::find($id)) {
             return redirect('admin/company')->with('warning', '公司不存在');
         }
+//        dd($company);
         $common = new Common();
         return view('admin.company.show')->with([
             'company' => $company,
@@ -318,6 +319,9 @@ class CompanyController extends Controller
 
         $data['manager_id'] = Auth::guard('admin')->id();
         $data['verified_at'] = date('Y-m-d H:i:s', time());
+        if ($data['status'] == 1) {
+            $data['reason'] = null;
+        }
 
         foreach ($data as $key => $value) {
             if ($value !== '') {

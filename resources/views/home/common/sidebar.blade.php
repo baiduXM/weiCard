@@ -21,8 +21,8 @@
             <ul class="tree_one" {{ Request::path() == 'user' || Request::is('user/*') ? 'style=display:block;' : '' }}>
                 <li {{ Request::path() == 'user' ? 'class=active' : '' }}>
                     <a href="{{ url('user') }}">我的名片</a></li>
-                <li {{ Request::path() == 'user/show' ? 'class=active' : '' }}>
-                    <a href="{{ url('user/show') }}">个人信息</a></li>
+                <li {{ Request::path() == 'user/edit' ? 'class=active' : '' }}>
+                    <a href="{{ url('user/edit') }}">个人信息</a></li>
             </ul>
         </div><!--我的名片-->
         <div class="tree_box nav ">
