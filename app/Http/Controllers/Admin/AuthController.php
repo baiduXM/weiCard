@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Auth\Admin;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-    protected $redirectTo = '/admin';
-    protected $guard = 'admin';
-    protected $loginView = 'admin.auth.login';
-    protected $registerView = 'admin.auth.register';
-    protected $redirectAfterLogout = '/admin';
-    protected $username = 'username';
+    protected $redirectTo = '/admin'; // 登录成功后跳转页面
+    protected $guard = 'admin'; // 用户守卫
+    protected $loginView = 'admin.auth.login'; // 登录页面
+    protected $registerView = 'admin.auth.register'; // 注册页面
+    protected $redirectAfterLogout = '/admin'; // 退出登录后跳转页面
+    protected $username = 'username'; // 登录账号
 
     public function __construct()
     {
@@ -28,6 +28,7 @@ class AuthController extends Controller
     /**
      * 重写登录方法
      *
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)

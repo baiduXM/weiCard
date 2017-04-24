@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', '首页') - {{ config('global.product_name') }}后台</title>
-    <link href="{{ asset('static/common/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <title>@yield('title', '首页') - {{ config('global.website.product_name') }}后台</title>
+    <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
     {{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
     {{--<link href="{{ asset('static/common/uploadify/uploadify.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('static/admin/css/bootstrap-table.css') }}" rel="stylesheet">
@@ -30,7 +30,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>{{ config('global.product_name') }}</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
+            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
@@ -74,10 +74,12 @@
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/js/clipboard.min.js') }}"></script><!--剪切板-->
+<script src="{{ asset('static/common/js/jquery.timers-1.2.js') }}"></script><!--jquery定时器-->
 {{--<script src="{{ asset('static/common/js/vue.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
-<script src="{{ asset('static/admin/js/operation.js') }}"></script>
+<script src="{{ asset('static/admin/js/operation.js') }}"></script><!--后台操作-->
 {{--<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}

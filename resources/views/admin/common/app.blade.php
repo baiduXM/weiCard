@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title')</title>
-    <link href="{{ asset('static/common/bootstrap-3.3.7-dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 <body id="app-layout">
 <nav class="navbar navbar-default navbar-static-top">
@@ -59,7 +59,7 @@
 @yield('content')
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/common/bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
 
 </body>
 </html>

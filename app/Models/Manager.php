@@ -17,7 +17,7 @@ class Manager extends Authenticatable
     ];
 
     /**
-     * 获取审核过的公司
+     * 关系模型 - 公司
      */
     public function companies()
     {

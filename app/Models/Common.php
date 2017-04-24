@@ -1,25 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hsieh
- * Date: 2017/4/10
- * Time: 14:45
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Common extends Model
 {
-    const IS_ACTIVE_NOT = 0; // 停用
     const IS_ACTIVE = 1; // 激活
+    const IS_ACTIVE_NOT = 0; // 停用
     const SEX_UNKNOWN = 0; // 未知
     const SEX_MALE = 1; // 男
     const SEX_FEMALE = 2; // 女
-    const IS_DELETED = '已删除';
-
+    const IS_DELETED = 1; // 已删除
 
     /**
      * 判断是否可用
@@ -42,12 +33,18 @@ class Common extends Model
     /**
      * 判断是否软删除
      *
-     * @param $time
+     * @param null $index
      * @return string
      */
-    public function isDelete($time)
+    public function isDelete($index = null)
     {
-        return $time != null ? self::IS_DELETED : '';
+        $array = [
+            self::IS_DELETED => '已删除',
+        ];
+        if ($index !== null) {
+            return array_key_exists($index, $array) ? $array[$index] : reset($array);
+        }
+        return $array;
     }
 
     /**
@@ -69,24 +66,4 @@ class Common extends Model
         return $array;
     }
 
-    /**
-     * 生成代码
-     *
-     * @return mixed
-     */
-    public function createCode($str)
-    {
-//        urlencode()
-        return $str;
-    }
-
-    /**
-     * 解释代码
-     *
-     * @param $str
-     */
-    public function explainCode($str)
-    {
-
-    }
 }

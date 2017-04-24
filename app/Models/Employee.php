@@ -13,15 +13,10 @@ class Employee extends Model
     protected $hidden = [
     ];
 
-    /**
-     * 允许url带参数查询字段
-     *
-     * @var array
-     */
+    /* 允许url带参数查询字段 */
     public $query = [
         'company_id',
     ];
-
 
     /**
      * 获取员工对应的用户
@@ -46,4 +41,5 @@ class Employee extends Model
     {
         return $this->belongsTo('App\Models\Department');
     }
+
 }

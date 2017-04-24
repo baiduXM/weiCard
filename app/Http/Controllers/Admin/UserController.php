@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Common;
-use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
@@ -261,18 +258,8 @@ class UserController extends Controller
         }
     }
 
-    /*
-     *  公司名称：判断公司是否有创始人
-     *      Y有:绑定公司，创建并关联员工
-     *      N无:无法绑定
-     *  员工工号：判断员工是否存在
-     *      Y:判断员工是否已绑定
-     *          Y有:无法绑定，返回
-     *          N无:绑定公司，关联员工
-     *      N:无法绑定，返回
-     */
     /**
-     * 关联员工
+     * 用户关联员工
      *
      * @param Request $request
      * @param $id
@@ -280,53 +267,31 @@ class UserController extends Controller
      */
     public function binding(Request $request, $id)
     {
-        $code = explode('/', $request->input('code'));
-        $count = count($code);
-        if ($count != 2) {
-            return redirect('admin/user')->with('error', '绑定失败 - 绑定代码无效');
+        $code = $request->input('code');
+        $user = new User();
+        $res = $user->binding($code, $id);
+        if ($res % 100 == 0) {
+            return redirect()->back()->with('success', config('global.msg.' . $res));
+        } else {
+            return redirect()->back()->with('error', config('global.msg.' . $res));
         }
-        $user = User::with('company', 'employee')->find($id);
-        $company = Company::where('name', '=', $code[0])->first();
-        if (!$company) { // 无公司
-            return redirect('admin/user')->with('error', '绑定失败 - 找不到公司信息');
-        }
-        $employee = Employee::where('number', '=', $code[1])->where('company_id', '=', $company->id)->first();
-        if (!$employee) { // 无员工
-            return redirect('admin/user')->with('error', '绑定失败 - 找不到员工信息');
-        }
-        if ($employee->user_id) { // 员工已绑定
-            return redirect('admin/user')->with('error', '绑定失败 - 员工已绑定用户');
-        }
-        if (!$company->user_id) { // 公司无创始人
-            $user->company()->save($company); // 绑定公司
-        }
-        $user->employee()->save($employee); // 绑定员工
-        return redirect('admin/user')->with('success', '绑定成功');
-
     }
 
     /**
-     * 解绑公司-员工
+     * 用户解绑公司-员工
      *
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unbinding($id)
     {
-        $user = User::with('company', 'employee')->find($id);
-        if (!$user->company) {
-            return redirect('admin/user')->with('error', '解绑失败 - 未绑定公司');
+        $user = new User();
+        $res = $user->unbinding($id);
+        if ($res % 100 == 0) {
+            return redirect()->back()->with('success', config('global.msg.' . $res));
         } else {
-            $user->company->user_id = null;
-            $user->company->save();
+            return redirect()->back()->with('error', config('global.msg.' . $res));
         }
-        if (!$user->employee) {
-            return redirect('admin/user')->with('error', '解绑失败 - 未绑定员工');
-        } else {
-            $user->employee->user_id = null;
-            $user->employee->save();
-        }
-        return redirect('admin/user')->with('success', '解绑成功 - ' . $id);
     }
 
 }

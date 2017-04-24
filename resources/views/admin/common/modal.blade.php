@@ -1,4 +1,3 @@
-{{-- 确认模态框confirmModal --}}
 <div class="modal fade confirmModal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-describedby="myModalContent">
     <div class="modal-dialog" role="document">
@@ -23,7 +22,6 @@
     </div><!-- /.modal-dialog -->
 </div><!-- 确认模态框confirmModal -->
 
-{{-- 表单模态框formModal --}}
 <div class="modal fade formModal" id="bindingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-describedby="myModalContent">
     <div class="modal-dialog" role="document">
@@ -111,3 +109,50 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- 审核模态框verifiedModal -->
+
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-describedby="myModalContent">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="关闭">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">标题</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="code-shareModal">原始代码</label>
+                        <div class="col-xs-6">
+                            <input class="form-control" type="text" id="code-shareModal" name="code" value="" readonly/>
+                        </div>
+                        <button type="button" class="btn btn-primary code" id="copy-code" data-dismiss="modal"
+                                data-clipboard-target="#code-shareModal">复制
+                        </button>
+                    </div><!-- 原始代码 -->
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="url-code-shareModal">URL代码</label>
+                        <div class="col-xs-6">
+                            <input class="form-control" type="text" id="url-code-shareModal" name="url-code" readonly/>
+                        </div>
+                        <button type="button" class="btn btn-primary url-code" id="copy-url-code" data-dismiss="modal"
+                                data-clipboard-target="#url-code-shareModal">复制
+                        </button>
+                    </div><!-- URL代码 -->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- 分享模态框#shareModal -->
+
+<div class="modal fade hintModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-describedby="myModalContent">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                提示内容
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- 提示模态框.hintModal -->

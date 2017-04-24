@@ -29,15 +29,7 @@
                             </tr>
                             <tr>
                                 <th class="text-right">工号</th>
-                                <td>{{ $employee->display_name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">姓名</th>
-                                <td>{{ $employee->name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">手机</th>
-                                <td>{{ $employee->mobile }}</td>
+                                <td>{{ $employee->number }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">座机</th>

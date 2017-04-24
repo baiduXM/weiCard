@@ -6,12 +6,9 @@ use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Common;
 use App\Models\Company;
-use App\Models\Employee;
-use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 
 class CompanyController extends Controller
 {
@@ -114,7 +111,7 @@ class CompanyController extends Controller
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
-        
+
         /* 默认添加审核通过 */
         $data['status'] = 1;
         $data['manager_id'] = Auth::guard('admin')->id();
@@ -268,29 +265,13 @@ class CompanyController extends Controller
     public function binding(Request $request, $id)
     {
         $code = $request->input('code');
-        $company = Company::find($id);
-        if ($company->user) { // 公司存在创始人
-            return redirect('admin/company')->with('error', '绑定失败 - 已绑定用户');
+        $company = new Company();
+        $res = $company->binding($code, $id);
+        if ($res % 100 == 0) {
+            return redirect()->back()->with('success', config('global.msg.' . $res));
+        } else {
+            return redirect()->back()->with('error', config('global.msg.' . $res));
         }
-        $user = User::where('name', '=', $code)->where('is_active', 1)->first();
-        if (!$user) { // 不存在用户
-            return redirect('admin/company')->with('error', '绑定失败 - 用户不存在或未激活');
-        }
-        if ($user->company) { // 用户关联公司
-            return redirect('admin/company')->with('error', '绑定失败 - 用户已关联公司');
-        }
-        if (count($company->employees)) { // 公司关联员工
-            return redirect('admin/company')->with('error', '绑定失败 - 绑定码不完整');
-        }
-        $employee = new Employee();
-        $employee->number = strtoupper(substr($company->name, 0, 1)) . '00001';
-        $employee->name = $user->name;
-        $employee->title = '创始人';
-        $employee->mobile = $user->mobile;
-        $company->employees()->save($employee); // 员工关联公司
-        $user->company()->save($company); // 公司关联用户
-        $user->employee()->save($employee); // 员工关联用户
-        return redirect('admin/company')->with('success', '绑定成功 - ' . $company->id);
     }
 
     /**

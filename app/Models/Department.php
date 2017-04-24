@@ -14,15 +14,15 @@ class Department extends Model
 
 
     /**
-     * 获取员工所属的部门
+     * 关系模型 - 公司
      */
-    public function department()
+    public function company()
     {
-        return $this->belongsTo('App\Models\Department');
+        return $this->belongsTo('App\Models\Company');
     }
 
     /**
-     * 获取部门员工
+     * 关系模型 - 员工
      */
     public function employees()
     {

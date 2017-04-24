@@ -72,17 +72,13 @@ class EmployeeController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.name' => 'required',
             'Employee.title' => 'max:30',
             'Employee.telephone' => 'numeric',
-            'Employee.mobile' => 'numeric|digits:11|unique:employees,employees.mobile',
             'Employee.description' => 'max:255',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
             'Employee.title' => '职务',
             'Employee.telephone' => '座机',
-            'Employee.mobile' => '手机',
             'Employee.description' => '个人简介',
         ]);
 
@@ -124,17 +120,13 @@ class EmployeeController extends Controller
     {
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.name' => 'required|max:30',
             'Employee.title' => 'max:30',
             'Employee.telephone' => 'numeric',
-            'Employee.mobile' => 'numeric|digits:11|unique:employees,employees.mobile,' . $id,
             'Employee.description' => 'max:255',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
             'Employee.title' => '职务',
             'Employee.telephone' => '座机',
-            'Employee.mobile' => '手机',
             'Employee.description' => '个人简介',
         ]);
         $data = $request->input('Employee');

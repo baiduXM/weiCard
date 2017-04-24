@@ -20,11 +20,6 @@ class Company extends Model
     const VERIFIED_SUCCEED = 1; // 审核通过
     const VERIFIED_FAILED = 2; // 审核失败
 
-//    public $timestamps = false;
-
-//    protected $dateFormat = 'U';
-
-
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
     ];
@@ -33,7 +28,7 @@ class Company extends Model
     ];
 
     /**
-     * 获取公司对应的用户（创始人）
+     * 关系模型 - 用户
      */
     public function user()
     {
@@ -41,7 +36,7 @@ class Company extends Model
     }
 
     /**
-     * 审核者（管理员）
+     * 关系模型 - 管理员
      */
     public function manager()
     {
@@ -49,7 +44,7 @@ class Company extends Model
     }
 
     /**
-     * 获取公司拥有的员工
+     * 关系模型 - 员工
      */
     public function employees()
     {
@@ -57,7 +52,7 @@ class Company extends Model
     }
 
     /**
-     * 获取公司部门
+     * 关系模型 - 部门
      */
     public function departments()
     {
@@ -81,6 +76,39 @@ class Company extends Model
             return array_key_exists($index, $array) ? $array[$index] : reset($array);
         }
         return $array;
+    }
+
+    /**
+     * 公司关联用户
+     *
+     * @param $code
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function binding($code, $id)
+    {
+        $company = Company::find($id);
+        if ($company->user) {
+            return 105;// 绑定失败 - 公司已绑定用户
+        }
+        $user = User::where('name', '=', $code)->where('is_active', 1)->first();
+        if (!$user) {
+            return 106; // 绑定失败 - 用户不存在
+        }
+        if ($user->company) { // 用户关联公司
+            return 107; // 绑定失败 - 用户已关联公司
+        }
+        if (count($company->employees)) { // 公司关联员工
+            return 108; // 绑定失败 - 绑定码不完整，未包含员工信息
+        }
+        $employee = new Employee();
+        $employee->number = strtoupper(substr($company->name, 0, 1)) . '00001';
+        $employee->title = '创始人';
+        $employee->mobile = $user->mobile;
+        $company->employees()->save($employee); // 员工关联公司
+        $user->company()->save($company); // 公司关联用户
+        $user->employee()->save($employee); // 员工关联用户
+        return 100;
     }
 
 }
