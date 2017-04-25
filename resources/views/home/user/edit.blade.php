@@ -17,7 +17,7 @@
                 {{ csrf_field() }}
 
                 <div class="file-img rt  col-sm-12">
-                    <img src="{{ $user->avatar ? asset($user->avatar) : asset('static/home/images/avatar.png') }}"
+                    <img src="{{ $user->avatar ? asset($user->avatar) : asset('static/home/images/avatar.jpg') }}"
                          alt="">
                 </div>
                 <div class="input rt ">

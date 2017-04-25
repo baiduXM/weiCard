@@ -40,19 +40,19 @@
                 {{--内容--}}
             @show
             <p class="foot-txt">copyright© 厦门易尔通网络科技有限公司 版权所有</p>
-            @section('modal-extend')
-                {{--modal扩展--}}
-            @show
+
 
         </div>
 
     </div>
 </div>
+@section('modal-extend')
+    {{--modal扩展--}}
+@show
 @include('home.common.modal')
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('static/common/js/common.js') }}"></script>
 <script src="{{ asset('static/home/js/tree-box.js') }}"></script>
 <script src="{{ asset('static/home/js/operation.js') }}"></script>
 

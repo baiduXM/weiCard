@@ -3,7 +3,7 @@
     {{ csrf_field() }}
     {{--@if ($company->logo)--}}
     <div class="file-img rt  col-sm-12">
-        <img src="{{ asset($company->logo) }}" alt="">
+        <img src="{{ $company->logo ? asset($company->logo) : asset('static/home/images/company-logo.jpg') }}" alt="">
     </div>
     {{--@endif--}}
 

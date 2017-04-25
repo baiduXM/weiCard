@@ -108,7 +108,7 @@ class UserController extends Controller
             }
         }
         if ($user->save()) {
-            return redirect()->back()->with('success', '修改成功' . ' - ' . $user->id);
+            return redirect()->back()->with('success', '修改成功');
         } else {
             return redirect()->back();
         }
@@ -118,7 +118,6 @@ class UserController extends Controller
      * 关联员工
      *
      * @param Request $request
-     * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding(Request $request)

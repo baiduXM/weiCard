@@ -15,6 +15,7 @@ return [
 
     'paths' => [
         realpath(base_path('resources/views')),
+        realpath(public_path('templates')), // 模板视图路径
     ],
 
     /*

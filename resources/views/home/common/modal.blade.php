@@ -41,7 +41,7 @@
                         <p><span>微信 : </span><input type="text"></p>
                     </div>
                     <div class="modal-address-img">
-                        <img src="image/icon12.png" alt="">
+                        <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
                     </div>
                 </form>
             </div>
@@ -217,37 +217,7 @@
         </div>
     </div>
 </div>
-<!-- 添加部门员工modal -->
-<div class="modal fade bs8" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content modal1 modal2 modal8">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">添加部门员工</h4>
-            </div>
-            <div class="modal-body">
-                <form action="">
-                    <div class="modal-address">
-                        <p><span>工号 : </span><input type="text"></p>
-                        <p><span>照片 : </span><input type="file"></p>
-                        <p><span>姓名 : </span><input type="text"></p>
-                        <p><span>职位 : </span><input type="text"></p>
-                        <p><span>电话 : </span><input type="text"></p>
-                        <p class="m8"><span>备注 : </span><textarea name="" id=""></textarea></p>
-                    </div>
-                    <div class="modal-address-img">
-                        <img src="image/icon12.png" alt="">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="添加">
-                <input type="reset" data-dismiss="modal" value="取消">
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- 添加职位modal -->
 <div class="modal fade bs9" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">

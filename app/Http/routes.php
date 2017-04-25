@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
+    Route::get('preview', ['as' => 'preview', 'uses' => 'Home\IndexController@preview']);
 
     /* 用户中心 */
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
@@ -49,11 +50,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
     Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
 
-    /* 我的公司->员工 */
-    Route::get('company/employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
+    Route::group(['prefix' => 'company'], function () {
+        /* 我的公司->员工 */
+        Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
+        Route::get('employee/create', ['as' => 'employee.create', 'uses' => 'Home\EmployeeController@create']);
+        Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
 
-    /* 我的公司->部门 */
-    Route::get('company/department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
+        /* 我的公司->部门 */
+        Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
+    });
+
 
     /* 通讯录 */
     Route::group(['prefix' => 'contact'], function () {

@@ -16,7 +16,7 @@ use Illuminate\Routing\Controller as BaseController;
  * 管理   admin       public/uploads/admin/{$name}/...            url可访问
  * 公司   company     public/uploads/company/{$name}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
- * 模板   template    public/template/{$code}/...                 url可访问
+ * 模板   template    public/templates/{$code}/...                 url可访问
  */
 
 class UploadController extends BaseController
@@ -47,13 +47,12 @@ class UploadController extends BaseController
 
     }
 
-
     /**
      * 获取文件夹路径
      *
      * @param $path_type        路径类型
-     * @param null $name 底层文件夹名
-     * @return bool|string
+     * @param null $name        底层文件夹名
+     * @return bool|string      路径
      */
     public function getPath($path_type, $name = null)
     {
@@ -71,7 +70,7 @@ class UploadController extends BaseController
                 $targetPath = 'uploads/website';
                 break;
             case 'template':
-                $targetPath = 'uploads/template/' . $name;// .模板编号
+                $targetPath = 'templates/' . $name;// .模板编号
                 break;
             default:
                 return false;
@@ -107,7 +106,6 @@ class UploadController extends BaseController
             return false;
         }
     }
-
 
     /**
      * 检查文件夹是否存在，不存在创建
