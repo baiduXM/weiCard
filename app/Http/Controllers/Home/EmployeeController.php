@@ -43,30 +43,6 @@ class EmployeeController extends CompanyController
      */
     public function store(Request $request)
     {
-
-        if ($request->ajax()) {
-            /* 验证 */
-            $this->validate($request, [
-                'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
-                'Employee.name' => 'required',
-                'Employee.title' => 'max:30',
-                'Employee.mobile' => 'numeric',
-                'Employee.telephone' => 'numeric',
-                'Employee.description' => 'max:255',
-            ], [], [
-                'Employee.number' => '工号',
-                'Employee.name' => '姓名',
-                'Employee.title' => '职位',
-                'Employee.mobile' => '手机',
-                'Employee.telephone' => '座机',
-                'Employee.description' => '个人简介',
-            ]);
-            return $request->all();
-            return 1111;
-        } else {
-            return 2222;
-        }
-
         /* 验证 */
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
@@ -83,21 +59,27 @@ class EmployeeController extends CompanyController
             'Employee.telephone' => '座机',
             'Employee.description' => '个人简介',
         ]);
-//
-//        /* 获取字段类型 */
-//        $data = $request->input('Employee');
-//        foreach ($data as $key => $value) {
-//            if ($value === '') {
-//                $data[$key] = null; // 未填字段设置为null，否则会保存''
-//            }
-//        }
-//
-//        /* 添加 */
-//        if (Employee::create($data)) {
-//            return redirect('admin/employee')->with('success', '添加成功');
-//        } else {
-//            return redirect()->back();
-//        }
+        /* 获取字段类型 */
+        $data = $request->input('Employee');
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
+            }
+        }
+        $data['company_id'] = Auth::user()->company->id;
+
+        /* 添加 */
+        if (Employee::create($data)) {
+            if ($request->ajax()) {
+                return 1;
+            }
+            return redirect('company/employee')->with('success', '添加成功');
+        } else {
+            if ($request->ajax()) {
+                return 0;
+            }
+            return redirect()->back();
+        }
     }
 
 

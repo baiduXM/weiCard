@@ -18,7 +18,6 @@ use Illuminate\Routing\Controller as BaseController;
  * 网站   website     public/uploads/website/...                  url可访问
  * 模板   template    public/templates/{$code}/...                 url可访问
  */
-
 class UploadController extends BaseController
 {
 

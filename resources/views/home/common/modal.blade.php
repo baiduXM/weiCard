@@ -21,37 +21,37 @@
     </div>
 </div>
 <!-- 通讯录-查看modal -->
-<div class="modal fade bs2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content modal1 modal2">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">通讯录-查看</h4>
-            </div>
-            <div class="modal-body">
-                <form action="">
-                    <div class="modal-address">
-                        <p><span>姓名 : </span><input type="text"></p>
-                        <p><span>固话 : </span><input type="text"></p>
-                        <p><span>手机 : </span><input type="text"></p>
-                        <p><span>传真 : </span><input type="text"></p>
-                        <p><span>邮箱 : </span><input type="text"></p>
-                        <p><span> Q Q : </span><input type="text"></p>
-                        <p><span>微信 : </span><input type="text"></p>
-                    </div>
-                    <div class="modal-address-img">
-                        <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="添加">
-                <input type="reset" data-dismiss="modal" value="取消">
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade bs2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">--}}
+    {{--<div class="modal-dialog modal-lg" role="document">--}}
+        {{--<div class="modal-content modal1 modal2">--}}
+            {{--<div class="modal-header">--}}
+                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>--}}
+                {{--</button>--}}
+                {{--<h4 class="modal-title">通讯录-查看</h4>--}}
+            {{--</div>--}}
+            {{--<div class="modal-body">--}}
+                {{--<form action="">--}}
+                    {{--<div class="modal-address">--}}
+                        {{--<p><span>姓名 : </span><input type="text"></p>--}}
+                        {{--<p><span>固话 : </span><input type="text"></p>--}}
+                        {{--<p><span>手机 : </span><input type="text"></p>--}}
+                        {{--<p><span>传真 : </span><input type="text"></p>--}}
+                        {{--<p><span>邮箱 : </span><input type="text"></p>--}}
+                        {{--<p><span> Q Q : </span><input type="text"></p>--}}
+                        {{--<p><span>微信 : </span><input type="text"></p>--}}
+                    {{--</div>--}}
+                    {{--<div class="modal-address-img">--}}
+                        {{--<img src="{{ asset('static/home/images/icon12.png') }}" alt="">--}}
+                    {{--</div>--}}
+                {{--</form>--}}
+            {{--</div>--}}
+            {{--<div class="modal-footer">--}}
+                {{--<input type="submit" value="添加">--}}
+                {{--<input type="reset" data-dismiss="modal" value="取消">--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 <!-- 确认删除吗modal -->
 <div class="modal fade bs3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -262,3 +262,15 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade hintModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-describedby="myModalContent">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                提示内容
+            </div>
+            <div class="hidden after-operate" ></div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- 提示模态框.hintModal -->

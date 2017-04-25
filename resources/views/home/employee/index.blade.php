@@ -69,12 +69,12 @@
                             @if($item->user_id == Auth::id())
                                 无法对自己操作
                             @else
-                                <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                                <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"><i
                                             class="iconFont">&#xe613;</i></a>
                                 <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
                                 <a href=""><i class="iconFont">&#xe632;</i></a>
                                 <a href=""><i class="iconFont">&#xe921;</i></a>
-                                <a href="javascript:" data-toggle="modal" data-target=".bs3"><i
+                                <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"><i
                                             class="iconFont">&#xe6d3;</i></a>
                             @endif
                         </td>
@@ -91,7 +91,7 @@
                             <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                            <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
+                            <td><a href="" data-toggle="modal" data-target=".bs3"><i
                                             class="iconFont">&#xe6d3;</i></a></td>
                         @endif
                     </tr><!--适应手机操作-->
@@ -122,16 +122,18 @@
                                 <span>工号 : </span>
                                 <input type="text" name="Employee[number]" placeholder=""
                                        value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
-                                <span class="error-number" style="color: red;"></span>
-                            </p>
-                            <p>
-                                <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]" placeholder="公司名称">
+                                <span class="error-number hidden" style="color: red;">123</span>
                             </p>
                             <p>
                                 <span>姓名 : </span>
                                 <input type="text" name="Employee[name]" placeholder=""
                                        value="{{ old('Employee.name') ? old('Employee.name') : '' }}">
+                                <span class="error-name" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>照片 : </span>
+                                <input type="file" name="Employee[avatar]" placeholder="公司名称">
+                                <span class="error-avatar" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>职位 : </span>
@@ -151,10 +153,42 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary operate-submit">确认</button>
+                        <button type="button" class="btn btn-primary operate-add">确认</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <!-- 通讯录-查看modal -->
+    <div class="modal fade bs2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal1 modal2">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">查看</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="modal-address">
+                            <p><span>姓名 : </span><input type="text"></p>
+                            <p><span>固话 : </span><input type="text"></p>
+                            <p><span>手机 : </span><input type="text"></p>
+                            <p><span>传真 : </span><input type="text"></p>
+                            <p><span>邮箱 : </span><input type="text"></p>
+                            <p><span> Q Q : </span><input type="text"></p>
+                            <p><span>微信 : </span><input type="text"></p>
+                        </div>
+                        <div class="modal-address-img">
+                            <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="添加">
+                    <input type="reset" data-dismiss="modal" value="取消">
+                </div>
             </div>
         </div>
     </div>
