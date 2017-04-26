@@ -101,8 +101,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url('admin/company') }}" type="button" role="button"
+                                <a href="{{ url()->previous() }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

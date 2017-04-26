@@ -66,34 +66,27 @@
                         <td class="">{{ $item->title }}</td>
                         <td class="b-td-width b-td-hide">{{ $item->mobile }}</td>
                         <td class="b-td-icon b-td-hide w-icon">
-                            @if($item->user_id == Auth::id())
-                                无法对自己操作
-                            @else
-                                <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"><i
-                                            class="iconFont">&#xe613;</i></a>
-                                <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
-                                <a href=""><i class="iconFont">&#xe632;</i></a>
-                                <a href=""><i class="iconFont">&#xe921;</i></a>
-                                <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"><i
-                                            class="iconFont">&#xe6d3;</i></a>
-                            @endif
+                            <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"
+                               data-url="{{ url('company/employee/'.$item->id) }}"><i
+                                        class="iconFont">&#xe613;</i></a>
+                            <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
+                            <a href=""><i class="iconFont">&#xe632;</i></a>
+                            <a href=""><i class="iconFont">&#xe921;</i></a>
+                            <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"><i
+                                        class="iconFont">&#xe6d3;</i></a>
                         </td>
                         <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
                         </td>
                     </tr>
                     <tr class="td-icon-hide none">
-                        @if($item->user_id == Auth::id())
-                            <td>自己</td>
-                        @else
-                            <td id="look"><a href="javascript:" data-toggle="modal" data-target=".bs2"><i
-                                            class="iconFont">&#xe613;</i></a>
-                            </td>
-                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                            <td><a href="" data-toggle="modal" data-target=".bs3"><i
-                                            class="iconFont">&#xe6d3;</i></a></td>
-                        @endif
+                        <td id="look"><a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                                        class="iconFont">&#xe613;</i></a>
+                        </td>
+                        <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
+                        <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
+                        <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
+                        <td><a href="" data-toggle="modal" data-target=".bs3"><i
+                                        class="iconFont">&#xe6d3;</i></a></td>
                     </tr><!--适应手机操作-->
                 @endforeach
                 </tbody>
@@ -165,12 +158,13 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">查看</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="">
+                    {{--<form action="">--}}
                         <div class="modal-address">
                             <p><span>姓名 : </span><input type="text"></p>
                             <p><span>固话 : </span><input type="text"></p>
@@ -181,9 +175,9 @@
                             <p><span>微信 : </span><input type="text"></p>
                         </div>
                         <div class="modal-address-img">
-                            <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
+                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
                         </div>
-                    </form>
+                    {{--</form>--}}
                 </div>
                 <div class="modal-footer">
                     <input type="submit" value="添加">

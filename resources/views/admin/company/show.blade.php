@@ -94,7 +94,7 @@
                                 @endif
                                 <a href="{{ url('admin/company/' . $company->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url('admin/company') }}" type="button" role="button"
+                                <a href="{{ url()->previous() }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

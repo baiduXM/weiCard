@@ -26,11 +26,15 @@ $(function () {
                 return false;
             }
         });
-        return false;
     });
 
     /* 操作 - 显示 */
-    // operate-show
+    $(".operate-show").click(function () {
+        var _url = $(this).data("url");
+        $.get(_url, function (data) {
+            console.log(data);
+        })
+    });
     /* 操作 - 删除 */
     // operate-delete
 
@@ -42,7 +46,7 @@ $(function () {
         });
     });
 
-    /* 提示 - 隐藏后动作 */
+    /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function (event) {
         var _url = $('.hintModal .after-operate').text();
         window.location = _url;
