@@ -69,7 +69,10 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
+        $company = array();
+        if (Auth::user()->company || Auth::user()->employee) {
+            $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
+        }
         return view('home.company.index')->with([
             'company' => $company,
             'common' => new Common(),
@@ -113,6 +116,8 @@ class CompanyController extends Controller
         }
 
         $data['status'] = Company::VERIFIED_ING;
+        $data['manager_id'] = null;
+
 
         $company = Company::find($id);
         foreach ($data as $key => $value) {
@@ -128,6 +133,7 @@ class CompanyController extends Controller
         }
 
     }
+
 
 
 }

@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
         Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
+        Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
 
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);

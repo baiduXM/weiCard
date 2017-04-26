@@ -31,6 +31,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th class="text-right">公司邮箱</th>
+                                <td>{{ $company->email }}</td>
+                            </tr>
+                            <tr>
                                 <th class="text-right">公司地址</th>
                                 <td>{{ $company->address }}</td>
                             </tr>

@@ -32,11 +32,17 @@ $(function () {
     $(".operate-show").click(function () {
         var _url = $(this).data("url");
         $.get(_url, function (data) {
-            console.log(data);
+            showInformation(data, 'info-', 'name');
         })
     });
     /* 操作 - 删除 */
-    // operate-delete
+    $('.operate-delete').click(function () {
+        $('#confirmModal').on('show.bs.modal', function (event) {
+            var relatedTarget = $(event.relatedTarget);
+            var _url = relatedTarget.data('url');
+            modal.find('form').attr('action', _url);
+        });
+    });
 
     /* 提示 - 自动隐藏 */
     $('.hintModal').on('show.bs.modal', function (event) {
@@ -59,9 +65,34 @@ $(function () {
      * @param name      数组
      * 名
      */
-    function showError(msg) {
-        $.each(msg, function (i, n) {
+    function showError(data) {
+        $.each(data, function (i, n) {
             $('.error-' + i.split('.')[1]).removeClass('hidden').text(n);
+        });
+    }
+
+    /**
+     * 显示信息
+     *
+     * @param data      数据，必填
+     * @param prefix    前缀，默认空
+     * @param label     标签名，默认class
+     */
+    function showInformation(data, prefix, label) {
+        var selector = '';
+        selector = 'class=';
+        if (prefix) {
+            selector = 'class=' + prefix;
+            if (label) {
+                selector = label + '=' + prefix;
+            }
+        }
+        $.each(data, function (i, n) {
+            if (typeof n == 'object' && n != null) {
+                $('[' + selector + i + ']').val(n['name'])
+            } else {
+                $('[' + selector + i + ']').val(n)
+            }
         });
     }
 

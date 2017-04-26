@@ -28,11 +28,14 @@ class EmployeeController extends CompanyController
      */
     public function index()
     {
-        $employees = Employee::where('company_id', '=', Auth::user()->employee->company->id)
-            ->paginate();
-        return view('home.employee.index')->with([
-            'employees' => $employees,
-        ]);
+        if (Auth::user()->employee) {
+            $employees = Employee::where('company_id', '=', Auth::user()->employee->company->id)->paginate();
+            return view('home.employee.index')->with([
+                'employees' => $employees,
+            ]);
+        } else {
+            return redirect()->back()->with('error', '请先绑定公司');
+        }
     }
 
     /**
@@ -82,6 +85,58 @@ class EmployeeController extends CompanyController
         }
     }
 
+    /**
+     * 查看
+     *
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
+     */
+    public function show($id)
+    {
+        $employee = Employee::with('company', 'department', 'user')->find($id);
+        return $employee;
+    }
+
+    /*
+     * 删除限制
+     *
+     * 绑定用户不能删除
+     * 公司创始人不能删除
+     */
+    /**
+     * 删除
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|int
+     */
+    public function destroy(Request $request, $id)
+    {
+        $employee = Employee::with('user', 'company')->find($id);
+
+        if ($request->ajax()) {
+            $err_code = 400;
+            if ($employee->user_id) {
+                $err_code = 401;
+                $result = array('err' => $err_code, 'msg' => config('global.msg.' . $err_code), 'data' => array());
+
+            }
+            if ($employee->delete()) {
+                $result = array('err' => $err_code, 'msg' => config('global.msg.' . $err_code), 'data' => array());
+            }
+            return $result;
+        }
+
+        if ($employee->user_id == $employee->company->user_id) {
+            $employee->company->user_id = null;
+            $employee->company->save();
+        }
+        if ($employee->delete()) {
+            return redirect('admin/employee')->with('success', '删除成功 - ' . $employee->id);
+        } else {
+            return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
+        }
+    }
 
 }
 

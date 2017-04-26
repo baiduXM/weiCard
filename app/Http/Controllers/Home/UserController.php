@@ -132,14 +132,14 @@ class UserController extends Controller
         $res = $user->binding($code, Auth::id());
         if ($request->isMethod('POST')) {
             if ($res % 100 == 0) {
-                return redirect()->back()->with('success', config('global.msg.' . $res));
+                return redirect('user')->with('success', config('global.msg.' . $res));
             } else {
                 return redirect()->back()->with('error', config('global.msg.' . $res));
             }
         }
         if ($request->isMethod('GET')) {
             if ($res % 100 == 0) {
-                return redirect()->back()->with('success', config('global.msg.' . $res));
+                return redirect('user')->with('success', config('global.msg.' . $res));
             } else {
                 return redirect()->back()->with('error', config('global.msg.' . $res));
             }

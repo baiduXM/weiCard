@@ -163,7 +163,7 @@
                                                                class="btn btn-success btn-xs" title="审核"><i
                                                                         class="glyphicon glyphicon-bookmark"></i>审核</a>
                                                         @endif
-                                                        @if(!isset($item->user))
+                                                        @if(!$item->user && count($item->employees)>1)
                                                             <a href="" class="btn btn-success btn-xs operate-binding"
                                                                data-toggle="modal" data-target="#bindingModal"
                                                                data-url="company/{{ $item->id }}/binding" title="绑定用户">

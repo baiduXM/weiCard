@@ -271,7 +271,7 @@ class UserController extends Controller
         $user = new User();
         $res = $user->binding($code, $id);
         if ($res % 100 == 0) {
-            return redirect()->back()->with('success', config('global.msg.' . $res));
+            return redirect('admin/user')->with('success', config('global.msg.' . $res));
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $res));
         }
@@ -288,7 +288,7 @@ class UserController extends Controller
         $user = new User();
         $res = $user->unbinding($id);
         if ($res % 100 == 0) {
-            return redirect()->back()->with('success', config('global.msg.' . $res));
+            return redirect('admin/user')->with('success', config('global.msg.' . $res));
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $res));
         }

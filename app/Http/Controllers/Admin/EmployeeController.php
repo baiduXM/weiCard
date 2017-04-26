@@ -158,7 +158,6 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-//        if ($employee->user) {
         if ($employee->user_id == $employee->company->user_id) {
             $employee->company->user_id = null;
             $employee->company->save();
@@ -167,7 +166,7 @@ class EmployeeController extends Controller
         if ($employee->delete()) {
             return redirect('admin/employee')->with('success', '删除成功 - ' . $employee->id);
         } else {
-            return redirect('admin/employee')->with('error', '删除失败 - ' . $employee->id);
+            return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
         }
     }
 
@@ -193,7 +192,7 @@ class EmployeeController extends Controller
         if ($res) {
             return redirect('admin/employee')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/employee')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
