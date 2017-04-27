@@ -124,7 +124,8 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url('admin/manager') }}" type="button"
+                                <button type="reset" class="btn btn-warning btn-md">重置</button>
+                                <a href="{{ url()->previous() }}" type="button"
                                    class="btn btn-default btn-md">返回</a>
                             </div>
                         </div>

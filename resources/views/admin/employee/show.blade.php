@@ -62,10 +62,10 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/employee/' . $employee->id . '/edit') }}" type="button"
+                                <a href="{{ url('admin/employee/' . $employee->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url('admin/employee') }}" type="button" role="button"
-                                   class="btn btn-danger btn-md">返回</a>
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                   role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </div>
@@ -76,8 +76,6 @@
 @stop
 @section('javascript')
     <script>
-        $(".verify-failed").click(function () {
-            alert({{ $employee->id }});
-        });
+        
     </script>
 @stop

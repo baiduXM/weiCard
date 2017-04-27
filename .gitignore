@@ -5,6 +5,7 @@ Homestead.yaml
 Homestead.json
 .env
 /public/uploads
+/public/templates
 
 .idea/*
 /nbproject

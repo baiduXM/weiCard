@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -52,7 +53,6 @@ class EmployeeController extends Controller
             }
         }
         $employees = $query->with('company')->paginate();
-//        dd($employees);
         return view('admin.employee.index')->with([
             'employees' => $employees,
             'common' => new Common(),
@@ -62,8 +62,9 @@ class EmployeeController extends Controller
 
     public function create()
     {
+        $companies = Company::where('status', '=', '1')->get();
         return view('admin.employee.create')->with([
-//            'companies' => $companies,
+            'companies' => $companies,
             'common' => new Common(),
         ]);
     }
@@ -71,15 +72,18 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 
+        $data = $request->input('Employee');
         /* 验证 */
         $this->validate($request, [
-            'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.company_id' => 'required',
+            'Employee.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Employee.name' => 'required',
             'Employee.title' => 'max:30',
             'Employee.mobile' => 'numeric',
             'Employee.telephone' => 'numeric',
             'Employee.description' => 'max:255',
         ], [], [
+            'Employee.company_id' => '公司',
             'Employee.number' => '工号',
             'Employee.name' => '姓名',
             'Employee.title' => '职位',
@@ -89,7 +93,6 @@ class EmployeeController extends Controller
         ]);
 
         /* 获取字段类型 */
-        $data = $request->input('Employee');
         foreach ($data as $key => $value) {
             if ($value === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
@@ -159,7 +162,6 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-//        if ($employee->user) {
         if ($employee->user_id == $employee->company->user_id) {
             $employee->company->user_id = null;
             $employee->company->save();
@@ -168,7 +170,7 @@ class EmployeeController extends Controller
         if ($employee->delete()) {
             return redirect('admin/employee')->with('success', '删除成功 - ' . $employee->id);
         } else {
-            return redirect('admin/employee')->with('error', '删除失败 - ' . $employee->id);
+            return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
         }
     }
 
@@ -194,7 +196,7 @@ class EmployeeController extends Controller
         if ($res) {
             return redirect('admin/employee')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/employee')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 

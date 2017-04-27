@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
     Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
     Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
+    Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+    Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
     /* 我的公司 */
     Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
@@ -54,8 +56,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'company'], function () {
         /* 我的公司->员工 */
         Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
-        Route::get('employee/create', ['as' => 'employee.create', 'uses' => 'Home\EmployeeController@create']);
         Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
+        Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
 
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);

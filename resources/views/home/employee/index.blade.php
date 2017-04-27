@@ -66,40 +66,34 @@
                         <td class="">{{ $item->title }}</td>
                         <td class="b-td-width b-td-hide">{{ $item->mobile }}</td>
                         <td class="b-td-icon b-td-hide w-icon">
-                            @if($item->user_id == Auth::id())
-                                无法对自己操作
-                            @else
-                                <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"><i
-                                            class="iconFont">&#xe613;</i></a>
-                                <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
-                                <a href=""><i class="iconFont">&#xe632;</i></a>
-                                <a href=""><i class="iconFont">&#xe921;</i></a>
-                                <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"><i
-                                            class="iconFont">&#xe6d3;</i></a>
-                            @endif
+                            <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"
+                               data-url="{{ url('company/employee/'.$item->id) }}"><i
+                                        class="iconFont">&#xe613;</i></a>
+                            <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
+                            <a href=""><i class="iconFont">&#xe632;</i></a>
+                            <a href=""><i class="iconFont">&#xe921;</i></a>
+                            <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"
+                               data-url="{{ url('company/employee/'.$item->id) }}">
+                                <i class="iconFont">&#xe6d3;</i></a>
                         </td>
                         <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
                         </td>
                     </tr>
                     <tr class="td-icon-hide none">
-                        @if($item->user_id == Auth::id())
-                            <td>自己</td>
-                        @else
-                            <td id="look"><a href="javascript:" data-toggle="modal" data-target=".bs2"><i
-                                            class="iconFont">&#xe613;</i></a>
-                            </td>
-                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                            <td><a href="" data-toggle="modal" data-target=".bs3"><i
-                                            class="iconFont">&#xe6d3;</i></a></td>
-                        @endif
+                        <td id="look"><a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                                        class="iconFont">&#xe613;</i></a>
+                        </td>
+                        <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
+                        <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
+                        <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
+                        <td><a href="" data-toggle="modal" data-target=".bs3"><i
+                                        class="iconFont">&#xe6d3;</i></a></td>
                     </tr><!--适应手机操作-->
                 @endforeach
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p><!--适应手机-->
-            {!! $employees->render() !!}
+            {!! $employees ? $employees->render() : '' !!}
         </div>
     </div>
 @stop
@@ -165,25 +159,26 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">查看</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="">
-                        <div class="modal-address">
-                            <p><span>姓名 : </span><input type="text"></p>
-                            <p><span>固话 : </span><input type="text"></p>
-                            <p><span>手机 : </span><input type="text"></p>
-                            <p><span>传真 : </span><input type="text"></p>
-                            <p><span>邮箱 : </span><input type="text"></p>
-                            <p><span> Q Q : </span><input type="text"></p>
-                            <p><span>微信 : </span><input type="text"></p>
-                        </div>
-                        <div class="modal-address-img">
-                            <img src="{{ asset('static/home/images/icon12.png') }}" alt="">
-                        </div>
-                    </form>
+                    <div class="modal-address">
+                        <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
+                        <p><span>姓名 : </span><input type="text" name="info-name" value="" readonly></p>
+                        <p><span>用户 : </span><input type="text" name="info-user" value="" readonly></p>
+                        <p><span>公司 : </span><input type="text" name="info-company" value="" readonly></p>
+                        <p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>
+                        <p><span>职位 : </span><input type="text" name="info-title" value="" readonly></p>
+                        <p><span>手机 : </span><input type="text" name="info-mobile" value="" readonly></p>
+                        <p><span>座机 : </span><input type="text" name="info-telephone" value="" readonly></p>
+                        <p><span>邮箱 : </span><input type="text" name="info-email" value="" readonly></p>
+                    </div>
+                    <div class="modal-address-img">
+                        <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="submit" value="添加">

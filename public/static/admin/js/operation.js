@@ -188,6 +188,16 @@ $(function () {
         alert('功能待开发');
     });
 
+    $('.operate-back').click(function () {
+        var _url = $(this).data('url');
+        var _back = $(this).data('back');
+        if (_back == window.location.href) {
+            location.href = _url;
+        } else {
+            location.href = _back;
+        }
+    });
+
     /* 初始化 */
     function init() {
         // 搜索初始值

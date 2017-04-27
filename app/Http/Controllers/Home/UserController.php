@@ -130,17 +130,17 @@ class UserController extends Controller
      */
     public function binding(Request $request)
     {
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST')) { // 通过原始代码进行绑定
             $code = $request->input('code');
         }
-        if ($request->isMethod('GET')) {
+        if ($request->isMethod('GET')) { // 通过URL进行绑定
             $code = Input::query('code');
         }
         $user = new User();
         $res = $user->binding($code, Auth::id());
         if ($request->isMethod('POST')) {
             if ($res % 100 == 0) {
-                return redirect()->back()->with('success', config('global.msg.' . $res));
+                return redirect('user')->with('success', config('global.msg.' . $res));
             } else {
                 return redirect()->back()->with('error', config('global.msg.' . $res));
             }
@@ -149,7 +149,7 @@ class UserController extends Controller
             if ($res % 100 == 0) {
                 return redirect('user')->with('success', config('global.msg.' . $res));
             } else {
-                return redirect('user')->with('error', config('global.msg.' . $res));
+                return redirect()->back()->with('error', config('global.msg.' . $res));
             }
         }
 

@@ -127,7 +127,7 @@ class CompanyController extends Controller
         if (Company::create($data)) {
             return redirect('admin/company')->with('success', '添加成功');
         } else {
-            return redirect()->back();
+            return redirect()->back()->with('error', '添加失败');
         }
     }
 
@@ -140,7 +140,7 @@ class CompanyController extends Controller
     public function show($id)
     {
         if (!$company = Company::find($id)) {
-            return redirect('admin/company')->with('warning', '公司不存在');
+            return redirect()->back()->with('warning', '公司不存在');
         }
 //        dd($company);
         $common = new Common();
@@ -159,16 +159,16 @@ class CompanyController extends Controller
     public function edit($id)
     {
         if (!$company = Company::find($id)) {
-            return redirect('admin/company')->with('warning', '公司不存在');
+            return redirect()->back()->with('warning', '公司不存在');
         }
-        if ($company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
+        if (Auth::guard('admin')->user()->is_super == 1 || $company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
             $common = new Common();
             return view('admin.company.edit')->with([
                 'company' => $company,
                 'common' => $common,
             ]);
         } else {
-            return redirect('admin/company')->with('error', '您不是审核者，无法修改！');
+            return redirect('admin/company')->with('error', '您不是超级管理员/审核者，无法修改！');
         }
     }
 
@@ -207,6 +207,7 @@ class CompanyController extends Controller
             $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
         }
         $data['status'] = Company::VERIFIED_ING;
+        $data['manager_id'] = null;
 
         $company = Company::find($id);
         foreach ($data as $key => $value) {
@@ -218,7 +219,7 @@ class CompanyController extends Controller
         if ($company->save()) {
             return redirect('admin/company')->with('success', '修改成功 - ' . $company->id);
         } else {
-            return redirect()->back();
+            return redirect()->back()->with('error', '修改失败 - ' . $company->id);
         }
     }
 
@@ -235,7 +236,7 @@ class CompanyController extends Controller
         if ($company->delete()) {
             return redirect('admin/company')->with('success', '删除成功 - ' . $company->id);
         } else {
-            return redirect('admin/company')->with('error', '删除失败 - ' . $company->id);
+            return redirect()->back()->with('error', '删除失败 - ' . $company->id);
         }
     }
 
@@ -252,7 +253,7 @@ class CompanyController extends Controller
         if ($res) {
             return redirect('admin/company')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/company')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
@@ -269,7 +270,7 @@ class CompanyController extends Controller
         $company = new Company();
         $res = $company->binding($code, $id);
         if ($res % 100 == 0) {
-            return redirect()->back()->with('success', config('global.msg.' . $res));
+            return redirect('admin/company')->with('success', config('global.msg.' . $res));
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $res));
         }
@@ -284,15 +285,10 @@ class CompanyController extends Controller
     public function getVerified($id)
     {
         $company = Company::find($id);
-        if ($company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
-            $common = new Common();
-            return view('admin.company.verified')->with([
-                'company' => $company,
-                'common' => $common,
-            ]);
-        } else {
-            return redirect('admin/company')->with('error', '您不是审核者！');
-        }
+        return view('admin.company.verified')->with([
+            'company' => $company,
+            'common' => new Common(),
+        ]);
     }
 
     /**
@@ -317,6 +313,7 @@ class CompanyController extends Controller
         ]);
         $data = $request->input('Company');
 
+
         $data['manager_id'] = Auth::guard('admin')->id();
         $data['verified_at'] = date('Y-m-d H:i:s', time());
         if ($data['status'] == 1) {
@@ -334,6 +331,8 @@ class CompanyController extends Controller
             return redirect()->back();
         }
     }
+
+
 
 
 }
