@@ -125,8 +125,8 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() }}" type="button"
-                                   class="btn btn-default btn-md">返回</a>
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}" type="button"
+                                   class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </form>

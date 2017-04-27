@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Employee;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\Common;
@@ -47,8 +46,8 @@ class EmployeeController extends Controller
         $params = Input::query();
         if ($params) {
             foreach ($params as $key => $value) {
-                if (in_array($key, $model->query)) {
-                    $query->where($key, '=', $value);
+                if (array_key_exists($key, $model->query)) {
+                    $query->where($key, $model->query[$key], $value);
                 }
             }
         }

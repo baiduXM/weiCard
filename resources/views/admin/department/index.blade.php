@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '员工管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee') !!}
+    {!! Breadcrumbs::render('admin.department') !!}
 @stop
 @section('content')
     <div class="row">
@@ -21,7 +21,7 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="employee/create" title="添加">
+                                        data-url="{{ url()->current().'/create' }}" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                                 {{--<button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"--}}
@@ -39,35 +39,35 @@
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/employee') }}" method="get">--}}
-                                {{--<div class="input-group pull-right col-md-6">--}}
-                                    {{--{{ csrf_field() }}--}}
-                                    {{--<div class="input-group-btn btn-group keep-open">--}}
-                                        {{--<button name="search_column" type="button"--}}
-                                                {{--class="btn btn-default dropdown-toggle"--}}
-                                                {{--data-toggle="dropdown"--}}
-                                                {{--aria-haspopup="true" aria-expanded="false">用户名--}}
-                                            {{--<span class="caret"></span>--}}
-                                        {{--</button>--}}
-                                        {{--<ul class="dropdown-menu" id="columnDropdown">--}}
-                                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
-                                                   {{--style="cursor: pointer;">用户名</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
-                                                   {{--style="cursor: pointer;">昵称</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
-                                                   {{--style="cursor: pointer;">手机</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
-                                                   {{--style="cursor: pointer;">邮箱</a></li>--}}
-                                        {{--</ul>--}}
-                                    {{--</div><!-- /btn-group -->--}}
-                                    {{--<input type="hidden" name="column" value="name"/>--}}
-                                    {{--<input class="form-control search" type="text" name="keyword"--}}
-                                           {{--placeholder="Search"/>--}}
-                                    {{--<span class="input-group-btn">--}}
-                                        {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
-                                            {{--<i class="glyphicon glyphicon-search"></i>--}}
-                                        {{--</button>--}}
-                                    {{--</span>--}}
-                                {{--</div>--}}
+                            {{--<div class="input-group pull-right col-md-6">--}}
+                            {{--{{ csrf_field() }}--}}
+                            {{--<div class="input-group-btn btn-group keep-open">--}}
+                            {{--<button name="search_column" type="button"--}}
+                            {{--class="btn btn-default dropdown-toggle"--}}
+                            {{--data-toggle="dropdown"--}}
+                            {{--aria-haspopup="true" aria-expanded="false">用户名--}}
+                            {{--<span class="caret"></span>--}}
+                            {{--</button>--}}
+                            {{--<ul class="dropdown-menu" id="columnDropdown">--}}
+                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
+                            {{--style="cursor: pointer;">用户名</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
+                            {{--style="cursor: pointer;">昵称</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
+                            {{--style="cursor: pointer;">手机</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
+                            {{--style="cursor: pointer;">邮箱</a></li>--}}
+                            {{--</ul>--}}
+                            {{--</div><!-- /btn-group -->--}}
+                            {{--<input type="hidden" name="column" value="name"/>--}}
+                            {{--<input class="form-control search" type="text" name="keyword"--}}
+                            {{--placeholder="Search"/>--}}
+                            {{--<span class="input-group-btn">--}}
+                            {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
+                            {{--<i class="glyphicon glyphicon-search"></i>--}}
+                            {{--</button>--}}
+                            {{--</span>--}}
+                            {{--</div>--}}
                             {{--</form><!--查找-->--}}
                         </div>
                         {{--表单容器--}}
@@ -121,7 +121,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($employees as $item)
+                                    @foreach($departments as $item)
                                         <tr>
                                             <td>
                                                 <div class="ckbox ckbox-default">
@@ -170,7 +170,7 @@
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $employees->appends($params)->render() !!}
+                                    {!! $departments->appends($params)->render() !!}
                                 </div><!--跳转页码-->
                             </div><!--页码-->
                         </div>

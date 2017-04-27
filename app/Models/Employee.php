@@ -13,9 +13,12 @@ class Employee extends Model
     protected $hidden = [
     ];
 
-    /* 允许url带参数查询字段 */
+    /*
+     * 允许url带参数查询字段
+     * 字段=>操作符
+     */
     public $query = [
-        'company_id',
+        'company_id' => '=',
     ];
 
     /**

@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
         Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
-        Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
+        Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@destroy']);
 
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
@@ -91,7 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-/* 后台管理界面 */
+/* =====后台管理界面===== */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
@@ -122,6 +122,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });
     Route::resource('employee', 'Admin\EmployeeController');
+
+    /* 部门管理 */
+    Route::resource('department', 'Admin\DepartmentController');
 
     /* 模板管理 */
     Route::resource('template', 'Admin\TemplateController');

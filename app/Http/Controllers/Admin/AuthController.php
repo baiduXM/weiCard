@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -91,7 +91,7 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
-        return Admin::create([
+        return Manager::create([
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
         ]);

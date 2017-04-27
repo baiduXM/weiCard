@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() }}" type="button" role="button"
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}" type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div><!--button-->

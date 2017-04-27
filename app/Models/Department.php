@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,10 @@ class Department extends Model
     protected $hidden = [
     ];
 
+    /* 允许url带参数查询字段 */
+    public $query = array(
+        'company_id' => '=',
+    );
 
     /**
      * 关系模型 - 公司

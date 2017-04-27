@@ -61,7 +61,8 @@
                             <div class="col-md-12 widget-left">
                                 <a href="{{ url('admin/manager/' . $manager->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() }}" type="button" role="button"
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                   type="button" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

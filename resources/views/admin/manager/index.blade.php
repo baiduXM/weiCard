@@ -33,37 +33,37 @@
                                         data-url="manager" title="垃圾箱">
                                     <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
                             </div><!--显示-->
-                            <form name="form_search" action="{{ url('/admin/manager') }}" method="get">
-                                <div class="input-group pull-right col-md-6">
+                            {{--<form name="form_search" action="{{ url('/admin/manager') }}" method="get">--}}
+                                {{--<div class="input-group pull-right col-md-6">--}}
                                     {{--{{ csrf_field() }}--}}
-                                    <div class="input-group-btn btn-group keep-open">
-                                        <button name="search_column" type="button"
-                                                class="btn btn-default dropdown-toggle"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">用户名
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu" id="columnDropdown">
-                                            <li><a class="dropdown-item" data-column="name" name="column_name"
-                                                   style="cursor: pointer;">用户名</a></li>
-                                            <li><a class="dropdown-item" data-column="nickname" name="column_nickname"
-                                                   style="cursor: pointer;">昵称</a></li>
-                                            <li><a class="dropdown-item" data-column="mobile" name="column_mobile"
-                                                   style="cursor: pointer;">手机</a></li>
-                                            <li><a class="dropdown-item" data-column="email" name="column_email"
-                                                   style="cursor: pointer;">邮箱</a></li>
-                                        </ul>
-                                    </div><!-- /btn-group -->
+                                    {{--<div class="input-group-btn btn-group keep-open">--}}
+                                        {{--<button name="search_column" type="button"--}}
+                                                {{--class="btn btn-default dropdown-toggle"--}}
+                                                {{--data-toggle="dropdown"--}}
+                                                {{--aria-haspopup="true" aria-expanded="false">用户名--}}
+                                            {{--<span class="caret"></span>--}}
+                                        {{--</button>--}}
+                                        {{--<ul class="dropdown-menu" id="columnDropdown">--}}
+                                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
+                                                   {{--style="cursor: pointer;">用户名</a></li>--}}
+                                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
+                                                   {{--style="cursor: pointer;">昵称</a></li>--}}
+                                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
+                                                   {{--style="cursor: pointer;">手机</a></li>--}}
+                                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
+                                                   {{--style="cursor: pointer;">邮箱</a></li>--}}
+                                        {{--</ul>--}}
+                                    {{--</div><!-- /btn-group -->--}}
                                     {{--<input type="hidden" name="column" value="name"/>--}}
-                                    <input class="form-control search" type="text" name="keyword"
-                                           placeholder="Search"/>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default operate-search" type="submit" title="查找">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form><!--查找-->
+                                    {{--<input class="form-control search" type="text" name="keyword"--}}
+                                           {{--placeholder="Search"/>--}}
+                                    {{--<span class="input-group-btn">--}}
+                                        {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
+                                            {{--<i class="glyphicon glyphicon-search"></i>--}}
+                                        {{--</button>--}}
+                                    {{--</span>--}}
+                                {{--</div>--}}
+                            {{--</form><!--查找-->--}}
                         </div>
                         <div class="fixed-table-container">
                             <div class="fixed-table-body">
