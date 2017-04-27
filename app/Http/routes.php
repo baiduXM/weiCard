@@ -33,13 +33,14 @@ Route::get('admin/logout', function () {
     Auth::guard('admin')->logout();
     return redirect()->to('/admin');
 });
-
+/* 名片预览展示 */
+Route::any('cardview', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
 /* 用户界面 */
 Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
-    Route::get('preview', ['as' => 'preview', 'uses' => 'Home\IndexController@preview']);
+    //Route::any('preview', ['as' => 'preview', 'uses' => 'Home\IndexController@preview']);
 
     /* 用户中心 */
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);

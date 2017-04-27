@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
@@ -46,9 +48,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
+        $user_id=$user->id;
+        $employee=Employee::where('user_id',$user_id)->first();
+        $employee_id=$employee->id;
+        $company_id=$employee->company_id;
         return view('home.user.index')->with([
-            'user' => $user,
+            'employee_id' => $employee_id,
+            'company_id' => $company_id,
         ]);
     }
 

@@ -125,8 +125,8 @@
                         <div class="m-face iconfont"></div>
                     </a>
                     <div class="m-infos-cont">
-                        <div class="m-name ui-elli"><span>王五</span></div>
-                        <div class="m-post ui-elli"><span>GG</span>&nbsp;&nbsp;<span>GG</span></div>
+                        <div class="m-name ui-elli"><span>{{ $employee->name }}</span></div>
+                        <div class="m-post ui-elli"><span>职位：</span>&nbsp;&nbsp;<span>{{ $employee->title }}</span></div>
                     </div>
                 </section>
                 <section class="m-visitors">
@@ -147,29 +147,36 @@
                                     </a> -->
                                     <div class="m-tel">
                                         <i class="iconfont i-tel"></i>
-                                        <span>15373426588</span>
+                                        <span>{{ $employee->mobile }}</span>
                                     </div>
                                 </li>
                                 <li>
-                                    <span class="m-mail">E-Mail:</span>
+                                    <span class="m-mail">公司:</span>
                                     <div class="cont">
-                                        <div class="ui-elli num">54357463@qq.com</div>
+                                        <div class="ui-elli num">{{$company->name}}</div>
                                     </div>
                                 </li>
                             </ul>
                         </section>
                         <section class="m-mod fixed">
                             <div class="m-signature">
-                                <h3>产品&服务</h3>
-                                <div class="m-cont">这家伙很懒，什么都没有留下</div>
+                                <h3>邮箱</h3>
+                                <div class="m-cont">{{$employee->email}}</div>
                             </div>
                         </section>
+                        <section class="m-mod fixed">
+                            <div class="m-signature">
+                                <h3>地址</h3>
+                                <div class="m-cont">{{ $company->address }}</div>
+                            </div>
+                        </section>
+                        {{--
                         <section class="m-mod fixed">
                             <div class="m-signature">
                                 <h3>我的签名</h3>
                                 <div class="m-cont">测试一下</div>
                             </div>
-                        </section>
+                        </section>--}}
                     </div>
                 </div>
             </div>
@@ -198,7 +205,8 @@
     <div class="theme-popcode shape-chrome" id="shape-chrome">
         <h2>名片二维码</h2>
         <div class="theme-popcode-cnt">
-            <div class="codebox"><img src="images/erweima.png"></div>
+
+            <div class="codebox"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $url }}"></div>
             <p class="text">扫描二维码，访问他的名片</p>
         </div>
         <div class="flex-center theme-popcode-close"><i class="iconfont">&#xe625</i></div>
