@@ -13,6 +13,24 @@
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 
+                        <div class="form-group {{ $errors->has('Employee.company_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="company_id"><span class="text-danger">*</span>
+                                公司</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="Employee[company_id]">
+                                    @foreach($companies as $company)
+                                        <option {{ old('Employee.company_id') == $company->id ? 'selected' : '' }}
+                                                value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if ($errors->has('Employee.company_id'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.company_id') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- number工号 -->
+
                         <div class="form-group {{ $errors->has('Employee.number') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="number"><span class="text-danger">*</span>
                                 工号</label>
@@ -99,8 +117,8 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() }}" type="button" role="button"
-                                   class="btn btn-danger btn-md">返回</a>
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                   role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </form>

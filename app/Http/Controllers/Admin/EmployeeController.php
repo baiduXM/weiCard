@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -61,8 +62,9 @@ class EmployeeController extends Controller
 
     public function create()
     {
+        $companies = Company::where('status', '=', '1')->get();
         return view('admin.employee.create')->with([
-//            'companies' => $companies,
+            'companies' => $companies,
             'common' => new Common(),
         ]);
     }
@@ -70,15 +72,18 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 
+        $data = $request->input('Employee');
         /* 验证 */
         $this->validate($request, [
-            'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.company_id' => 'required',
+            'Employee.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Employee.name' => 'required',
             'Employee.title' => 'max:30',
             'Employee.mobile' => 'numeric',
             'Employee.telephone' => 'numeric',
             'Employee.description' => 'max:255',
         ], [], [
+            'Employee.company_id' => '公司',
             'Employee.number' => '工号',
             'Employee.name' => '姓名',
             'Employee.title' => '职位',
@@ -88,7 +93,6 @@ class EmployeeController extends Controller
         ]);
 
         /* 获取字段类型 */
-        $data = $request->input('Employee');
         foreach ($data as $key => $value) {
             if ($value === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''

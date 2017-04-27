@@ -94,7 +94,8 @@
                             <label class="col-md-3 control-label" for="description">简介</label>
                             <div class="col-md-6">
                                 <textarea id="description" name="Employee[description]" class="form-control"
-                                          rows="3" placeholder="简介">{{ old('Employee.description') ? old('Employee.description') : $employee->description }}</textarea>
+                                          rows="3"
+                                          placeholder="简介">{{ old('Employee.description') ? old('Employee.description') : $employee->description }}</textarea>
                             </div>
                             @if ($errors->has('Employee.description'))
                                 <span class="help-block col-md-3">
@@ -107,8 +108,8 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() }}" type="button" role="button"
-                                   class="btn btn-danger btn-md">返回</a>
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                   role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
                     </form>
