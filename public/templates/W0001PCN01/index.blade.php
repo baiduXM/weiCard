@@ -66,12 +66,19 @@
       </div>
     </div>
 </div>
-<div class="information">
-  <p class="p1 animated fadeInUp go">{{ $employee->title }}</p>
-  <p class="p2 slow fadeInUp go">{{ $employee->mobile }}</p>
-  <p class="p3 slower fadeInUp go">{{$company->email}}</p>
-  <p class="p4 slowest fadeInUp go">{{ $company->address }}</p>
-</div>
+
+  <div class="information">
+    <p class="p1 animated fadeInUp go">{{ $employee->title }}</p>
+    <p class="p2 slow fadeInUp go">{{ $employee->mobile }}</p>
+    <p class="p3 slower fadeInUp go">{{$company->email}}</p>
+    <p class="p4 slowest fadeInUp go">{{ $company->address }}</p>
+  </div>
+  <div class="information inforend">
+    <div class="pp animated fadeInUp go">
+      <h2>公司简介</h2>
+      <span>{{ $company->description }}</span></div>
+
+  </div>
 <div class="footer">
   <a href="javascript:;" class="tel same animated fadeInLeftBig go">一键拨号</a>
   <a href="" class="name same slow fadeInLeftBig go">名片夹</a>
@@ -90,7 +97,7 @@
   <div class="close"><em class="slowest wobble go"></em></div>
 </div>
 <div class="call1 animated flip go">
-  <div class="img1"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $url }}"></div>
+  <div class="img1"><img src="{{ $qrcodeurl }}"></div>
   <h2>“扫一扫”我的名片二维码</h2>
   <div class="img2 slowest tada go"><img src="{{ asset('templates/'.$template_name.'/images/c2.png') }}"></div>
   <div class="close"><em></em></div>

@@ -27,7 +27,8 @@ class IndexController extends Controller
         $id=Input::get('id');
         $com=Input::get('com');
         $emp=Input::get('emp');
-        $url=$geturl.'?com='.$com.'%26%26emp='.$emp;
+        //$url=$geturl.'?com='.$com.'%26%26emp='.$emp;
+        $qrcodeurl='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$geturl.'?com='.$com.'%26%26emp='.$emp;
         $useable_type='company';
         if($emp!='')
         {
@@ -53,7 +54,7 @@ class IndexController extends Controller
             'template_name' => $template_name,
             'employee' => $employee,
             'company' => $company,
-            'url'=>$url
+            'qrcodeurl'=>$qrcodeurl
         ]);
     }
     public function errorview()
