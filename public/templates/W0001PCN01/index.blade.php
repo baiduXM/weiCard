@@ -97,7 +97,7 @@
   <div class="close"><em class="slowest wobble go"></em></div>
 </div>
 <div class="call1 animated flip go">
-  <div class="img1"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $url }}"></div>
+  <div class="img1"><img src="{{ $qrcodeurl }}"></div>
   <h2>“扫一扫”我的名片二维码</h2>
   <div class="img2 slowest tada go"><img src="{{ asset('templates/'.$template_name.'/images/c2.png') }}"></div>
   <div class="close"><em></em></div>
