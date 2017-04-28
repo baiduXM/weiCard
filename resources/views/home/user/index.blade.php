@@ -13,7 +13,7 @@
         <div class="myCard-content  main-cont">
             @if(Auth::user()->employee)
                 <div class="tab-pane card-a">
-                    <iframe src="{{ url('http://weicard.com/cardview?com='.$company_id.'&&emp='.$employee_id) }}" width="320" height="568" frameborder="0" scrolling="auto"></iframe>
+                    <iframe src="{{ url('/cardview?com='.$company_id.'&&emp='.$employee_id) }}" width="320" height="568" frameborder="0" scrolling="auto"></iframe>
                      {{--
                     <div class="card-cont">
                         <span>我的名片</span>

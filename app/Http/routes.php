@@ -33,6 +33,7 @@ Route::get('admin/logout', 'Admin\AuthController@logout');
 
 /* 名片预览展示 */
 Route::any('cardview', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
+Route::any('errorview', ['as' => 'errorview', 'uses' => 'Home\IndexController@errorview']);
 /* 用户界面 */
 Route::group(['middleware' => 'auth'], function () {
 
