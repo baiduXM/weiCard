@@ -57,11 +57,14 @@ html,body{ height: 100%;}
 .portrait h2{ font-size: 0.95rem; color: #ffffff; padding-top: 0.45rem; text-align: center; width: 100%; overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 .identification{ text-align: center; position: relative; margin-top: 0.5rem; height: 1.025rem; width: 100%;}
 .identification1, .identification2{ width: 100%; height: 100%; position: absolute; left: 0; top: 0; color: #ffffff; font-size:0.45rem; line-height: 1.025rem; }
-.identification1{ background: url(../images/yi.png) no-repeat 2.5rem 0; text-indent: 1.4rem; background-size: 1.025rem 1.025rem;}
+.identification1{ background: url(../images/yi.png) no-repeat 2.5rem 0; text-indent: 1.8rem; background-size: 1.025rem 1.025rem;}
 .identification2{ background: url(../images/wei.png) no-repeat 2.5rem 0; text-indent: 1.4rem;  background-size: 1.025rem 1.025rem; color: #ffffff; font-size: 0.45rem; line-height: 1.025rem;}
 .code{background: url(../images/code.png) no-repeat; background-size: 1.95rem 1.95rem; display: inline-block; width: 1.95rem; height: 1.95rem; margin-top: 1.6rem;}
-.information{ background: #fff; padding: 1rem 0.9rem; border-bottom:  1px solid #dfdfdf;}
+.information{ background: #fff; padding: 1rem 0.9rem; border-bottom:  1px solid #dfdfdf;margin-bottom: 0.6rem;}
 .information p{ text-indent: 1.65rem; color: #666666; font-size: 0.6rem; height: 1.75rem; line-height: 1.75rem;}
+.information .pp{color: #666666; font-size: 0.6rem;line-height: 1.5;}
+.information .pp h2{ font-size: 0.7rem; line-height: 1.5rem; color: #333;}
+.inforend{margin-bottom: 2.65rem;}
 .information .p1{background: url(../images/1.png) no-repeat 0 center; background-size: 0.875rem 0.875rem;}
 .information .p2{background: url(../images/2.png) no-repeat 0 center; background-size: 0.575rem 1.025rem;}
 .information .p3{background: url(../images/3.png) no-repeat 0 center; background-size: 0.825rem 0.575rem;}

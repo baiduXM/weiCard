@@ -66,12 +66,19 @@
       </div>
     </div>
 </div>
-<div class="information">
-  <p class="p1 animated fadeInUp go">{{ $employee->title }}</p>
-  <p class="p2 slow fadeInUp go">{{ $employee->mobile }}</p>
-  <p class="p3 slower fadeInUp go">{{$company->email}}</p>
-  <p class="p4 slowest fadeInUp go">{{ $company->address }}</p>
-</div>
+
+  <div class="information">
+    <p class="p1 animated fadeInUp go">{{ $employee->title }}</p>
+    <p class="p2 slow fadeInUp go">{{ $employee->mobile }}</p>
+    <p class="p3 slower fadeInUp go">{{$company->email}}</p>
+    <p class="p4 slowest fadeInUp go">{{ $company->address }}</p>
+  </div>
+  <div class="information inforend">
+    <div class="pp animated fadeInUp go">
+      <h2>公司简介</h2>
+      <span>{{ $company->description }}</span></div>
+
+  </div>
 <div class="footer">
   <a href="javascript:;" class="tel same animated fadeInLeftBig go">一键拨号</a>
   <a href="" class="name same slow fadeInLeftBig go">名片夹</a>
