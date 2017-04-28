@@ -22,7 +22,7 @@ class Employee extends Model
     ];
 
     /**
-     * 获取员工对应的用户
+     * 关系模型(一对一) - 用户
      */
     public function user()
     {
@@ -30,7 +30,7 @@ class Employee extends Model
     }
 
     /**
-     * 获取员工所属的公司
+     * 关系模型(多对一) - 公司
      */
     public function company()
     {
@@ -38,7 +38,7 @@ class Employee extends Model
     }
 
     /**
-     * 获取员工所属的部门
+     * 关系模型(多对一) - 部门
      */
     public function department()
     {
@@ -46,7 +46,15 @@ class Employee extends Model
     }
 
     /**
-     * 关系模型 - 模板
+     * 关系模型(一对多,多态) - 关注者
+     */
+    public function followers()
+    {
+        return $this->morphMany('App\Models\Cardcase', 'follower');
+    }
+
+    /**
+     * 关系模型(多对多,多态) - 模板
      */
     public function templates()
     {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 
-class GroupController extends Controller
+class TagController extends Controller
 {
     public function index()
     {

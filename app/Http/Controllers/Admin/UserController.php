@@ -286,11 +286,11 @@ class UserController extends Controller
     public function unbinding($id)
     {
         $user = new User();
-        $res = $user->unbinding($id);
-        if ($res % 100 == 0) {
-            return redirect('admin/user')->with('success', config('global.msg.' . $res));
+        $err_code = $user->unbinding($id);
+        if ($err_code % 100 == 0) {
+            return redirect('admin/user')->with('success', config('global.msg.' . $err_code));
         } else {
-            return redirect()->back()->with('error', config('global.msg.' . $res));
+            return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
     }
 

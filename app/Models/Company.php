@@ -28,7 +28,7 @@ class Company extends Model
     ];
 
     /**
-     * 关系模型 - 用户
+     * 关系模型(一对一) - 用户
      */
     public function user()
     {
@@ -36,7 +36,7 @@ class Company extends Model
     }
 
     /**
-     * 关系模型 - 管理员
+     * 关系模型(多对一) - 管理员
      */
     public function manager()
     {
@@ -44,7 +44,7 @@ class Company extends Model
     }
 
     /**
-     * 关系模型 - 员工
+     * 关系模型(一对多) - 员工
      */
     public function employees()
     {
@@ -52,7 +52,7 @@ class Company extends Model
     }
 
     /**
-     * 关系模型 - 部门
+     * 关系模型(一对多) - 部门
      */
     public function departments()
     {
@@ -60,7 +60,7 @@ class Company extends Model
     }
 
     /**
-     * 关系模型 - 模板
+     * 关系模型(多对多,多态) - 模板
      */
     public function templates()
     {

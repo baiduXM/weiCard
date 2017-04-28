@@ -21,6 +21,12 @@
         <li class="{{ Request::path() == 'admin/employee' || Request::is('admin/employee/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/employee') }}"><span class="glyphicon glyphicon-stats"></span>员工管理</a>
         </li>
+        <li class="{{ Request::path() == 'admin/cardcase' || Request::is('admin/cardcase/*')  ? 'active' : '' }}">
+            <a href="{{ url('admin/cardcase') }}"><span class="glyphicon glyphicon-stats"></span>名片夹管理</a>
+        </li>
+        <li class="{{ Request::path() == 'admin/tag' || Request::is('admin/tag/*')  ? 'active' : '' }}">
+            <a href="{{ url('admin/tag') }}"><span class="glyphicon glyphicon-stats"></span>标签管理</a>
+        </li>
         <li class="{{ Request::path() == 'admin/template' || Request::is('admin/template/*')  ? 'active' : '' }}">
             <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
         </li>

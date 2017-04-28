@@ -18,7 +18,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * 关系模型 - 公司
+     * 关系模型(一对一) - 公司
      */
     public function company()
     {
@@ -26,7 +26,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 关系模型 - 员工
+     * 关系模型(一对一) - 员工
      */
     public function employee()
     {
@@ -34,12 +34,37 @@ class User extends Authenticatable
     }
 
     /**
-     * 关系模型 - 模板
+     * 关系模型(一对多) - 名片夹
+     */
+    public function cardcases()
+    {
+        return $this->hasMany('App\Models\Cardcase');
+    }
+
+    /**
+     * 关系模型(一对多) - 标签
+     */
+    public function tags()
+    {
+        return $this->hasMany('App\Models\Tag');
+    }
+
+    /**
+     * 关系模型(一对多,多态) - 关注者
+     */
+    public function followers()
+    {
+        return $this->morphMany('App\Models\Cardcase', 'follower');
+    }
+
+    /**
+     * 关系模型(多对多,多态) - 模板
      */
     public function templates()
     {
         return $this->morphToMany('App\Models\Template', 'useable');
     }
+
 
     /**
      * 用户绑定员工

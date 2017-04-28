@@ -37,10 +37,11 @@ $(function () {
     });
     /* 操作 - 删除 */
     $('.operate-delete').click(function () {
-        $('#confirmModal').on('show.bs.modal', function (event) {
+        $('.bs3').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
             var _url = relatedTarget.data('url');
-            modal.find('form').attr('action', _url);
+            var _modal = $(this);
+            _modal.find('form').attr('action', _url);
         });
     });
 

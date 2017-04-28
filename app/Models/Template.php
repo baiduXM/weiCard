@@ -13,7 +13,7 @@ class Template extends Model
     ];
 
     /**
-     * 关系模型 - 用户
+     * 关系模型(多对多，多态) - 用户
      */
     public function users()
     {
@@ -21,7 +21,7 @@ class Template extends Model
     }
 
     /**
-     * 关系模型 - 公司
+     * 关系模型(多对多，多态) - 公司
      */
     public function companies()
     {
@@ -29,7 +29,7 @@ class Template extends Model
     }
 
     /**
-     * 关系模型 - 员工
+     * 关系模型(多对多，多态) - 员工
      */
     public function employees()
     {

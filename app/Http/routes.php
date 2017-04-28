@@ -20,7 +20,7 @@ Route::get('/', function () {
     return redirect()->to('user');
 });
 
-/* 登录 */
+/* 前台登录 */
 Route::auth();
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
@@ -29,10 +29,8 @@ Route::get('admin/login', 'Admin\AuthController@getLogin');
 Route::post('admin/login', 'Admin\AuthController@postLogin');
 Route::get('admin/register', 'Admin\AuthController@getRegister');
 Route::post('admin/register', 'Admin\AuthController@postRegister');
-Route::get('admin/logout', function () {
-    Auth::guard('admin')->logout();
-    return redirect()->to('/admin');
-});
+Route::get('admin/logout', 'Admin\AuthController@logout');
+
 /* 名片预览展示 */
 Route::any('cardview', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
 /* 用户界面 */
@@ -46,31 +44,29 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
     Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
     Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
-    Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+    Route::get('user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+    Route::post('user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
     /* 我的公司 */
     Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
     Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
-
     Route::group(['prefix' => 'company'], function () {
         /* 我的公司->员工 */
         Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
         Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
         Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@destroy']);
-
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
     });
 
-
-    /* 通讯录 */
-    Route::group(['prefix' => 'contact'], function () {
-        /* 通讯录->分组 */
-        Route::resource('group', 'Home\GroupController');
+    /* 名片夹 */
+    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
+    Route::group(['prefix' => 'cardcase'], function () {
+        /* 名片夹->标签 */
+        Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
     });
-    Route::resource('contact', 'Home\ContactController');
 
     /* 模板中心 */
     Route::resource('template', 'Home\TemplateController');
@@ -92,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 /* =====后台管理界面===== */
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
@@ -128,6 +125,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 模板管理 */
     Route::resource('template', 'Admin\TemplateController');
+
+    /* 名片夹管理 */
+    Route::resource('cardcase', 'Admin\CardcaseController');
+
+    /* 标签管理 */
+    Route::resource('tag', 'Admin\TagController');
 
     /* 客服管理 */
     Route::group(['prefix' => 'manager'], function () {

@@ -113,28 +113,16 @@ class EmployeeController extends CompanyController
     public function destroy(Request $request, $id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-
-        if ($request->ajax()) {
-            $err_code = 400;
-            if ($employee->user_id) {
-                $err_code = 401;
-                $result = array('err' => $err_code, 'msg' => config('global.msg.' . $err_code), 'data' => array());
-
-            }
-            if ($employee->delete()) {
-                $result = array('err' => $err_code, 'msg' => config('global.msg.' . $err_code), 'data' => array());
-            }
-            return $result;
+        if ($employee->user_id) {
+            $err_code = 401; // 删除失败 - 员工已绑定用户
+        }else{
+            $employee->delete();
+            $err_code = 400; // 删除成功
         }
-
-        if ($employee->user_id == $employee->company->user_id) {
-            $employee->company->user_id = null;
-            $employee->company->save();
-        }
-        if ($employee->delete()) {
-            return redirect('admin/employee')->with('success', '删除成功 - ' . $employee->id);
+        if ($err_code % 100 == 0) {
+            return redirect('company/employee')->with('success', config('global.msg.' . $err_code));
         } else {
-            return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
+            return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
     }
 

@@ -2,8 +2,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\Home\Contact;
-class ContactController extends Controller
+class CardcaseController extends Controller
 {
 
     public function index()

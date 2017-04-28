@@ -50,14 +50,18 @@ class UserController extends Controller
     {
         /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
-        $user_id=$user->id;
-        $employee=Employee::where('user_id',$user_id)->first();
-        $employee_id=$employee->id;
-        $company_id=$employee->company_id;
+        $user_id = $user->id;
+        $employee = Employee::where('user_id', $user_id)->first();
+        $employee_id = $employee->id;
+        $company_id = $employee->company_id;
         return view('home.user.index')->with([
             'employee_id' => $employee_id,
             'company_id' => $company_id,
         ]);
+//        $user = User::find(Auth::id());
+//        return view('home.user.index')->with([
+//            'user' => $user,
+//        ]);
     }
 
     /**

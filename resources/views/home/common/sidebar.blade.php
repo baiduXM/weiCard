@@ -26,21 +26,21 @@
             </ul>
         </div><!--我的名片-->
         <div class="tree_box nav ">
-            <h3 {{ Request::path() == 'contact' || Request::is('contact/*') ? 'class=h3-active' : '' }}>
-                <a href="javascript:"><em class="iconFont">&#xe644;</em>通讯录
+            <h3 {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'class=h3-active' : '' }}>
+                <a href="javascript:"><em class="iconFont">&#xe644;</em>名片夹
                     {{--{{ Request::path() }}--}}
-                    @if(Request::path() == 'contact' || Request::is('contact/*'))
+                    @if(Request::path() == 'cardcase' || Request::is('cardcase/*'))
                         <i class="nav-j"></i>
                     @else
                         <i></i>
                     @endif
                 </a>
             </h3>
-            <ul class="tree_one" {{ Request::path() == 'contact' || Request::is('contact/*') ? 'style=display:block;' : '' }}>
-                <li {{ Request::path() == 'contact' ? 'class=active' : '' }}>
-                    <a href="{{ url('contact') }}">我的通讯录</a></li>
-                <li {{ Request::path() == 'contact/group' ? 'class=active' : '' }}>
-                    <a href="{{ url('contact/group') }}">设置分组</a></li>
+            <ul class="tree_one" {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'style=display:block;' : '' }}>
+                <li {{ Request::path() == 'cardcase' ? 'class=active' : '' }}>
+                    <a href="{{ url('cardcase') }}">我的名片夹</a></li>
+                <li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>
+                    <a href="{{ url('cardcase/tag') }}">设置标签</a></li>
             </ul>
         </div><!--通讯录-->
         <div class="tree_box nav">

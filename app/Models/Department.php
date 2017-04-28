@@ -19,7 +19,7 @@ class Department extends Model
     );
 
     /**
-     * 关系模型 - 公司
+     * 关系模型(多对一) - 公司
      */
     public function company()
     {
@@ -27,7 +27,7 @@ class Department extends Model
     }
 
     /**
-     * 关系模型 - 员工
+     * 关系模型(一对多) - 员工
      */
     public function employees()
     {
