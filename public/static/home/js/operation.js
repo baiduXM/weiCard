@@ -45,6 +45,19 @@ $(function () {
         });
     });
 
+    /* 操作 - 收藏/关注 */
+    $(".operate-follow").click(function () {
+        var _url = $(this).data("url");
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.post(_url, function (json) {
+            console.log('post:' + json);
+        });
+    });
+
     /* 提示 - 自动隐藏 */
     $('.hintModal').on('show.bs.modal', function (event) {
         var _modal = $(this);

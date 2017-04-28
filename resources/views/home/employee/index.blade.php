@@ -69,7 +69,9 @@
                             <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"
                                data-url="{{ url('company/employee/'.$item->id) }}"><i
                                         class="iconFont">&#xe613;</i></a>
-                            <a href="" class="w-icon-margin"><i class="iconFont">&#xe634;</i></a>
+                            <a href="javascript:void(0);" class="w-icon-margin operate-follow"
+                               data-url="{{ url('cardcase/'.$item->id.'/Employee') }}">
+                                <i class="iconFont">&#xe634;</i></a>
                             <a href=""><i class="iconFont">&#xe632;</i></a>
                             <a href=""><i class="iconFont">&#xe921;</i></a>
                             <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"

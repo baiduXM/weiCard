@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cardcase extends Model
 {
+
     protected $guarded = [
     ];
 
@@ -32,4 +33,25 @@ class Cardcase extends Model
     {
         return $this->morphTo();
     }
+
+
+    /**
+     * 获取关注类型
+     *
+     * @param null $index       模型名
+     * @return array|mixed
+     */
+    public function getFollowerType($index = null)
+    {
+        $array = [
+            'User' => '用户',
+            'Employee' => '同事',
+        ];
+        if ($index !== null) {
+            return array_key_exists($index, $array) ? $array[$index] : reset($array);
+        }
+        return $array;
+    }
+
+
 }
