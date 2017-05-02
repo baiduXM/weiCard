@@ -33,8 +33,9 @@ $(function () {
         var _url = $(this).data("url");
         $.get(_url, function (data) {
             showInformation(data, 'info-', 'name');
-        })
+        });
     });
+
     /* 操作 - 删除 */
     $('.operate-delete').click(function () {
         $('.bs3').on('show.bs.modal', function (event) {
@@ -54,9 +55,19 @@ $(function () {
             }
         });
         $.post(_url, function (json) {
-            console.log('post:' + json);
+            $('.hintModal').modal('show');
+            $('.hintModal .modal-body').text(json.msg);
         });
     });
+
+    /* 操作 - 查看 */
+    $(".operate-edit").click(function () {
+        var _url = $(this).data("url");
+        $.get(_url, function (data) {
+            showInformation(data, 'info-', 'name');
+        });
+    });
+
 
     /* 提示 - 自动隐藏 */
     $('.hintModal').on('show.bs.modal', function (event) {
@@ -69,7 +80,9 @@ $(function () {
     /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function (event) {
         var _url = $('.hintModal .after-operate').text();
-        window.location = _url;
+        // if (_url) {
+            window.location = _url;
+        // }
     });
 
     /**

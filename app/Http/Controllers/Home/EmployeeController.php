@@ -29,7 +29,10 @@ class EmployeeController extends CompanyController
     public function index()
     {
         if (Auth::user()->employee) {
-            $employees = Employee::where('company_id', '=', Auth::user()->employee->company->id)->paginate();
+            $employees = Employee::with(['followers' => function ($query) {
+                $query->where('user_id', '=', Auth::id());
+            }])->where('company_id', '=', Auth::user()->employee->company_id)
+                ->paginate();
             return view('home.employee.index')->with([
                 'employees' => $employees,
             ]);
@@ -115,7 +118,7 @@ class EmployeeController extends CompanyController
         $employee = Employee::with('user', 'company')->find($id);
         if ($employee->user_id) {
             $err_code = 401; // 删除失败 - 员工已绑定用户
-        }else{
+        } else {
             $employee->delete();
             $err_code = 400; // 删除成功
         }

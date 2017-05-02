@@ -11,6 +11,13 @@ class Cardcase extends Model
     ];
 
     /**
+     * 表明模型是否应该被打上时间戳
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * 关系模型(一对一) - 用户
      */
     public function user()
@@ -27,7 +34,7 @@ class Cardcase extends Model
     }
 
     /**
-     * 关系模型(多对一,多态) - 关注者（user/employee）
+     * 关系模型(多对一,多态) - 关注者类型（App\Models\User、App\Models\Employee）
      */
     public function follower()
     {
@@ -44,8 +51,8 @@ class Cardcase extends Model
     public function getFollowerType($index = null)
     {
         $array = [
-            'User' => '用户',
-            'Employee' => '同事',
+            'App\Models\User' => '用户',
+            'App\Models\Employee' => '同事',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : reset($array);

@@ -17,7 +17,7 @@
                     <li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>
                     <li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>
                     <li class="b-btn-bg"><a href="javascript:">导入excel</a></li>
-                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target=".bs8"><i
+                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                 @endif
@@ -66,15 +66,21 @@
                         <td class="">{{ $item->title }}</td>
                         <td class="b-td-width b-td-hide">{{ $item->mobile }}</td>
                         <td class="b-td-icon b-td-hide w-icon">
-                            <a href="" data-toggle="modal" data-target=".bs2" class="operate-show"
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#modal-employee-show" class="operate-show"
                                data-url="{{ url('company/employee/'.$item->id) }}"><i
                                         class="iconFont">&#xe613;</i></a>
                             <a href="javascript:void(0);" class="w-icon-margin operate-follow"
-                               data-url="{{ url('cardcase/'.$item->id.'/Employee') }}">
-                                <i class="iconFont">&#xe634;</i></a>
-                            <a href=""><i class="iconFont">&#xe632;</i></a>
-                            <a href=""><i class="iconFont">&#xe921;</i></a>
-                            <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"
+                               data-url="{{ url('cardcase/e-'.$item->id) }}">
+                                @if(count($item->followers)<1)
+                                    <i class="iconFont" title="收藏">&#xe634;</i>
+                                @else
+                                    <i class="iconFont" title="取消收藏">&#xe601;</i>
+                                @endif
+                            </a>
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#modal-employee-edit" class="operate-edit"><i
+                                        class="iconFont">&#xe632;</i></a>
+                            <a href="javascript:void(0);" class="operate-share"><i class="iconFont">&#xe921;</i></a>
+                            <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3" class="operate-delete"
                                data-url="{{ url('company/employee/'.$item->id) }}">
                                 <i class="iconFont">&#xe6d3;</i></a>
                         </td>
@@ -82,7 +88,8 @@
                         </td>
                     </tr>
                     <tr class="td-icon-hide none">
-                        <td id="look"><a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                        <td id="look">
+                            <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
                                         class="iconFont">&#xe613;</i></a>
                         </td>
                         <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
@@ -100,8 +107,8 @@
     </div>
 @stop
 @section('modal-extend')
-    <!-- 添加部门员工modal -->
-    <div class="modal fade bs8" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <!-- 员工 - 添加modal -->
+    <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
                 <div class="modal-header">
@@ -156,8 +163,8 @@
             </div>
         </div>
     </div>
-    <!-- 通讯录-查看modal -->
-    <div class="modal fade bs2" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <!-- 员工 - 查看modal -->
+    <div class="modal fade bs2" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2">
                 <div class="modal-header">
@@ -182,10 +189,62 @@
                         <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="submit" value="添加">
-                    <input type="reset" data-dismiss="modal" value="取消">
+            </div>
+        </div>
+    </div>
+    <!-- 员工 - 编辑modal -->
+    <div class="modal fade" id="modal-employee-edit" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal1 modal2 modal8">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">添加部门员工</h4>
                 </div>
+                <form action="{{ url('company/employee') }}" method="post" id="employee" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="modal-address">
+                            <p>
+                                <span>工号 : </span>
+                                <input type="text" name="Employee[number]" placeholder=""
+                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
+                                <span class="error-number hidden" style="color: red;">123</span>
+                            </p>
+                            <p>
+                                <span>姓名 : </span>
+                                <input type="text" name="Employee[name]" placeholder=""
+                                       value="{{ old('Employee.name') ? old('Employee.name') : '' }}">
+                                <span class="error-name" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>照片 : </span>
+                                <input type="file" name="Employee[avatar]" placeholder="公司名称">
+                                <span class="error-avatar" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>职位 : </span>
+                                <input type="text" name="Employee[title]" placeholder=""
+                                       value="{{ old('Employee.title') ? old('Employee.title') : '' }}">
+                            </p>
+                            <p>
+                                <span>手机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder=""
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                            </p>
+                            <p class="m8">
+                                <span>简介 : </span>
+                                <textarea
+                                        name="Employee[description]">{{ old('Employee.description') ? old('Employee.description') : '' }}</textarea>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary operate-add">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

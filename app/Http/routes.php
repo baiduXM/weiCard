@@ -64,7 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-    Route::post('cardcase/{id}/{type}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
+    Route::post('cardcase/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
+//    Route::get('cardcase/tag', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::group(['prefix' => 'cardcase'], function () {
         /* 名片夹->标签 */
         Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
