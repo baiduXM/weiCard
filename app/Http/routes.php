@@ -127,7 +127,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 模板管理 */
     Route::resource('template', 'Admin\TemplateController');
-
+    Route::group(['prefix' => 'template'], function () {
+        Route::any('uploadtem', ['as' => 'admin.template.uploadtem', 'uses' => 'Admin\TemplateController@uploadtem']);
+    });
     /* 名片夹管理 */
     Route::resource('cardcase', 'Admin\CardcaseController');
 
