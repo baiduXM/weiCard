@@ -17,7 +17,7 @@ class EmployeeController extends CompanyController
         // 我的公司 > 我的同事
         Breadcrumbs::register('company.employee', function ($breadcrumbs) {
             $breadcrumbs->parent('company');
-            $breadcrumbs->push('我的同事', route('employee.index'));
+            $breadcrumbs->push('我的同事', route('company.employee.index'));
         });
     }
 
@@ -29,7 +29,10 @@ class EmployeeController extends CompanyController
     public function index()
     {
         if (Auth::user()->employee) {
-            $employees = Employee::where('company_id', '=', Auth::user()->employee->company->id)->paginate();
+            $employees = Employee::with(['followers' => function ($query) {
+                $query->where('user_id', '=', Auth::id());
+            }])->where('company_id', '=', Auth::user()->employee->company_id)
+                ->paginate();
             return view('home.employee.index')->with([
                 'employees' => $employees,
             ]);
@@ -97,6 +100,10 @@ class EmployeeController extends CompanyController
         return $employee;
     }
 
+//    public function update($id){
+//
+//    }
+
     /*
      * 删除限制
      *
@@ -115,7 +122,7 @@ class EmployeeController extends CompanyController
         $employee = Employee::with('user', 'company')->find($id);
         if ($employee->user_id) {
             $err_code = 401; // 删除失败 - 员工已绑定用户
-        }else{
+        } else {
             $employee->delete();
             $err_code = 400; // 删除成功
         }

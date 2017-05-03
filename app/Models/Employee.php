@@ -46,7 +46,7 @@ class Employee extends Model
     }
 
     /**
-     * 关系模型(一对多,多态) - 关注者
+     * 关系模型(一对多,多态) - 被谁关注
      */
     public function followers()
     {

@@ -45,8 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
     Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
     Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
-    Route::get('user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
-    Route::post('user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+    Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
     /* 我的公司 */
@@ -54,17 +53,21 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
     Route::group(['prefix' => 'company'], function () {
         /* 我的公司->员工 */
-        Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
-        Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
-        Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
-        Route::delete('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@destroy']);
+        Route::resource('employee', 'Home\EmployeeController');
+
+//        Route::get('employee', ['as' => 'employee.index', 'uses' => 'Home\EmployeeController@index']);
+//        Route::post('employee', ['as' => 'employee.store', 'uses' => 'Home\EmployeeController@store']);
+//        Route::get('employee/{id}', ['as' => 'employee.show', 'uses' => 'Home\EmployeeController@show']);
+//        Route::get('employee/{id}/edit', ['as' => 'employee.edit', 'uses' => 'Home\EmployeeController@edit']);
+//        Route::put('employee/{id}', ['as' => 'employee.update', 'uses' => 'Home\EmployeeController@update']);
+//        Route::delete('employee/{id}', ['as' => 'employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'department.index', 'uses' => 'Home\DepartmentController@index']);
     });
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-    Route::post('cardcase/{id}/{type}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
+    Route::post('cardcase/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::group(['prefix' => 'cardcase'], function () {
         /* 名片夹->标签 */
         Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
