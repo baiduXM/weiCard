@@ -117,7 +117,7 @@
                     </button>
                     <h4 class="modal-title">添加部门员工</h4>
                 </div>
-                <form action="{{ url('company/employee') }}" method="post" id="employee" enctype="multipart/form-data">
+                <form action="{{ url('company/employee') }}" method="post" id="employee-create" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
@@ -164,7 +164,7 @@
         </div>
     </div>
     <!-- 员工 - 查看modal -->
-    <div class="modal fade bs2" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2">
                 <div class="modal-header">
@@ -184,6 +184,10 @@
                         <p><span>手机 : </span><input type="text" name="info-mobile" value="" readonly></p>
                         <p><span>座机 : </span><input type="text" name="info-telephone" value="" readonly></p>
                         <p><span>邮箱 : </span><input type="text" name="info-email" value="" readonly></p>
+                        <p><span>简介 : </span>
+                            <textarea
+                                    name="info-description" readonly></textarea>
+                        </p>
                     </div>
                     <div class="modal-address-img">
                         <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
@@ -202,15 +206,16 @@
                     </button>
                     <h4 class="modal-title">添加部门员工</h4>
                 </div>
-                <form action="{{ url('company/employee') }}" method="post" id="employee" enctype="multipart/form-data">
+                <form action="{{ url('company/employee') }}" method="post" id="employee-edit" enctype="multipart/form-data">
+                    {{ method_field('put') }}
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
                                 <span>工号 : </span>
                                 <input type="text" name="Employee[number]" placeholder=""
-                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
-                                <span class="error-number hidden" style="color: red;">123</span>
+                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}" readonly>
+                                <span class="error-number hidden" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>姓名 : </span>
@@ -224,6 +229,11 @@
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
                             <p>
+                                <span>部门 : </span>
+                                <input type="text" name="Employee[title]" placeholder=""
+                                       value="{{ old('Employee.title') ? old('Employee.title') : '' }}">
+                            </p>
+                            <p>
                                 <span>职位 : </span>
                                 <input type="text" name="Employee[title]" placeholder=""
                                        value="{{ old('Employee.title') ? old('Employee.title') : '' }}">
@@ -233,11 +243,24 @@
                                 <input type="text" name="Employee[mobile]" placeholder=""
                                        value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
                             </p>
+                            <p>
+                                <span>座机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder=""
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                            </p>
+                            <p>
+                                <span>邮箱 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder=""
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                            </p>
                             <p class="m8">
                                 <span>简介 : </span>
                                 <textarea
                                         name="Employee[description]">{{ old('Employee.description') ? old('Employee.description') : '' }}</textarea>
                             </p>
+                        </div>
+                        <div class="modal-address-img">
+                            <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
                         </div>
                     </div>
                     <div class="modal-footer">

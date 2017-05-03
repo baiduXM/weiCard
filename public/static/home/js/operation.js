@@ -4,8 +4,8 @@
 $(function () {
     /* 操作 - 添加 - 员工 */
     $('#employee .operate-add').on('click', function () {
-        var _url = $('#employee').attr('action');
-        var _formData = new FormData($('#employee')[0]);
+        var _url = $('#employee-create').attr('action');
+        var _formData = new FormData($('#employee-create')[0]);
         $("[class^='error-']").addClass('hidden');
         $.ajax({
             url: _url,
@@ -32,7 +32,7 @@ $(function () {
     $(".operate-show").click(function () {
         var _url = $(this).data("url");
         $.get(_url, function (data) {
-            showInformation(data, 'info-', 'name');
+            showInformation(data, 'name', 'info-');
         });
     });
 
@@ -49,7 +49,7 @@ $(function () {
     /* 操作 - 收藏/关注 */
     $(".operate-follow").click(function () {
         var _url = $(this).data("url");
-        $.ajaxSetup({
+        $.ajaxSetup({ // 无form表单时
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
@@ -64,7 +64,7 @@ $(function () {
     $(".operate-edit").click(function () {
         var _url = $(this).data("url");
         $.get(_url, function (data) {
-            showInformation(data, 'info-', 'name');
+            showInformation(data, 'name', 'info-');
         });
     });
 
@@ -80,9 +80,7 @@ $(function () {
     /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function (event) {
         var _url = $('.hintModal .after-operate').text();
-        // if (_url) {
-            window.location = _url;
-        // }
+        window.location = _url; // 为空，刷新当前页
     });
 
     /**
@@ -102,20 +100,23 @@ $(function () {
      * 显示信息
      *
      * @param data      数据，必填
-     * @param prefix    前缀，默认空
      * @param label     标签名，默认class
+     * @param prefix    前缀，默认空
      */
-    function showInformation(data, prefix, label) {
+    function showInformation(data, label, prefix) {
         var selector = '';
-        selector = 'class=';
+        if (label) {
+            selector = label + '=';
+        } else {
+            selector = 'class=';
+        }
         if (prefix) {
-            selector = 'class=' + prefix;
-            if (label) {
-                selector = label + '=' + prefix;
-            }
+            selector = selector + prefix;
         }
         $.each(data, function (i, n) {
-            if (typeof n == 'object' && n != null) {
+            console.log(typeof $('[' + selector + i + ']'));
+            if (typeof n == 'object' && n != null) { // 判断是否是关系模型对象
+                // 判断选择器类型
                 $('[' + selector + i + ']').val(n['name'])
             } else {
                 $('[' + selector + i + ']').val(n)

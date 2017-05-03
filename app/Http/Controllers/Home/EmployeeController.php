@@ -17,7 +17,7 @@ class EmployeeController extends CompanyController
         // 我的公司 > 我的同事
         Breadcrumbs::register('company.employee', function ($breadcrumbs) {
             $breadcrumbs->parent('company');
-            $breadcrumbs->push('我的同事', route('employee.index'));
+            $breadcrumbs->push('我的同事', route('company.employee.index'));
         });
     }
 
@@ -99,6 +99,10 @@ class EmployeeController extends CompanyController
         $employee = Employee::with('company', 'department', 'user')->find($id);
         return $employee;
     }
+
+//    public function update($id){
+//
+//    }
 
     /*
      * 删除限制
