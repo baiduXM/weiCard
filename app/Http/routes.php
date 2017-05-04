@@ -144,9 +144,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('template', 'Admin\TemplateController');
     Route::group(['prefix' => 'template'], function () {
 
+        Route::any('uploadtem', ['as' => 'admin.template.uploadtem', 'uses' => 'Admin\TemplateController@uploadtem']);
         /* 标签管理 */
         Route::resource('tag', 'Admin\TagController');
     });
+
 
     /* 客服管理 */
     Route::resource('manager', 'Admin\ManagerController');

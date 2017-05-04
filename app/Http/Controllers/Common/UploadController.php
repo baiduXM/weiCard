@@ -45,7 +45,35 @@ class UploadController extends BaseController
         }
 
     }
+    public function saveFile($file, $path_type = 'user', $name = null)
+    {
+        $targetPath = $this->getPath($path_type, $name);
+        //dd($targetPath);//路径‘templates/1111’
+        if ($targetPath) {
+            $this->hasFolder($targetPath);
+        }
+        //dd($file);
+        $fileName = $this->getFileName($file);
+        //dd($fileName);file1293494.zip
+        if ($targetPath && $fileName) {
+            //dd(44444);
+            $file->move($targetPath,$fileName);
+            //Image::make($file)->save($targetPath . '/' . $fileName);
+            $zip = new \ZipArchive();
+            if($zip->open($targetPath . '/' . $fileName) === TRUE)
+            {
+                $zip->extractTo($targetPath . './');
+                $zip->close();
+                @unlink($targetPath . '/' . $fileName);
+            }
+            //dd(5555);
+            return $targetPath;
+        } else {
+            //dd(22222);
+            return false;
+        }
 
+    }
     /**
      * 获取文件夹路径
      *
@@ -87,14 +115,16 @@ class UploadController extends BaseController
     public function getFileName($file)
     {
         if (is_file($file)) {
+            //dd(6666);
             $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
-            $fileArr = [];
+            $fileArr = ['zip'];
             $videoArr = [];
-            $extension = strtolower($file->getClientOriginalExtension()); // 获取文件扩展名，转换为小写
+            $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
             if (in_array($extension, $imageArr)) {
                 $fileName = 'img' . time() . '.' . $extension;
             } elseif (in_array($extension, $fileArr)) {
                 $fileName = 'file' . time() . '.' . $extension;
+                //dd($fileName);
             } elseif (in_array($extension, $videoArr)) {
                 $fileName = 'video' . time() . '.' . $extension;
             } else {
