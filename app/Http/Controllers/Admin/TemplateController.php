@@ -39,21 +39,25 @@ class TemplateController extends Controller
         //dd(111);
         /* 获取字段 */
         $data=$request->input('Template');
-        dd($data);
+        //dd($request->file('Template.file'));
         foreach ($data as $key => $value) {
             if ($value === '') {
                 $data[$key] = null;
             }
         }
-
         /* 获取文件 */
         if($request->hasFile('Template.file')){
             $uploadController = new UploadController();
-            $data['file']=$uploadController->saveImg($request->file('Template.file'),$this->path_type,$data['name']);
+            $data['file']=$uploadController->saveFile($request->file('Template.file'),$this->path_type,$data['name']);
+            //dd(1111);
         }
-
+        //$template=Template::where('name',$data['name'])->get();
+        if(Template::create($data)){
+            return redirect('admin/template')->with('success', '添加成功');
+        }else{
+            return redirect()->back()->with('error', '添加失败');
+        }
     }
-
 
     // TODO
     public function index()
