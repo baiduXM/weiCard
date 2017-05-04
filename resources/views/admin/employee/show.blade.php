@@ -16,18 +16,6 @@
                                 <td class="col-md-9">{{ $employee->id }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司</th>
-                                <td>{{ isset($employee->company) ? $employee->company->name : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">部门</th>
-                                <td>{{ isset($employee->department) ? $employee->department->name : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">关联用户</th>
-                                <td>{{ isset($employee->user) ? $employee->user->name : '' }}</td>
-                            </tr>
-                            <tr>
                                 <th class="text-right">工号</th>
                                 <td>{{ $employee->number }}</td>
                             </tr>
@@ -36,20 +24,24 @@
                                 <td>{{ $employee->name }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">职位</th>
-                                <td>{{ $employee->title }}</td>
+                                <th class="text-right">公司</th>
+                                <td>{{ isset($employee->company) ? $employee->company->name : '' }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">手机</th>
-                                <td>{{ $employee->mobile }}</td>
+                                <th class="text-right">部门</th>
+                                <td>{{ isset($employee->department) ? $employee->department->name : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">职位</th>
+                                <td>{{ isset($employee->position) ? $employee->department->name : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">绑定用户</th>
+                                <td>{{ isset($employee->user) ? $employee->user->name : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">座机</th>
                                 <td>{{ $employee->telephone }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">简介</th>
-                                <td>{{ $employee->description }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>
@@ -58,6 +50,10 @@
                             <tr>
                                 <th class="text-right">更新时间</th>
                                 <td>{{ $employee->updated_at }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">删除时间</th>
+                                <td>{{ $employee->deleted_at }}</td>
                             </tr>
                         </table>
                         <div class="form-group">

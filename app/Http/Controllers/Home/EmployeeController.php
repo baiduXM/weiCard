@@ -54,6 +54,7 @@ class EmployeeController extends CompanyController
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.name' => 'required',
             'Employee.title' => 'max:30',
+//            'Employee.position' => 'max:30',
             'Employee.mobile' => 'numeric',
             'Employee.telephone' => 'numeric',
             'Employee.description' => 'max:255',
@@ -61,6 +62,7 @@ class EmployeeController extends CompanyController
             'Employee.number' => '工号',
             'Employee.name' => '姓名',
             'Employee.title' => '职位',
+//            'Employee.position' => '职位',
             'Employee.mobile' => '手机',
             'Employee.telephone' => '座机',
             'Employee.description' => '个人简介',

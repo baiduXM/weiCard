@@ -17,11 +17,20 @@ class Tag extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+
     /**
-     * 关系模型(多对多) - 名片夹
+     * 关系模型(多对多，多态) - 名片夹
      */
-    public function cardcase()
+    public function cardcases()
     {
-        return $this->belongsToMany('App\Models\Cardcase', 'cardcase_tag');
+        return $this->morphedByMany('App\Models\Cardcase', 'taggable');
+    }
+
+    /**
+     * 关系模型(多对多，多态) - 模板
+     */
+    public function templates()
+    {
+        return $this->morphedByMany('App\Models\Template', 'taggable');
     }
 }

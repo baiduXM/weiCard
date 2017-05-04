@@ -17,7 +17,7 @@ class Template extends Model
      */
     public function users()
     {
-        return $this->morphedByMany('App\Models\User', 'useable');
+        return $this->morphedByMany('App\Models\User', 'useable', 'template_useable');
     }
 
     /**
@@ -25,14 +25,14 @@ class Template extends Model
      */
     public function companies()
     {
-        return $this->morphedByMany('App\Models\Company', 'useable');
+        return $this->morphedByMany('App\Models\Company', 'useable', 'template_useable');
     }
 
     /**
-     * 关系模型(多对多，多态) - 员工
+     * 关系模型(多对多,多态) - 标签
      */
-    public function employees()
+    public function tags()
     {
-        return $this->morphedByMany('App\Models\Employee', 'useable');
+        return $this->morphToMany('App\Models\Tag', 'taggable');
     }
 }

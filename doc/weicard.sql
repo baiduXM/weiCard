@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-03 18:03:26
+Date: 2017-05-04 20:23:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,10 +26,9 @@ CREATE TABLE `wc_cardcases` (
   `follower_type` varchar(30) DEFAULT NULL COMMENT '模型类名，例App\\Models\\User',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `follow_id_and_type_unique` (`follower_id`,`follower_type`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `wc_cardcases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='名片夹';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='名片夹';
 
 -- ----------------------------
 -- Records of wc_cardcases
@@ -39,23 +38,8 @@ INSERT INTO `wc_cardcases` VALUES ('3', '27', '29', 'App\\Models\\User', null);
 INSERT INTO `wc_cardcases` VALUES ('5', '29', '37', 'App\\Models\\User', null);
 INSERT INTO `wc_cardcases` VALUES ('19', '38', '2', 'App\\Models\\Employee', null);
 INSERT INTO `wc_cardcases` VALUES ('20', '38', '24', 'App\\Models\\Employee', null);
-
--- ----------------------------
--- Table structure for wc_cardcase_tag
--- ----------------------------
-DROP TABLE IF EXISTS `wc_cardcase_tag`;
-CREATE TABLE `wc_cardcase_tag` (
-  `cardcase_id` int(10) unsigned DEFAULT NULL,
-  `tag_id` int(10) unsigned DEFAULT NULL,
-  KEY `wc_cardcase_tag_cardcase_id` (`cardcase_id`),
-  KEY `wc_cardcase_tag_tag_id` (`tag_id`),
-  CONSTRAINT `wc_cardcase_tag_cardcase_id` FOREIGN KEY (`cardcase_id`) REFERENCES `wc_cardcases` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `wc_cardcase_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `wc_tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='名片夹-标签 关系表（多对多）';
-
--- ----------------------------
--- Records of wc_cardcase_tag
--- ----------------------------
+INSERT INTO `wc_cardcases` VALUES ('40', '29', '2', 'App\\Models\\Employee', null);
+INSERT INTO `wc_cardcases` VALUES ('42', '29', '26', 'App\\Models\\Employee', null);
 
 -- ----------------------------
 -- Table structure for wc_companies
@@ -64,7 +48,6 @@ DROP TABLE IF EXISTS `wc_companies`;
 CREATE TABLE `wc_companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL COMMENT '创始人id',
-  `manager_id` int(10) unsigned DEFAULT NULL COMMENT '审核者id',
   `name` varchar(255) DEFAULT NULL COMMENT '公司名',
   `display_name` varchar(255) DEFAULT NULL COMMENT '显示名',
   `logo` varchar(255) DEFAULT NULL COMMENT '公司logo',
@@ -74,6 +57,7 @@ CREATE TABLE `wc_companies` (
   `description` varchar(255) DEFAULT NULL COMMENT '公司描述',
   `status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '状态，0-待审核，1-审核通过，2-审核失败',
   `reason` varchar(255) DEFAULT NULL COMMENT '审核失败原因',
+  `manager_id` int(10) unsigned DEFAULT NULL COMMENT '审核者id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `verified_at` timestamp NULL DEFAULT NULL COMMENT '认证时间',
@@ -89,9 +73,9 @@ CREATE TABLE `wc_companies` (
 -- ----------------------------
 -- Records of wc_companies
 -- ----------------------------
-INSERT INTO `wc_companies` VALUES ('27', '29', '1', 'work', '工作室', 'uploads/company/work/img1493021559.gif', null, null, null, null, '1', null, '2017-04-15 10:26:02', '2017-04-26 14:47:22', '2017-04-26 14:47:22', null);
-INSERT INTO `wc_companies` VALUES ('36', '39', '1', 'company1', '测试公司1', 'uploads/company/company1/img1493189299.jpg', '厦门易尔通', '1122@qq.com', '1234434', '的看法的咖啡机', '1', null, '2017-04-26 13:41:44', '2017-05-03 13:57:36', '2017-04-27 09:10:45', null);
-INSERT INTO `wc_companies` VALUES ('37', '28', null, 'company2', '测试公司2', 'uploads/company/company2/img1493188610.jpg', null, null, null, null, '0', '1', '2017-04-26 14:36:50', '2017-04-27 09:23:12', '2017-04-27 09:23:06', null);
+INSERT INTO `wc_companies` VALUES ('27', '29', 'work', '工作室', 'uploads/company/work/img1493021559.gif', null, null, null, null, '1', null, '1', '2017-04-15 10:26:02', '2017-04-26 14:47:22', '2017-04-26 14:47:22', null);
+INSERT INTO `wc_companies` VALUES ('36', '39', 'company1', '测试公司1', 'uploads/company/company1/img1493189299.jpg', '厦门易尔通', '1122@qq.com', '1234434', '的看法的咖啡机', '1', null, '1', '2017-04-26 13:41:44', '2017-05-03 13:57:36', '2017-04-27 09:10:45', null);
+INSERT INTO `wc_companies` VALUES ('37', '28', 'company2', '测试公司2', 'uploads/company/company2/img1493188610.jpg', null, null, null, null, '0', '1', null, '2017-04-26 14:36:50', '2017-04-27 09:23:12', '2017-04-27 09:23:06', null);
 
 -- ----------------------------
 -- Table structure for wc_departments
@@ -102,9 +86,6 @@ CREATE TABLE `wc_departments` (
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属上级部门',
   `company_id` int(10) unsigned DEFAULT NULL COMMENT '所属公司id',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '部门名字',
-  `display_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '显示名称',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `wc_departments_company_id` (`company_id`),
   CONSTRAINT `wc_departments_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -120,34 +101,36 @@ CREATE TABLE `wc_departments` (
 DROP TABLE IF EXISTS `wc_employees`;
 CREATE TABLE `wc_employees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID',
   `company_id` int(10) unsigned DEFAULT NULL COMMENT '公司ID',
   `department_id` int(10) unsigned DEFAULT NULL COMMENT '部门ID',
+  `position_id` int(10) unsigned DEFAULT NULL COMMENT '职位ID',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID',
   `number` varchar(255) DEFAULT NULL COMMENT '工号',
   `name` varchar(255) DEFAULT NULL COMMENT '姓名',
-  `title` varchar(255) DEFAULT NULL COMMENT '职位头衔',
-  `mobile` varchar(255) DEFAULT NULL,
   `telephone` varchar(255) DEFAULT NULL COMMENT '座机',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`id`),
   KEY `wc_employees_company_id` (`company_id`),
   KEY `wc_employees_user_id` (`user_id`),
   KEY `wc_employees_department_id` (`department_id`),
+  KEY `position_id` (`position_id`),
   CONSTRAINT `wc_employees_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_department_id` FOREIGN KEY (`department_id`) REFERENCES `wc_departments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `wc_employees_ibfk_1` FOREIGN KEY (`position_id`) REFERENCES `wc_positions` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_user_id` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='员工表';
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COMMENT='员工表';
 
 -- ----------------------------
 -- Records of wc_employees
 -- ----------------------------
-INSERT INTO `wc_employees` VALUES ('2', '29', '27', null, 'A00001', '老王', '创始人', null, null, null, '2017-04-20 15:00:12', '2017-04-26 11:28:49');
-INSERT INTO `wc_employees` VALUES ('21', null, '36', null, 'C00001', '创始人', '创始人', '12345678963', null, null, '2017-04-26 14:35:20', '2017-04-28 09:38:40');
-INSERT INTO `wc_employees` VALUES ('22', '28', '37', null, 'C00001', '创始人', '创始人', null, null, null, '2017-04-26 14:49:25', '2017-04-26 14:49:25');
-INSERT INTO `wc_employees` VALUES ('24', '38', '27', null, 'W20015', '继承人', null, null, null, null, '2017-04-27 16:48:34', '2017-05-03 11:20:56');
-INSERT INTO `wc_employees` VALUES ('25', '39', '36', null, 'C0002', 'C0002', null, null, null, null, '2017-05-03 13:57:21', '2017-05-03 13:57:36');
+INSERT INTO `wc_employees` VALUES ('2', '27', null, null, '29', 'A00001', '老王', null, '2017-04-20 15:00:12', '2017-04-26 11:28:49', null);
+INSERT INTO `wc_employees` VALUES ('21', '36', null, null, null, 'C00001', '创始人', null, '2017-04-26 14:35:20', '2017-04-28 09:38:40', null);
+INSERT INTO `wc_employees` VALUES ('22', '37', null, null, '28', 'C00001', '创始人', null, '2017-04-26 14:49:25', '2017-04-26 14:49:25', null);
+INSERT INTO `wc_employees` VALUES ('24', '27', null, null, '38', 'W20015', '继承人', null, '2017-04-27 16:48:34', '2017-05-03 11:20:56', null);
+INSERT INTO `wc_employees` VALUES ('25', '36', null, null, '39', 'C0002', 'C0002', null, '2017-05-03 13:57:21', '2017-05-03 13:57:36', null);
+INSERT INTO `wc_employees` VALUES ('26', '27', null, null, null, 'Q12354', 'asd', null, '2017-05-04 16:47:28', '2017-05-04 16:47:28', null);
 
 -- ----------------------------
 -- Table structure for wc_managers
@@ -175,7 +158,7 @@ CREATE TABLE `wc_managers` (
 -- ----------------------------
 -- Records of wc_managers
 -- ----------------------------
-INSERT INTO `wc_managers` VALUES ('1', 'admin', null, null, '$2y$10$mo/nyRnfB8nMia3Tix5kkeSoEVAsdC9.y/2xYfZjnUo9/3ZRaGlMq', '6hX5wlEXMf0d0zqK5MblWLHHofDoFnjxqNKADRLWx5LRRyTI5iUOFdVjG5zI', null, '1', '1', '2017-04-06 09:41:44', '2017-04-28 15:04:21', null);
+INSERT INTO `wc_managers` VALUES ('1', 'admin', null, null, '$2y$10$mo/nyRnfB8nMia3Tix5kkeSoEVAsdC9.y/2xYfZjnUo9/3ZRaGlMq', 'IGzaC4BSiKbBrO6mdk4YDjtABumPxkkH0t7Zf6DZssJ0FdZImkLVxfCSDTQU', null, '1', '1', '2017-04-06 09:41:44', '2017-05-04 19:25:22', null);
 INSERT INTO `wc_managers` VALUES ('2', 'cchenjei', null, null, '$2y$10$KFyJWwsMnb5017PDqutg9.6wGJ/Kj5UYktvwyCw8SwcXNyc/SOrtO', null, null, '0', '1', '2017-04-15 12:09:16', '2017-04-26 14:52:42', null);
 INSERT INTO `wc_managers` VALUES ('3', 'linyaping', null, null, '$2y$10$2CUHsAJZRia7yxoFDx0LIusw9nJvrO1UIGVux25oL9irSfXs2OBYa', 'bFNu6mqbIwSlwo59LUKWpIg1fF77lNDPyVrFVHb5ufthNT0aoR3kFlO2zTvs', '林雅呀', '1', '1', '2017-04-26 14:25:01', '2017-04-27 18:18:31', null);
 INSERT INTO `wc_managers` VALUES ('4', 'user', null, null, '$2y$10$vNEiuYi4LOiqR1U3S9xLYeIz6GRQJ/d3c0dcs2WQLsy6aRvtGXMr2', 'QYFMZQkZa06z6RLabsV0BzvKIFp36Xjr4tXgAlsEJWW6sBIXBZGKFlbRPd6x', null, '1', '1', '2017-04-27 18:17:54', '2017-04-27 18:24:37', null);
@@ -218,12 +201,46 @@ INSERT INTO `wc_password_resets` VALUES ('461075252@qq.com', '18cfe973d1d09b0cd1
 INSERT INTO `wc_password_resets` VALUES ('xieqixiang@xm12t.com', 'f528610247f1ff787e0b4b1e6554d4ba0b6633d9e123501818541b2f186466a0', '2017-03-18 09:31:38');
 
 -- ----------------------------
+-- Table structure for wc_positions
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_positions`;
+CREATE TABLE `wc_positions` (
+  `id` int(10) unsigned NOT NULL,
+  `company_id` int(10) unsigned DEFAULT NULL COMMENT '公司ID',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '职位名',
+  `is_only` tinyint(4) unsigned DEFAULT NULL COMMENT '是否唯一，0-不唯一，1-唯一',
+  PRIMARY KEY (`id`),
+  KEY `wc_positions_company_id` (`company_id`),
+  CONSTRAINT `wc_positions_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='职位表';
+
+-- ----------------------------
+-- Records of wc_positions
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wc_taggables
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_taggables`;
+CREATE TABLE `wc_taggables` (
+  `tag_id` int(10) unsigned DEFAULT NULL,
+  `taggable_id` int(10) unsigned DEFAULT NULL COMMENT '标签所属ID',
+  `taggable_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '模型类名，例App\\Models\\Tag',
+  KEY `wc_cardcase_tag_tag_id` (`tag_id`),
+  CONSTRAINT `wc_cardcase_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `wc_tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='标签 关系表（多对多、多态）';
+
+-- ----------------------------
+-- Records of wc_taggables
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wc_tags
 -- ----------------------------
 DROP TABLE IF EXISTS `wc_tags`;
 CREATE TABLE `wc_tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT '用户ID，为空为后台模板标签',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '分组名',
   PRIMARY KEY (`id`),
   KEY `wc_group_user_id` (`user_id`) USING BTREE,
@@ -264,9 +281,11 @@ DROP TABLE IF EXISTS `wc_template_useable`;
 CREATE TABLE `wc_template_useable` (
   `template_id` int(10) unsigned DEFAULT NULL COMMENT '模板ID',
   `useable_id` int(10) unsigned DEFAULT NULL COMMENT '使用者ID',
-  `useable_type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '使用者类型，模型类名',
-  KEY `template_user_user_id_foreign` (`useable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='模板-使用者-使用者类型 关系表（多对多、多态）';
+  `useable_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '模型类名',
+  KEY `template_user_user_id_foreign` (`useable_id`),
+  KEY `wc_template_useable_ibfk_1` (`template_id`),
+  CONSTRAINT `wc_template_useable_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `wc_templates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='模板 关系表（多对多、多态）';
 
 -- ----------------------------
 -- Records of wc_template_useable
@@ -283,11 +302,9 @@ CREATE TABLE `wc_users` (
   `mobile` varchar(11) DEFAULT NULL COMMENT '手机',
   `password` varchar(255) NOT NULL COMMENT '密码',
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
-  `realname` varchar(30) DEFAULT NULL COMMENT '真实姓名',
-  `nickname` varchar(30) DEFAULT NULL COMMENT '昵称',
+  `nickname` varchar(30) DEFAULT NULL COMMENT '昵称中文姓名',
   `avatar` text COMMENT '头像',
   `sex` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '性别，0-未知，1-男，2-女',
-  `age` tinyint(4) unsigned DEFAULT NULL COMMENT '年龄',
   `description` varchar(255) DEFAULT NULL COMMENT '个性签名',
   `is_active` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否可用，0-停用，1-可用',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -302,9 +319,9 @@ CREATE TABLE `wc_users` (
 -- ----------------------------
 -- Records of wc_users
 -- ----------------------------
-INSERT INTO `wc_users` VALUES ('27', 'cchenjei', null, null, '$2y$10$QCroeRuZdaElsObl2aPuKOg33NUnD2F7j1lK9BP.TqaBqNU3WM0ou', null, null, null, null, '0', null, null, '1', '2017-04-15 12:10:38', '2017-04-15 12:10:38', null);
-INSERT INTO `wc_users` VALUES ('28', 'test', null, null, '$2y$10$m/oE/naGmLdgch8lYBF1c.JzaIdV6ArVj03Z1CPybFluCNW62otfy', 'tWV5mOQos3qMI6f5Yw6VXr2PqcnwqnCj4AAj0UblhyNApwyoJrrTkZvh8LMg', null, null, null, '0', null, null, '1', '2017-04-17 14:27:15', '2017-04-26 14:33:08', null);
-INSERT INTO `wc_users` VALUES ('29', 'Hsieh', '1195015834@qq.com', '18768104513', '$2y$10$DomPZsfw6Aj6BQKiP1I/LuMTAjaFaEBQ5RC2tVqPM0Y7LhXiUVrgq', null, null, '谢大琦', 'uploads/user/Hsieh/img1493024987.png', '0', null, '', '1', '2017-04-19 11:02:58', '2017-04-24 17:11:50', null);
-INSERT INTO `wc_users` VALUES ('37', 'user1', '123456789@qq.com', '12345678963', '$2y$10$QASE5dyCMvJWXkfNjfRTsuBI8T75zz61pIuoPNML2b71v13RMLc52', 'Xx5uAYeN0IGOc2bK9M0fMNx8iQxkhADCp6NVUUEN5nGAjStq6mctinc1ojiV', null, '用户1', 'uploads/user/user1/img1493177849.jpg', '2', '26', '我是用户1，别抢占！', '1', '2017-04-26 11:37:29', '2017-04-26 14:55:23', null);
-INSERT INTO `wc_users` VALUES ('38', 'username', null, null, '$2y$10$ZP4gqFPLVDabGQIgyDbhc.I5Sz2JmLIYLqTrEMO3Eo52YEtbphhxK', null, null, null, null, '0', null, null, '1', '2017-04-28 09:40:07', '2017-04-28 09:40:07', null);
-INSERT INTO `wc_users` VALUES ('39', 'gh', '123@qq.com', '15533333333', '$2y$10$O3d5tjCNX/pTjOXzaFqtb.JNs4mtJfn93SWzWIFUntDmHNWR2Ap7m', 'dQw2jKPT1CI3xgWhwUHjuUMuKfkRePmQBumEAdxGRUAXjVHddVv7fwU9TVhA', null, 'GH', null, '0', null, null, '1', '2017-05-02 17:31:02', '2017-05-03 13:59:24', null);
+INSERT INTO `wc_users` VALUES ('27', 'cchenjei', null, null, '$2y$10$QCroeRuZdaElsObl2aPuKOg33NUnD2F7j1lK9BP.TqaBqNU3WM0ou', null, null, null, '0', null, '1', '2017-04-15 12:10:38', '2017-04-15 12:10:38', null);
+INSERT INTO `wc_users` VALUES ('28', 'test', null, null, '$2y$10$m/oE/naGmLdgch8lYBF1c.JzaIdV6ArVj03Z1CPybFluCNW62otfy', 'tWV5mOQos3qMI6f5Yw6VXr2PqcnwqnCj4AAj0UblhyNApwyoJrrTkZvh8LMg', null, null, '0', null, '1', '2017-04-17 14:27:15', '2017-04-26 14:33:08', null);
+INSERT INTO `wc_users` VALUES ('29', 'Hsieh', '1195015834@qq.com', '18768104513', '$2y$10$DomPZsfw6Aj6BQKiP1I/LuMTAjaFaEBQ5RC2tVqPM0Y7LhXiUVrgq', null, null, 'uploads/user/Hsieh/img1493024987.png', '0', '', '1', '2017-04-19 11:02:58', '2017-04-24 17:11:50', null);
+INSERT INTO `wc_users` VALUES ('37', 'user1', '123456789@qq.com', '12345678963', '$2y$10$QASE5dyCMvJWXkfNjfRTsuBI8T75zz61pIuoPNML2b71v13RMLc52', 'Xx5uAYeN0IGOc2bK9M0fMNx8iQxkhADCp6NVUUEN5nGAjStq6mctinc1ojiV', null, 'uploads/user/user1/img1493177849.jpg', '2', '我是用户1，别抢占！', '1', '2017-04-26 11:37:29', '2017-04-26 14:55:23', null);
+INSERT INTO `wc_users` VALUES ('38', 'username', null, null, '$2y$10$ZP4gqFPLVDabGQIgyDbhc.I5Sz2JmLIYLqTrEMO3Eo52YEtbphhxK', null, null, null, '0', null, '1', '2017-04-28 09:40:07', '2017-04-28 09:40:07', null);
+INSERT INTO `wc_users` VALUES ('39', 'gh', '123@qq.com', '15533333333', '$2y$10$O3d5tjCNX/pTjOXzaFqtb.JNs4mtJfn93SWzWIFUntDmHNWR2Ap7m', 'dQw2jKPT1CI3xgWhwUHjuUMuKfkRePmQBumEAdxGRUAXjVHddVv7fwU9TVhA', null, null, '0', null, '1', '2017-05-02 17:31:02', '2017-05-03 13:59:24', null);

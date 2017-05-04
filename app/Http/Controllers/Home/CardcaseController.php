@@ -32,7 +32,6 @@ class CardcaseController extends Controller
      */
     public function follow($params)
     {
-
         /* 获取参数 */
         $param = explode('-', $params);
         switch ($param[0]) {
@@ -54,6 +53,7 @@ class CardcaseController extends Controller
             $query->where($key, $value);
         }
         $cardcase = $query->first();
+
 
         if ($cardcase) { // 有，删除
             if ($cardcase->delete()) {

@@ -561,11 +561,13 @@ a.bg-danger:hover {
 	background-color: #e9ecf2;
 }
 
-.sidebar ul.nav .active a, .sidebar ul.nav li.parent a.active,
+.sidebar ul.nav .active a, .sidebar ul.nav li.parent a.active, .sidebar ul.nav ul.children li.active a,
 .sidebar ul.nav .active > a:hover, .sidebar ul.nav li.parent a.active:hover,
 .sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus {
-	color: #fff;
-	background-color: #30a5ff;
+	/*color: #fff;*/
+	/*background-color: #30a5ff;*/
+	color: #fff!important;
+	background-color: #30a5ff!important;
 }
 
 .sidebar ul.nav ul,
@@ -581,15 +583,17 @@ a.bg-danger:hover {
 	background: #f9f9f9;
 }
 
-.sidebar ul.nav ul.children li a {
+.sidebar ul.nav ul.children li a{
 	height: 40px;
 	background: #f9f9f9;
-	color: #30a5ff!important;
+	/*color: #30a5ff!important;*/
+	color: #30a5ff;
 }
 
 .sidebar ul.nav li.current a {
 	background-color: #30a5ff;
-	color: #fff!important;
+	/*color: #fff!important;*/
+	color: #fff;
 }
 
 .sidebar ul.nav li.parent ul li a {

@@ -18,7 +18,7 @@ class DepartmentController extends Controller
         // 我的公司 > 我的同事
         Breadcrumbs::register('company.department', function ($breadcrumbs) {
             $breadcrumbs->parent('company');
-            $breadcrumbs->push('公司部门', route('department.index'));
+            $breadcrumbs->push('公司部门', route('company.department.index'));
         });
     }
 

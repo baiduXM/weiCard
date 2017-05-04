@@ -39,35 +39,35 @@
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/employee') }}" method="get">--}}
-                                {{--<div class="input-group pull-right col-md-6">--}}
-                                    {{--{{ csrf_field() }}--}}
-                                    {{--<div class="input-group-btn btn-group keep-open">--}}
-                                        {{--<button name="search_column" type="button"--}}
-                                                {{--class="btn btn-default dropdown-toggle"--}}
-                                                {{--data-toggle="dropdown"--}}
-                                                {{--aria-haspopup="true" aria-expanded="false">用户名--}}
-                                            {{--<span class="caret"></span>--}}
-                                        {{--</button>--}}
-                                        {{--<ul class="dropdown-menu" id="columnDropdown">--}}
-                                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
-                                                   {{--style="cursor: pointer;">用户名</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
-                                                   {{--style="cursor: pointer;">昵称</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
-                                                   {{--style="cursor: pointer;">手机</a></li>--}}
-                                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
-                                                   {{--style="cursor: pointer;">邮箱</a></li>--}}
-                                        {{--</ul>--}}
-                                    {{--</div><!-- /btn-group -->--}}
-                                    {{--<input type="hidden" name="column" value="name"/>--}}
-                                    {{--<input class="form-control search" type="text" name="keyword"--}}
-                                           {{--placeholder="Search"/>--}}
-                                    {{--<span class="input-group-btn">--}}
-                                        {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
-                                            {{--<i class="glyphicon glyphicon-search"></i>--}}
-                                        {{--</button>--}}
-                                    {{--</span>--}}
-                                {{--</div>--}}
+                            {{--<div class="input-group pull-right col-md-6">--}}
+                            {{--{{ csrf_field() }}--}}
+                            {{--<div class="input-group-btn btn-group keep-open">--}}
+                            {{--<button name="search_column" type="button"--}}
+                            {{--class="btn btn-default dropdown-toggle"--}}
+                            {{--data-toggle="dropdown"--}}
+                            {{--aria-haspopup="true" aria-expanded="false">用户名--}}
+                            {{--<span class="caret"></span>--}}
+                            {{--</button>--}}
+                            {{--<ul class="dropdown-menu" id="columnDropdown">--}}
+                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
+                            {{--style="cursor: pointer;">用户名</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
+                            {{--style="cursor: pointer;">昵称</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
+                            {{--style="cursor: pointer;">手机</a></li>--}}
+                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
+                            {{--style="cursor: pointer;">邮箱</a></li>--}}
+                            {{--</ul>--}}
+                            {{--</div><!-- /btn-group -->--}}
+                            {{--<input type="hidden" name="column" value="name"/>--}}
+                            {{--<input class="form-control search" type="text" name="keyword"--}}
+                            {{--placeholder="Search"/>--}}
+                            {{--<span class="input-group-btn">--}}
+                            {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
+                            {{--<i class="glyphicon glyphicon-search"></i>--}}
+                            {{--</button>--}}
+                            {{--</span>--}}
+                            {{--</div>--}}
                             {{--</form><!--查找-->--}}
                         </div>
                         {{--表单容器--}}
@@ -91,6 +91,10 @@
                                             <div class="fht-cell"></div>
                                         </th><!--number-->
                                         <th style="">
+                                            <div class="th-inner" data-name="name">姓名</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--name-->
+                                        <th style="">
                                             <div class="th-inner" data-name="company">公司</div>
                                             <div class="fht-cell"></div>
                                         </th><!--company-->
@@ -99,11 +103,7 @@
                                             <div class="fht-cell"></div>
                                         </th><!--department-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">姓名</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--name-->
-                                        <th style="">
-                                            <div class="th-inner" data-name="title">头衔</div>
+                                            <div class="th-inner" data-name="position">职位</div>
                                             <div class="fht-cell"></div>
                                         </th><!--title-->
                                         <th style="">
@@ -132,13 +132,14 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
+                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
+                                            <!--姓名-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
                                             <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
-                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
-                                            <!--姓名-->
-                                            <td>{{ $item->title }}</td><!--头衔-->
+                                            <td>{!! ($item->position) ? '<a href="'.url('admin/position/'.$item->position->id).'">'.$item->position->name.'</a>' : '' !!}</td>
+                                            <!--头衔-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
                                                 <a href="{{ url('admin/employee/'.$item->id) }}"

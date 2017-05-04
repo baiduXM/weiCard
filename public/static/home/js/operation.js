@@ -3,7 +3,7 @@
  */
 $(function () {
     /* 操作 - 添加 - 员工 */
-    $('#employee .operate-add').on('click', function () {
+    $('#employee-create .operate-add').on('click', function () {
         var _url = $('#employee-create').attr('action');
         var _formData = new FormData($('#employee-create')[0]);
         $("[class^='error-']").addClass('hidden');
@@ -114,9 +114,7 @@ $(function () {
             selector = selector + prefix;
         }
         $.each(data, function (i, n) {
-            console.log(typeof $('[' + selector + i + ']'));
             if (typeof n == 'object' && n != null) { // 判断是否是关系模型对象
-                // 判断选择器类型
                 $('[' + selector + i + ']').val(n['name'])
             } else {
                 $('[' + selector + i + ']').val(n)

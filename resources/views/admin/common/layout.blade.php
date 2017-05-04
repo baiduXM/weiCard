@@ -30,7 +30,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span> 管理后台</a> <a class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
+            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span> 管理后台</a> <a
+                    class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
@@ -84,8 +85,22 @@
 {{--<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>--}}
-@section('javascript')
+<script>
+    !function ($) {
+        $(document).on("click", "ul.nav li.parent > a.icon", function () {
+            $(this).find('em:first').toggleClass("glyphicon-minus");
+        });
+        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+    }(window.jQuery);
 
+    $(window).on('resize', function () {
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+    });
+    $(window).on('resize', function () {
+        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+    });
+</script>
+@section('javascript')
 @show
 </body>
 

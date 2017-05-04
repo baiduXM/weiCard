@@ -51,16 +51,14 @@ class UserController extends Controller
         /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
 
-        $user_id=$user->id;
-        if(Auth::user()->employee){
-            $employee=Employee::where('user_id',$user_id)->first();
-            $employee_id=$employee->id;
-            $company_id=$employee->company_id;
-        }
-        else
-        {
-            $employee_id=null;
-            $company_id=null;
+        $user_id = $user->id;
+        if (Auth::user()->employee) {
+            $employee = Employee::where('user_id', $user_id)->first();
+            $employee_id = $employee->id;
+            $company_id = $employee->company_id;
+        } else {
+            $employee_id = null;
+            $company_id = null;
         }
 
         return view('home.user.index')->with([
@@ -151,21 +149,11 @@ class UserController extends Controller
         }
         $user = new User();
         $res = $user->binding($code, Auth::id());
-        if ($request->isMethod('POST')) {
-            if ($res % 100 == 0) {
-                return redirect('user')->with('success', config('global.msg.' . $res));
-            } else {
-                return redirect()->back()->with('error', config('global.msg.' . $res));
-            }
+        if ($res % 100 == 0) {
+            return redirect('user')->with('success', config('global.msg.' . $res));
+        } else {
+            return redirect()->back()->with('error', config('global.msg.' . $res));
         }
-        if ($request->isMethod('GET')) {
-            if ($res % 100 == 0) {
-                return redirect('user')->with('success', config('global.msg.' . $res));
-            } else {
-                return redirect()->back()->with('error', config('global.msg.' . $res));
-            }
-        }
-
     }
 
 }
