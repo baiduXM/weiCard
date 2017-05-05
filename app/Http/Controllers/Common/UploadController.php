@@ -45,20 +45,16 @@ class UploadController extends BaseController
         }
 
     }
-    public function saveFile($file, $path_type = 'user', $name = null)
+    public function saveFile($file, $path_type = 'template', $name = null)
     {
         $targetPath = $this->getPath($path_type, $name);
-        //dd($targetPath);//路径‘templates/1111’
         if ($targetPath) {
             $this->hasFolder($targetPath);
         }
-        //dd($file);
         $fileName = $this->getFileName($file);
-        //dd($fileName);file1293494.zip
         if ($targetPath && $fileName) {
-            //dd(44444);
             $file->move($targetPath,$fileName);
-            //Image::make($file)->save($targetPath . '/' . $fileName);
+            /* 解压处理 */
             $zip = new \ZipArchive();
             if($zip->open($targetPath . '/' . $fileName) === TRUE)
             {
@@ -66,10 +62,8 @@ class UploadController extends BaseController
                 $zip->close();
                 @unlink($targetPath . '/' . $fileName);
             }
-            //dd(5555);
             return $targetPath;
         } else {
-            //dd(22222);
             return false;
         }
 
