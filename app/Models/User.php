@@ -81,6 +81,9 @@ class User extends Authenticatable
             return 101; // 绑定失败 - 代码无效
         }
         $user = User::with('company', 'employee')->find($id);
+        if($user->employee){
+            return 109;
+        }
         $company = Company::where('name', '=', $code[0])->first();
         if (!$company) {
             return 102; // 绑定失败 - 找不到公司信息

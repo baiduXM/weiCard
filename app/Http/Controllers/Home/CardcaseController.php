@@ -30,7 +30,7 @@ class CardcaseController extends Controller
      * @param $params
      * @return mixed|string
      */
-    public function follow($params)
+    public function follow(Request $request, $params)
     {
         /* 获取参数 */
         $param = explode('-', $params);
@@ -54,26 +54,36 @@ class CardcaseController extends Controller
         }
         $cardcase = $query->first();
 
-
-        if ($cardcase) { // 有，删除
-            if ($cardcase->delete()) {
-                $err_code = 750; // 取消收藏成功
-            } else {
-                $err_code = 751; // 取消收藏失败
+        /* ajax收藏 */
+        if ($request->ajax()) {
+            if ($cardcase) { // 有，删除
+                if ($cardcase->delete()) {
+                    $err_code = 750; // 取消收藏成功
+                } else {
+                    $err_code = 751; // 取消收藏失败
+                }
+            } else { // 无，收藏
+                /* 添加名片到名片夹 */
+                if (Cardcase::create($data)) {
+                    $err_code = 700; // 收藏成功
+                } else {
+                    $err_code = 701; // 收藏失败
+                }
             }
-        } else { // 无，收藏
-            /* 添加名片到名片夹 */
-            if (Cardcase::create($data)) {
-                $err_code = 700; // 收藏成功
-            } else {
-                $err_code = 701; // 收藏失败
-            }
+            Config::set('global.ajax.err', $err_code);
+            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+            return Config::get('global.ajax');
         }
 
-        Config::set('global.ajax.err', $err_code);
-        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-        return Config::get('global.ajax');
-
+        /* url收藏 */
+        if ($request->isMethod('get')) {
+            if ($cardcase) { // 有，删除
+                $err_code = 702; // 收藏失败
+            } elseif (Cardcase::create($data)) {
+                $err_code = 700; // 收藏成功
+            }
+        }
+        return redirect('cardcase')->with('warning', config('global.msg.' . $err_code));
     }
 
 

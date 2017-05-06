@@ -17,11 +17,6 @@ class UserController extends Controller
 
     public function __construct()
     {
-        // 首页 > 用户列表
-        Breadcrumbs::register('admin.user', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('用户列表', route('admin.user.index'));
-        });
 
         // 首页 > 用户列表 > 添加用户
         Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
@@ -103,7 +98,6 @@ class UserController extends Controller
             'User.nickname' => 'max:30',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'User.sex' => '',
-            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
             'User.name' => '账号',
@@ -113,7 +107,6 @@ class UserController extends Controller
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
             'User.sex' => '性别',
-            'User.age' => '年龄',
             'User.description' => '个性签名',
         ]);
 
@@ -133,6 +126,9 @@ class UserController extends Controller
             $uploadController = new UploadController();
             $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
         }
+
+        // 默认激活
+        $data['is_active'] = 1;
 
         /* 添加 */
         if (User::create($data)) {

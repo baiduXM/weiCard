@@ -46,11 +46,20 @@ class Employee extends Model
     }
 
     /**
+     * 关系模型(多对一) - 职位
+     */
+    public function position()
+    {
+        return $this->belongsTo('App\Models\Position');
+    }
+
+    /**
      * 关系模型(一对多,多态) - 被谁关注
      */
     public function followers()
     {
         return $this->morphMany('App\Models\Cardcase', 'follower');
     }
+
 
 }

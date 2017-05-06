@@ -24,20 +24,27 @@
                                 <td>{{ $employee->name }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司</th>
-                                <td>{{ isset($employee->company) ? $employee->company->name : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">部门</th>
-                                <td>{{ isset($employee->department) ? $employee->department->name : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">职位</th>
-                                <td>{{ isset($employee->position) ? $employee->department->name : '' }}</td>
+                                <th class="text-right">头像</th>
+                                <td>
+                                    <img src="{{ $employee->avatar ? asset($employee->avatar) : ''}}" class="img-responsive"
+                                         style="max-height: 200px;max-width: 200px;">
+                                </td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定用户</th>
-                                <td>{{ isset($employee->user) ? $employee->user->name : '' }}</td>
+                                <td>{!! isset($employee->user) ? '<a href="'.url('admin/user/'.$employee->user->id).'">'.$employee->user->name .'</a>' : '' !!}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">公司</th>
+                                <td>{!! isset($employee->company) ? '<a href="'.url('admin/company/'.$employee->company->id).'">'.$employee->company->name .'</a>' : '' !!}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">部门</th>
+                                <td>{!! isset($employee->department) ? '<a href="'.url('admin/company_department/'.$employee->department->id).'">'.$employee->department->name .'</a>' : '' !!}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">职位</th>
+                                <td>{!! isset($employee->position) ? '<a href="'.url('admin/company_position/'.$employee->position->id).'">'.$employee->position->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">座机</th>
@@ -58,9 +65,9 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/employee/' . $employee->id . '/edit') }}" role="button"
+                                <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

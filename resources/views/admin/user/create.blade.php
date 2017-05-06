@@ -116,18 +116,6 @@
                                 </span>
                             @endif
                         </div><!-- sex性别 -->
-                        <div class="form-group {{ $errors->has('User.age') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="age">年龄</label>
-                            <div class="col-md-6">
-                                <input id="age" name="User[age]" type="number" placeholder="输入年龄"
-                                       class="form-control" value="{{ old('User.age') }}">
-                            </div>
-                            @if ($errors->has('User.age'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.age') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- age年龄 -->
                         <div class="form-group {{ $errors->has('User.description') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="description">个性签名</label>
                             <div class="col-md-6">
@@ -141,29 +129,18 @@
                             @endif
                         </div><!-- description个性签名 -->
                         {{--<div class="form-group">--}}
-                            {{--<label class="col-md-3 control-label" for="is_admin">管理员</label>--}}
+                            {{--<label class="col-md-3 control-label" for="is_active">账号状态</label>--}}
                             {{--<div class="col-md-6">--}}
-                                {{--<div class="checkbox">--}}
-                                    {{--<label>--}}
-                                        {{--<input type="checkbox" name="User[is_admin]"--}}
-                                               {{--value="1" {{ old('User.is_admin') == 1 ? 'checked' : '' }}>是--}}
-                                    {{--</label>--}}
-                                {{--</div>--}}
+                                {{--@foreach($common->isActive() as $item => $value)--}}
+                                    {{--<div class="radio">--}}
+                                        {{--<label>--}}
+                                            {{--<input type="radio" name="User[is_active]"--}}
+                                                   {{--value="{{ $item }}" {{ old('User.is_active') == $item ? 'checked' : '' }}>{{ $value }}--}}
+                                        {{--</label>--}}
+                                    {{--</div>--}}
+                                {{--@endforeach--}}
                             {{--</div>--}}
-                        {{--</div><!-- is_admin是否是管理员 -->--}}
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="is_active">账号状态</label>
-                            <div class="col-md-6">
-                                @foreach($common->isActive() as $item => $value)
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="User[is_active]"
-                                                   value="{{ $item }}" {{ old('User.is_active') == $item ? 'checked' : '' }}>{{ $value }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div><!-- is_active是否可用 -->
+                        {{--</div><!-- is_active是否可用 -->--}}
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>

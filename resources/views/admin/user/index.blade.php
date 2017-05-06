@@ -154,6 +154,9 @@
                                                 <a href="{{ url('admin/user/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                <a href="{{ url('admin/user_cardcase/?user_id='.$item->id) }}"
+                                                   class="btn btn-white btn-xs" title="名片夹"><i
+                                                            class="glyphicon glyphicon-list-alt"></i>名片夹</a>
                                                 <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>

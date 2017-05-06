@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Http\Controllers\Common\UploadController;
+use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
+use Illuminate\Support\Facades\Config;
 
-class EmployeeController extends CompanyController
+class EmployeeController extends Controller
 {
+
+    protected $path_type = 'employee'; // 文件路径保存分类
+
     public function __construct()
     {
         // 设置面包屑模板
@@ -53,19 +59,13 @@ class EmployeeController extends CompanyController
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.name' => 'required',
-            'Employee.title' => 'max:30',
-//            'Employee.position' => 'max:30',
-            'Employee.mobile' => 'numeric',
-            'Employee.telephone' => 'numeric',
-            'Employee.description' => 'max:255',
+            'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Employee.telephone' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.name' => '姓名',
-            'Employee.title' => '职位',
-//            'Employee.position' => '职位',
-            'Employee.mobile' => '手机',
+            'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
-            'Employee.description' => '个人简介',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
@@ -74,20 +74,24 @@ class EmployeeController extends CompanyController
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('Employee.avatar'), $this->path_type, $data['number']);
+        }
+
         $data['company_id'] = Auth::user()->company->id;
 
         /* 添加 */
         if (Employee::create($data)) {
-            if ($request->ajax()) {
-                return 1;
-            }
-            return redirect('company/employee')->with('success', '添加成功');
+            $err_code = 300;
         } else {
-            if ($request->ajax()) {
-                return 0;
-            }
-            return redirect()->back();
+            $err_code = 301;
         }
+
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
     }
 
     /**
@@ -102,9 +106,45 @@ class EmployeeController extends CompanyController
         return $employee;
     }
 
-//    public function update($id){
-//
-//    }
+    public function update(Request $request, $id)
+    {
+
+        $employee = Employee::find($id);
+        /* 验证 */
+        $this->validate($request, [
+            'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.name' => 'required',
+            'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Employee.telephone' => '',
+        ], [], [
+            'Employee.number' => '工号',
+            'Employee.name' => '姓名',
+            'Employee.avatar' => '头像',
+            'Employee.telephone' => '座机',
+        ]);
+        $data = $request->input('Employee');
+
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $uploadController = new UploadController();
+            $data['avatar'] = $uploadController->saveImg($request->file('Employee.avatar'), $this->path_type, $data['number']);
+        }
+
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $employee->$key = $data[$key];
+            }
+        }
+        if ($employee->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
+        }
+
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
+    }
 
     /*
      * 删除限制

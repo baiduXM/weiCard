@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Cardcase extends Model
 {
 
-    protected $guarded = [
-    ];
 
     /**
      * 表明模型是否应该被打上时间戳
@@ -16,6 +14,9 @@ class Cardcase extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    protected $guarded = [
+    ];
 
     /**
      * 关系模型(一对一) - 用户
@@ -51,8 +52,8 @@ class Cardcase extends Model
     public function getFollowerType($index = null)
     {
         $array = [
-            'App\Models\User' => '用户',
-            'App\Models\Employee' => '同事',
+            'App\Models\User' => 'u',
+            'App\Models\Employee' => 'e',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : reset($array);

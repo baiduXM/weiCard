@@ -17,10 +17,10 @@ class TemplateController extends Controller
     public function __construct()
     {
         //首页>模板管理>模板上传
-        Breadcrumbs::register('admin.template',function ($breadcrumbs){
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('模板上传',route('admin.template'));
-        });
+//        Breadcrumbs::register('admin.template',function ($breadcrumbs){
+//            $breadcrumbs->parent('admin');
+//            $breadcrumbs->push('模板上传',route('admin.template'));
+//        });
         //首页>模板管理>模板展示
         //TODO
     }

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Position extends Model
 {
-
     public $timestamps = false;
 
     protected $guarded = [
-        'id', 'created_at', 'updated_at', 'deleted_at',
+        'id',
     ];
 
     protected $hidden = [

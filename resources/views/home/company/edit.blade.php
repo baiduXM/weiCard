@@ -70,7 +70,7 @@
             <p class="pass-error show">{{ $errors->first('Company.description') }}</p>
         @endif
 
-        <input type="submit" value="确认">
+        <input type="submit" value="更新">
         <input type="reset" value="重置">
 
     </div>

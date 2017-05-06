@@ -43,20 +43,16 @@
                                 <td>{{ $common->getSex($user->sex) }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">年龄</th>
-                                <td>{{ $user->age }}</td>
-                            </tr>
-                            <tr>
                                 <th class="text-right">个性签名</th>
                                 <td>{{ $user->description }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定公司</th>
-                                <td>{{ isset($user->company) ? $user->company->id . ' - ' . $user->company->name : '' }}</td>
+                                <td>{!! isset($user->company) ? '<a href="'.url('admin/company/'.$user->company->id).'">'.$user->company->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定员工</th>
-                                <td>{{ isset($user->employee) ? $user->employee->id . ' - ' . $user->employee->number : '' }}</td>
+                                <td>{!! isset($user->employee) ? '<a href="'.url('admin/company_employee/'.$user->employee->id).'">'.$user->employee->number.'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">状态</th>
@@ -85,7 +81,8 @@
                             <div class="col-md-12 widget-left">
                                 <a href="{{ url('admin/user/' . $user->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}" role="button"
+                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}"
+                                   role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

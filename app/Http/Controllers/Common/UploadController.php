@@ -15,16 +15,18 @@ use Illuminate\Routing\Controller as BaseController;
  * 用户   user        public/uploads/user/{$name}/...             url可访问
  * 管理   admin       public/uploads/admin/{$name}/...            url可访问
  * 公司   company     public/uploads/company/{$name}/...          url可访问
+ * 员工   employee    public/uploads/employee/{$name}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
  * 模板   template    public/templates/{$code}/...                 url可访问
  */
+
 class UploadController extends BaseController
 {
 
     /**
      * 保存图片
      *
-     * @param file $file 文件
+     * @param $file 文件
      * @param string $path_type 路径类型
      * @param null $name 底层文件夹名
      * @return string
@@ -45,6 +47,7 @@ class UploadController extends BaseController
         }
 
     }
+
     public function saveFile($file, $path_type = 'user', $name = null)
     {
         $targetPath = $this->getPath($path_type, $name);
@@ -57,11 +60,10 @@ class UploadController extends BaseController
         //dd($fileName);file1293494.zip
         if ($targetPath && $fileName) {
             //dd(44444);
-            $file->move($targetPath,$fileName);
+            $file->move($targetPath, $fileName);
             //Image::make($file)->save($targetPath . '/' . $fileName);
             $zip = new \ZipArchive();
-            if($zip->open($targetPath . '/' . $fileName) === TRUE)
-            {
+            if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
                 $zip->extractTo($targetPath . './');
                 $zip->close();
                 @unlink($targetPath . '/' . $fileName);
@@ -74,11 +76,12 @@ class UploadController extends BaseController
         }
 
     }
+
     /**
      * 获取文件夹路径
      *
      * @param $path_type        路径类型
-     * @param null $name        底层文件夹名
+     * @param null $name 底层文件夹名
      * @return bool|string      路径
      */
     public function getPath($path_type, $name = null)
@@ -92,6 +95,9 @@ class UploadController extends BaseController
                 break;
             case 'company':
                 $targetPath = 'uploads/company/' . $name;// .公司名称
+                break;
+            case 'employee':
+                $targetPath = 'uploads/employee/' . $name;// .员工工号
                 break;
             case 'website':
                 $targetPath = 'uploads/website';

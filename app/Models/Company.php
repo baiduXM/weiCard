@@ -111,9 +111,7 @@ class Company extends Model
         }
         $employee = new Employee();
         $employee->number = strtoupper(substr($company->name, 0, 1)) . '00001';
-        $employee->name = '创始人';
-        $employee->title = '创始人';
-        $employee->mobile = $user->mobile;
+        $employee->name = $user ? ($user->nickname ? $user->nickname : $user->name) : '创始人';
         $company->employees()->save($employee); // 员工关联公司
         $user->company()->save($company); // 公司关联用户
         $user->employee()->save($employee); // 员工关联用户

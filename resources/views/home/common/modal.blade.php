@@ -67,7 +67,7 @@
                     <p><i class="iconFont">&#xe604;</i>确认删除所选？</p>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" value="添加">
+                    <input type="submit" value="确认">
                     <input type="reset" data-dismiss="modal" value="取消">
                 </div>
             </form>

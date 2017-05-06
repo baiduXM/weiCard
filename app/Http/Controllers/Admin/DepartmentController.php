@@ -15,29 +15,31 @@ class DepartmentController extends Controller
 
     public function __construct()
     {
+
         // 首页 > 部门列表
         Breadcrumbs::register('admin.department', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('部门列表', route('admin.department.index'));
+            $breadcrumbs->parent('admin.company');
+            $breadcrumbs->push('部门列表', route('admin.company_department.index'));
         });
 
         // 首页 > 公司列表 > 添加
         Breadcrumbs::register('admin.employee.create', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('添加', route('admin.department.create'));
+            $breadcrumbs->push('添加', route('admin.company_department.create'));
         });
 
         // 首页 > 公司列表 > 详情
         Breadcrumbs::register('admin.employee.show', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('详情', route('admin.department.show', $id));
+            $breadcrumbs->push('详情', route('admin.company_department.show', $id));
         });
 
         // 首页 > 公司列表 > 编辑
         Breadcrumbs::register('admin.employee.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('编辑', route('admin.department.edit', $id));
+            $breadcrumbs->push('编辑', route('admin.company_department.edit', $id));
         });
+
     }
 
     public function index()

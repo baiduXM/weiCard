@@ -51,24 +51,12 @@ class AuthController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
 
-        // 判断登录账号是“用户名(name)”还是“邮箱(email)”
-        if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            $type = 'email';
-        } elseif (filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            $type = 'mobile';
-        } else {
-            $type = 'name';
-        }
-
-        if ($type == 'email') {
+        // 判断登录账号是用户名(name)还是邮箱(email)
+        if (filter_var($username, FILTER_VALIDATE_EMAIL)) { // 验证是否邮箱
             if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
-        } elseif ($type == 'mobile') {
-            if (Auth::guard($this->getGuard())->attempt(['mobile' => $username, 'password' => $password], $request->has('remember'))) {
-                return $this->handleUserWasAuthenticated($request, $throttles);
-            }
-        } else {
+        } else { // 用户名登录
             if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }

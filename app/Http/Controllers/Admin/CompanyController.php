@@ -9,6 +9,7 @@ use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class CompanyController extends Controller
 {
@@ -17,11 +18,6 @@ class CompanyController extends Controller
 
     public function __construct()
     {
-        // 首页 > 公司列表
-        Breadcrumbs::register('admin.company', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('公司列表', route('admin.company.index'));
-        });
 
         // 首页 > 公司列表 > 添加
         Breadcrumbs::register('admin.company.create', function ($breadcrumbs) {
@@ -65,15 +61,13 @@ class CompanyController extends Controller
     /**
      * 添加页面
      *
-     * @return $this
+     * @return View
      */
     public function create()
     {
-        $company = new Company();
-        $common = new Common();
         return view('admin.company.create')->with([
-            'company' => $company,
-            'common' => $common,
+            'company' => new Company(),
+            'common' => new Common(),
         ]);
     }
 
@@ -90,6 +84,7 @@ class CompanyController extends Controller
             'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.homepage' => 'url',
             'Company.email' => 'email|max:255|unique:companies,companies.email',
             'Company.telephone' => 'unique:companies,companies.telephone',
             'Company.address' => 'max:255',
@@ -98,6 +93,7 @@ class CompanyController extends Controller
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
             'Company.logo' => '公司LOGO',
+            'Company.homepage' => '公司主页',
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
@@ -140,13 +136,11 @@ class CompanyController extends Controller
     public function show($id)
     {
         if (!$company = Company::find($id)) {
-            return redirect()->back()->with('warning', '公司不存在');
+            return redirect('admin/company')->with('warning', '公司不存在');
         }
-//        dd($company);
-        $common = new Common();
         return view('admin.company.show')->with([
             'company' => $company,
-            'common' => $common,
+            'common' => new Common(),
         ]);
     }
 
@@ -186,6 +180,7 @@ class CompanyController extends Controller
             'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.homepage' => 'url',
             'Company.email' => 'email|max:255|unique:companies,companies.email,' . $id,
             'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
             'Company.address' => 'max:255',
@@ -194,6 +189,7 @@ class CompanyController extends Controller
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
             'Company.logo' => '公司LOGO',
+            'Company.homepage' => '公司主页',
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',

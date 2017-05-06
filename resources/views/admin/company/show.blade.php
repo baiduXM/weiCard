@@ -31,6 +31,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th class="text-right">公司主页</th>
+                                <td><a href="{{ $company->homepage }}" target="_blank">{{ $company->homepage }}</a></td>
+                            </tr>
+                            <tr>
                                 <th class="text-right">公司邮箱</th>
                                 <td>{{ $company->email }}</td>
                             </tr>
@@ -48,11 +52,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">注册人</th>
-                                <td>{{ ($company->user_id) ? $company->user_id . ' - ' . $company->user->name : '' }}</td>
+                                <td>{!! isset($company->user_id) ? '<a href="'.url('admin/user/'.$company->user->id).'">'.$company->user->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核人</th>
-                                <td>{{ ($company->manager_id) ? $company->manager_id . ' - ' . $company->manager->name : '' }}</td>
+                                <td>{!! isset($company->manager_id) ? '<a href="'.url('admin/manager/'.$company->manager->id).'">'.$company->manager->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">审核状态</th>

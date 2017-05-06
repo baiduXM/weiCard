@@ -50,6 +50,18 @@
                                 </span>
                             @endif
                         </div><!-- logo公司Logo -->
+                        <div class="form-group {{ $errors->has('Company.homepage') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="homepage">公司主页</label>
+                            <div class="col-md-6">
+                                <input id="homepage" name="Company[homepage]" type="text" placeholder="输入公司主页"
+                                       class="form-control" value="{{ old('Company.homepage') }}">
+                            </div>
+                            @if ($errors->has('Company.homepage'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Company.homepage') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- homepage主页 -->
                         <div class="form-group {{ $errors->has('Company.email') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="email">公司邮箱</label>
                             <div class="col-md-6">

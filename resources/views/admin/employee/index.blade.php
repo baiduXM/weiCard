@@ -16,59 +16,20 @@
                         <div class="fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
                                 <button class="btn btn-default operate-batch-delete" type="button"
-                                        name="operate-batch-delete" data-url="employee/batch"
+                                        name="operate-batch-delete" data-url="company_employee/batch"
                                         data-toggle="modal" data-target=".confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="employee/create" title="添加">
+                                        data-url="company_employee/create" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
-                                {{--<button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"--}}
-                                {{--title="批量添加">--}}
-                                {{--<i class="glyphicon glyphicon-plus-sign"></i>--}}
-                                {{--</button>--}}
-                                {{--<button class="btn btn-default operate-import" type="button" name="operate-add-file"--}}
-                                {{--title="导入文件">--}}
-                                {{--<i class="glyphicon glyphicon-file"></i>--}}
-                                {{--</button>--}}
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="employee" title="重置刷新">
+                                        data-url="company_employee" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
-                            {{--<form name="form_search" action="{{ url('/admin/employee') }}" method="get">--}}
-                            {{--<div class="input-group pull-right col-md-6">--}}
-                            {{--{{ csrf_field() }}--}}
-                            {{--<div class="input-group-btn btn-group keep-open">--}}
-                            {{--<button name="search_column" type="button"--}}
-                            {{--class="btn btn-default dropdown-toggle"--}}
-                            {{--data-toggle="dropdown"--}}
-                            {{--aria-haspopup="true" aria-expanded="false">用户名--}}
-                            {{--<span class="caret"></span>--}}
-                            {{--</button>--}}
-                            {{--<ul class="dropdown-menu" id="columnDropdown">--}}
-                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
-                            {{--style="cursor: pointer;">用户名</a></li>--}}
-                            {{--<li><a class="dropdown-item" data-column="nickname" name="column_nickname"--}}
-                            {{--style="cursor: pointer;">昵称</a></li>--}}
-                            {{--<li><a class="dropdown-item" data-column="mobile" name="column_mobile"--}}
-                            {{--style="cursor: pointer;">手机</a></li>--}}
-                            {{--<li><a class="dropdown-item" data-column="email" name="column_email"--}}
-                            {{--style="cursor: pointer;">邮箱</a></li>--}}
-                            {{--</ul>--}}
-                            {{--</div><!-- /btn-group -->--}}
-                            {{--<input type="hidden" name="column" value="name"/>--}}
-                            {{--<input class="form-control search" type="text" name="keyword"--}}
-                            {{--placeholder="Search"/>--}}
-                            {{--<span class="input-group-btn">--}}
-                            {{--<button class="btn btn-default operate-search" type="submit" title="查找">--}}
-                            {{--<i class="glyphicon glyphicon-search"></i>--}}
-                            {{--</button>--}}
-                            {{--</span>--}}
-                            {{--</div>--}}
-                            {{--</form><!--查找-->--}}
                         </div>
                         {{--表单容器--}}
                         <div class="fixed-table-container">
@@ -142,10 +103,10 @@
                                             <!--头衔-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
-                                                <a href="{{ url('admin/employee/'.$item->id) }}"
+                                                <a href="{{ url('admin/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 @if(!isset($item->user))
@@ -159,7 +120,7 @@
                                                 @endif
                                                 <a class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="employee/{{ $item->id }}"
+                                                   data-url="company_employee/{{ $item->id }}"
                                                    data-info="{{ $item->number }} 员工" title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>

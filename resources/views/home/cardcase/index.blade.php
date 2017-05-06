@@ -39,10 +39,10 @@
                     <th class="b-phone-w"><input type="checkbox" id="box8"><label for="box8"><i class="iconFont">&#xe7de;</i></label>
                     </th>
                     <th class="b-phone-w2"><a href="">姓名</a></th>
-                    <th class=" b-td-hide"><a href="">备注</a></th>
-                    <th class="b-phone-w2"><a href="">类型</a></th>
-                    <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th>
+                    <th class="b-phone-w2"><a href="">公司</a></th>
+                    <th class="b-phone-w2"><a href="">电话</a></th>
                     <th class=" b-td-hide"><a href="">操作</a></th>
+                    <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,16 +56,19 @@
                             <td class="b-phone-w"><input type="checkbox" id="box7"><label for="box7"><i
                                             class="iconFont">&#xe7de;</i></label>
                             </td>
-                            <td class="b-phone-w2">{{ $item->follower->name }}</td>
-                            <td class="b-td-hide">{{ $item->remark }}</td>
-                            <td class="b-td-width">{{ $item->getFollowerType($item->follower_type) }}</td>
+                            <td class="b-phone-w2">{{ $item->follower->name }}{{  $item->remark ? '('.$item->remark.')' : '' }}</td>
+                            <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->name }}</td>
+                            <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? $item->follower->mobile : $item->follower->telephone }}</td>
+                            {{--<td class="b-td-width">{{ $item->getFollowerType($item->follower_type) == 'user' ? : '' }}</td>--}}
                             <td class="b-td-icon b-td-hide">
-                                <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                                <a href="javascript:;" data-toggle="modal" data-target=".bs2"><i
                                             class="iconFont">&#xe613;</i></a>
-                                <a href=""><i class="iconFont">&#xe632;</i></a>
-                                <a href=""><i class="iconFont">&#xe921;</i></a>
-                                <a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                            class="iconFont">&#xe6d3;</i></a>
+                                {{--<a href=""><i class="iconFont">&#xe632;</i></a>--}}
+                                {{--<a href=""--}}
+                                   {{--data-url="{{  url('cardcase/follow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i--}}
+                                            {{--class="iconFont">&#xe921;</i></a>--}}
+                                {{--<a href="javascript:" data-toggle="modal" data-target=".bs3"><i--}}
+                                {{--class="iconFont">&#xe6d3;</i></a>--}}
                             </td>
                             <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
                             </td>
@@ -82,22 +85,7 @@
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p>
-            <ul class="b-page lt">
-                <li><a href="" class="iconFont">&#xe61f;</a></li>
-                <li><a href="" class="iconFont">&#xe600;</a></li>
-                <li class="page-active"><a href="">1</a></li>
-                <li><a href="">2</a></li>
-                <li><a href="">3</a></li>
-                <li><a href="">..</a></li>
-                <li><a href="">8</a></li>
-                <li><a href="" class="iconFont">&#xe609;</a></li>
-                <li><a href="" class="iconFont">&#xe60f;</a></li>
-            </ul>
-            <ul class="b-rt-page rt">
-                <li class="rt-page-active"><a href="">10</a></li>
-                <li><a href="">15</a></li>
-                <li><a href="">20</a></li>
-            </ul>
+            {!! $cardcases->render() !!}
         </div>
     </div>
 @stop
