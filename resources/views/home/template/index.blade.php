@@ -13,6 +13,7 @@
         </ul>
         <div class="myCard-content rt-main">
             <p class="phone-show add-yg">收费模板</p>
+            {{--
             <ul class="b-button add-y moban-btn">
                 <li class="b-btn-bg"><a href="" ><i class="iconFont">&#xe6d3;</i>批量删除</a></li>
                 <li class="b-btn-bg" ><a href="javascript:" ><i class="iconFont">&#xe67d;</i>添加模板</a></li>
@@ -25,18 +26,29 @@
                     </ul>
                 </li>
             </ul>
+            --}}
             <div class="mb-main">
+                 @if($templates)
+                    @foreach($templates as $item)
                 <dl class="col-lg-3 col-sm-4 col-md-6 col-xs-6">
-                    <dt><img src="{{ asset('static/home/images/mb1.png') }}" alt=""><a href=""><i class="iconFont">&#xe62e;</i></a></dt>
+                    <dt><img src="{{ $item->file.'/screenshot.jpg' }}" alt=""><a href=""><i class="iconFont">&#xe62e;</i></a></dt>
                     <dd >
+                        {{--
                         <a href="javascript:" data-toggle="modal" data-target=".bs10"><i class="iconFont">&#xe613;</i></a>
                         <a href=""><i class="iconFont">&#xe632;</i></a>
                         <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont">&#xe6d3;</i></a>
+                        --}}
+                        <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont">{{ $item->name }}</i></a>
                     </dd>
                 </dl>
+                    @endforeach
+                @endif
 
             </div>
+
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p>
+            {!! $templates->links() !!}
+            {{--
             <ul class="b-page lt">
                 <li><a href="" class="iconFont">&#xe61f;</a></li>
                 <li><a href=""  class="iconFont">&#xe600;</a></li>
@@ -53,6 +65,7 @@
                 <li><a href="">15</a></li>
                 <li><a href="">20</a></li>
             </ul>
+            --}}
         </div>
 
     </div>
