@@ -27,35 +27,45 @@ class TemplateController extends Controller
 
     public function uploadtem(Request $request)
     {
-        //dd(111);
-        //return view('admin.template.index');
         $this->validate($request,[
             'Template.name' => 'required',
+            'Template.display_name' => 'required',
            // 'Template.file' => 'required',
         ],[],[
             'Template.name' => '模板名称',
+            'Template.display_name' => '模板显示名称',
             //'Template.file' => '模板文件',
         ]);
-        //dd(111);
+
         /* 获取字段 */
         $data=$request->input('Template');
-        //dd($request->file('Template.file'));
         foreach ($data as $key => $value) {
             if ($value === '') {
                 $data[$key] = null;
             }
         }
-        /* 获取文件 */
+
+        /* 获取文件,解压文件到指定目录 */
         if($request->hasFile('Template.file')){
             $uploadController = new UploadController();
             $data['file']=$uploadController->saveFile($request->file('Template.file'),$this->path_type,$data['name']);
-            //dd(1111);
         }
-        //$template=Template::where('name',$data['name'])->get();
-        if(Template::create($data)){
-            return redirect('admin/template')->with('success', '添加成功');
+
+        /* 数据处理 */
+        $template=Template::where('name',$data['name'])->get();
+        if(!$template->isEmpty()){
+        $save = Template::where('name', $data['name'])->update($data);
+        if ($save) {
+            return redirect('admin/template')->with('success', '模板修改成功 ' );
+        } else {
+            return redirect()->back()->with('error', '模板修改失败  ' );
+        }
         }else{
+            if(Template::create($data)){
+            return redirect('admin/template')->with('success', '添加成功');
+            }else{
             return redirect()->back()->with('error', '添加失败');
+            }
         }
     }
 

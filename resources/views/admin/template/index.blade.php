@@ -24,7 +24,19 @@
                                 </span>
                             @endif
                         </div>
-
+                        <div class="form-group {{ $errors->has('Template.display_name') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="display_name"><span class="text-danger">*</span>
+                                模板显示名称</label>
+                            <div class="col-md-6">
+                                <input id="name" name="Template[display_name]" type="text" placeholder="模板显示名称"
+                                       class="form-control" value="{{ old('Template.display_name') }}">
+                            </div>
+                            @if ($errors->has('Template.display_name'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Template.display_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                         <div class="form-group {{ $errors->has('Template.file') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="file">模板上传</label>
                             <div class="col-md-6">
