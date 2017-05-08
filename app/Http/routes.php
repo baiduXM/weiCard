@@ -95,7 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 模板中心 */
     Route::resource('template', 'Home\TemplateController');
-
+    Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {
         /* 安全中心->验证邮箱 */
