@@ -12,34 +12,34 @@
         </ul>
 
         <div class="myCard-content rt-main">
-            <ul class="b-button">
-                @if(Auth::user()->company)
+            @if(Auth::user()->company)
+                <ul class="b-button">
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
                     <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
-                @endif
-
-                {{--<li class="b-btn-bor b-sort-btn ">--}}
+                    {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
                     {{--<ul class="b-sort none">--}}
-                        {{--<li><a href="">按名字排序</a></li>--}}
-                        {{--<li><a href="">按职位排序</a></li>--}}
-                        {{--<li><a href="">按部门排序</a></li>--}}
-                        {{--<li><a href="">按入职时间排序</a></li>--}}
+                    {{--<li><a href="">按名字排序</a></li>--}}
+                    {{--<li><a href="">按职位排序</a></li>--}}
+                    {{--<li><a href="">按部门排序</a></li>--}}
+                    {{--<li><a href="">按入职时间排序</a></li>--}}
                     {{--</ul>--}}
-                {{--</li>--}}
-                {{--<li class="b-btn-bor"><a href="">查询字段<i class="iconFont">&#xe618;</i></a></li>--}}
-                {{--<li class="b-search  ">--}}
+                    {{--</li>--}}
+                    {{--<li class="b-btn-bor"><a href="">查询字段<i class="iconFont">&#xe618;</i></a></li>--}}
+                    {{--<li class="b-search  ">--}}
                     {{--<form action="">--}}
-                        {{--<input class="b-input b-form-bor" type="text" placeholder="请输入关键字">--}}
-                        {{--<input class="b-ser-btn b-form-bg" type="submit" value="查找">--}}
+                    {{--<input class="b-input b-form-bor" type="text" placeholder="请输入关键字">--}}
+                    {{--<input class="b-ser-btn b-form-bg" type="submit" value="查找">--}}
                     {{--</form>--}}
-                {{--</li>--}}
-            </ul>
-            <table class="table b-table">
+                    {{--</li>--}}
+                </ul>
+            @endif
+
+            <table class="table b-table table-hover">
                 <thead>
                 <tr class="active">
                     <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
@@ -53,55 +53,61 @@
                 </tr>
                 </thead>
                 <tbody>
-                {{--<tr class="b-no-bor">--}}
-                {{--<td></td>--}}
-                {{--</tr><!--?-->--}}
-                @foreach($employees as $item)
-                    <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                        <td class="b-phone-w"><input type="checkbox" id="box10">
-                            <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
-                        </td>
-                        <td class="b-phone-w2">{{ $item->number }}</td>
-                        <td class="">{{ $item->name }}</td>
-                        <td class="">{{ $item->title }}</td>
-                        <td class="b-td-width b-td-hide">{{ $item->mobile }}</td>
-                        <td class="b-td-icon b-td-hide w-icon">
-                            <a href="" data-toggle="modal" data-target="#modal-employee-show"
-                               class="operate-show"
-                               data-url="{{ url('company/employee/'.$item->id) }}"><i
-                                        class="iconFont">&#xe613;</i></a>
-                            <a href="javascript:void(0);" class="w-icon-margin operate-follow"
-                               data-url="{{ url('cardcase/follow/e-'.$item->id) }}">
-                                @if(count($item->followers)<1)
-                                    <i class="iconFont" title="收藏">&#xe634;</i>
-                                @else
-                                    <i class="iconFont" title="取消收藏">&#xe601;</i>
-                                @endif
-                            </a>
-                            <a href="" data-toggle="modal" data-target="#modal-employee-edit"
-                               data-url="{{ url('company/employee/'.$item->id) }}" class="operate-edit"><i
-                                        class="iconFont">&#xe632;</i></a>
-                            {{--<a href="javascript:void(0);" class="operate-share"--}}
-                               {{--data-url="{{ url('cardcase/follow/e-'.$item->id) }}"><i class="iconFont">&#xe921;</i></a>--}}
-                            <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3" class="operate-delete"
-                               data-url="{{ url('company/employee/'.$item->id) }}">
-                                <i class="iconFont">&#xe6d3;</i></a>
-                        </td>
-                        <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
-                        </td>
+                @if(!count($employees))
+                    <tr class="b-no-bor">
+                        <td colspan="10" class="">无记录</td>
                     </tr>
-                    <tr class="td-icon-hide none">
-                        <td id="look">
-                            <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
-                                        class="iconFont">&#xe613;</i></a>
-                        </td>
-                        <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
-                        <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
-                        <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                        <td><a href="" data-toggle="modal" data-target=".bs3"><i
-                                        class="iconFont">&#xe6d3;</i></a></td>
-                    </tr><!--适应手机操作-->
-                @endforeach
+                @else
+                    @foreach($employees as $item)
+                        <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
+                            <td class="b-phone-w"><input type="checkbox" id="box10">
+                                <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
+                            </td>
+                            <td class="b-phone-w2">{{ $item->number }}</td>
+                            <td class="">{{ $item->name }}</td>
+                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>
+                            <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
+                            <td class="b-td-icon b-td-hide w-icon">
+                                <a href="" data-toggle="modal" data-target="#modal-employee-show"
+                                   class="operate-show"
+                                   data-url="{{ url('company/employee/'.$item->id) }}"><i
+                                            class="iconFont">&#xe613;</i></a>
+                                <a href="javascript:void(0);" class="w-icon-margin operate-follow"
+                                   data-url="{{ url('cardcase/follow/e-'.$item->id) }}">
+                                    @if(count($item->followers)<1)
+                                        <i class="iconFont" title="收藏">&#xe634;</i>
+                                    @else
+                                        <i class="iconFont" title="取消收藏">&#xe601;</i>
+                                    @endif
+                                </a>
+                                @if(Auth::user()->company)
+                                    <a href="" data-toggle="modal" data-target="#modal-employee-edit"
+                                       data-url="{{ url('company/employee/'.$item->id) }}" class="operate-edit"><i
+                                                class="iconFont">&#xe632;</i></a>
+                                    {{--<a href="javascript:void(0);" class="operate-share"--}}
+                                    {{--data-url="{{ url('cardcase/follow/e-'.$item->id) }}"><i class="iconFont">&#xe921;</i></a>--}}
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
+                                       class="operate-delete"
+                                       data-url="{{ url('company/employee/'.$item->id) }}">
+                                        <i class="iconFont">&#xe6d3;</i></a>
+                                @endif
+                            </td>
+                            <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
+                            </td>
+                        </tr>
+                        <tr class="td-icon-hide none">
+                            <td id="look">
+                                <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
+                                            class="iconFont">&#xe613;</i></a>
+                            </td>
+                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
+                            <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
+                            <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
+                            <td><a href="" data-toggle="modal" data-target=".bs3"><i
+                                            class="iconFont">&#xe6d3;</i></a></td>
+                        </tr><!--适应手机操作-->
+                    @endforeach
+                @endif
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p><!--适应手机-->

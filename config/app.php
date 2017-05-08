@@ -147,7 +147,7 @@ return [
         Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
         Illuminate\Session\SessionServiceProvider::class,
 //        Illuminate\Translation\TranslationServiceProvider::class,
-        Overtrue\LaravelLang\TranslationServiceProvider::class, // added 语言包扩展
+        Overtrue\LaravelLang\TranslationServiceProvider::class, // updated 语言包扩展
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
@@ -161,7 +161,8 @@ return [
 
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
-        Overtrue\LaravelWechat\ServiceProvider::class, // added 微信SDK
+        // Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
+        \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
 
     ],
 
@@ -203,7 +204,7 @@ return [
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,
         //'Schema' => Illuminate\Support\Facades\Schema::class,
-        'Schema' => zedisdog\LaravelSchemaExtend\Schema::class, // added 数据迁移表注释
+        'Schema' => zedisdog\LaravelSchemaExtend\Schema::class, // updated 数据迁移表注释
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'URL' => Illuminate\Support\Facades\URL::class,
@@ -212,6 +213,7 @@ return [
 
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
         'Image' => Intervention\Image\Facades\Image::class, // added 图片处理
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added 第三方登录
 
 
     ],

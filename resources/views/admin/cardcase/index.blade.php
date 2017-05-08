@@ -1,14 +1,14 @@
 @extends('admin.common.layout')
 @section('title', '员工管理')
 @section('breadcrumb')
-{{--    {!! Breadcrumbs::render('admin.cardcase') !!}--}}
+        {!! Breadcrumbs::render('admin.cardcase') !!}
 @stop
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    部门管理
+                    名片夹管理
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -87,33 +87,21 @@
                                             <div class="fht-cell"></div>
                                         </th><!--ID-->
                                         <th style="">
-                                            <div class="th-inner" data-name="number">工号</div>
+                                            <div class="th-inner" data-name="user">所属用户</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--number-->
+                                        </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="company">公司</div>
+                                            <div class="th-inner" data-name="follower">名片</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--company-->
+                                        </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="department">部门</div>
+                                            <div class="th-inner" data-name="follower_type">类型</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--department-->
+                                        </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="name">姓名</div>
+                                            <div class="th-inner" data-name="remark">备注</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--name-->
-                                        <th style="">
-                                            <div class="th-inner" data-name="title">头衔</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--title-->
-                                        <th style="">
-                                            <div class="th-inner sortable" data-name="created_at">创建时间
-                                                <span class="order">
-                                                    <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span><!--dropup-->
-                                            </div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--created_at-->
+                                        </th>
                                         <th style="">
                                             <div class="th-inner">操作</div>
                                             <div class="fht-cell"></div>
@@ -121,56 +109,57 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($departments as $item)
-                                        <tr>
-                                            <td>
-                                                <div class="ckbox ckbox-default">
-                                                    <input type="checkbox" name="id" id="id-{{ $item->id }} "
-                                                           value="{{ $item->id }}" class="selectall-item">
-                                                    <label for="id-{{ $item->id }}"></label>
-                                                </div>
-                                            </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
-                                            <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
-                                            <!--公司-->
-                                            <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
-                                            <!--部门-->
-                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
-                                            <!--姓名-->
-                                            <td>{{ $item->title }}</td><!--头衔-->
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
-                                            <td>
-                                                <a href="{{ url('admin/employee/'.$item->id) }}"
-                                                   class="btn btn-white btn-xs" title="详情"><i
-                                                            class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
-                                                   class="btn btn-primary btn-xs" title="编辑"><i
-                                                            class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(!isset($item->user))
-                                                    <a class="btn btn-primary btn-xs operate-code"
-                                                       data-toggle="modal" data-target="#shareModal"
-                                                       data-code="{{ $item->company->name . '/' . $item->number }}"
-                                                       data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
-                                                       title="代码">
-                                                        <i class="glyphicon glyphicon-copy"></i>代码
-                                                    </a>
-                                                @endif
-                                                <a class="btn btn-danger btn-xs operate-delete"
-                                                   data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="employee/{{ $item->id }}"
-                                                   data-info="{{ $item->number }} 员工" title="删除">
-                                                    <i class="glyphicon glyphicon-trash"></i>删除
-                                                </a>
-                                            </td><!--操作-->
+                                    @if(!count($cardcases))
+                                        <tr class="no-records-found">
+                                            <td colspan="10">未找到记录</td>
                                         </tr>
-                                    @endforeach
+                                    @else
+                                        @foreach($cardcases as $item)
+                                            <tr>
+                                                <td>
+                                                    <div class="ckbox ckbox-default">
+                                                        <input type="checkbox" name="id" id="id-{{ $item->id }} "
+                                                               value="{{ $item->id }}" class="selectall-item">
+                                                        <label for="id-{{ $item->id }}"></label>
+                                                    </div>
+                                                </td><!--checkbox-->
+                                                <td>{{ $item->id }}</td>
+                                                <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : $item->user->name !!}</td>
+                                                <td>{!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower->name).'">'.$item->name.'</a>' : $item->name !!}</td>
+                                                <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : '公司员工' }}</td>
+                                                <td>{{ $item->remark }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/employee/'.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="详情"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                    <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    @if(!isset($item->user))
+                                                        <a class="btn btn-primary btn-xs operate-code"
+                                                           data-toggle="modal" data-target="#shareModal"
+                                                           data-code="{{ $item->company->name . '/' . $item->number }}"
+                                                           data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
+                                                           title="代码">
+                                                            <i class="glyphicon glyphicon-copy"></i>代码
+                                                        </a>
+                                                    @endif
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="employee/{{ $item->id }}"
+                                                       data-info="{{ $item->number }} 员工" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
+                                                </td><!--操作-->
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $departments->appends($params)->render() !!}
+                                    {!! $cardcases->appends($params)->render() !!}
                                 </div><!--跳转页码-->
                             </div><!--页码-->
                         </div>

@@ -17,6 +17,13 @@ class Cardcase extends Model
 
     protected $guarded = [
     ];
+    /*
+    * 允许url带参数查询字段
+    * 字段=>操作符
+    */
+    public $query = [
+        'user_id' => '=',
+    ];
 
     /**
      * 关系模型(一对一) - 用户

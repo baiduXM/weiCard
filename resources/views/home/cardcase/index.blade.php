@@ -46,9 +46,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if(count($cardcases)<=0)
+                @if(!count($cardcases))
                     <tr class="b-no-bor">
-                        <td colspan="5" class="">无记录</td>
+                        <td colspan="10" class="">无记录</td>
                     </tr>
                 @else
                     @foreach($cardcases as $item)
