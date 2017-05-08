@@ -1,15 +1,4 @@
 <?php
-/*
- * 资源路由方法restful
- * GET          /photo              index   photo.index     索引
- * GET          /photo/create       create  photo.create    创建
- * POST         /photo              store   photo.store     保存
- * GET          /photo/{photo}      show    photo.show      显示
- * GET          /photo/{photo}/edit edit    photo.edit      编辑
- * PUT/PATCH    /photo/{photo}      update  photo.update    更新
- * DELETE       /photo/{photo}      destroy photo.destroy   删除
- */
-
 
 /* server information */
 Route::get('phpinfo', function () {
@@ -24,6 +13,10 @@ Route::get('/', function () {
 /* 前台登录 */
 Route::auth();
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
+# 用户点击登录按钮时请求的地址
+Route::get('/auth/oauth', 'Auth\AuthController@oauth');
+# 微信接口回调地址
+Route::get('/auth/callback', 'Auth\AuthController@callback');
 
 /* 后台登录 */
 Route::get('admin/login', 'Admin\AuthController@getLogin');
@@ -113,7 +106,16 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 /* =====后台管理界面===== */
-
+/*
+ * 资源路由方法restful
+ * GET          /photo              index   photo.index     索引
+ * GET          /photo/create       create  photo.create    创建
+ * POST         /photo              store   photo.store     保存
+ * GET          /photo/{photo}      show    photo.show      显示
+ * GET          /photo/{photo}/edit edit    photo.edit      编辑
+ * PUT/PATCH    /photo/{photo}      update  photo.update    更新
+ * DELETE       /photo/{photo}      destroy photo.destroy   删除
+ */
 /*
  * admin/user
  * admin/user_cardcase/?user_id=
@@ -178,7 +180,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });
 
-
     /* 模板管理 */
     Route::resource('template', 'Admin\TemplateController');
     Route::group(['prefix' => 'template'], function () {
@@ -187,7 +188,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 标签管理 */
     Route::resource('template_tag', 'Admin\TagController');
-
 
     /* 客服管理 */
     Route::resource('manager', 'Admin\ManagerController');

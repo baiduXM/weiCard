@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Auth\User;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -114,5 +115,28 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * 用户点击微信登录按钮后，调用此方法请求微信接口
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function oauth(Request $request)
+    {
+        return Socialite::with('weixin')->redirect();
+    }
+
+    /**
+     * 微信的回调地址
+     *
+     * @param Request $request
+     */
+    public function callback(Request $request)
+    {
+        $oauthUser = Socialite::with('weixin')->user();
+
+        // 在这里可以获取到用户在微信的资料
+        dd($oauthUser);
+    }
 
 }
