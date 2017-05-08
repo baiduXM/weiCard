@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-05-06 13:06:02
+Date: 2017-05-08 17:36:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,15 +28,16 @@ CREATE TABLE `wc_cardcases` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `wc_cardcases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='名片夹';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='名片夹';
 
 -- ----------------------------
 -- Records of wc_cardcases
 -- ----------------------------
 INSERT INTO `wc_cardcases` VALUES ('2', '40', '30', 'App\\Models\\Employee', 'ag');
-INSERT INTO `wc_cardcases` VALUES ('7', '40', '28', 'App\\Models\\Employee', null);
 INSERT INTO `wc_cardcases` VALUES ('8', '40', '41', 'App\\Models\\User', null);
-INSERT INTO `wc_cardcases` VALUES ('9', '40', '31', 'App\\Models\\Employee', null);
+INSERT INTO `wc_cardcases` VALUES ('9', '41', '31', 'App\\Models\\Employee', null);
+INSERT INTO `wc_cardcases` VALUES ('10', '42', '30', 'App\\Models\\Employee', null);
+INSERT INTO `wc_cardcases` VALUES ('11', '40', '28', 'App\\Models\\Employee', null);
 
 -- ----------------------------
 -- Table structure for wc_companies
@@ -118,7 +119,7 @@ CREATE TABLE `wc_employees` (
   CONSTRAINT `wc_employees_department_id` FOREIGN KEY (`department_id`) REFERENCES `wc_departments` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_ibfk_1` FOREIGN KEY (`position_id`) REFERENCES `wc_positions` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `wc_employees_user_id` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COMMENT='员工表';
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COMMENT='员工表';
 
 -- ----------------------------
 -- Records of wc_employees
@@ -128,13 +129,12 @@ INSERT INTO `wc_employees` VALUES ('29', '40', null, null, '41', 'Y00001', 'gg',
 INSERT INTO `wc_employees` VALUES ('30', '39', null, null, '40', 'S00001', '谢大琦', null, '464132749', '2017-05-05 17:17:49', '2017-05-06 13:02:47', null);
 INSERT INTO `wc_employees` VALUES ('32', '39', null, null, null, 'S8946313', '阿斯蒂芬111', 'uploads/employee/S8946313/img1494041632.jpg', null, '2017-05-05 19:22:05', '2017-05-06 11:33:52', null);
 INSERT INTO `wc_employees` VALUES ('33', '40', null, null, null, 'Y123115', 'DAG1', 'uploads/employee/Y123115/img1493983631.jpg', null, '2017-05-05 19:27:11', '2017-05-05 19:27:54', null);
-INSERT INTO `wc_employees` VALUES ('34', '39', null, null, null, 'S127486', '前台添加', null, null, '2017-05-05 19:30:23', '2017-05-05 19:30:23', null);
+INSERT INTO `wc_employees` VALUES ('34', '39', null, null, '42', 'S127486', '前台添加', null, null, '2017-05-05 19:30:23', '2017-05-08 11:39:55', null);
 INSERT INTO `wc_employees` VALUES ('38', '39', null, null, null, 'asdf111', 'asdg', null, null, '2017-05-06 11:04:58', '2017-05-06 11:04:58', null);
 INSERT INTO `wc_employees` VALUES ('39', '39', null, null, null, 'zcx134', 'dsaf', null, null, '2017-05-06 11:08:33', '2017-05-06 11:08:33', null);
 INSERT INTO `wc_employees` VALUES ('40', '39', null, null, null, 'config', 'config', null, null, '2017-05-06 11:10:25', '2017-05-06 11:10:25', null);
 INSERT INTO `wc_employees` VALUES ('41', '39', null, null, null, 'test444', 'tset444', 'uploads/employee/test444/img1494040298.gif', null, '2017-05-06 11:11:38', '2017-05-06 11:11:38', null);
 INSERT INTO `wc_employees` VALUES ('42', '39', null, null, null, 'L986', '124asd', 'uploads/employee/L986/img1494040402.gif', null, '2017-05-06 11:13:22', '2017-05-06 11:13:22', null);
-INSERT INTO `wc_employees` VALUES ('43', '39', null, null, null, 'afsd', '123sdaf', null, null, '2017-05-06 11:30:15', '2017-05-06 11:30:15', null);
 
 -- ----------------------------
 -- Table structure for wc_managers
@@ -318,10 +318,11 @@ CREATE TABLE `wc_users` (
   UNIQUE KEY `users_name_unique` (`name`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_mobile_unique` (`mobile`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of wc_users
 -- ----------------------------
 INSERT INTO `wc_users` VALUES ('40', 'Hsieh', '1195015834@qq.com', '18450104513', '$2y$10$EpikY0DGXqrc1WYSSgZE1.Qja4l.L7W7C6B5hmZGQxYf2oYLmmBL2', null, '谢大琦', 'uploads/user/Hsieh/img1493969570.jpg', '1', '2017 NBA 总冠军 克利夫兰 骑士', '1', '2017-05-05 15:32:50', '2017-05-05 15:40:12', null);
 INSERT INTO `wc_users` VALUES ('41', 'gh', '611@qq.com', '15555555555', '$2y$10$O9lVJi2sqmGYFwtJEC/k4OSw.Zq.iwD7WYZv6i.3YZl1UOXpu.P7e', 'S105ZUxITgMh0W7F7LXbupO1uUoTh4xZFI24hhimxin2mBfCuKsUiP9VBQ7N', 'gg', null, '2', 'gg', '1', '2017-05-05 16:31:48', '2017-05-05 16:40:41', null);
+INSERT INTO `wc_users` VALUES ('42', 'test', 'test@qq.com', null, '$2y$10$qtqFzvlgolbgHaGP9WMlT.vtlrE5Sv2o/KIWDNcHAt4zPKWqoNfhC', null, '测试专用号', 'uploads/user/test/img1494214725.png', '0', null, '1', '2017-05-08 11:38:45', '2017-05-08 11:38:45', null);
