@@ -13,10 +13,13 @@ Route::get('/', function () {
 /* 前台登录 */
 Route::auth();
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
-# 用户点击登录按钮时请求的地址
-Route::get('/auth/oauth', 'Auth\AuthController@oauth');
-# 微信接口回调地址
-Route::get('/auth/callback', 'Auth\AuthController@callback');
+
+Route::group(['prefix' => 'oauth'], function () {
+    # 用户点击登录按钮时请求的地址
+    Route::get('request/{driver}', 'Auth\AuthController@oauth');
+    # 微信接口回调地址
+    Route::get('callback/{driver}', 'Auth\AuthController@callback');
+});
 
 /* 后台登录 */
 Route::get('admin/login', 'Admin\AuthController@getLogin');
