@@ -24,6 +24,7 @@ class IndexController extends Controller
     public function cardview()
     {
         $geturl=URL::current();
+        $server_name=$_SERVER['SERVER_NAME'];
         $id=Input::get('id');
         $com=Input::get('com');
         $emp=Input::get('emp');
@@ -32,22 +33,31 @@ class IndexController extends Controller
         if($emp!='')
         {
             $employee=Employee::find($emp);
-
+            //dd(11);
             if($com!=''){
-
+                //dd(222);
                 $company=Company::find($com);
                 /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
                 $template_id=DB::table('template_useable')->where('useable_type','company' )->where('useable_id',$com)->pluck('template_id');
-                $template_name=Template::find($template_id)->pluck('name');
-                $template_name=$template_name[0];
+                if($template_id!=null){
+                    $template_name=Template::find($template_id)->pluck('name');
+                    $template_name=$template_name[0];
+                }else{
+                    $template_name='W0001PCN01';
+                }
 
             }
             else{
                 $company_id=$employee->company_id;
                 /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
                 $template_id=DB::table('template_useable')->where('useable_type','company' )->where('useable_id',$company_id)->pluck('template_id');
-                $template_name=Template::find($template_id)->pluck('name');
-                $template_name=$template_name[0];
+                if($template_id!=null){
+                    $template_name=Template::find($template_id)->pluck('name');
+                    $template_name=$template_name[0];
+                }else{
+                    $template_name='W0001PCN01';
+                }
+
             }
         }
         else{
@@ -58,7 +68,8 @@ class IndexController extends Controller
             'template_name' => $template_name,
             'employee' => $employee,
             'company' => $company,
-            'qrcodeurl'=>$qrcodeurl
+            'qrcodeurl'=>$qrcodeurl,
+            'server_name'=>$server_name,
         ]);
     }
     public function errorview()

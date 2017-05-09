@@ -33,7 +33,7 @@
   <link href="{{ asset('templates/'.$template_name.'/css/animate.css') }}" rel="stylesheet">
   <link href="{{ asset('templates/'.$template_name.'/css/css.css') }}" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{{ asset('templates/'.$template_name.'/js/jquery.min.js') }}"></script>
-  <script src="js/TouchSlide.1.1.js"></script>
+  <script src="{{ asset('templates/'.$template_name.'/js/TouchSlide.1.1.js') }}"></script>
   <script type="text/javascript" src="{{ asset('templates/'.$template_name.'/js/fontsize.js') }}"></script>
   <script type="text/javascript" src="{{ asset('templates/'.$template_name.'/js/function.js') }}"></script>
   <script type="text/javascript">
@@ -49,13 +49,13 @@
     <div class="contentpic">
       <div class="header">
         <a href="" class="back animated fadeInLeftBig go">返回</a>
-        <h2 class="slowest flipInX go">{{ $employee->name }}的微名片</h2>
+        <h2 class="slowest flipInX go">{{ $employee->name }}</h2>
         <a href="" class="set animated fadeInRightBig go"></a>
       </div>
       <div class="picinfo">
         <a href="" class="concern fl slower rotateInDownLeft go"></a>
         <div class="portrait fl">
-          <div class="div_img animated rotateIn go"><img src="{{ asset('templates/'.$template_name.'/images/touxiang.png') }}"></div>
+          <div class="div_img animated rotateIn go"><img src="{{'http://'.$server_name.'/'.$company->logo}}"></div>
           <h2 class="wow slowest flipInX go">{{$company->name}}</h2>
           <div class="identification">
             <div class="identification1 slowest fadeInDown go">已认证</div>
