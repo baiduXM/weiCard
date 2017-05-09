@@ -76,12 +76,12 @@
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('static/common/js/clipboard.min.js') }}"></script><!--剪切板-->
-<script src="{{ asset('static/common/js/jquery.timers-1.2.js') }}"></script><!--jquery定时器-->
+<script src="{{ asset('static/common/js/clipboard.min.js') }}"></script><!--剪切板插件-->
+<script src="{{ asset('static/common/js/jquery.timers-1.2.js') }}"></script><!--jquery定时器插件-->
 {{--<script src="{{ asset('static/common/js/vue.js') }}"></script>--}}
 <script src="{{ asset('static/admin/js/bootstrap-table.js') }}"></script>
 <script src="{{ asset('static/admin/js/operation.js') }}"></script><!--后台操作-->
-{{--<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script>--}}
+{{--<script src="{{ asset('static/common/uploadify/jquery.uploadify.min.js') }}"></script><!--jquery上传插件-->--}}
 {{--<script src="{{ asset('static/admin/js/chart.min.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/easypiechart.js') }}"></script>--}}
 {{--<script src="{{ asset('static/admin/js/bootstrap-datepicker.js') }}"></script>--}}

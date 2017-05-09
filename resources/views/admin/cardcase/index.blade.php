@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '员工管理')
 @section('breadcrumb')
-        {!! Breadcrumbs::render('admin.cardcase') !!}
+    {!! Breadcrumbs::render('admin.cardcase') !!}
 @stop
 @section('content')
     <div class="row">
@@ -102,10 +102,10 @@
                                             <div class="th-inner" data-name="remark">备注</div>
                                             <div class="fht-cell"></div>
                                         </th>
-                                        <th style="">
-                                            <div class="th-inner">操作</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--operation-->
+                                        {{--<th style="">--}}
+                                        {{--<div class="th-inner">操作</div>--}}
+                                        {{--<div class="fht-cell"></div>--}}
+                                        {{--</th><!--operation-->--}}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -125,32 +125,38 @@
                                                 </td><!--checkbox-->
                                                 <td>{{ $item->id }}</td>
                                                 <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : $item->user->name !!}</td>
-                                                <td>{!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower->name).'">'.$item->name.'</a>' : $item->name !!}</td>
+                                                <td>
+                                                    @if($item->getFollowerType($item->follower_type) == 'u')
+                                                        {!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '用户不存在' !!}
+                                                    @else
+                                                        {!! ($item->follower) ? '<a href="'.url('admin/company_employee/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '员工不存在' !!}
+                                                    @endif
+                                                </td>
                                                 <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : '公司员工' }}</td>
                                                 <td>{{ $item->remark }}</td>
-                                                <td>
-                                                    <a href="{{ url('admin/employee/'.$item->id) }}"
-                                                       class="btn btn-white btn-xs" title="详情"><i
-                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
-                                                       class="btn btn-primary btn-xs" title="编辑"><i
-                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                    @if(!isset($item->user))
-                                                        <a class="btn btn-primary btn-xs operate-code"
-                                                           data-toggle="modal" data-target="#shareModal"
-                                                           data-code="{{ $item->company->name . '/' . $item->number }}"
-                                                           data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
-                                                           title="代码">
-                                                            <i class="glyphicon glyphicon-copy"></i>代码
-                                                        </a>
-                                                    @endif
-                                                    <a class="btn btn-danger btn-xs operate-delete"
-                                                       data-toggle="modal" data-target=".confirmModal"
-                                                       data-url="employee/{{ $item->id }}"
-                                                       data-info="{{ $item->number }} 员工" title="删除">
-                                                        <i class="glyphicon glyphicon-trash"></i>删除
-                                                    </a>
-                                                </td><!--操作-->
+                                                {{--<td>--}}
+                                                {{--<a href="{{ url('admin/employee/'.$item->id) }}"--}}
+                                                {{--class="btn btn-white btn-xs" title="详情"><i--}}
+                                                {{--class="glyphicon glyphicon-list-alt"></i>详情</a>--}}
+                                                {{--<a href="{{ url('admin/employee/'. $item->id .'/edit') }}"--}}
+                                                {{--class="btn btn-primary btn-xs" title="编辑"><i--}}
+                                                {{--class="glyphicon glyphicon-pencil"></i>编辑</a>--}}
+                                                {{--@if(!isset($item->user))--}}
+                                                {{--<a class="btn btn-primary btn-xs operate-code"--}}
+                                                {{--data-toggle="modal" data-target="#shareModal"--}}
+                                                {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
+                                                {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
+                                                {{--title="代码">--}}
+                                                {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
+                                                {{--</a>--}}
+                                                {{--@endif--}}
+                                                {{--<a class="btn btn-danger btn-xs operate-delete"--}}
+                                                {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                {{--data-url="employee/{{ $item->id }}"--}}
+                                                {{--data-info="{{ $item->number }} 员工" title="删除">--}}
+                                                {{--<i class="glyphicon glyphicon-trash"></i>删除--}}
+                                                {{--</a>--}}
+                                                {{--</td><!--操作-->--}}
                                             </tr>
                                         @endforeach
                                     @endif

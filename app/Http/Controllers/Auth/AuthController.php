@@ -121,9 +121,9 @@ class AuthController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function oauth(Request $request)
+    public function oauth(Request $request, $driver)
     {
-        return Socialite::with('weixin')->redirect();
+        return Socialite::with($driver)->redirect();
     }
 
     /**
@@ -131,9 +131,9 @@ class AuthController extends Controller
      *
      * @param Request $request
      */
-    public function callback(Request $request)
+    public function callback(Request $request, $driver)
     {
-        $oauthUser = Socialite::with('weixin')->user();
+        $oauthUser = Socialite::with($driver)->user();
 
         // 在这里可以获取到用户在微信的资料
         dd($oauthUser);
