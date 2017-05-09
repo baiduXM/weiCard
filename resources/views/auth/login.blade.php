@@ -27,7 +27,7 @@
             <ul class="lo-icon">
                 {{--<li class="icon-q"><a href=""></a></li>--}}
                 {{--<li class="icon-m"><a href=""></a></li>--}}
-                <li class="icon-w"><a href="{{ url('oauth/request/weixin') }}"></a></li>
+                <li class="icon-w"><a href="{{ url('oauth/weixin') }}"></a></li>
             </ul>
         </form>
     </div>

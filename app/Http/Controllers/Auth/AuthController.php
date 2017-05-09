@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -116,14 +117,38 @@ class AuthController extends Controller
     }
 
     /**
-     * 用户点击微信登录按钮后，调用此方法请求微信接口
+     * 用户点击第三方登录按钮后，调用此方法请求微信接口
      *
      * @param Request $request
      * @return mixed
      */
-    public function oauth(Request $request, $driver)
+    public function redirectToProvider(Request $request, $driver)
     {
         return Socialite::with($driver)->redirect();
+//        if ($driver == 'weixin') {
+//            $this->redirectToWeixin();
+//        } else {
+//            return \Socialite::with($driver)->redirect();
+//        }
+    }
+
+    /**
+     *
+     */
+    public function redirectToWeixin()
+    {
+        $appid = env('WEIXIN_KEY');
+        $redirect_uri = urlencode(env('WEIXIN_REDIRECT_URI'));
+        $redirect_uri = urlencode('http://mp.gbpen.com/oauth/weixin/callback');
+        $response_type = 'code';
+        $scope = 'snsapi_login';
+        $state = '';
+        $auth_base_uri = 'https://open.weixin.qq.com/connect/qrconnect';
+        $url = $auth_base_uri . '?' . 'appid=' . $appid . '&redirect_uri=' . $redirect_uri . '&response_type=' . $response_type . '&scope=' . $scope . '&state=' . $state;
+        dd($url);
+//        return redirect('https://open.weixin.qq.com/connect/qrconnect?');
+        dd(Redirect::to('https://open.weixin.qq.com/connect/qrconnect?'));
+//        https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
     }
 
     /**
@@ -131,9 +156,9 @@ class AuthController extends Controller
      *
      * @param Request $request
      */
-    public function callback(Request $request, $driver)
+    public function handleProviderCallback(Request $request, $driver)
     {
-        $oauthUser = Socialite::with($driver)->user();
+        $oauthUser = \Socialite::with($driver)->user();
 
         // 在这里可以获取到用户在微信的资料
         dd($oauthUser);

@@ -12,7 +12,7 @@
         "zedisdog/laravel-schema-extend": "~0.5",
         "overtrue/laravel-lang": "~3.0",
         "laravel/socialite": "~2.0",
-        "socialiteproviders/weixin": "~3"
+        "socialiteproviders/weixin": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

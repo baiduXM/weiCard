@@ -161,7 +161,7 @@ return [
 
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
-        // Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
+//        Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
         \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
 
     ],

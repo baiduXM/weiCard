@@ -14,11 +14,12 @@ Route::get('/', function () {
 Route::auth();
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
+/* 第三方登录 */
 Route::group(['prefix' => 'oauth'], function () {
     # 用户点击登录按钮时请求的地址
-    Route::get('request/{driver}', 'Auth\AuthController@oauth');
-    # 微信接口回调地址
-    Route::get('callback/{driver}', 'Auth\AuthController@callback');
+    Route::get('{driver}', 'Auth\AuthController@redirectToProvider');
+    # 接口回调地址
+    Route::get('{driver}/callback', 'Auth\AuthController@handleProviderCallback');
 });
 
 /* 后台登录 */
