@@ -164,6 +164,7 @@ return [
 //        Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
         \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
 
+
     ],
 
     /*
