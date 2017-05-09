@@ -125,30 +125,6 @@ class AuthController extends Controller
     public function redirectToProvider(Request $request, $driver)
     {
         return Socialite::with($driver)->redirect();
-//        if ($driver == 'weixin') {
-//            $this->redirectToWeixin();
-//        } else {
-//            return \Socialite::with($driver)->redirect();
-//        }
-    }
-
-    /**
-     *
-     */
-    public function redirectToWeixin()
-    {
-        $appid = env('WEIXIN_KEY');
-        $redirect_uri = urlencode(env('WEIXIN_REDIRECT_URI'));
-        $redirect_uri = urlencode('http://mp.gbpen.com/oauth/weixin/callback');
-        $response_type = 'code';
-        $scope = 'snsapi_login';
-        $state = '';
-        $auth_base_uri = 'https://open.weixin.qq.com/connect/qrconnect';
-        $url = $auth_base_uri . '?' . 'appid=' . $appid . '&redirect_uri=' . $redirect_uri . '&response_type=' . $response_type . '&scope=' . $scope . '&state=' . $state;
-        dd($url);
-//        return redirect('https://open.weixin.qq.com/connect/qrconnect?');
-        dd(Redirect::to('https://open.weixin.qq.com/connect/qrconnect?'));
-//        https://open.weixin.qq.com/connect/qrconnect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
     }
 
     /**
