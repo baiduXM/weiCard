@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -117,7 +116,7 @@ class AuthController extends Controller
     }
 
     /**
-     * 用户点击第三方登录按钮后，调用此方法请求微信接口
+     * 第三方登录请求接口
      *
      * @param Request $request
      * @return mixed
@@ -128,16 +127,16 @@ class AuthController extends Controller
     }
 
     /**
-     * 微信的回调地址
+     * 第三方登录回调地址
      *
      * @param Request $request
      */
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = \Socialite::with($driver)->user();
-
-        // 在这里可以获取到用户在微信的资料
         dd($oauthUser);
+        $accessTokenResponseBody = $oauthUser->accessTokenResponseBody;
+        // 在这里可以获取到用户在微信的资料
     }
 
 }
