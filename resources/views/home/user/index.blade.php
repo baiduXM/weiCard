@@ -1,48 +1,48 @@
 @extends('home.common.layout')
-@section('title', '用户')
+@section('title', '名片')
 @section('content')
-    <div class="side-right wow bounceInRight animated">
-        <div class="mess">
-            <span>账号：
-                <input name="name" type="text" class="inputt" value="{{ $user->name }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>邮箱：
-                <input name="email" type="text" class="inputt" value="{{ $user->email }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>电话：
-                <input name="mobile" type="text" class="inputt" value="{{ $user->mobile }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>头像：
-                <img src="{{ asset($user->avatar) }}"/>
-                <a href="javascript:;" class="file"><input type="file" class="logoimg" value="" disabled="disabled">上传图片</a>
-            </span>
-            <span>性别：
-                <input name="sex" type="text" class="inputt" value="{{ $user->sex }}" onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>年龄：
-                <input name="age" type="text" class="inputt" value="{{ $user->age }}" onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>昵称：
-                <input name="nickname" type="text" class="inputt" value="{{ $user->nickname }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <span>个人简介：
-                <input name="description" type="text" class="inputt" value="{{ $user->description }}"
-                       onfocus="ChangeStyle_hb(this,1,1)"
-                       onblur="ChangeStyle_hb(this,2,1)" disabled="true">
-            </span>
-            <div class="inp">
-                <a href="{{ url('user/'.$user->id.'/edit') }}"><input type="submit" class="sub" value="编辑"></a>
-            </div>
+    <div id="myCard">
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('user') !!}
+        @show
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a>我的名片</a>
+            </li>
+        </ul><!--tab标签-->
+        <div class="myCard-content  main-cont">
+            @if(Auth::user()->employee)
+                <div class="tab-pane card-a">
+                    <iframe src="{{ url('/cardview?com='.$company_id.'&&emp='.$employee_id) }}" width="320" height="568" frameborder="0" scrolling="auto"></iframe>
+                     {{--
+                    <div class="card-cont">
+                        <span>我的名片</span>
+                        <div class="card-text">
+                            <img class="lt" src="{{ asset('static/home/images/front-icon.png') }}" alt="">
+                            <span>林先生</span>
+                            <div>
+                                <span>电话 :</span>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <span>手机 :</span>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <span>地址 :</span>
+                                <input type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    --}}
+                    @include('home.common.share')
+                </div>
+            @else
+                <p class="add-btn">
+                    <button class="btnBinding" data-toggle="modal" data-target=".bs10" data-url="user/binding">绑定员工</button>
+                </p>
+            @endif
         </div>
     </div>
 @stop

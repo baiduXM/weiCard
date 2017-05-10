@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Auth\User;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -30,6 +31,7 @@ class AuthController extends Controller
     protected $loginView = 'auth.login';
     protected $registerView = 'auth.register';
     protected $username = 'username';
+    protected $redirectAfterLogout = '/';
 
     public function __construct()
     {
@@ -113,5 +115,28 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * 第三方登录 - 请求接口
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function redirectToProvider(Request $request, $driver)
+    {
+        return Socialite::with($driver)->redirect();
+    }
+
+    /**
+     * 第三方登录 - 回调地址
+     *
+     * @param Request $request
+     */
+    public function handleProviderCallback(Request $request, $driver)
+    {
+        $oauthUser = Socialite::with($driver)->user();
+        dd($oauthUser);
+        $accessTokenResponseBody = $oauthUser->accessTokenResponseBody;
+        // 在这里可以获取到用户在微信的资料
+    }
 
 }

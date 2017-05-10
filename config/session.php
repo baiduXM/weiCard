@@ -135,7 +135,8 @@ return [
     |
     */
 
-    'domain' => null,
+    'domain' => 'mp.gbpen.com',
+//    'domain' => 'weicard.example.com',
 
     /*
     |--------------------------------------------------------------------------

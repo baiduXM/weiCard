@@ -1,47 +1,109 @@
-<div class="side-left wow bounceInDown animated">
-    <div class="con-left-nav">
-        <ul class="ce">
-            <li class="{{ Request::path() == 'index' ? 'current' : '' }}">
-                <a class=" xz " href="{{ url('/') }}">首页</a>
-            </li>
-            <li class="{{ Request::path() == 'company' || Request::is('company/*') ? 'current' : '' }}">
-                <a class=" xz" href="{{ url('/company') }}">企业基本信息</a>
-            </li>
-            <li class="{{ Request::path() == 'template' || Request::is('template/*') ? 'current' : '' }}">
-                <a class=" xz" href="{{ url('/template') }}">模板选择</a>
-            </li>
-            <li class="{{ Request::path() == 'employee' || Request::is('employee/*') ? 'current' : '' }}">
-                <a class=" xz" href="javascript:;">企业员工管理<i class="a_down"></i></a>
-                <ul class="er">
-                    <li class="e_li"><a href="{{ url('employee/create') }}">栏目管理</a>
-                    </li>
-                    <li class="e_li"><a href="javascript:;">二级分类</a>
-                        <ul class="thr">
-                            <li><a href="">三级列表</a></li>
-                            <li><a href="">三级分类 </a></li>
-                            <li><a href="">三级分类页</a></li>
-                            <div class="clear"></div>
-                        </ul>
-                    </li>
+<div class="m-nav lt navbar navbar-default ">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav_list">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="#" class="navbar-brand"></a>
+    </div><!--手机导航-->
+    <div class="nav-list main-nav collapse navbar-collapse " id="nav_list">
+        <div class="tree_box nav ">
+            <h3 {{ Request::path() == 'user' || Request::is('user/*') ? 'class=h3-active' : '' }}>
+                <a href="javascript:"><em class="iconFont">&#xe711;</em>我的名片
+                    @if(Request::path() == 'user' || Request::is('user/*'))
+                        <i class="nav-j"></i>
+                    @else
+                        <i></i>
+                    @endif
+                </a>
+            </h3>
+            <ul class="tree_one" {{ Request::path() == 'user' || Request::is('user/*') ? 'style=display:block;' : '' }}>
+                <li {{ Request::path() == 'user' ? 'class=active' : '' }}>
+                    <a href="{{ url('user') }}">我的名片</a></li>
+                <li {{ Request::path() == 'user/edit' ? 'class=active' : '' }}>
+                    <a href="{{ url('user/edit') }}">个人信息</a></li>
+            </ul>
+        </div><!--我的名片-->
+        <div class="tree_box nav ">
+            <h3 {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'class=h3-active' : '' }}>
+                <a href="javascript:"><em class="iconFont">&#xe644;</em>名片夹
+                    {{--{{ Request::path() }}--}}
+                    @if(Request::path() == 'cardcase' || Request::is('cardcase/*'))
+                        <i class="nav-j"></i>
+                    @else
+                        <i></i>
+                    @endif
+                </a>
+            </h3>
+            <ul class="tree_one" {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'style=display:block;' : '' }}>
+                <li {{ Request::path() == 'cardcase' ? 'class=active' : '' }}>
+                    <a href="{{ url('cardcase') }}">我的名片夹</a></li>
+                {{--<li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>--}}
+                    {{--<a href="{{ url('cardcase/tag') }}">设置标签</a></li>--}}
+            </ul>
+        </div><!--通讯录-->
+        <div class="tree_box nav">
+            <h3 {{ Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
+                <a href="javascript:"><em class="iconFont">&#xe658;</em>我的公司
+                    @if(Request::path() == 'company' || Request::is('company/*'))
+                        <i class="nav-j"></i>
+                    @else
+                        <i></i>
+                    @endif
+                </a>
+
+            </h3>
+            <ul class="tree_one" {{ Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
+                <li {{ Request::path() == 'company' || Request::is('company/create') ? 'class=active' : '' }}>
+                    <a href="{{ url('company') }}">我的公司</a></li>
+                <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
+                    <a href="{{ url('company/employee') }}">公司同事</a></li>
+                @if(Auth::user()->company)
+                    {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
+                @endif
+            </ul>
+        </div><!--我的公司-->
+        @if(Auth::user()->company)
+            <div class="tree_box nav ">
+                <h3 {{ Request::path() == 'template' || Request::is('template/*') ? 'class=h3-active' : '' }}>
+                    <a href="javascript:"><em class="iconFont">&#xe655;</em>模板中心
+                        @if(Request::path() == 'template' || Request::is('template/*'))
+                            <i class="nav-j"></i>
+                        @else
+                            <i></i>
+                        @endif
+                    </a>
+                </h3>
+                <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
+                    <li {{ Request::path() == 'template' ? 'class=active' : '' }}>
+                        <a href="{{ url('template') }}">收费模板</a></li>
+                    {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
+                    {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
                 </ul>
-            </li>
-            <li class="{{ Request::path() == 'contact' || Request::is('contact/*') ? 'current' : '' }}">
-                <a class=" xz" href="{{ url('/contact') }}">通讯录</a>
-            </li>
-            <li class="{{ Request::path() == 'user' || Request::is('user/*') ? 'current' : '' }}">
-                <a class=" xz" href="{{ url('/user') }}">个人中心</a>
-            </li>
-
-            @if(Auth::user()->name == 'admin' || Auth::user()->is_admin === 1)
-                <li class="">
-                    <a class=" xz" href="{{ url('/admin') }}" target="_blank">管理后台</a>
-                </li>
-            @endif
-            <li class="">
-                <a class=" xz" href="{{ url('/logout') }}">退出</a>
-            </li>
-
-            <div class="clear"></div>
-        </ul>
+            </div><!--模板中心-->
+            <div class="tree_box nav ">
+                <h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>
+                    <a href="javascript:"><em class="iconFont">&#xe603;</em>安全中心
+                        @if(Request::path() == 'security' || Request::is('security/*'))
+                            <i class="nav-j"></i>
+                        @else
+                            <i></i>
+                        @endif
+                    </a>
+                </h3>
+                <ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>
+                    {{--<li {{ Request::path() == 'security' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('security') }}">验证中心</a></li>--}}
+                    {{--<li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('security/email') }}">验证邮箱</a></li>--}}
+                    {{--<li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('security/binding') }}">绑定第三方账号</a></li>--}}
+                    <li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>
+                        <a href="{{ url('security/password') }}">修改密码</a></li>
+                </ul>
+            </div><!--安全中心-->
+        @endif
     </div>
 </div>

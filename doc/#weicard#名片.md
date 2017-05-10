@@ -1,0 +1,16 @@
+### 名片模板字段
+
+- `logo` '公司LOGO',
+- `company`  '公司',
+- `department`  '部门',
+- `name`  '姓名',
+- `title`  '职位头衔',
+- `telephone`  '座机',
+- `mobile`  '手机',
+- `email` '邮箱',
+- `address` '地址',
+- `user_description`  '个人简介',
+- `company_description`  '公司简介',
+- `avatar`  '头像',
+- `sex` '性别，0-未知，1-男，2-女',
+- `age` '年龄',
