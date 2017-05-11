@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -135,8 +136,6 @@ class AuthController extends Controller
     {
         $oauthUser = Socialite::with($driver)->user();
         dd($oauthUser);
-        $accessTokenResponseBody = $oauthUser->accessTokenResponseBody;
-        // 在这里可以获取到用户在微信的资料
     }
 
 }
