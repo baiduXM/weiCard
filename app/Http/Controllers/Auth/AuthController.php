@@ -117,7 +117,7 @@ class AuthController extends Controller
     }
 
     /**
-     * 第三方登录请求接口
+     * 第三方登录 - 请求接口
      *
      * @param Request $request
      * @return mixed
@@ -128,7 +128,7 @@ class AuthController extends Controller
     }
 
     /**
-     * 第三方登录回调地址
+     * 第三方登录 - 回调地址
      *
      * @param Request $request
      */
