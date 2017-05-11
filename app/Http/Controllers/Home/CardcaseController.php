@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cardcase;
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -119,12 +118,6 @@ class CardcaseController extends Controller
     public function destroy($id)
     {
 
-    }
-
-    public function cardshow($id)
-    {
-        $employee = Employee::with('company', 'department', 'user')->find($id);
-        return $employee;
     }
 }
 

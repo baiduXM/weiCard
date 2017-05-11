@@ -59,12 +59,9 @@
                             <td class="b-phone-w2">{{ $item->follower->name }}{{  $item->remark ? '('.$item->remark.')' : '' }}</td>
                             <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->name }}</td>
                             <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? $item->follower->mobile : $item->follower->telephone }}</td>
-                            <td>{{$item->follower->id}}</td>>
                             {{--<td class="b-td-width">{{ $item->getFollowerType($item->follower_type) == 'user' ? : '' }}</td>--}}
                             <td class="b-td-icon b-td-hide">
-                                <a href="" data-toggle="modal" data-target="#modal-cardshow-show"
-                                   class="operate-show"
-                                   data-url="{{ url('cardshow/'.$item->follower->id) }}"><i
+                                <a href="javascript:;" data-toggle="modal" data-target=".bs2"><i
                                             class="iconFont">&#xe613;</i></a>
                                 {{--<a href=""><i class="iconFont">&#xe632;</i></a>--}}
                                 {{--<a href=""--}}
@@ -83,29 +80,8 @@
                             <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
                                             class="iconFont">&#xe6d3;</i></a></td>
                         </tr>
-
                     @endforeach
                 @endif
-                <!--查看名片 -->
-                <div class="modal fade" id="modal-cardshow-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content modal1 modal2">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title">查看</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="modal-address">
-
-                                    <p><span>id : </span><input type="text" name="info-id" value="" readonly></p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p>
