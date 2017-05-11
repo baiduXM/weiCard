@@ -35,6 +35,8 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+
+    /* 微信内登录 */
     'weixin' => [
         'client_id' => env('WEIXIN_KEY'),
         'client_secret' => env('WEIXIN_SECRET'),
@@ -44,6 +46,7 @@ return [
         'auth_base_uri' => 'https://open.weixin.qq.com/connect/qrconnect',
     ],
 
+    /* 微信网页扫码登录 */
     'weixinweb' => [
         'client_id' => env('WEIXINWEB_KEY'),
         'client_secret' => env('WEIXINWEB_SECRET'),
