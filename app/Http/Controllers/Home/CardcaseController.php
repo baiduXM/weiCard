@@ -5,12 +5,28 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Cardcase;
 use App\Models\Employee;
+use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class CardcaseController extends Controller
 {
+    protected $device_type = 'mobile'; // 设备类型
+    protected $is_mobile = false; // 是否是手机
+
+    public function __construct()
+    {
+          $this->is_mobile = true;
+
+        // 设置面包屑模板
+        Breadcrumbs::setView('vendor/breadcrumbs');
+
+        // 我的公司 > 我的同事
+        Breadcrumbs::register('cardcase', function ($breadcrumbs) {
+            $breadcrumbs->push('名片夹', route('cardcase.index'));
+        });
+    }
 
     /**
      * 首页
@@ -20,9 +36,15 @@ class CardcaseController extends Controller
     public function index()
     {
         $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
-        return view('home.cardcase.index')->with([
-            'cardcases' => $cardcases,
-        ]);
+        if ($this->is_mobile) {
+            return view('mobile.cardcase.index')->with([
+                'cardcases' => $cardcases,
+            ]);
+        } else {
+            return view('home.cardcase.index')->with([
+                'cardcases' => $cardcases,
+            ]);
+        }
     }
 
     /**

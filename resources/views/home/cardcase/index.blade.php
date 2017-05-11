@@ -2,10 +2,9 @@
 @section('title', '通讯录')
 @section('content')
     <div id="myCard">
-        <ul class="cont-nav rt">
-            <li><a href="">我的通讯录 > </a></li>
-            <li class="cont-nav-act"><a href="">通讯录</a></li>
-        </ul>
+        {{--@section('breadcrumb')--}}
+            {{--{!! Breadcrumbs::render('cardcase') !!}--}}
+        {{--@show--}}
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
                 <a href="">我的通讯录</a>
@@ -59,7 +58,7 @@
                             <td class="b-phone-w2">{{ $item->follower->name }}{{  $item->remark ? '('.$item->remark.')' : '' }}</td>
                             <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->name }}</td>
                             <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? $item->follower->mobile : $item->follower->telephone }}</td>
-                            <td>{{$item->follower->id}}</td>>
+                            <td class="b-td-icon b-td-hide">{{$item->follower->id}}</td>
                             {{--<td class="b-td-width">{{ $item->getFollowerType($item->follower_type) == 'user' ? : '' }}</td>--}}
                             <td class="b-td-icon b-td-hide">
                                 <a href="" data-toggle="modal" data-target="#modal-cardshow-show"
