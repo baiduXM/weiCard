@@ -123,6 +123,7 @@ class AuthController extends Controller
      * 第三方登录 - 请求接口
      *
      * @param Request $request
+     * @param $driver
      * @return mixed
      */
     public function redirectToProvider(Request $request, $driver)
@@ -134,12 +135,15 @@ class AuthController extends Controller
      * 第三方登录 - 回调地址
      *
      * @param Request $request
+     * @param $driver
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
+        return redirect($this->redirectPath());
     }
 
 
