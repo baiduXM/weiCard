@@ -49,6 +49,7 @@ class IndexController extends Controller
             }
             else{
                 $company_id=$employee->company_id;
+                $company=Company::find($company_id);
                 /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
                 $template_id=DB::table('template_useable')->where('useable_type','company' )->where('useable_id',$company_id)->pluck('template_id');
                 if($template_id!=null){

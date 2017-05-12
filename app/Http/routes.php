@@ -83,8 +83,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
+//    Route::get('cardshow/{id}', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@cardshow']);
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
-
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
         Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);

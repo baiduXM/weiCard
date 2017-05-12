@@ -1,0 +1,70 @@
+a{text-decoration: none;color:#333;}
+ul,dl{list-style: none;}
+h1,h2,h3,h4,h5,h6,p,div,a,img,ul,dl,li,dt,dd{margin:0;padding:0;}
+input{border:none;outline:none;background:none;}
+input,button,select,textarea{outline:none;font-family:  Microsoft YaHei,"微软雅黑";}
+.lt{float:left;}
+.rt{float:right;}
+.clear{clear:both;}
+.hide{display:none;}
+.show{display:block;}
+body{font-family:  Microsoft YaHei,"微软雅黑";font-size:0.6rem;  background-color: #fff;max-width:640px;min-width:320px;margin:0 auto;  }
+img{max-width:100%;max-height:100%;}
+@font-face {font-family: "iconfont";
+    src: url('//at.alicdn.com/t/font_iz1118ybly4iy66r.eot?t=1494465187142'); /* IE9*/
+    src: url('//at.alicdn.com/t/font_iz1118ybly4iy66r.eot?t=1494465187142#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('//at.alicdn.com/t/font_iz1118ybly4iy66r.woff?t=1494465187142') format('woff'), /* chrome, firefox */
+    url('//at.alicdn.com/t/font_iz1118ybly4iy66r.ttf?t=1494465187142') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('//at.alicdn.com/t/font_iz1118ybly4iy66r.svg?t=1494465187142#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+#search{border:1px solid #999;border-radius:0.5rem;width:90%;margin: 0.5rem auto;}
+#search input{width:83%;padding-left:0.5rem;height:1.3rem;font-size:0.6rem;line-height:1.3rem;}
+#search button{border:none;background: none;color:#666;font-size:1rem;float:right;line-height:1.3rem;}
+
+
+.content li{border-top:1px solid #ccc;}
+.content li .list{padding:0.6rem 0.5rem;}
+.content li .list img{width:2.5rem;height:2.5rem;border-radius: 50%;background: #ddd;}
+.content li .list div.name{display: inline-block;vertical-align: top;padding-left: 0.3rem; color: #666;}
+.content li .list div.name span{font-size:0.7rem;}
+.content li .list div.name b{display: block;color: #0062b1; height:1rem;margin-top:0.4rem;text-align: center;line-height:1rem;}
+.content li .list div.name b.v{ display: none; }
+.content li .list i{font-size:1.5rem;vertical-align: top;margin-top:0.5rem;color:#bdbdbd;}
+
+.icon-list{width:100%;padding:0.5rem 0;border-top:1px solid #ccc;display: none;}
+.icon-list dl{text-align: center;-moz-box-flex:1;  -webkit-box-flex:1;  box-flex:1; position: relative;}
+.icon-list dl dt{ height: 1.5rem; overflow: hidden}
+.icon-list dl dt i{font-size: 1.5rem; line-height: 1.5rem;}
+.icon-list dl dd{font-size:0.7rem; color:#666;}
+.icon-list dl.phone dt i{font-size: 1.3rem;}
+.tt{background: #f1f1f1; display:box;display:-webkit-box;display:-moz-box; -moz-box-orient: horizontal;-webkit-box-orient: horizontal;box-orient: horizontal;
+    animation:animations .5s ease-out forwards;
+    -moz-animation:animations .5s ease-out forwards;
+    -webkit-animation:animations .5s ease-out forwards;
+}
+@keyframes animations{
+    0%{transform:translate(-40px);opacity:0;}
+    100%{transform:translate(0px);opacity:1;}
+}
+@-moz-keyframes animations{
+    0%{-moz-transform:translate(-40px);opacity:0;}
+    100%{-moz-transform:translate(0px);opacity:1;}
+}
+@-webkit-keyframes animations{
+    0%{-webkit-transform:translate(-40px);opacity:0;}
+    100%{-webkit-transform:translate(0px);opacity:1;}
+}
+
+
+
+
+
+

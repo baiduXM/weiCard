@@ -36,6 +36,12 @@ $(function () {
         });
     });
 
+    /* 操作 - 显示名片 */
+    $(".operate-cardshow").click(function () {
+        var _url = $(this).data("url");
+        $("#modal-cardshow-show iframe").attr('src',_url);
+    });
+
     /* 操作 - 查看 */
     $(".operate-edit").click(function () {
         var _url = $(this).data("url");

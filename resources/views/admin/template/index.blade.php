@@ -1,5 +1,8 @@
 @extends('admin.common.layout')
 @section('title', '模板上传')
+@section('breadcrumb')
+    {!! Breadcrumbs::render('admin.template') !!}
+@stop
 @section('content')
 
     <div class="row">

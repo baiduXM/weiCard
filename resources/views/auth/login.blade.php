@@ -7,7 +7,7 @@
             <h1>微名片登录</h1>
             <div class="user input">
                 <img src="{{ asset('static/home/images/icon.png') }}" alt="" title="账号">
-                <input type="text" name="username" placeholder="用户名/邮箱">
+                <input type="text" name="username" placeholder="用户名/邮箱" value="{{ old('username') }}">
             </div>
 
             <div class="pass input">
