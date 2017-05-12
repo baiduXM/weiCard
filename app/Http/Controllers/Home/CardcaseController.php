@@ -17,6 +17,7 @@ class CardcaseController extends Controller
 
     public function __construct()
     {
+
 //          $this->is_mobile = true;
 
         // 设置面包屑模板
