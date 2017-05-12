@@ -109,10 +109,12 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'password' => bcrypt($data['password']),
-        ]);
+        foreach ($data as $key => $value) {
+            if ($key == 'password') {
+                $data[$key] = bcrypt($value);
+            }
+        }
+        return User::create($data);
     }
 
     /**
@@ -133,10 +135,33 @@ class AuthController extends Controller
      */
     public function handleProviderCallback(Request $request, $driver)
     {
-        $oauthUser = \Socialite::with($driver)->user();
-        dd($oauthUser);
-        $accessTokenResponseBody = $oauthUser->accessTokenResponseBody;
-        // 在这里可以获取到用户在微信的资料
+        $oauthUser = Socialite::with($driver)->user();
+        $function_name = 'oauth_' . $driver;
+        $this->$function_name($oauthUser->user);
+    }
+
+
+    /**
+     * 第三方登录 - 微信网页扫码
+     *
+     * @param array $data 第三方数据
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function oauth_weixinweb($data)
+    {
+        $user = User::where('oauth_weixinweb', '=', $data->unionid)->first();
+        if ($user) { // 存在，登录
+            if (Auth::guard($this->getGuard())->login($user)) {
+                return redirect()->intended($this->redirectPath());
+            }
+        } else { // 不存在，创建，登录
+            $array['oauth_weixinweb'] = $data->unionid;
+            $array['sex'] = $data->sex;
+            $array['avatar'] = $data->headimgurl;
+            $array['nickname'] = $data->nickname;
+            Auth::guard($this->getGuard())->login($this->create($array));
+            return redirect($this->redirectPath());
+        }
     }
 
 }

@@ -9,8 +9,12 @@ class User extends Authenticatable
 
 //    const IS_ADMIN = 1; // 管理员
 
-    protected $guarded = [
-        'id', 'password_confirmation'
+//    protected $guarded = [
+//        'id', 'password_confirmation',
+//    ];
+    protected $fillable = [
+        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
+        'oauth_weixinweb', 'is_active', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $hidden = [
@@ -81,7 +85,7 @@ class User extends Authenticatable
             return 101; // 绑定失败 - 代码无效
         }
         $user = User::with('company', 'employee')->find($id);
-        if($user->employee){
+        if ($user->employee) {
             return 109;
         }
         $company = Company::where('name', '=', $code[0])->first();
