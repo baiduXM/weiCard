@@ -69,7 +69,9 @@ class AuthController extends Controller
         $type = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if ($type == 'email') {
             if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
-                return $this->handleUserWasAuthenticated($request, $throttles);
+                return redirect()->intended($this->redirectPath());
+
+//                return $this->handleUserWasAuthenticated($request, $throttles);
             }
         } else {
             if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
@@ -121,6 +123,7 @@ class AuthController extends Controller
      * 第三方登录 - 请求接口
      *
      * @param Request $request
+     * @param $driver
      * @return mixed
      */
     public function redirectToProvider(Request $request, $driver)
@@ -132,12 +135,15 @@ class AuthController extends Controller
      * 第三方登录 - 回调地址
      *
      * @param Request $request
+     * @param $driver
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
+        return redirect($this->redirectPath());
     }
 
 
@@ -149,18 +155,20 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
-        $user = User::where('oauth_weixinweb', '=', $data->unionid)->first();
+        $user = User::where('oauth_weixinweb', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-            $array['oauth_weixinweb'] = $data->unionid;
-            $array['sex'] = $data->sex;
-            $array['avatar'] = $data->headimgurl;
-            $array['nickname'] = $data->nickname;
-            Auth::guard($this->getGuard())->login($this->create($array));
-            return redirect($this->redirectPath());
+            $array['name'] = $data['unionid'];
+            $array['oauth_weixinweb'] = $data['unionid'];
+            $array['sex'] = $data['sex'];
+            $array['avatar'] = $data['headimgurl'];
+            $array['nickname'] = $data['nickname'];
+            if (Auth::guard($this->getGuard())->login($this->create($array))) {
+                return redirect($this->redirectPath());
+            }
         }
     }
 
