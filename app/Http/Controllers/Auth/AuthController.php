@@ -109,6 +109,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        var_dump($data);
         foreach ($data as $key => $value) {
             if ($key == 'password') {
                 $data[$key] = bcrypt($value);
@@ -136,7 +137,6 @@ class AuthController extends Controller
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
-        var_dump($oauthUser);
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
     }
@@ -150,7 +150,8 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
-        dd($data);
+        echo '<pre>';
+        var_dump($data->unionid);
         $user = User::where('oauth_weixinweb', '=', $data->unionid)->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
@@ -161,6 +162,7 @@ class AuthController extends Controller
             $array['sex'] = $data->sex;
             $array['avatar'] = $data->headimgurl;
             $array['nickname'] = $data->nickname;
+            dd($array);
             Auth::guard($this->getGuard())->login($this->create($array));
             return redirect($this->redirectPath());
         }
