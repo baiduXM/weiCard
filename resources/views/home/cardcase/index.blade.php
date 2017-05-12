@@ -2,9 +2,9 @@
 @section('title', '通讯录')
 @section('content')
     <div id="myCard">
-        {{--@section('breadcrumb')--}}
-            {{--{!! Breadcrumbs::render('cardcase') !!}--}}
-        {{--@show--}}
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('cardcase') !!}
+        @show
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
                 <a href="">我的通讯录</a>
