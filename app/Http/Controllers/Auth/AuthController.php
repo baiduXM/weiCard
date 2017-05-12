@@ -136,6 +136,7 @@ class AuthController extends Controller
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
+        var_dump($oauthUser);
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
     }
@@ -149,6 +150,7 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
+        dd($data);
         $user = User::where('oauth_weixinweb', '=', $data->unionid)->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
