@@ -109,7 +109,6 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        var_dump($data);
         foreach ($data as $key => $value) {
             if ($key == 'password') {
                 $data[$key] = bcrypt($value);
@@ -150,19 +149,16 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
-        echo '<pre>';
-        var_dump($data->unionid);
-        $user = User::where('oauth_weixinweb', '=', $data->unionid)->first();
+        $user = User::where('oauth_weixinweb', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-            $array['oauth_weixinweb'] = $data->unionid;
-            $array['sex'] = $data->sex;
-            $array['avatar'] = $data->headimgurl;
-            $array['nickname'] = $data->nickname;
-            dd($array);
+            $array['oauth_weixinweb'] = $data['unionid'];
+            $array['sex'] = $data['sex'];
+            $array['avatar'] = $data['headimgurl'];
+            $array['nickname'] = $data['nickname'];
             Auth::guard($this->getGuard())->login($this->create($array));
             return redirect($this->redirectPath());
         }
