@@ -69,7 +69,9 @@ class AuthController extends Controller
         $type = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if ($type == 'email') {
             if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
-                return $this->handleUserWasAuthenticated($request, $throttles);
+                return redirect()->intended($this->redirectPath());
+
+//                return $this->handleUserWasAuthenticated($request, $throttles);
             }
         } else {
             if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
@@ -155,12 +157,14 @@ class AuthController extends Controller
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
+            $array['name'] = $data['unionid'];
             $array['oauth_weixinweb'] = $data['unionid'];
             $array['sex'] = $data['sex'];
             $array['avatar'] = $data['headimgurl'];
             $array['nickname'] = $data['nickname'];
-            Auth::guard($this->getGuard())->login($this->create($array));
-            return redirect($this->redirectPath());
+            if (Auth::guard($this->getGuard())->login($this->create($array))) {
+                return redirect($this->redirectPath());
+            }
         }
     }
 
