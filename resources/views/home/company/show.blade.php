@@ -1,4 +1,5 @@
-<form>
+<form class="lt">
+
     {{--@if ($company->logo)--}}
     <div class="file-img rt  col-sm-12">
         <img src="{{ $company->logo ? asset($company->logo) : asset('static/home/images/company-logo.jpg') }}" alt="">
@@ -8,17 +9,17 @@
     <div class="input rt">
         <div>
             <span><i class="" style="color: red;">*</i>公司名称:</span>
-            <input type="text" name="Company[name]" value="{{ $company->name }}" disabled >
+            <input type="text" name="Company[name]" value="{{ $company->name }}" disabled>
         </div>
 
         <div>
             <span><i class="" style="color: red;">*</i>显示名称:</span>
-            <input type="text" name="Company[display_name]" value="{{ $company->display_name }}" disabled >
+            <input type="text" name="Company[display_name]" value="{{ $company->display_name }}" disabled>
         </div>
 
         <div>
             <span>地址: </span>
-            <input type="text" name="Company[address]" value="{{ $company->address }}" disabled >
+            <input type="text" name="Company[address]" value="{{ $company->address }}" disabled>
         </div>
 
         <div>
