@@ -35,6 +35,7 @@ class CardcaseController extends Controller
     public function index()
     {
         $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
+
         if ($this->is_mobile) {
             return view('mobile.cardcase.index')->with([
                 'cardcases' => $cardcases,
@@ -105,7 +106,7 @@ class CardcaseController extends Controller
                 $err_code = 700; // 收藏成功
             }
         }
-        return redirect('cardcase')->with('warning', config('global.msg.' . $err_code));
+        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
     }
 
 
