@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -35,7 +36,26 @@ class AuthController extends Controller
 
     public function __construct()
     {
+        parent::isMobile();
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    /**
+     * 重写登录页面
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getLogin()
+    {
+//        dd($this->is_mobile);
+        $view = property_exists($this, 'loginView')
+            ? $this->loginView : 'auth.authenticate';
+
+        if (view()->exists($view)) {
+            return view($view);
+        }
+
+        return view('auth.login');
     }
 
     /**
@@ -170,6 +190,15 @@ class AuthController extends Controller
                 return redirect($this->redirectPath());
             }
         }
+    }
+
+    /**
+     * 第三方登录 - 微信登录
+     * @param $data
+     */
+    protected function oauth_weixin($data)
+    {
+        $this->oauth_weixinweb($data);
     }
 
 }

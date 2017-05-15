@@ -13,12 +13,10 @@ use Illuminate\Support\Facades\Config;
 class CardcaseController extends Controller
 {
     protected $device_type = 'mobile'; // 设备类型
-    protected $is_mobile = false; // 是否是手机
 
     public function __construct()
     {
-
-//          $this->is_mobile = true;
+        parent::isMobile();
 
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');

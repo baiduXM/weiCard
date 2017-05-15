@@ -12,6 +12,7 @@ Route::get('/', function () {
 
 /* 前台登录 */
 Route::auth();
+Route::get('login', 'Auth\AuthController@getLogin'); // 重写登录方法
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
 /* 第三方登录 */
