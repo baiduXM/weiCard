@@ -200,8 +200,7 @@ class AuthController extends Controller
      */
     protected function oauth_weixin($data)
     {
-        dd($data);
-        $this->oauth_weixin($data);
+        $this->oauth_weixinweb($data);
     }
 
 }
