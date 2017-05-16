@@ -40,7 +40,6 @@ class UserController extends Controller
     /**
      * 根据条件获取数据
      *
-     * @return $this
      */
     public function index()
     {

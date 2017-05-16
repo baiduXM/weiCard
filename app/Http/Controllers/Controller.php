@@ -15,23 +15,14 @@ class Controller extends BaseController
 
     public $is_mobile = false;
 
-//    protected $is_mobile = false;
+    public function __construct()
+    {
+    }
 
     /**
      * 判断是否是移动设备
      */
     public function isMobile()
-    {
-        $this->is_mobile = $this->is_mobile_request();
-        Session::put('is_mobile', $this->is_mobile);
-    }
-
-    /**
-     * 判断是否是移动请求
-     *
-     * @return bool
-     */
-    function is_mobile_request()
     {
         $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
         $mobile_browser = '0';
@@ -66,9 +57,11 @@ class Controller extends BaseController
         if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false)
             $mobile_browser++;
         if ($mobile_browser > 0)
-            return true;
+            $this->is_mobile = true;
         else
-            return false;
+            $this->is_mobile = false;
 
+        Session::put('is_mobile', $this->is_mobile);
     }
+
 }
