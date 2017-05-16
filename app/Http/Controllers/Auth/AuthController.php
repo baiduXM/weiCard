@@ -170,19 +170,30 @@ class AuthController extends Controller
     /**
      * 第三方登录 - 微信网页扫码
      *
-     * @param array $data 第三方数据
-     * @return \Illuminate\Http\RedirectResponse
+     * @param $data
      */
     protected function oauth_weixinweb($data)
     {
-        $user = User::where('oauth_weixinweb', '=', $data['unionid'])->first();
+        $this->oauth_weixin($data);
+
+    }
+
+    /**
+     * 第三方登录 - 微信登录
+     *
+     * @param array $data 第三方数据
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function oauth_weixin($data)
+    {
+        $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
             $array['name'] = $data['unionid'];
-            $array['oauth_weixinweb'] = $data['unionid'];
+            $array['oauth_weixin'] = $data['unionid'];
             $array['sex'] = $data['sex'];
             $array['avatar'] = $data['headimgurl'];
             $array['nickname'] = $data['nickname'];
@@ -190,15 +201,6 @@ class AuthController extends Controller
                 return redirect($this->redirectPath());
             }
         }
-    }
-
-    /**
-     * 第三方登录 - 微信登录
-     * @param $data
-     */
-    protected function oauth_weixin($data)
-    {
-        $this->oauth_weixinweb($data);
     }
 
 }
