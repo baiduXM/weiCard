@@ -174,18 +174,6 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
-        $this->oauth_weixin($data);
-
-    }
-
-    /**
-     * 第三方登录 - 微信登录
-     *
-     * @param array $data 第三方数据
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    protected function oauth_weixin($data)
-    {
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
@@ -201,6 +189,19 @@ class AuthController extends Controller
                 return redirect($this->redirectPath());
             }
         }
+
+    }
+
+    /**
+     * 第三方登录 - 微信登录
+     *
+     * @param array $data 第三方数据
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function oauth_weixin($data)
+    {
+        dd($data);
+        $this->oauth_weixin($data);
     }
 
 }
