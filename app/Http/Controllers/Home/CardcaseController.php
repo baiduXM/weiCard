@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Input;
 
 class CardcaseController extends Controller
 {
-    protected $device_type = 'mobile'; // 设备类型
 
     public function __construct()
     {
@@ -36,7 +35,7 @@ class CardcaseController extends Controller
         if ($this->is_mobile) {
             $cardcases = Cardcase::with(['follower' => function ($query) {
                 $params = Input::query();
-                if (isset($params['name']) && $params['name'] != '') {
+                if (isset($params['name']) && $params['name']!='') {
                     $query->where('name', 'like', '%' . $params['name'] . '%');
                 }
             }])->where('user_id', Auth::id())->get();

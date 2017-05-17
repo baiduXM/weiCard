@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -161,9 +160,15 @@ class AuthController extends Controller
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
-        $function_name = 'oauth_' . $driver;
-        $this->$function_name($oauthUser->user);
-        return redirect($this->redirectPath());
+        if (Auth::check()) { // 已登录，绑定账号
+            $function_name = 'bind_' . $driver;
+            $this->$function_name($oauthUser->user);
+            return redirect()->back();
+        } else { // 未登录，登录/注册
+            $function_name = 'oauth_' . $driver;
+            $this->$function_name($oauthUser->user);
+            return redirect($this->redirectPath());
+        }
     }
 
 
@@ -171,6 +176,7 @@ class AuthController extends Controller
      * 第三方登录 - 微信网页扫码
      *
      * @param $data
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function oauth_weixinweb($data)
     {
@@ -201,6 +207,47 @@ class AuthController extends Controller
     protected function oauth_weixin($data)
     {
         $this->oauth_weixinweb($data);
+    }
+
+    /**
+     * 第三方绑定 - 绑定微信
+     *
+     * @param $data
+     */
+    protected function bind_weixinweb($data)
+    {
+        // 检查是否注册
+        $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
+        if ($user) {
+            return redirect()->back()->with('error', '该微信已绑定其他账号');
+        } else {
+            $user = User::find(Auth::id());
+            $user->oauth_weixin = $data['unionid'];
+            if (!$user->nickname) {
+                $user->nickname = $data['nickname'];
+            }
+            if (!$user->avatar) {
+                $user->avatar = $data['headimgurl'];
+            }
+            if (!$user->sex) {
+                $user->sex = $data['sex'];
+            }
+            if ($user->save()) {
+                return redirect()->back()->with('success', '绑定微信成功');
+            } else {
+                return redirect()->back()->with('error', '绑定失败');
+            }
+        }
+    }
+
+    /**
+     * 第三方绑定 - 绑定微信
+     *
+     * @param $data
+     */
+    protected function bind_weixin($data)
+    {
+        $this->bind_weixinweb($data);
     }
 
 }

@@ -9,16 +9,37 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
+use Breadcrumbs;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Input;
+use Laravel\Socialite\Facades\Socialite;
 
 class SecurityController extends Controller
 {
+    public function __construct()
+    {
+        parent::isMobile();
+        // 设置面包屑模板
+        Breadcrumbs::setView('vendor/breadcrumbs');
+
+        // 我的公司 > 我的同事
+        Breadcrumbs::register('security', function ($breadcrumbs) {
+            $breadcrumbs->push('安全中心', route('security.index'));
+        });
+        // 首页 > 用户列表 > 详情
+        Breadcrumbs::register('security.password', function ($breadcrumbs) {
+            $breadcrumbs->parent('security');
+            $breadcrumbs->push('修改密码', route('security.password'));
+        });
+        // 首页 > 用户列表 > 详情
+        Breadcrumbs::register('security.binding', function ($breadcrumbs) {
+            $breadcrumbs->parent('security');
+            $breadcrumbs->push('第三方绑定', route('security.binding'));
+        });
+    }
+
     public function index()
     {
         return view('home.security.index');
@@ -35,9 +56,14 @@ class SecurityController extends Controller
 
     }
 
-    public function binding()
+    public function binding($param = null)
     {
-        return view('home.security.binding');
+        if ($param) {
+            return Socialite::with($param)->redirect();
+        }
+        return view('home.security.binding')->with([
+            'user' => Auth::user(),
+        ]);
     }
 
     public function postBinding()
@@ -47,7 +73,7 @@ class SecurityController extends Controller
 
     public function password()
     {
-            return view('home.security.password');
+        return view('home.security.password');
     }
 
     public function postPassword(Request $request)
@@ -60,16 +86,13 @@ class SecurityController extends Controller
         ]);
         /* 原密码验证 */
         $oldpassword = $request->input('User.password_o');
-        $user=User::find(Auth::id());
-        if(
-        !Hash::check($oldpassword,$user->password)
-        ){
-            return back()->with('warning','原密码错误！');
-        }
-        else{
-            $user->password=bcrypt($request->input('User.password'));
+        $user = User::find(Auth::id());
+        if (!Hash::check($oldpassword, $user->password)) {
+            return back()->with('warning', '原密码错误！');
+        } else {
+            $user->password = bcrypt($request->input('User.password'));
             $user->update();
-            return back()->with('success','密码修改成功！');
+            return back()->with('success', '密码修改成功！');
         }
     }
 
