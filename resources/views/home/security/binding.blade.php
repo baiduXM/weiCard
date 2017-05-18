@@ -36,7 +36,7 @@
                     alert('已绑定账号');
                 } else {
                     var url = $(this).data('url');
-                    window.location.href();
+                    window.location.href = url;
                 }
             });
         });
