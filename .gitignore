@@ -5,7 +5,7 @@ Homestead.yaml
 Homestead.json
 .env
 /public/uploads
-/public/templates
+/public/templates/*
 /public/MP_verify_3Gr04oBtCP2ydsvT.txt
 
 .idea/*
