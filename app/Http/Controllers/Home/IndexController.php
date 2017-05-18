@@ -108,7 +108,7 @@ class IndexController extends Controller
         //jsapi_ticket是公众号用于调用微信JS接口的临时票据。正常情况下，jsapi_ticket的有效期为7200秒，通过access_token来获取。
         $wx['jsapi_ticket'] = $this->wx_get_jsapi_ticket();
         //分享的地址，注意：这里是指当前网页的URL，不包含#及其后面部分
-        $wx['url'] = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $wx['url'] = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $string = sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s", $wx['jsapi_ticket'], $wx['noncestr'], $wx['timestamp'], $wx['url']);
         //生成签名
         $wx['signature'] = sha1($string);
