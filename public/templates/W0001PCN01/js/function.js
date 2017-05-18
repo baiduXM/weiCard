@@ -15,6 +15,9 @@ $(document).ready(function(){
 	        $('.call1').fadeOut();
 	         $('.mask').fadeOut();
 	    });
-	
+        $(".fxBtn,.fxClose").bind('touchstart', function(event) {
+        $("#fenxiang").slideToggle();
+        return false;
+    });
   });
   
