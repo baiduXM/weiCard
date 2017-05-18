@@ -218,7 +218,7 @@ class AuthController extends Controller
     {
         // 检查是否注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
-        if ($user) {
+        if ($user) { // 已注册
             return redirect()->back()->with('error', '该微信已绑定其他账号');
         } else {
             $user = User::find(Auth::id());

@@ -14,7 +14,7 @@ class User extends Authenticatable
 //    ];
     protected $fillable = [
         'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
-        'oauth_weixinweb', 'is_active', 'created_at', 'updated_at', 'deleted_at',
+        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $hidden = [
