@@ -41,7 +41,7 @@ class IndexController extends Controller
             //初始化
             $ch = curl_init();
             //设置选项，包括URL
-            curl_setopt($ch, CURLOPT_URL, "http://www.jb51.net");
+            curl_setopt($ch, CURLOPT_URL, "$url");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             //执行并获取HTML文档内容
@@ -58,17 +58,43 @@ class IndexController extends Controller
         $AppID ='wx80cfbb9a1b347f47';
         $AppSecret ='002d277233e21b95d367a5161c4a39d8';
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$AppID.'&secret='.$AppSecret;
-        $res = $this->get_curl_contents($url);
-        $res = json_decode($res,true);
-        return $res['access_token'];
+        //dd($url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $jsoninfo = json_decode($output, true);
+        $access_token = $jsoninfo["access_token"];
+        //dd($access_token);
+        //$res = $this->get_curl_contents($url);
+        //dd($res);
+        //$res = json_decode($res,true);
+        //dd($res);
+        //return $res['access_token'];
+        return $access_token;
     }
 
     //获取微信公从号ticket
     public function wx_get_jsapi_ticket(){
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $this->wx_get_token());
-        $res = $this->get_curl_contents($url);
-        $res = json_decode($res, true);
-        return $res['ticket'];
+        //dd($url);
+        //$res = $this->get_curl_contents($url);
+        //$res = json_decode($res, true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        $jsoninfo = json_decode($output, true);
+        //dd($jsoninfo);
+        $jsapi_ticket = $jsoninfo["ticket"];
+        //dd($jsapi_ticket);
+        return $jsapi_ticket;
     }
 
     public function getSignPackage(){
