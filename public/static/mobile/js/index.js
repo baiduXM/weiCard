@@ -22,8 +22,13 @@ $(function () {
     })(document, window);
 
     $(".list i ").bind("touchstart", function () {
-        $(".content").find(".tt").removeClass("tt");
-        $(this).parent().parent().find(".icon-list").addClass("tt");
+        if ($(this).parent().parent().find(".icon-list").hasClass("tt")) {
+            $(".content").find(".tt").removeClass("tt");
+            $(this).parent().parent().find(".icon-list").removeClass("tt");
+        } else {
+            $(".content").find(".tt").removeClass("tt");
+            $(this).parent().parent().find(".icon-list").addClass("tt");
+        }
     });
 
 });

@@ -98,8 +98,8 @@
                         {{--<a href="{{ url('security') }}">验证中心</a></li>--}}
                     {{--<li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('security/email') }}">验证邮箱</a></li>--}}
-                    {{--<li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('security/binding') }}">绑定第三方账号</a></li>--}}
+                    <li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>
+                        <a href="{{ url('security/binding') }}">第三方绑定</a></li>
                     <li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>
                         <a href="{{ url('security/password') }}">修改密码</a></li>
                 </ul>

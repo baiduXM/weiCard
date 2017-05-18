@@ -41,9 +41,6 @@ return [
         'client_id' => env('WEIXIN_KEY'),
         'client_secret' => env('WEIXIN_SECRET'),
         'redirect' => env('WEIXIN_REDIRECT_URI'),
-
-        # 这一行配置非常重要，必须要写成这个地址。
-//        'auth_base_uri' => 'https://open.weixin.qq.com/connect/qrconnect',
     ],
 
     /* 微信网页扫码登录 */

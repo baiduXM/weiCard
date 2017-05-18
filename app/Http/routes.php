@@ -94,14 +94,16 @@ Route::group(['middleware' => 'auth'], function () {
     /* 模板中心 */
     Route::resource('template', 'Home\TemplateController');
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {
         /* 安全中心->验证邮箱 */
         Route::get('email', ['as' => 'security.email', 'uses' => 'Home\SecurityController@email']);
-        Route::post('email', ['as' => 'security.post_email', 'uses' => 'Home\SecurityController@postEmail']);
+        Route::post('email', ['as' => 'security.postEmail', 'uses' => 'Home\SecurityController@postEmail']);
         /* 安全中心->绑定第三方 */
-        Route::get('binding', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
-        Route::post('binding', ['as' => 'security.post_binding', 'uses' => 'Home\SecurityController@postBinding']);
+        Route::get('binding/{driver?}', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
+        Route::get('binding/{driver}/callback', 'Home\SecurityController@bindingCallback');
+
         /* 安全中心->修改密码 */
         Route::get('password', ['as' => 'security.password', 'uses' => 'Home\SecurityController@password']);
         Route::any('postpassword', ['as' => 'security.postpassword', 'uses' => 'Home\SecurityController@postpassword']);

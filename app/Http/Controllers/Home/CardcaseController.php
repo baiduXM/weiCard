@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Input;
 
 class CardcaseController extends Controller
 {
-    protected $device_type = 'mobile'; // 设备类型
 
     public function __construct()
     {
@@ -32,22 +31,24 @@ class CardcaseController extends Controller
      */
     public function index()
     {
-        $params = Input::query();
-//        if ($params)
-//            dd($params);
         // TODO:后期优化分页
-//        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get();
-        $cardcases = Cardcase::with('follower')
-            ->where('user_id', Auth::id())
-            ->join('employees', 'name', 'like', '%大%')
-//            ->join('users', 'name', 'like', '%大%')
-            ->get();
         if ($this->is_mobile) {
+            $cardcases = Cardcase::with(['follower' => function ($query) {
+                $params = Input::query();
+                if (isset($params['name']) && $params['name']!='') {
+                    $query->where('name', 'like', '%' . $params['name'] . '%');
+                }
+            }])->where('user_id', Auth::id())->get();
+            foreach ($cardcases as $key => $cardcase) {
+                if (!$cardcase->follower) {
+                    unset($cardcases[$key]);
+                }
+            }
             return view('mobile.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
         } else {
-            dd($cardcases);
+            $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
             return view('home.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
