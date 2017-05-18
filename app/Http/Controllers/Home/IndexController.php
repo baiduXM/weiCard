@@ -131,7 +131,7 @@ class IndexController extends Controller
         $AppID=$sign_package['AppID'];
         $timestamp=$sign_package['timestamp'];
         $noncestr=$sign_package['noncestr'];
-        $url=$sign_package['url'];
+        //$url=$sign_package['url'];
         $signature=$sign_package['signature'];
         $jsapi_ticket=$sign_package['jsapi_ticket'];
         //dd($jsapi_ticket);
@@ -139,6 +139,7 @@ class IndexController extends Controller
         $com = Input::get('com');
         $emp = Input::get('emp');
         $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
+        $url=$geturl . '?com=' . $com . '&&emp=' . $emp;
         $useable_type = 'company';
         if ($emp != '') {
             $employee = Employee::find($emp);
