@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -56,19 +57,31 @@ class SecurityController extends Controller
 
     }
 
-    public function binding($param = null)
+    /**
+     * 第三方绑定
+     *
+     * @param null $driver
+     * @return view
+     */
+    public function binding($driver = null)
     {
-        if ($param) {
-            return Socialite::with($param)->redirect();
+        if ($driver) {
+            Config::set('services.' . $driver . '.redirect', 'http://mp.gbpen.com/security/binding/' . $driver . '/callback');
+            return Socialite::with($driver)->redirect();
         }
         return view('home.security.binding')->with([
             'user' => Auth::user(),
         ]);
     }
 
-    public function postBinding()
-    {
 
+    /**
+     *
+     */
+    public function bindingCallback($driver)
+    {
+        $oauthUser = Socialite::with($driver)->user();
+        dd($oauthUser);
     }
 
     public function password()

@@ -222,7 +222,12 @@ class AuthController extends Controller
             return redirect()->back()->with('error', '该微信已绑定其他账号');
         } else {
             $user = User::find(Auth::id());
-            $user->oauth_weixin = $data['unionid'];
+
+            if (!$user->oauth_weixin) {
+                $user->oauth_weixin = $data['unionid'];
+            } else {
+                return redirect()->back()->with('error', '绑定失败');
+            }
             if (!$user->nickname) {
                 $user->nickname = $data['nickname'];
             }

@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript">
-  // 跳转PC页面
-  {if $site_another_url}
-      if (!navigator.userAgent.match(/AppleWebKit.*Mobile.*/)) {
-          location.href = '{$site_another_url}';
-      }
-  {/if}
-  </script>
   <meta name="x5-orientation" content="portrait">
   <title>G宝盆--名片</title>
   <meta name="keywords" content="G宝盆--名片" />
