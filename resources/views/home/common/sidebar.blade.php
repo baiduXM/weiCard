@@ -83,27 +83,27 @@
                     {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
                 </ul>
             </div><!--模板中心-->
-            <div class="tree_box nav ">
-                <h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>
-                    <a href="javascript:"><em class="iconFont">&#xe603;</em>安全中心
-                        @if(Request::path() == 'security' || Request::is('security/*'))
-                            <i class="nav-j"></i>
-                        @else
-                            <i></i>
-                        @endif
-                    </a>
-                </h3>
-                <ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>
+            {{--<div class="tree_box nav ">--}}
+                {{--<h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>--}}
+                    {{--<a href="javascript:"><em class="iconFont">&#xe603;</em>安全中心--}}
+                        {{--@if(Request::path() == 'security' || Request::is('security/*'))--}}
+                            {{--<i class="nav-j"></i>--}}
+                        {{--@else--}}
+                            {{--<i></i>--}}
+                        {{--@endif--}}
+                    {{--</a>--}}
+                {{--</h3>--}}
+                {{--<ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>--}}
                     {{--<li {{ Request::path() == 'security' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('security') }}">验证中心</a></li>--}}
                     {{--<li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('security/email') }}">验证邮箱</a></li>--}}
-                    <li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>
-                        <a href="{{ url('security/binding') }}">第三方绑定</a></li>
-                    <li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>
-                        <a href="{{ url('security/password') }}">修改密码</a></li>
-                </ul>
-            </div><!--安全中心-->
+                    {{--<li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('security/binding') }}">第三方绑定</a></li>--}}
+                    {{--<li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('security/password') }}">修改密码</a></li>--}}
+                {{--</ul>--}}
+            {{--</div><!--安全中心-->--}}
         @endif
     </div>
 </div>

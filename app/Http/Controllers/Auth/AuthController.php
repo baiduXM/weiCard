@@ -41,12 +41,18 @@ class AuthController extends Controller
 
     /**
      * 重写登录页面
-     *
+     * 隐藏登录页面，直接微信登录
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getLogin()
     {
-//        dd($this->is_mobile);
+        if (session('is_mobile')) {
+            return $this->redirectToProvider('weixin');
+        } else {
+            return $this->redirectToProvider('weixinweb');
+        }
+
+
         $view = property_exists($this, 'loginView')
             ? $this->loginView : 'auth.authenticate';
 
@@ -141,11 +147,10 @@ class AuthController extends Controller
     /**
      * 第三方登录 - 请求接口
      *
-     * @param Request $request
      * @param $driver
      * @return mixed
      */
-    public function redirectToProvider(Request $request, $driver)
+    public function redirectToProvider($driver)
     {
         return Socialite::with($driver)->redirect();
     }
@@ -195,7 +200,6 @@ class AuthController extends Controller
                 return redirect($this->redirectPath());
             }
         }
-
     }
 
     /**
@@ -214,6 +218,7 @@ class AuthController extends Controller
      *
      * @param $data
      */
+    // TODO:绑定
     protected function bind_weixinweb($data)
     {
         // 检查是否注册
