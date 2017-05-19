@@ -16,88 +16,48 @@ class IndexController extends Controller
 
     public function index()
     {
-//        dd(1);
         return view('home.index');
     }
 
     /* 微信分享JS-API */
-    public function get_curl_contents($url,$method ='GET',$data = array()){
-        if($method == 'POST') {
-            $ch = curl_init();
-            //设置选项，包括URL
-            curl_setopt($ch, CURLOPT_URL, "$url");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);  //定义超时3秒钟
-            // POST数据
-            curl_setopt($ch, CURLOPT_POST, 1);
-            // POST参数
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            //执行并获取url地址的内容
-            $result = curl_exec($ch);
-            //释放curl句柄
-            curl_close($ch);
-        }
-            else{
-            //初始化
-            $ch = curl_init();
-            //设置选项，包括URL
-            curl_setopt($ch, CURLOPT_URL, "$url");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            //执行并获取HTML文档内容
-            $result = curl_exec($ch);
-            //释放curl句柄
-            curl_close($ch);
-            }
-            return $result;
-        }
-
     //获取微信公众号access_token
     public function wx_get_token(){
 
         $AppID ='wx80cfbb9a1b347f47';
         $AppSecret ='002d277233e21b95d367a5161c4a39d8';
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$AppID.'&secret='.$AppSecret;
-        //dd($url);
+        //使用crul模拟
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);//执行发送
         $jsoninfo = json_decode($output, true);
         $access_token = $jsoninfo["access_token"];
-        //dd($access_token);
-        //$res = $this->get_curl_contents($url);
-        //dd($res);
-        //$res = json_decode($res,true);
-        //dd($res);
-        //return $res['access_token'];
-        return $access_token;
+        return $access_token;//access_token有效期未7200s
+
     }
 
-    //获取微信公从号ticket
+    //获取微信公众号jsapi_ticket
     public function wx_get_jsapi_ticket(){
+
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $this->wx_get_token());
-        //dd($url);
-        //$res = $this->get_curl_contents($url);
-        //$res = json_decode($res, true);
+        //使用crul模拟
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);//执行发送
         $jsoninfo = json_decode($output, true);
-        //dd($jsoninfo);
         $jsapi_ticket = $jsoninfo["ticket"];
-        //dd($jsapi_ticket);
         return $jsapi_ticket;
     }
 
+    //生成签名
     public function getSignPackage(){
         $wx = array();
         $wx['AppID'] = 'wx80cfbb9a1b347f47';
@@ -114,38 +74,29 @@ class IndexController extends Controller
         $wx['signature'] = sha1($string);
         return $wx;
     }
-
-
-
-
-
-
-    /* 微信分享JS-API结束 */
+    /* 微信分享JS-API */
 
     /* 名片预览展示 */
     public function cardview()
     {
         $geturl = URL::current();
         $server_name = $_SERVER['SERVER_NAME'];
+        /* 获取分享js-api参数 */
         $sign_package = $this-> getSignPackage();
         $AppID=$sign_package['AppID'];
         $timestamp=$sign_package['timestamp'];
         $noncestr=$sign_package['noncestr'];
-        //$url=$sign_package['url'];
         $signature=$sign_package['signature'];
         $jsapi_ticket=$sign_package['jsapi_ticket'];
-        //dd($jsapi_ticket);
+        /* 获取分享js-api参数结束 */
         $id = Input::get('id');
         $com = Input::get('com');
         $emp = Input::get('emp');
         $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
-        $url=$geturl . '?com=' . $com . '&&emp=' . $emp;
         $useable_type = 'company';
         if ($emp != '') {
             $employee = Employee::find($emp);
-            //dd(11);
             if ($com != '') {
-                //dd(222);
                 $company = Company::find($com);
                 /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
                 $template_id = DB::table('template_useable')->where('useable_type', 'company')->where('useable_id', $com)->pluck('template_id');
@@ -157,6 +108,7 @@ class IndexController extends Controller
                 }
 
             } else {
+
                 $company_id = $employee->company_id;
                 $company = Company::find($company_id);
                 /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
@@ -173,9 +125,6 @@ class IndexController extends Controller
             return redirect()->route('errorview')->with('com', '$com');
         }
         $employee = Employee::find($emp);
-
-
-        //dd($employee);
         return view($template_name . '.index')->with([
             'template_name' => $template_name,
             'employee' => $employee,
@@ -184,7 +133,6 @@ class IndexController extends Controller
             'server_name' => $server_name,
             'AppID'=> $AppID,
             'noncestr'=> $noncestr,
-            'url'=> $url,
             'signature'=> $signature,
             'timestamp'=> $timestamp,
         ]);
