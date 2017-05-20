@@ -92,7 +92,7 @@ class IndexController extends Controller
         $id = Input::get('id');
         $com = Input::get('com');
         $emp = Input::get('emp');
-        //$qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
+        $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
         $useable_type = 'company';
         if ($emp != '') {
             $employee = Employee::find($emp);
@@ -127,12 +127,13 @@ class IndexController extends Controller
         $employee = Employee::find($emp);
         $message="BEGIN:VCARD%0AVERSION:3.0%0AN:".$employee->name."%0ALOGO;VALUE=:http://".$server_name."/".$company->logo."%0ATEL;type=CELL;type=pref:".$employee->mobile."%0AADR;type=WORK;type=pref:".$company->address."%0AORG:".$company->name."%0ATITLE:".$employee->title."%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
         //dd($message);
-        $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+        $mpqrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
         return view($template_name . '.index')->with([
             'template_name' => $template_name,
             'employee' => $employee,
             'company' => $company,
             'qrcodeurl' => $qrcodeurl,
+            'mpqrcodeurl' => $mpqrcodeurl,
             'server_name' => $server_name,
             'AppID'=> $AppID,
             'noncestr'=> $noncestr,
