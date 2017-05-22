@@ -38,6 +38,7 @@
                             window.location.href = "/user";
                         } else {
                             $("input").show();
+                            $(".success").text("");
                             $(".success").addClass("display");
                         }
                     });
