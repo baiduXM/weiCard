@@ -83,7 +83,7 @@
   <a href="javascript:;" class="tel same animated fadeInLeftBig go">一键拨号</a>
   <a href="" class="name same slow fadeInLeftBig go">名片夹</a>
   <a href="" class="follow same slower fadeInRightBig go">关注</a>
-  <a href="" class="share same slowest fadeInRightBig go">分享</a>
+  <a href="" class="share same slowest fadeInRightBig go fxBtn">分享</a>
 </div>
 </div>
 </body>
@@ -101,5 +101,10 @@
   <h2>“扫一扫”我的名片二维码</h2>
   <div class="img2 slowest tada go"><img src="{{ asset('templates/'.$template_name.'/images/c2.png') }}"></div>
   <div class="close"><em></em></div>
+</div>
+<div id="fenxiang">
+  <img src="{{ asset('templates/'.$template_name.'/images/fenxiang.png') }}" alt="分享提示图">
+  <p>点击右上角按钮，分享给朋友</p>
+  <span class="fxClose">[关闭]</span>
 </div>
 </html>

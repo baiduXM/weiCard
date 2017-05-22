@@ -14,7 +14,7 @@ class User extends Authenticatable
 //    ];
     protected $fillable = [
         'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
-        'oauth_weixinweb', 'is_active', 'created_at', 'updated_at', 'deleted_at',
+        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
     ];
 
     protected $hidden = [
@@ -38,12 +38,28 @@ class User extends Authenticatable
     }
 
     /**
+     * 关系模型(一对一) - 名片群
+     */
+    public function group()
+    {
+        return $this->hasOne('App\Models\Group');
+    }
+
+    /**
      * 关系模型(一对多) - 名片夹
      */
     public function cardcases()
     {
         return $this->hasMany('App\Models\Cardcase');
     }
+
+//    /**
+//     * 关系模型(多对多) - 名片群
+//     */
+//    public function groups()
+//    {
+//        return $this->belongsToMany('App\Models\Group', 'group_user');
+//    }
 
     /**
      * 关系模型(一对多) - 标签

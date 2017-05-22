@@ -27,7 +27,11 @@
             <ul class="lo-icon">
                 {{--<li class="icon-q"><a href=""></a></li>--}}
                 {{--<li class="icon-m"><a href=""></a></li>--}}
-                <li class="icon-w"><a href="{{ url('oauth/weixinweb') }}"></a></li>
+                @if(\Illuminate\Support\Facades\Session::get('is_mobile'))
+                    <li class="icon-w"><a href="{{ url('oauth/weixin') }}"></a></li>
+                @else
+                    <li class="icon-w"><a href="{{ url('oauth/weixinweb') }}"></a></li>
+                @endif
             </ul>
         </form>
     </div>

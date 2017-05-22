@@ -40,12 +40,15 @@ class UserController extends Controller
     /**
      * 根据条件获取数据
      *
-     * @return $this
      */
     public function index()
     {
         $query = User::query();
         $params = Input::query();
+//        where(function ($query) use ($request) {
+//            $request->input('email') && $query->where('email', $request->input('email'));
+//            $request->input('name') && $query->where('name', $request->input('name'));
+//        })
         if (!empty($params)) {
             if (!empty($params['column']) && !empty($params['keyword'])) {
                 $search['column'] = $params['column'];

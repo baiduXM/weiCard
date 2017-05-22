@@ -9,17 +9,14 @@ use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
 
 class CardcaseController extends Controller
 {
-    protected $device_type = 'mobile'; // 设备类型
-    protected $is_mobile = false; // 是否是手机
 
     public function __construct()
     {
-
-//          $this->is_mobile = true;
-
+        parent::isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -31,17 +28,27 @@ class CardcaseController extends Controller
 
     /**
      * 首页
-     *
-     * @return $this
      */
     public function index()
     {
-        $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
+        // TODO:后期优化分页
         if ($this->is_mobile) {
+            $cardcases = Cardcase::with(['follower' => function ($query) {
+                $params = Input::query();
+                if (isset($params['name']) && $params['name']!='') {
+                    $query->where('name', 'like', '%' . $params['name'] . '%');
+                }
+            }])->where('user_id', Auth::id())->get();
+            foreach ($cardcases as $key => $cardcase) {
+                if (!$cardcase->follower) {
+                    unset($cardcases[$key]);
+                }
+            }
             return view('mobile.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
         } else {
+            $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
             return view('home.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
@@ -107,7 +114,7 @@ class CardcaseController extends Controller
                 $err_code = 700; // 收藏成功
             }
         }
-        return redirect('cardcase')->with('warning', config('global.msg.' . $err_code));
+        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
     }
 
 

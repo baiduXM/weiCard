@@ -12,6 +12,7 @@ Route::get('/', function () {
 
 /* 前台登录 */
 Route::auth();
+Route::get('login', 'Auth\AuthController@getLogin'); // 重写登录方法
 Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
 
 /* 第三方登录 */
@@ -93,14 +94,17 @@ Route::group(['middleware' => 'auth'], function () {
     /* 模板中心 */
     Route::resource('template', 'Home\TemplateController');
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {
         /* 安全中心->验证邮箱 */
         Route::get('email', ['as' => 'security.email', 'uses' => 'Home\SecurityController@email']);
-        Route::post('email', ['as' => 'security.post_email', 'uses' => 'Home\SecurityController@postEmail']);
+        Route::post('email', ['as' => 'security.postEmail', 'uses' => 'Home\SecurityController@postEmail']);
+
         /* 安全中心->绑定第三方 */
-        Route::get('binding', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
-        Route::post('binding', ['as' => 'security.post_binding', 'uses' => 'Home\SecurityController@postBinding']);
+        Route::get('binding/{driver?}', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
+        Route::get('binding/{driver}/callback', 'Home\SecurityController@bindingCallback');
+
         /* 安全中心->修改密码 */
         Route::get('password', ['as' => 'security.password', 'uses' => 'Home\SecurityController@password']);
         Route::any('postpassword', ['as' => 'security.postpassword', 'uses' => 'Home\SecurityController@postpassword']);
@@ -112,32 +116,33 @@ Route::group(['middleware' => 'auth'], function () {
 /* =====后台管理界面===== */
 /*
  * 资源路由方法restful
- * GET          /photo              index   photo.index     索引
- * GET          /photo/create       create  photo.create    创建
- * POST         /photo              store   photo.store     保存
- * GET          /photo/{photo}      show    photo.show      显示
- * GET          /photo/{photo}/edit edit    photo.edit      编辑
- * PUT/PATCH    /photo/{photo}      update  photo.update    更新
- * DELETE       /photo/{photo}      destroy photo.destroy   删除
+ * GET          /photo                  index       photo.index     索引
+ * GET          /photo/create           create      photo.create    创建
+ * POST         /photo                  store       photo.store     保存
+ * GET          /photo/{photo}          show        photo.show      显示
+ * GET          /photo/{photo}/edit     edit        photo.edit      编辑
+ * PUT/PATCH    /photo/{photo}          update      photo.update    更新
+ * DELETE       /photo/{photo}          destroy     photo.destroy   删除
  */
 /*
- * admin/user
- * admin/user_cardcase/?user_id=
- * admin/user_tag/?user_id=
+ * admin/user 用户管理
+ * admin/user_cardcase/?user_id= 名片夹管理
+ * admin/user_group/?user_id= 名片群管理
+ * admin/user_tag/?user_id= 用户标签管理
  *
- * admin/company
- * admin/company_department/?company_id=
- * admin/company_position/?company_id=
- * admin/company_employee/?company_id=
+ * admin/company 公司管理
+ * admin/company_department/?company_id= 部门管理
+ * admin/company_position/?company_id= 职务管理
+ * admin/company_employee/?company_id= 员工管理
  *
- * admin/template
- * admin/template_tag/?template_id=
+ * admin/template 模板管理
+ * admin/template_tag/?template_id= 模板标签管理
  *
- * admin/manager
+ * admin/manager 客服管理
  *
- * admin/setting
- * admin/setting/safety
- * admin/setting/person
+ * admin/setting 系统设置
+ * admin/setting/safety 安全设置
+ * admin/setting/person 个人设置
  *
  */
 

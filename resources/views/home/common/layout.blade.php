@@ -12,7 +12,6 @@
     <!--[if lt IE 9]>
     <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
     <script src="{{ asset('static/common/js/respond.min.js') }}"></script>
-    <script src="{{ asset('static/home/js/tree-box.js') }}"></script>
     <![endif]-->
     @section('css')
 

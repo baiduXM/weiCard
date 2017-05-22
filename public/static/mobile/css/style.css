@@ -25,8 +25,8 @@ img{max-width:100%;max-height:100%;}
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-#search{border:1px solid #999;border-radius:0.5rem;width:90%;margin: 0.5rem auto;}
-#search input{width:83%;padding-left:0.5rem;height:1.3rem;font-size:0.6rem;line-height:1.3rem;}
+#search{border:1px solid #999;border-radius:0.5rem;width:90%;margin: 0.5rem auto; overflow: hidden}
+#search input{width:70%;padding-left:0.5rem;height:1.3rem;font-size:0.6rem;line-height:1.3rem;float:left;}
 #search button{border:none;background: none;color:#666;font-size:1rem;float:right;line-height:1.3rem;}
 
 

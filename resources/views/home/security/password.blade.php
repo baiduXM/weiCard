@@ -2,10 +2,9 @@
 @section('title', '安全中心')
 @section('content')
     <div id="myCard" >
-        <ul class="cont-nav rt" >
-            <li><a href="">安全中心 > </a></li>
-            <li class="cont-nav-act"><a href="">修改密码</a></li>
-        </ul>
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('security.password') !!}
+        @show
         <ul class="nav nav-tabs" id="myTab">
             <li class="active" >
                 <a href="">修改密码</a>
