@@ -23,15 +23,15 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            <button type="button" class="navbar-toggle collapsed left" data-toggle="collapse"
                     data-target="#sidebar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span> 管理后台</a> <a
-                    class="navbar-brand" href="/" target="_blank"><span>前台页面</span></a>
+            <a class="navbar-brand" href="#"><span>{{ config('global.website.product_name') }}</span></a>
+            <a class="navbar-brand" href="/" target="_blank"><span>前台</span></a>
             {{--用户菜单--}}
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::guard('admin')->guest())
