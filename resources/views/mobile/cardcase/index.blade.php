@@ -1,6 +1,5 @@
 @extends('mobile.common.layout')
 @section('title', '名片夹')
-@stop
 @section('content')
     <div id="search">
         <form action="">
@@ -29,7 +28,7 @@
                         <dl>
                             {{--TODO:跳转名片模板--}}
                             <dt>
-                                <a href="url('/cardview/'.{{ $item->getFollowerType($item->follower_type) }}.-.{{ $item->follower_id }})"><i
+                                <a href="{{ url('cardview/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i
                                             class="iconfont">&#xe62c;</i></a></dt>
                             <dd>详情</dd>
                         </dl>

@@ -31,7 +31,7 @@ Route::post('admin/register', 'Admin\AuthController@postRegister');
 Route::get('admin/logout', 'Admin\AuthController@logout');
 
 /* 名片预览展示 */
-Route::any('cardview', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
+Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Home\IndexController@errorview']);
 
 /* =====用户界面===== */
@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-//    Route::get('cardshow/{id}', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@cardshow']);
+    Route::get('cardcase/show/{type}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {

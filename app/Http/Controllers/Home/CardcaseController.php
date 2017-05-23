@@ -131,7 +131,13 @@ class CardcaseController extends Controller
 
     }
 
-    public function show($id)
+    /**
+     * 展示名片
+     *
+     * @param $type 名片类型，u-个人，e-员工
+     * @return $this
+     */
+    public function show($type)
     {
         return view('admin.cardcase.show')->with([]);
     }

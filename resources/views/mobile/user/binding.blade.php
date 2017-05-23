@@ -18,11 +18,12 @@
 @section('javascript')
     <script>
         $(function () {
-            
+            /* 完善个人资料 */
             $(".edit-btn").click(function () {
                 window.location.href = "/user/edit";
             });
 
+            /* 获取名片 */
             $(".submit-btn").click(function () {
                 var code = $("[name='code']").val();
                 $.ajaxSetup({ // 无form表单时

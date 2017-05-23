@@ -17,7 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
  * 公司   company     public/uploads/company/{$name}/...          url可访问
  * 员工   employee    public/uploads/employee/{$name}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
- * 模板   template    public/templates/{$code}/...                 url可访问
+ * 模板   template    public/templates/{$name}/...                 url可访问
  */
 
 class UploadController extends BaseController

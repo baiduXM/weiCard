@@ -16,6 +16,7 @@ class IndexController extends Controller
 
     public function index()
     {
+//        return redirect('');
         return view('home.index');
     }
 
@@ -23,9 +24,8 @@ class IndexController extends Controller
     //获取微信公众号access_token
     public function wx_get_token()
     {
-
-        $AppID = 'wx80cfbb9a1b347f47';
-        $AppSecret = '002d277233e21b95d367a5161c4a39d8';
+        $AppID = env('WEIXIN_KEY');
+        $AppSecret = env('WEIXIN_SECRET');
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
         //使用crul模拟
         $ch = curl_init();
@@ -38,13 +38,11 @@ class IndexController extends Controller
         $jsoninfo = json_decode($output, true);
         $access_token = $jsoninfo["access_token"];
         return $access_token;//access_token有效期未7200s
-
     }
 
     //获取微信公众号jsapi_ticket
     public function wx_get_jsapi_ticket()
     {
-
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $this->wx_get_token());
         //使用crul模拟
         $ch = curl_init();
@@ -63,7 +61,7 @@ class IndexController extends Controller
     public function getSignPackage()
     {
         $wx = array();
-        $wx['AppID'] = 'wx80cfbb9a1b347f47';
+        $wx['AppID'] = env('WEIXIN_KEY');
         //生成签名的时间戳
         $wx['timestamp'] = time();
         //生成签名的随机串
@@ -79,10 +77,30 @@ class IndexController extends Controller
     }
     /* 微信分享JS-API */
 
-    /* 名片预览展示 */
-    public function cardview()
+    /**
+     * 名片预览展示
+     *
+     * @param $params 名片类型，u-个人，e-员工
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function cardview($params)
     {
+        /* 获取参数 */
+        $param = explode('-', $params);
+        switch ($param[0]) {
+            case 'e':
+                $data['follower_type'] = 'App\Models\Employee';
+                break;
+            case 'u':
+                $data['follower_type'] = 'App\Models\User';
+                break;
+            default:
+                break;
+        }
+        $data['follower_id'] = $param[1];
+//        dd($params);/**/
         $geturl = URL::current();
+//        dd($geturl);
         $server_name = $_SERVER['SERVER_NAME'];
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
