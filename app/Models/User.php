@@ -82,7 +82,7 @@ class User extends Authenticatable
      */
     public function templates()
     {
-        return $this->morphToMany('App\Models\Template', 'useable');
+        return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
     }
 
 

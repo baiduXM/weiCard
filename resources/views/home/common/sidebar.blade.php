@@ -40,7 +40,7 @@
                 <li {{ Request::path() == 'cardcase' ? 'class=active' : '' }}>
                     <a href="{{ url('cardcase') }}">我的名片夹</a></li>
                 {{--<li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>--}}
-                    {{--<a href="{{ url('cardcase/tag') }}">设置标签</a></li>--}}
+                {{--<a href="{{ url('cardcase/tag') }}">设置标签</a></li>--}}
             </ul>
         </div><!--通讯录-->
         <div class="tree_box nav">
@@ -61,7 +61,7 @@
                     <a href="{{ url('company/employee') }}">公司同事</a></li>
                 @if(Auth::user()->company)
                     {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
+                    {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
                 @endif
             </ul>
         </div><!--我的公司-->
@@ -77,32 +77,34 @@
                     </a>
                 </h3>
                 <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
-                    <li {{ Request::path() == 'template' ? 'class=active' : '' }}>
-                        <a href="{{ url('template') }}">收费模板</a></li>
+                    <li {{ Request::path() == 'template/type/u' ? 'class=active' : '' }}>
+                        <a href="{{ url('template/type/u') }}">个人模板</a></li>
+                    <li {{ Request::path() == 'template/type/c' ? 'class=active' : '' }}>
+                        <a href="{{ url('template/type/c') }}">公司模板</a></li>
                     {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
                     {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
                 </ul>
             </div><!--模板中心-->
             {{--<div class="tree_box nav ">--}}
-                {{--<h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>--}}
-                    {{--<a href="javascript:"><em class="iconFont">&#xe603;</em>安全中心--}}
-                        {{--@if(Request::path() == 'security' || Request::is('security/*'))--}}
-                            {{--<i class="nav-j"></i>--}}
-                        {{--@else--}}
-                            {{--<i></i>--}}
-                        {{--@endif--}}
-                    {{--</a>--}}
-                {{--</h3>--}}
-                {{--<ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>--}}
-                    {{--<li {{ Request::path() == 'security' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('security') }}">验证中心</a></li>--}}
-                    {{--<li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('security/email') }}">验证邮箱</a></li>--}}
-                    {{--<li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('security/binding') }}">第三方绑定</a></li>--}}
-                    {{--<li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('security/password') }}">修改密码</a></li>--}}
-                {{--</ul>--}}
+            {{--<h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>--}}
+            {{--<a href="javascript:"><em class="iconFont">&#xe603;</em>安全中心--}}
+            {{--@if(Request::path() == 'security' || Request::is('security/*'))--}}
+            {{--<i class="nav-j"></i>--}}
+            {{--@else--}}
+            {{--<i></i>--}}
+            {{--@endif--}}
+            {{--</a>--}}
+            {{--</h3>--}}
+            {{--<ul class="tree_one" {{ Request::path() == 'security' || Request::is('security/*') ? 'style=display:block;' : '' }}>--}}
+            {{--<li {{ Request::path() == 'security' ? 'class=active' : '' }}>--}}
+            {{--<a href="{{ url('security') }}">验证中心</a></li>--}}
+            {{--<li {{ Request::path() == 'security/email' ? 'class=active' : '' }}>--}}
+            {{--<a href="{{ url('security/email') }}">验证邮箱</a></li>--}}
+            {{--<li {{ Request::path() == 'security/binding' ? 'class=active' : '' }}>--}}
+            {{--<a href="{{ url('security/binding') }}">第三方绑定</a></li>--}}
+            {{--<li {{ Request::path() == 'security/password' ? 'class=active' : '' }}>--}}
+            {{--<a href="{{ url('security/password') }}">修改密码</a></li>--}}
+            {{--</ul>--}}
             {{--</div><!--安全中心-->--}}
         @endif
     </div>

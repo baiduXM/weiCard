@@ -18,6 +18,14 @@ class Template extends Model
     protected $hidden = [
     ];
 
+    /*
+    * 允许url带参数查询字段
+    * 字段=>操作符
+    */
+    public $query = [
+        'type' => '!=',
+    ];
+
     /**
      * 关系模型(多对多，多态) - 用户
      */

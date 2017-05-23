@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-    Route::get('cardcase/show/{type}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
+    Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
@@ -92,8 +92,9 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     /* 模板中心 */
-    Route::resource('template', 'Home\TemplateController');
+    Route::get('template/type/{type}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+//    Route::resource('template', 'Home\TemplateController');
 
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {

@@ -50,6 +50,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        if ($this->is_mobile) {
+            return redirect('cardcase/show');
+        }
         /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
         if (!$user->mobile) {
