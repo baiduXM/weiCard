@@ -35,7 +35,7 @@ class CardcaseController extends Controller
         if ($this->is_mobile) {
             $cardcases = Cardcase::with(['follower' => function ($query) {
                 $params = Input::query();
-                if (isset($params['name']) && $params['name']!='') {
+                if (isset($params['name']) && $params['name'] != '') {
                     $query->where('name', 'like', '%' . $params['name'] . '%');
                 }
             }])->where('user_id', Auth::id())->get();
@@ -134,12 +134,20 @@ class CardcaseController extends Controller
     /**
      * 展示名片
      *
-     * @param $type 名片类型，u-个人，e-员工
+     * @param $type 名片类型，u-个人，e-员工，c-公司
      * @return $this
      */
-    public function show($type)
+    public function show($type = 'e')
     {
-        return view('admin.cardcase.show')->with([]);
+        if ($type == 'e') {
+            $param = $type . '-' . Auth::user()->employee->id;
+        } elseif ($type == 'u') {
+            $param = $type . '-' . Auth::id();
+        }
+        $indexController = new IndexController();
+        return $indexController->cardview($param);
+
+//        return view('admin.cardcase.show')->with([]);
     }
 
     public function edit($id)

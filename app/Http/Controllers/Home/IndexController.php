@@ -80,7 +80,7 @@ class IndexController extends Controller
     /**
      * 名片预览展示
      *
-     * @param $params 名片类型，u-个人，e-员工
+     * @param $params 类型-ID，u-个人，e-员工，
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function cardview($params)
@@ -89,18 +89,32 @@ class IndexController extends Controller
         $param = explode('-', $params);
         switch ($param[0]) {
             case 'e':
-                $data['follower_type'] = 'App\Models\Employee';
+                $data['type'] = 'App\Models\Employee';
+                $person = Employee::find($param[1]);
+                $templates = $person->templates;
+                if (count($templates) <= 0) { // 没有员工模板，使用公司模板
+                    $templates = Employee::find($param[1])->company->templates;
+                }
+                if (count($templates) <= 0) { // 没有公司模板，使用默认模板
+                    $template = Template::where('type', '!=', 1)->first();
+                } else {
+                    $template = $templates[0];
+                }
                 break;
             case 'u':
-                $data['follower_type'] = 'App\Models\User';
+                $data['type'] = 'App\Models\User';
+                $person = User::find($param[1]);
+                $templates = $person->templates;
+                if (count($templates) <= 0) { // 没有个人模板，使用默认模板
+                    $template = Template::where('type', '!=', 2)->first();
+                } else {
+                    $template = $templates[0];
+                }
                 break;
             default:
                 break;
         }
-        $data['follower_id'] = $param[1];
-//        dd($params);/**/
         $geturl = URL::current();
-//        dd($geturl);
         $server_name = $_SERVER['SERVER_NAME'];
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
@@ -108,53 +122,27 @@ class IndexController extends Controller
         $timestamp = $sign_package['timestamp'];
         $noncestr = $sign_package['noncestr'];
         $signature = $sign_package['signature'];
-        $jsapi_ticket = $sign_package['jsapi_ticket'];
-        /* 获取分享js-api参数结束 */
-        $id = Input::get('id');
-        $com = Input::get('com');
-        $emp = Input::get('emp');
-        $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
-        $useable_type = 'company';
-        if ($emp != '') {
-            $employee = Employee::find($emp);
-            if ($com != '') {
-                $company = Company::find($com);
-                /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
-                $template_id = DB::table('template_useable')->where('useable_type', 'company')->where('useable_id', $com)->pluck('template_id');
-                if ($template_id != null) {
-                    $template_name = Template::find($template_id)->pluck('name');
-                    $template_name = $template_name[0];
-                } else {
-                    $template_name = 'W0001PCN01';
-                }
+//        $jsapi_ticket = $sign_package['jsapi_ticket'];
 
-            } else {
-
-                $company_id = $employee->company_id;
-                $company = Company::find($company_id);
-                /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
-                $template_id = DB::table('template_useable')->where('useable_type', 'company')->where('useable_id', $company_id)->pluck('template_id');
-                if ($template_id != null) {
-                    $template_name = Template::find($template_id)->pluck('name');
-                    $template_name = $template_name[0];
-                } else {
-                    $template_name = 'W0001PCN01';
-                }
-
-            }
-        } else {
+        /* 二维码 */
+        $qrcodeurl['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl;
+        if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
-        $employee = Employee::find($emp);
-        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name . "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
+        /* 二维码名片信息 */
+//        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name. "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
+        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $person->name
+            . "%0ALOGO;VALUE=:" . $person->avatar . "%0ATEL;type=CELL;type=pref:" . $person->mobile . "%0AADR;type=WORK;type=pref:"
+            . $person->address . "%0AORG:" . $person->company->name . "%0ATITLE:ceshi%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
         //dd($message);
-        $mpqrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
-        return view($template_name . '.index')->with([
-            'template_name' => $template_name,
-            'employee' => $employee,
-            'company' => $company,
+        $qrcodeurl['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+        return view($template->name . '.index')->with([
+            'template' => $template,
+            'person' => $person,
+            'type' => $param[0],
+//            'employee' => $employee,
+//            'company' => $company,
             'qrcodeurl' => $qrcodeurl,
-            'mpqrcodeurl' => $mpqrcodeurl,
             'server_name' => $server_name,
             'AppID' => $AppID,
             'noncestr' => $noncestr,
@@ -166,6 +154,11 @@ class IndexController extends Controller
     public function errorview()
     {
         return view('errors.errorview');
+    }
+
+    private function wechatShare()
+    {
+
     }
 
 
