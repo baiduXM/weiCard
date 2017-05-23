@@ -51,6 +51,24 @@
                                 </span>
                             @endif
                         </div>
+                        <div class="form-group {{ $errors->has('Template.type') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="type">使用范围</label>
+                            <div class="col-md-6">
+                                @foreach($template->getType() as $item => $value)
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="Template[type]"
+                                                   value="{{ $item }}" {{ old('Template.type') == $item ? 'checked' : '' }}>{{ $value }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @if ($errors->has('Template.type'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Template.type') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- sex性别 -->
 
 
 

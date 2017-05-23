@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="x5-orientation" content="portrait">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta content="telephone=no, email=no" name="format-detection">
     <!-- 启用360浏览器的极速模式(webkit) -->
     <meta name="renderer" content="webkit">
@@ -24,7 +24,8 @@
 
     <link rel="stylesheet" href="{{ asset('static/mobile/css/style.css') }}">
     <link href="{{ asset('static/mobile/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/mobile/css/css.css') }}" rel="stylesheet" type="text/css" />
+{{--    <link href="{{ asset('static/mobile/css/swiper-3.3.1.min.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('static/mobile/css/css.css') }}" rel="stylesheet" type="text/css"/>
 
     <!--[if lt IE 9]>
     <script src="{{ asset('static/common/js/html5shiv.js') }}"></script>
@@ -52,8 +53,10 @@
 
 
 <script type="text/javascript">
-    window.addEventListener('load', function(){
-        setTimeout(function(){ window.scrollTo(0, 1); }, 100);
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            window.scrollTo(0, 1);
+        }, 100);
     });//safari浏览器可以通过此代码来隐藏地址栏
 </script>
 

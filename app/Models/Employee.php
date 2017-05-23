@@ -61,5 +61,12 @@ class Employee extends Model
         return $this->morphMany('App\Models\Cardcase', 'follower');
     }
 
+    /**
+     * 关系模型(多对多,多态) - 模板
+     */
+    public function templates()
+    {
+        return $this->morphToMany('App\Models\Template', 'useable');
+    }
 
 }
