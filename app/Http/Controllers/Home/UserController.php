@@ -52,8 +52,10 @@ class UserController extends Controller
     {
         /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
-        if (!$user->employee) { // 没有绑定员工，先绑定员工
-            return redirect('/user/binding');
+        if (!$user->mobile) {
+            if (!$user->employee && $this->is_mobile) { // 没有绑定员工，先绑定员工
+                return redirect('/user/binding');
+            }
         }
 
         $user_id = $user->id;
