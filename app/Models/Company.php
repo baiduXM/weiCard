@@ -60,6 +60,14 @@ class Company extends Model
     }
 
     /**
+     * 关系模型(一对多) - 产品
+     */
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    /**
      * 关系模型(多对多,多态) - 模板
      */
     public function templates()

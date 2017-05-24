@@ -35,10 +35,9 @@ class ProductController extends Controller
     public function index()
     {
         if (Auth::user()->company) {
-            $product = Product::where('company_id', '=', Auth::user()->company->id)
-                ->paginate();
+            $products = Product::where('company_id', '=', Auth::user()->company->id)->paginate();
             return view('home.product.index')->with([
-                'product' => $product,
+                'products' => $products,
             ]);
         } else {
             return redirect()->back()->with('error', '请先绑定公司');
@@ -52,17 +51,16 @@ class ProductController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
-    {        
-        return $request->file('Product.avatar');
+    {
         /* 验证 */
         $this->validate($request, [
-            'Product.product_name' => 'required',            
+            'Product.product_name' => 'required',
             'Product.product_url' => 'required',
-            'Product.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'Product.product_img' => 'image|max:' . 2 * 1024, // 最大2MB
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.avatar' => '产品图片',
+            'Product.product_img' => '产品图片',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Product');
@@ -72,10 +70,9 @@ class ProductController extends Controller
             }
         }
         /* 获取文件类型 */
-        if ($request->hasFile('Product.avatar')) {            
+        if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $name = time();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type, $name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
         }
 
         $data['company_id'] = Auth::user()->company->id;
@@ -100,7 +97,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::where('id', $id)->first();
         return $product;
     }
 
@@ -154,15 +151,15 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $product = Product::where('id',$id);
+        $product = Product::where('id', $id);
 
         $res = $product->delete();
-        if($res){
+        if ($res) {
             $err_code = 400; // 删除成功
-        }else{
+        } else {
             $err_code = 401; // 删除失败
         }
-        
+
         if ($err_code % 100 == 0) {
             return redirect('company/product')->with('success', config('global.msg.' . $err_code));
         } else {
