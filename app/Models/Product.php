@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $guarded = [
-        'id', 'created_at', 'updated_at', 'deleted_at',
+        'id', 'created_at', 'updated_at', 'deleted_at', 'avatar'
     ];
 
     protected $hidden = [
@@ -29,8 +29,6 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Company');
     }
-
-
 
 
 }

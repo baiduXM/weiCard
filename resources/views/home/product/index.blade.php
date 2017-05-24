@@ -10,14 +10,13 @@
                 <a href="">公司产品</a>
             </li>
         </ul>
-
         <div class="myCard-content rt-main">
             @if(Auth::user()->company)
                 <ul class="b-button">
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
-                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
+                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-product-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
@@ -52,12 +51,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if(!count($product))
+                @if(!count($products))
                     <tr class="b-no-bor">
                         <td colspan="10" class="">无记录</td>
                     </tr>
                 @else
-                    @foreach($product as $item)
+                    @foreach($products as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
                             <td class="b-phone-w"><input type="checkbox" id="box10">
                                 <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
@@ -65,7 +64,7 @@
                             <td class="b-phone-w2">{{ $item->id }}</td>
                             <td class="">{{ $item->product_name }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->product_url }}</td>
-                            <td class="b-td-width b-td-hide">{{ $item->product_img }}</td>
+                            <td class="b-td-width b-td-hide">{{ asset($item->product_img) }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
                                    class="operate-show"
@@ -102,13 +101,13 @@
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p><!--适应手机-->
-                {!! $product ? $product->render() : '' !!}
+            {!! $products ? $products->render() : '' !!}
         </div>
     </div>
 @stop
 @section('modal-extend')
     <!-- 员工 - 添加modal -->
-    <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal fade" id="modal-product-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
                 <div class="modal-header">
@@ -136,9 +135,9 @@
                             </p>
                             <p>
                                 <span>产品图片 : </span>
-                                <input type="file" name="Product[avatar]" placeholder="公司名称">
+                                <input type="file" name="Product[product_img]" placeholder="公司名称">
                                 <span class="error-avatar" style="color: red;"></span>
-                            </p>                            
+                            </p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -205,7 +204,7 @@
                                 <input type="file" name="Product[avatar]" placeholder="公司名称">
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
-                            
+
                         </div>
                         <div class="modal-address-img">
                             <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="" class="info-avatar">

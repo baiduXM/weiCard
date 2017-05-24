@@ -16,6 +16,7 @@ use Illuminate\Routing\Controller as BaseController;
  * 用户   user        public/uploads/user/{$name}/...             url可访问
  * 管理   admin       public/uploads/admin/{$name}/...            url可访问
  * 公司   company     public/uploads/company/{$name}/...          url可访问
+ * 产品   product     public/uploads/company/{$name}/products/...          url可访问
  * 员工   employee    public/uploads/employee/{$name}/...          url可访问
  * 网站   website     public/uploads/website/...                  url可访问
  * 模板   template    public/templates/{$name}/...                 url可访问
@@ -97,11 +98,11 @@ class UploadController extends BaseController
             case 'company':
                 $targetPath = 'uploads/company/' . $name;// .公司名称
                 break;
+            case 'product':
+                $targetPath = 'uploads/company/' . $name . '/products';// .时间戳+随机数
+                break;
             case 'employee':
                 $targetPath = 'uploads/employee/' . $name;// .员工工号
-                break;
-            case 'product':
-                $targetPath = 'uploads/product/' . $name;// .时间戳+随机数
                 break;
             case 'website':
                 $targetPath = 'uploads/website';
@@ -125,7 +126,6 @@ class UploadController extends BaseController
     public function getFileName($file)
     {
         if (is_file($file)) {
-            //dd(6666);
             $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
             $fileArr = ['zip'];
             $videoArr = [];
