@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -61,7 +62,7 @@ class UploadController extends BaseController
         $fileName = $this->getFileName($file);
         if ($targetPath && $fileName) {
 
-            $file->move($targetPath,$fileName);
+            $file->move($targetPath, $fileName);
             /* 解压处理 */
 
             $zip = new \ZipArchive();
@@ -98,6 +99,9 @@ class UploadController extends BaseController
                 break;
             case 'employee':
                 $targetPath = 'uploads/employee/' . $name;// .员工工号
+                break;
+            case 'product':
+                $targetPath = 'uploads/product/' . $name;// .时间戳+随机数
                 break;
             case 'website':
                 $targetPath = 'uploads/website';
@@ -152,5 +156,16 @@ class UploadController extends BaseController
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
+    }
+
+    /**
+     * 删除文件夹
+     *
+     * @param $path 文件夹路径
+     */
+    public function deleteFolder($path)
+    {
+        $file = Storage::disk('template')->deleteDirectory($path);
+        return $file;
     }
 }

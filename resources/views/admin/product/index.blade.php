@@ -1,14 +1,14 @@
 @extends('admin.common.layout')
-@section('title', '模板管理')
+@section('title', '产品管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.template') !!}
+    {!! Breadcrumbs::render('admin.product') !!}
 @stop
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    模板列表
+                    产品管理
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -16,24 +16,22 @@
                         <div class="fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
                                 <button class="btn btn-default operate-batch-delete" type="button"
-                                        name="operate-batch-delete" data-url="template/batch"
+                                        name="operate-batch-delete" data-url="company_product/batch"
                                         data-toggle="modal" data-target=".confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="template/create" title="添加">
+                                        data-url="company_product/create" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="template" title="重置刷新">
+                                        data-url="company_product" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="template" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet"></i></button>
                             </div><!--显示-->
                         </div>
+                        {{--表单容器--}}
                         <div class="fixed-table-container">
                             <div class="fixed-table-body">
                                 <table class="table table-hover">
@@ -50,17 +48,21 @@
                                             <div class="fht-cell"></div>
                                         </th><!--ID-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">编号</div>
+                                            <div class="th-inner" data-name="name">产品名称</div>
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="display_name">名称</div>
+                                            <div class="th-inner" data-name="url">产品链接</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--display_name-->
+                                        </th><!--url-->
                                         <th style="">
-                                            <div class="th-inner" data-name="type">类型</div>
+                                            <div class="th-inner" data-name="img">产品图片</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--type-->
+                                        </th><!--img-->
+                                        <th style="">
+                                            <div class="th-inner" data-name="company">产品公司</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--company-->
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
@@ -76,39 +78,30 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($templates as $item)
+                                    @foreach($products as $item)
                                         <tr>
                                             <td>
                                                 <div class="ckbox ckbox-default">
-                                                    <input type="checkbox" name="id" id="id-{{ $item->id }}"
+                                                    <input type="checkbox" name="id" id="id-{{ $item->id }} "
                                                            value="{{ $item->id }}" class="selectall-item">
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
-                                            <td>{{ $item->name }}</td><!--name-->
-                                            <td>{{ $item->display_name }}</td><!--display_name-->
+                                            <td>{{ $item->product_name }}</td><!--产品名称-->
+                                            <td>{{ $item->product_url }}</td><!--产品链接-->
+                                            <td>{{ $item->product_img }}</td><!--产品图片-->
+                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <!--公司-->
+                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
-                                                @if($item->type == $item::TYPE_ALL)
-                                                    <span class="label label-default">{{ $item->getType($item->type) }}</span>
-                                                @elseif($item->type == $item::TYPE_USER)
-                                                    <span class="label label-success">{{ $item->getType($item->type) }}</span>
-                                                @elseif($item->type == $item::TYPE_COMPANY)
-                                                    <span class="label label-primary">{{ $item->getType($item->type) }}</span>
-                                                @endif
-                                            </td><!--操作-->
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
-                                            <td>
-                                                <a href="{{ url('admin/template/'.$item->id) }}"
-                                                   class="btn btn-white btn-xs" title="详情"><i
-                                                            class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/template/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('admin/company_product/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                <a href="" class="btn btn-danger btn-xs operate-delete"
+                                                <a class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="template/{{ $item->id }}"
-                                                   data-info="{{ $item->name }} 管理员" title="删除">
+                                                   data-url="company_product/{{ $item->id }}"
+                                                   data-info="{{ $item->number }} 产品" title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
                                             </td><!--操作-->
@@ -119,9 +112,9 @@
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $templates->render() !!}
-                                </div>
-                            </div>
+                                    {!! $products->appends($params)->render() !!}
+                                </div><!--跳转页码-->
+                            </div><!--页码-->
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -131,7 +124,11 @@
     </div><!--/.row-->
 @stop
 @section('javascript')
+    <script>
+        $(function () {
 
+        });
+    </script>
 @stop
 
 

@@ -67,7 +67,7 @@
                             <label class="col-md-3 control-label" for="number"><span class="text-danger">*</span>
                                 工号</label>
                             <div class="col-md-6">
-                                <input id="number" name="Employee[number]" type="text" placeholder=""
+                                <input id="number" name="Employee[number]" type="text" placeholder="以字母开头，可包含字母和数字"
                                        class="form-control" value="{{ old('Employee.number') }}">
                             </div>
                             @if ($errors->has('Employee.number'))

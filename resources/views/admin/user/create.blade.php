@@ -16,7 +16,7 @@
                             <label class="col-md-3 control-label" for="name">用户名<span
                                         class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="name" name="User[name]" type="text" placeholder="输入用户名"
+                                <input id="name" name="User[name]" type="text" placeholder="输入用户名（以字母开头，可包含字母和数字）"
                                        class="form-control" value="{{ old('User.name') }}">
                             </div>
                             @if ($errors->has('User.name'))

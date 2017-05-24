@@ -83,6 +83,11 @@ $(function () {
             var _title = relatedTarget.attr('title');
             var modal = $(this);
             modal.find('.modal-title').text(_title);
+            if(_title=='绑定员工'){
+                modal.find('#code').attr('placeholder','获取：公司模块组>员工管理>代码');
+            } else {
+                modal.find('#code').attr('placeholder','获取：公司模块组>用户管理>用户名');
+            }
             modal.find('form').attr('action', _url);
         });
     });
@@ -184,7 +189,7 @@ $(function () {
     });
 
     /* 查看垃圾箱 */
-    $('.operate-retweet').click(function () {
+    $('.operate-dustbin').click(function () {
         alert('功能待开发');
     });
 

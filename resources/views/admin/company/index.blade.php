@@ -29,7 +29,7 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="company" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-retweet" type="button" name="retweet"
+                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
                                         data-url="company" title="垃圾箱">
                                     <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
                             </div><!--显示-->
@@ -126,6 +126,9 @@
                                                     <a href="{{ url('admin/company_employee?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看员工"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>员工</a>
+                                                    <a href="{{ url('admin/company_product?company_id='.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="查看产品"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>产品</a>
                                                     @if($item->deleted_at == null)
                                                         @if($item->status == $item::VERIFIED_ING)
                                                             <a href="{{ url('admin/company/'.$item->id . '/verified') }}"

@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="manager" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-retweet" type="button" name="retweet"
+                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
                                         data-url="manager" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
+                                    <i class="glyphicon glyphicon-retweet"></i></button>
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/manager') }}" method="get">--}}
                                 {{--<div class="input-group pull-right col-md-6">--}}
@@ -162,32 +162,6 @@
     </div><!--/.row-->
 @stop
 @section('javascript')
-    <script>
-        $(function () {
-            $(".operate-add").click(function () {
-                location.href = "{{ url('admin/manager/create') }}";
-            });
-        });
-
-
-    </script>
-
-
-    <script>
-        !function ($) {
-            $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
-                $(this).find('em:first').toggleClass("glyphicon-minus");
-            });
-            $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-        }(window.jQuery);
-
-        $(window).on('resize', function () {
-            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-        })
-        $(window).on('resize', function () {
-            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-        })
-    </script>
 @stop
 
 

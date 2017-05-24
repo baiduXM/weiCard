@@ -19,6 +19,7 @@ class AuthController extends Controller
     protected $registerView = 'admin.auth.register'; // 注册页面
     protected $redirectAfterLogout = '/admin'; // 退出登录后跳转页面
     protected $username = 'username'; // 登录账号
+    protected $redirectPath = '/admin/logout'; // 注册跳转页面
 
     public function __construct()
     {
@@ -53,11 +54,11 @@ class AuthController extends Controller
 
         // 判断登录账号是用户名(name)还是邮箱(email)
         if (filter_var($username, FILTER_VALIDATE_EMAIL)) { // 验证是否邮箱
-            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
+            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password, 'is_active'=>1], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
         } else { // 用户名登录
-            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
+            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password, 'is_active'=>1], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
         }
@@ -82,6 +83,7 @@ class AuthController extends Controller
         return Manager::create([
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
+            'is_active' => 0,
         ]);
 
     }
