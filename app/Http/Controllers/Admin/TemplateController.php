@@ -17,15 +17,30 @@ class TemplateController extends Controller
     public function __construct()
     {
         //首页>模板管理>模板上传
-//        Breadcrumbs::register('admin.template',function ($breadcrumbs){
-//            $breadcrumbs->parent('admin');
-//            $breadcrumbs->push('模板上传',route('admin.template'));
-//        });
+        Breadcrumbs::register('admin.template.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin.template');
+            $breadcrumbs->push('模板上传', route('admin.template.create'));
+        });
         //首页>模板管理>模板展示
         //TODO
     }
 
-    public function uploadtem(Request $request)
+    public function index()
+    {
+        $templates = Template::paginate();
+        return view('admin.template.index')->with([
+            'templates' => $templates,
+        ]);
+    }
+
+    public function create()
+    {
+        return view('admin.template.create')->with([
+            'template' => new Template(),
+        ]);
+    }
+
+    public function store(Request $request)
     {
         $this->validate($request, [
             'Template.name' => 'required',
@@ -70,11 +85,43 @@ class TemplateController extends Controller
         }
     }
 
-    // TODO:
-    public function index()
+    /**
+     * 删除
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
     {
-        return view('admin.template.index')->with([
-            'template' => new Template(),
-        ]);
+        $template = Template::find($id);
+        if ($template->delete()) {
+            $uploadController = new UploadController();
+            $uploadController->deleteFolder($template->file);
+            return redirect('admin/template')->with('success', '删除成功 - ' . $template->name);
+        } else {
+            return redirect('admin/template')->with('error', '删除失败 - ' . $template->name);
+        }
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function batchDestroy(Request $request)
+    {
+        $ids = explode(',', $request->input('ids'));
+        $files_path = Template::whereIn('id', $ids)->pluck('file');
+        $res = Template::whereIn('id', $ids)->delete();
+        if ($res) {
+            $uploadController = new UploadController();
+            foreach ($files_path as $item) {
+                $uploadController->deleteFolder($item);
+            }
+            return redirect('admin/template')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+            return redirect('admin/template')->with('error', '删除失败 - ' . $res . '条记录');
+        }
     }
 }

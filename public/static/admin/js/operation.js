@@ -189,7 +189,7 @@ $(function () {
     });
 
     /* 查看垃圾箱 */
-    $('.operate-retweet').click(function () {
+    $('.operate-dustbin').click(function () {
         alert('功能待开发');
     });
 
