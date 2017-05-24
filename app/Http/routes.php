@@ -98,7 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     /* 模板中心 */
-    Route::get('template/type/{type}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
+    Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
 //    Route::resource('template', 'Home\TemplateController');
 

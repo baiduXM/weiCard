@@ -80,10 +80,8 @@
                     </a>
                 </h3>
                 <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
-                    <li {{ Request::path() == 'template/type/u' ? 'class=active' : '' }}>
-                        <a href="{{ url('template/type/u') }}">个人模板</a></li>
-                    <li {{ Request::path() == 'template/type/c' ? 'class=active' : '' }}>
-                        <a href="{{ url('template/type/c') }}">公司模板</a></li>
+                    <li {{ Request::path() == 'template/type/*' ? 'class=active' : '' }}>
+                        <a href="{{ url('template/type') }}">模板中心</a></li>
                     {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
                     {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
                 </ul>

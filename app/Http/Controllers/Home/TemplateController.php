@@ -19,23 +19,25 @@ class TemplateController extends Controller
      * @param $type
      * @return $this
      */
-    public function index($type)
+    public function index($type = 1)
     {
         $query = Template::query();
-        if ($type == 'c') {
-            $query->where('type', '!=', 1);
-            $current = Auth::user()->company->templates;
-        } elseif ($type == 'u') {
-            $query->where('type', '!=', 2);
+        $query->whereIn('type', [0, $type]);
+        if ($type == 1) { // 个人模板
             $current = Auth::user()->templates;
+        } elseif ($type == 2) {
+            $current = Auth::user()->company->templates;
+        }
+        if (!count($current)) {
+            $current = $query->first();
+        } else {
+            $current = $current[0];
         }
         $templates = $query->paginate(4); // type:0-全部，1-个人，2-公司
-//        if()
-//        dd($current);
         return view('home.template.index')->with([
             'templates' => $templates,
             'current' => $current,
-            'type' => $type,
+            'type' => $type == 1 ? 'u' : 'c',
         ]);
     }
 
