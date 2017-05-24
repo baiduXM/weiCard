@@ -239,6 +239,27 @@ class UserController extends Controller
         }
     }
 
+        /**
+     * 切换状态
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function refresh($id)
+    {
+        $user = User::find($id);
+        if($user->is_active){
+            $user->is_active = 0;
+        }else{
+            $user->is_active = 1;
+        }
+        if ($user->save()) {
+            return redirect('admin/user')->with('success', $user->name.' - 状态切换成功');
+        } else {
+            return redirect('admin/user')->with('error', $user->name.' - 状态切换失败');
+        }
+    }
+
     /**
      * 批量删除
      *

@@ -66,7 +66,7 @@ class ManagerController extends Controller
             'Manager.password' => 'required|confirmed',
             'Manager.email' => 'email|unique:managers,managers.email',
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile',
-            'Manager.nickname' => 'max:30',
+            'Manager.nickname' => 'max:30|min:6',
             'Manager.is_super' => 'boolean',
             'Manager.is_active' => 'boolean',
         ], [], [
@@ -136,7 +136,7 @@ class ManagerController extends Controller
             'Manager.name' => 'required|unique:managers,managers.name,' . $id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Manager.email' => 'email|unique:managers,managers.email,' . $id,
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile,' . $id,
-            'Manager.nickname' => 'max:30',
+            'Manager.nickname' => 'max:30|min:6',
             'Manager.is_super' => 'boolean',
             'Manager.is_active' => 'boolean',
         ], [], [

@@ -34,6 +34,7 @@
                                         data-toggle="popover" data-placement="right"
                                         data-content="暂时无法修改密码">修改密码
                                 </button>
+                                <!-- <a href="{{ url('admin/manager/'. $manager->id .'/password') }}" class="btn btn-default" title="修改密码">修改密码</a> -->
                             </div>
                         </div><!-- password密码 -->
                         <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">

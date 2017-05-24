@@ -178,6 +178,9 @@
                                                    title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
+                                                <a href="{{ url('admin/user/'. $item->id .'/refresh') }}"
+                                                   class="btn btn-success btn-xs" title="切换状态"><i
+                                                            class="glyphicon glyphicon-repeat"></i>切换状态</a>
                                             </td><!--操作-->
                                         </tr>
                                     @endforeach
