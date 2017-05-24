@@ -131,9 +131,16 @@ class IndexController extends Controller
         }
         /* 二维码名片信息 */
 //        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name. "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
-        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $person->name
-            . "%0ALOGO;VALUE=:" . $person->avatar . "%0ATEL;type=CELL;type=pref:" . $person->mobile . "%0AADR;type=WORK;type=pref:"
-            . $person->address . "%0AORG:" . $person->company->name . "%0ATITLE:ceshi%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
+        $message = "BEGIN:VCARD%0A"
+            . "VERSION:3.0%0A"
+            . "N:" . $person->name . "%0A"
+//            . "LOGO;VALUE=:" . $person->avatar . "%0A"
+            . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+//            . "ADR;type=WORK;type=pref:" . $person->address . "%0A"
+//            . "ORG:" . $person->company->name . "%0A"
+//            . "TITLE:ceshi%0A"
+            . "NOTE:来自G宝盆名片.%0A"
+            . "END:VCARD";
         //dd($message);
         $qrcodeurl['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
         return view($template->name . '.index')->with([

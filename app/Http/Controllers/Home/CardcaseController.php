@@ -137,7 +137,7 @@ class CardcaseController extends Controller
      * @param $type 名片类型，u-个人，e-员工，c-公司
      * @return $this
      */
-    public function show($type = 'e')
+    public function show($type = 'u')
     {
         if ($type == 'e') {
             $param = $type . '-' . Auth::user()->employee->id;
