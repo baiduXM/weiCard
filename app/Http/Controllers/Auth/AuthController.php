@@ -48,8 +48,8 @@ class AuthController extends Controller
     {
         if (session('is_mobile')) {
             return $this->redirectToProvider('weixin');
-        } else {
-            return $this->redirectToProvider('weixinweb');
+//        } else {
+//            return $this->redirectToProvider('weixinweb');
         }
 
 

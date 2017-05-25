@@ -2,7 +2,7 @@
  * Created by Hsieh on 2017/4/7.
  */
 $(function () {
-    /* 操作 - 添加 - 员工 */
+    /* 操作 - 添加 */
     $('.operate-create').on('click', function () {
         var _url = $('.form-create').attr('action');
         var _formData = new FormData($('.form-create')[0]);

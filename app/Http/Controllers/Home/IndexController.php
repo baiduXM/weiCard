@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Template;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
 class IndexController extends Controller
@@ -16,16 +13,17 @@ class IndexController extends Controller
 
     public function index()
     {
+//        return redirect('');
         return view('home.index');
     }
 
     /* 微信分享JS-API */
     //获取微信公众号access_token
-    public function wx_get_token(){
-
-        $AppID ='wx80cfbb9a1b347f47';
-        $AppSecret ='002d277233e21b95d367a5161c4a39d8';
-        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$AppID.'&secret='.$AppSecret;
+    public function wx_get_token()
+    {
+        $AppID = env('WEIXIN_KEY');
+        $AppSecret = env('WEIXIN_SECRET');
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
         //使用crul模拟
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -37,12 +35,11 @@ class IndexController extends Controller
         $jsoninfo = json_decode($output, true);
         $access_token = $jsoninfo["access_token"];
         return $access_token;//access_token有效期未7200s
-
     }
 
     //获取微信公众号jsapi_ticket
-    public function wx_get_jsapi_ticket(){
-
+    public function wx_get_jsapi_ticket()
+    {
         $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $this->wx_get_token());
         //使用crul模拟
         $ch = curl_init();
@@ -58,9 +55,10 @@ class IndexController extends Controller
     }
 
     //生成签名
-    public function getSignPackage(){
+    public function getSignPackage()
+    {
         $wx = array();
-        $wx['AppID'] = 'wx80cfbb9a1b347f47';
+        $wx['AppID'] = env('WEIXIN_KEY');
         //生成签名的时间戳
         $wx['timestamp'] = time();
         //生成签名的随机串
@@ -68,7 +66,7 @@ class IndexController extends Controller
         //jsapi_ticket是公众号用于调用微信JS接口的临时票据。正常情况下，jsapi_ticket的有效期为7200秒，通过access_token来获取。
         $wx['jsapi_ticket'] = $this->wx_get_jsapi_ticket();
         //分享的地址，注意：这里是指当前网页的URL，不包含#及其后面部分
-        $wx['url'] = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $wx['url'] = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $string = sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s", $wx['jsapi_ticket'], $wx['noncestr'], $wx['timestamp'], $wx['url']);
         //生成签名
         $wx['signature'] = sha1($string);
@@ -76,75 +74,95 @@ class IndexController extends Controller
     }
     /* 微信分享JS-API */
 
-    /* 名片预览展示 */
-    public function cardview()
+    /**
+     * 名片预览展示
+     *
+     * @param $params 类型-ID，u-个人，e-员工，
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function cardview($params)
     {
+        /* 获取参数 */
+        $param = explode('-', $params);
+        switch ($param[0]) {
+            case 'e':
+                $data['type'] = 'App\Models\Employee';
+                $person = Employee::find($param[1]);
+                $templates = $person->templates;
+                if (count($templates) <= 0) { // 没有员工模板，使用公司模板
+                    $templates = Employee::find($param[1])->company->templates;
+                }
+                if (count($templates) <= 0) { // 没有公司模板，使用默认模板
+                    $template = Template::whereIn('type', [0, 2])->first();
+                } else {
+                    $template = $templates[0];
+                }
+                break;
+            case 'u':
+                $data['type'] = 'App\Models\User';
+                $person = User::find($param[1]);
+                $templates = $person->templates;
+                if (count($templates) <= 0) { // 没有个人模板，使用默认模板
+                    $template = Template::whereIn('type', [0, 1])->first();
+                } else {
+                    $template = $templates[0];
+                }
+                break;
+            default:
+                break;
+        }
         $geturl = URL::current();
         $server_name = $_SERVER['SERVER_NAME'];
         /* 获取分享js-api参数 */
-        $sign_package = $this-> getSignPackage();
-        $AppID=$sign_package['AppID'];
-        $timestamp=$sign_package['timestamp'];
-        $noncestr=$sign_package['noncestr'];
-        $signature=$sign_package['signature'];
-        $jsapi_ticket=$sign_package['jsapi_ticket'];
-        /* 获取分享js-api参数结束 */
-        $id = Input::get('id');
-        $com = Input::get('com');
-        $emp = Input::get('emp');
-        $qrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl . '?com=' . $com . '%26%26emp=' . $emp;
-        $useable_type = 'company';
-        if ($emp != '') {
-            $employee = Employee::find($emp);
-            if ($com != '') {
-                $company = Company::find($com);
-                /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
-                $template_id = DB::table('template_useable')->where('useable_type', 'company')->where('useable_id', $com)->pluck('template_id');
-                if ($template_id != null) {
-                    $template_name = Template::find($template_id)->pluck('name');
-                    $template_name = $template_name[0];
-                } else {
-                    $template_name = 'W0001PCN01';
-                }
+        $sign_package = $this->getSignPackage();
+        $AppID = $sign_package['AppID'];
+        $timestamp = $sign_package['timestamp'];
+        $noncestr = $sign_package['noncestr'];
+        $signature = $sign_package['signature'];
+//        $jsapi_ticket = $sign_package['jsapi_ticket'];
 
-            } else {
-
-                $company_id = $employee->company_id;
-                $company = Company::find($company_id);
-                /*目前模板选择只开放公司选择，默认useable_type=company,TODO*/
-                $template_id = DB::table('template_useable')->where('useable_type', 'company')->where('useable_id', $company_id)->pluck('template_id');
-                if ($template_id != null) {
-                    $template_name = Template::find($template_id)->pluck('name');
-                    $template_name = $template_name[0];
-                } else {
-                    $template_name = 'W0001PCN01';
-                }
-
-            }
-        } else {
+        /* 二维码 */
+        $qrcodeurl['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl;
+        if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
-        $employee = Employee::find($emp);
-        $message="BEGIN:VCARD%0AVERSION:3.0%0AN:".$employee->name."%0ALOGO;VALUE=:http://".$server_name."/".$company->logo."%0ATEL;type=CELL;type=pref:".$employee->mobile."%0AADR;type=WORK;type=pref:".$company->address."%0AORG:".$company->name."%0ATITLE:".$employee->title."%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
+        /* 二维码名片信息 */
+//        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name. "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
+        $message = "BEGIN:VCARD%0A"
+            . "VERSION:3.0%0A"
+            . "N:" . $person->name . "%0A"
+//            . "LOGO;VALUE=:" . $person->avatar . "%0A"
+            . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+//            . "ADR;type=WORK;type=pref:" . $person->address . "%0A"
+//            . "ORG:" . $person->company->name . "%0A"
+//            . "TITLE:ceshi%0A"
+            . "NOTE:来自G宝盆名片.%0A"
+            . "END:VCARD";
         //dd($message);
-        $mpqrcodeurl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
-        return view($template_name . '.index')->with([
-            'template_name' => $template_name,
-            'employee' => $employee,
-            'company' => $company,
+        $qrcodeurl['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+        return view($template->name . '.index')->with([
+            'template' => $template,
+            'person' => $person,
+            'type' => $param[0],
+//            'employee' => $employee,
+//            'company' => $company,
             'qrcodeurl' => $qrcodeurl,
-            'mpqrcodeurl' => $mpqrcodeurl,
             'server_name' => $server_name,
-            'AppID'=> $AppID,
-            'noncestr'=> $noncestr,
-            'signature'=> $signature,
-            'timestamp'=> $timestamp,
+            'AppID' => $AppID,
+            'noncestr' => $noncestr,
+            'signature' => $signature,
+            'timestamp' => $timestamp,
         ]);
     }
 
     public function errorview()
     {
         return view('errors.errorview');
+    }
+
+    private function wechatShare()
+    {
+
     }
 
 

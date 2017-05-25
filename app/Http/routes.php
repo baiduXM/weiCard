@@ -31,7 +31,7 @@ Route::post('admin/register', 'Admin\AuthController@postRegister');
 Route::get('admin/logout', 'Admin\AuthController@logout');
 
 /* 名片预览展示 */
-Route::any('cardview', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
+Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Home\IndexController@errorview']);
 
 /* =====用户界面===== */
@@ -80,11 +80,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+        /* 我的公司->公司产品 */
+        Route::get('product', ['as' => 'company.product.index', 'uses' => 'Home\ProductController@index']);
+        Route::post('product', ['as' => 'company.product.store', 'uses' => 'Home\ProductController@store']);
+        Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Home\ProductController@show']);
+        Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Home\ProductController@update']);
+        Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
     });
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-//    Route::get('cardshow/{id}', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@cardshow']);
+    Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
@@ -92,14 +98,16 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     /* 模板中心 */
-    Route::resource('template', 'Home\TemplateController');
+    Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+//    Route::resource('template', 'Home\TemplateController');
 
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {
         /* 安全中心->验证邮箱 */
         Route::get('email', ['as' => 'security.email', 'uses' => 'Home\SecurityController@email']);
         Route::post('email', ['as' => 'security.postEmail', 'uses' => 'Home\SecurityController@postEmail']);
+
         /* 安全中心->绑定第三方 */
         Route::get('binding/{driver?}', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
         Route::get('binding/{driver}/callback', 'Home\SecurityController@bindingCallback');
@@ -115,32 +123,33 @@ Route::group(['middleware' => 'auth'], function () {
 /* =====后台管理界面===== */
 /*
  * 资源路由方法restful
- * GET          /photo              index   photo.index     索引
- * GET          /photo/create       create  photo.create    创建
- * POST         /photo              store   photo.store     保存
- * GET          /photo/{photo}      show    photo.show      显示
- * GET          /photo/{photo}/edit edit    photo.edit      编辑
- * PUT/PATCH    /photo/{photo}      update  photo.update    更新
- * DELETE       /photo/{photo}      destroy photo.destroy   删除
+ * GET          /photo                  index       photo.index     索引
+ * GET          /photo/create           create      photo.create    创建
+ * POST         /photo                  store       photo.store     保存
+ * GET          /photo/{photo}          show        photo.show      显示
+ * GET          /photo/{photo}/edit     edit        photo.edit      编辑
+ * PUT/PATCH    /photo/{photo}          update      photo.update    更新
+ * DELETE       /photo/{photo}          destroy     photo.destroy   删除
  */
 /*
- * admin/user
- * admin/user_cardcase/?user_id=
- * admin/user_tag/?user_id=
+ * admin/user 用户管理
+ * admin/user_cardcase/?user_id= 名片夹管理
+ * admin/user_group/?user_id= 名片群管理
+ * admin/user_tag/?user_id= 用户标签管理
  *
- * admin/company
- * admin/company_department/?company_id=
- * admin/company_position/?company_id=
- * admin/company_employee/?company_id=
+ * admin/company 公司管理
+ * admin/company_department/?company_id= 部门管理
+ * admin/company_position/?company_id= 职务管理
+ * admin/company_employee/?company_id= 员工管理
  *
- * admin/template
- * admin/template_tag/?template_id=
+ * admin/template 模板管理
+ * admin/template_tag/?template_id= 模板标签管理
  *
- * admin/manager
+ * admin/manager 客服管理
  *
- * admin/setting
- * admin/setting/safety
- * admin/setting/person
+ * admin/setting 系统设置
+ * admin/setting/safety 安全设置
+ * admin/setting/person 个人设置
  *
  */
 
@@ -156,6 +165,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::delete('batch', ['as' => 'admin.user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
         Route::post('{id}/binding', ['as' => 'admin.user.binding', 'uses' => 'Admin\UserController@binding']);
+        Route::get('{id}/refresh', ['as' => 'admin.user.refresh', 'uses' => 'Admin\UserController@refresh']);
         Route::delete('{id}/binding', ['as' => 'admin.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
     });
     Route::resource('user', 'Admin\UserController');
@@ -184,14 +194,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     /* 员工管理 */
     Route::resource('company_employee', 'Admin\EmployeeController');
     Route::group(['prefix' => 'company_employee'], function () {
-        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+        Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });
 
-    /* 模板管理 */
-    Route::resource('template', 'Admin\TemplateController');
-    Route::group(['prefix' => 'template'], function () {
-        Route::any('uploadtem', ['as' => 'admin.template.uploadtem', 'uses' => 'Admin\TemplateController@uploadtem']);
+    /* 产品管理 */
+    Route::group(['prefix' => 'company_product'], function () {
+        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
     });
+    Route::resource('company_product', 'Admin\ProductController');    
+
+    /* 模板管理 */
+    Route::group(['prefix' => 'template'], function () {
+        Route::delete('batch', ['as' => 'admin.template.batchDestroy', 'uses' => 'Admin\TemplateController@batchDestroy']);
+    });
+    Route::resource('template', 'Admin\TemplateController');
 
     /* 标签管理 */
     Route::resource('template_tag', 'Admin\TagController');

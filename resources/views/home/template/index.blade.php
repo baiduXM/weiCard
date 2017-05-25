@@ -1,14 +1,14 @@
 @extends('home.common.layout')
 @section('title', '模板')
 @section('content')
-    <div id="myCard" >
-        <ul class="cont-nav rt" >
+    <div id="myCard">
+        <ul class="cont-nav rt">
             <li><a href="">模板中心 > </a></li>
             <li class="cont-nav-act"><a href="">收费模板</a></li>
         </ul>
         <ul class="nav nav-tabs" id="myTab">
-            <li class="active" >
-                <a href=""   >收费模板</a>
+            <li class="active">
+                <a href="">收费模板</a>
             </li>
         </ul>
         <div class="myCard-content rt-main">
@@ -28,25 +28,27 @@
             </ul>
             --}}
             <div class="mb-main">
-                 @if($templates)
+                @if($templates)
                     @foreach($templates as $item)
-                <dl class="col-lg-3 col-sm-4 col-md-6 col-xs-6">
-                    <dt><img src="{{ $item->file.'/screenshot.jpg' }}" alt=""><a href="{{ url('template/change/'.$item->id) }}"><i class="iconFont">&#xe62e;</i></a></dt>
-                    <dd >
-                        {{--
-                        <a href="javascript:" data-toggle="modal" data-target=".bs10"><i class="iconFont">&#xe613;</i></a>
-                        <a href=""><i class="iconFont">&#xe632;</i></a>
-                        <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont">&#xe6d3;</i></a>
-                        --}}
-                        @if($item->name == $template_name)
-                        <span class="red">已选中</span>
-                        @endif
-                        <span>{{ $item->name }}</span>
-                        {{--
-                        <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont"></i></a>
-                        --}}
-                    </dd>
-                </dl>
+                        <dl class="col-lg-3 col-sm-4 col-md-6 col-xs-6">
+                            <dt><img src="{{ asset($item->file.'/screenshot.jpg') }}" alt=""><a
+                                        href="{{ url('template/change/'.$type.'-'.$item->id) }}"><i class="iconFont">&#xe62e;</i></a>
+                            </dt>
+                            <dd>
+                                {{--
+                                <a href="javascript:" data-toggle="modal" data-target=".bs10"><i class="iconFont">&#xe613;</i></a>
+                                <a href=""><i class="iconFont">&#xe632;</i></a>
+                                <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont">&#xe6d3;</i></a>
+                                --}}
+                                @if($item->name == $current->name)
+                                    <span class="red">已选中</span>
+                                @endif
+                                <span>{{ $item->display_name }}</span>
+                                {{--
+                                <a href="javascript:" data-toggle="modal" data-target=".bs3"><i class="iconFont"></i></a>
+                                --}}
+                            </dd>
+                        </dl>
                     @endforeach
                 @endif
 

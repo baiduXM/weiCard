@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
@@ -18,6 +19,7 @@ class UserController extends Controller
 
     public function __construct()
     {
+        parent::isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -48,8 +50,16 @@ class UserController extends Controller
      */
     public function index()
     {
+        if ($this->is_mobile) {
+            return redirect('cardcase/show');
+        }
         /* 匹配用户查询所属名片 */
         $user = User::find(Auth::id());
+        if (!$user->mobile) {
+            if (!$user->employee && $this->is_mobile) { // 没有绑定员工，先绑定员工
+                return redirect('/user/binding');
+            }
+        }
 
         $user_id = $user->id;
         if (Auth::user()->employee) {
@@ -65,10 +75,6 @@ class UserController extends Controller
             'employee_id' => $employee_id,
             'company_id' => $company_id,
         ]);
-//        $user = User::find(Auth::id());
-//        return view('home.user.index')->with([
-//            'user' => $user,
-//        ]);
     }
 
     /**
@@ -141,18 +147,30 @@ class UserController extends Controller
      */
     public function binding(Request $request)
     {
-        if ($request->isMethod('POST')) { // 通过原始代码进行绑定
-            $code = $request->input('code');
-        }
-        if ($request->isMethod('GET')) { // 通过URL进行绑定
-            $code = Input::query('code');
-        }
-        $user = new User();
-        $res = $user->binding($code, Auth::id());
-        if ($res % 100 == 0) {
-            return redirect('user')->with('success', config('global.msg.' . $res));
+        if ($this->is_mobile) {
+            if ($request->ajax()) {
+                $code = $request->input('code');
+                $user = new User();
+                $res = $user->binding($code, Auth::id());
+                Config::set('global.ajax.err', $res);
+                Config::set('global.ajax.msg', config('global.msg.' . $res));
+                return Config::get('global.ajax');
+            }
+            return view('mobile.user.binding');
         } else {
-            return redirect()->back()->with('error', config('global.msg.' . $res));
+            if ($request->isMethod('POST')) { // 通过原始代码进行绑定
+                $code = $request->input('code');
+            }
+            if ($request->isMethod('GET')) { // 通过URL进行绑定
+                $code = Input::query('code');
+            }
+            $user = new User();
+            $res = $user->binding($code, Auth::id());
+            if ($res % 100 == 0) {
+                return redirect('user')->with('success', config('global.msg.' . $res));
+            } else {
+                return redirect()->back()->with('error', config('global.msg.' . $res));
+            }
         }
     }
 

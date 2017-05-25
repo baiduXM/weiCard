@@ -81,7 +81,7 @@ class CompanyController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z0-9]+([A-Za-z0-9])*$/',
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.homepage' => 'url',
@@ -109,7 +109,8 @@ class CompanyController extends Controller
         }
 
         /* 默认添加审核通过 */
-        $data['status'] = 1;
+        // $data['status'] = 1;
+        $data['status'] = 0;
         $data['manager_id'] = Auth::guard('admin')->id();
         $data['verified_at'] = date('Y-m-d H:i:s', time());
 
