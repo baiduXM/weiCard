@@ -94,10 +94,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
     Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
+    Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     /* 名片夹->标签 */
-    Route::group(['prefix' => 'cardcase'], function () {
-        Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);
-    });
+//    Route::group(['prefix' => 'cardcase'], function () {
+//        Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);
+//    });
 
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
@@ -203,7 +204,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::group(['prefix' => 'company_product'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
     });
-    Route::resource('company_product', 'Admin\ProductController');    
+    Route::resource('company_product', 'Admin\ProductController');
 
     /* 模板管理 */
     Route::group(['prefix' => 'template'], function () {

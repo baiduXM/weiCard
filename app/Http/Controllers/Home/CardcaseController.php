@@ -118,6 +118,46 @@ class CardcaseController extends Controller
         return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
     }
 
+    public function unfollow(Request $request, $params)
+    {
+        /* 获取参数 */
+        $param = explode('-', $params);
+        switch ($param[0]) {
+            case 'e':
+                $data['follower_type'] = 'App\Models\Employee';
+                break;
+            case 'u':
+                $data['follower_type'] = 'App\Models\User';
+                break;
+            default:
+                break;
+        }
+        $data['follower_id'] = $param[1];
+        $data['user_id'] = Auth::id();
+
+        /* 查看数据库是否有数据 */
+        $query = Cardcase::query();
+        foreach ($data as $key => $value) {
+            $query->where($key, $value);
+        }
+        $cardcase = $query->first();
+        /* ajax收藏 */
+//        if ($request->ajax()) {
+        if ($cardcase) { // 有，删除
+            if ($cardcase->delete()) {
+                $err_code = 750; // 取消收藏成功
+            } else {
+                $err_code = 751; // 取消收藏失败
+            }
+        }
+//        Config::set('global.ajax.err', $err_code);
+//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+//        return Config::get('global.ajax');
+//        }
+        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
+
+    }
+
 
     public function create()
     {
