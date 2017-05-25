@@ -33,10 +33,10 @@ class CardcaseController extends Controller
     {
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $cardcases = Cardcase::with(['follower' => function ($query) {
-                $params = Input::query();
-                if (isset($params['name']) && $params['name'] != '') {
-                    $query->where('name', 'like', '%' . $params['name'] . '%');
+            $word = Input::query('word') ? Input::query('word') : '';
+            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+                if (isset($word) && $word != '') {
+                    $query->where('nickname', 'like', '%' . $word . '%');
                 }
             }])->where('user_id', Auth::id())->get();
             foreach ($cardcases as $key => $cardcase) {
@@ -46,9 +46,10 @@ class CardcaseController extends Controller
             }
             return view('mobile.cardcase.index')->with([
                 'cardcases' => $cardcases,
+                'word' => $word,
             ]);
         } else {
-            $cardcases = Cardcase::where('user_id', Auth::id())->paginate();
+            $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('home.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);

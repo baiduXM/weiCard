@@ -21,7 +21,7 @@
                             </tr>
                             <tr>
                                 <th class="text-right">姓名</th>
-                                <td>{{ $employee->name }}</td>
+                                <td>{{ $employee->nickname }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">头像</th>
