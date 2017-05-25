@@ -90,7 +90,7 @@
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->product_name }}</td><!--产品名称-->
                                             <td>{{ $item->product_url }}</td><!--产品链接-->
-                                            <td>{{ $item->product_img }}</td><!--产品图片-->
+                                            <td align="center"><img style="width:128px;height:142px;margin:0 auto;" src="{{ asset($item->product_img) }}" alt=""> </td><!--产品图片-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->

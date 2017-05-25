@@ -194,14 +194,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     /* 员工管理 */
     Route::resource('company_employee', 'Admin\EmployeeController');
     Route::group(['prefix' => 'company_employee'], function () {
-        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+        Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });
 
     /* 产品管理 */
-    Route::resource('company_product', 'Admin\ProductController');
     Route::group(['prefix' => 'company_product'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
     });
+    Route::resource('company_product', 'Admin\ProductController');    
 
     /* 模板管理 */
     Route::group(['prefix' => 'template'], function () {

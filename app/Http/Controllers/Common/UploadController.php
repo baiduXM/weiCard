@@ -99,7 +99,7 @@ class UploadController extends BaseController
                 $targetPath = 'uploads/company/' . $name;// .公司名称
                 break;
             case 'product':
-                $targetPath = 'uploads/company/' . $name . '/products';// .时间戳+随机数
+                $targetPath = 'uploads/company/' . $name . '/products';// .公司目录下的产品
                 break;
             case 'employee':
                 $targetPath = 'uploads/employee/' . $name;// .员工工号

@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function __construct()
     {
 
-        // 首页 > 员工列表
+        // 首页 > 产品列表
         Breadcrumbs::register('admin.product', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.company');
             $breadcrumbs->push('产品列表', route('admin.company_product.index'));

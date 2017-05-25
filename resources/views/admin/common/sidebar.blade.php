@@ -54,6 +54,10 @@
                     <a href="{{ url('admin/company_employee') }}"><span
                                 class="glyphicon glyphicon-stats"></span>员工管理</a>
                 </li>
+                <li class="{{ Request::path() == 'admin/company_product' || Request::is('admin/company_product/*')  ? 'active' : '' }}">
+                    <a href="{{ url('admin/company_product') }}"><span
+                                class="glyphicon glyphicon-stats"></span>产品管理</a>
+                </li>
             </ul>
         </li>
 

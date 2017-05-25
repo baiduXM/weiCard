@@ -97,6 +97,9 @@ class CompanyController extends Controller
             'Company.email' => 'email|unique:companies,companies.email,' . $id,
             'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
             'Company.description' => 'max:255',
+            'Company.coordinate_lng' => 'max:255',
+            'Company.coordinate_lat' => 'max:255',
+            'Company.homepage' => 'url:true',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -105,6 +108,9 @@ class CompanyController extends Controller
             'Company.email' => '公司邮箱',
             'Company.telephone' => '公司电话',
             'Company.description' => '公司简介',
+            'Company.coordinate_lng' => '坐标（经度）',
+            'Company.homepage' => '公司网址',
+
         ]);
         /* 获取字段类型 */
         $data = $request->input('Company');

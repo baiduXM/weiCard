@@ -22,10 +22,8 @@
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
                     {{--<ul class="b-sort none">--}}
-                    {{--<li><a href="">按名字排序</a></li>--}}
-                    {{--<li><a href="">按职位排序</a></li>--}}
-                    {{--<li><a href="">按部门排序</a></li>--}}
-                    {{--<li><a href="">按入职时间排序</a></li>--}}
+                    {{--<li><a href="">按名称排序</a></li>--}}
+                    {{--<li><a href="">按时间排序</a></li>--}}
                     {{--</ul>--}}
                     {{--</li>--}}
                     {{--<li class="b-btn-bor"><a href="">查询字段<i class="iconFont">&#xe618;</i></a></li>--}}
@@ -64,7 +62,7 @@
                             <td class="b-phone-w2">{{ $item->id }}</td>
                             <td class="">{{ $item->product_name }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->product_url }}</td>
-                            <td class="b-td-width b-td-hide">{{ asset($item->product_img) }}</td>
+                            <td class="b-td-width b-td-hide"><img style="width:128px;height:142px;" src="{{ asset($item->product_img) }}" alt=""> </td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
                                    class="operate-show"
@@ -106,7 +104,7 @@
     </div>
 @stop
 @section('modal-extend')
-    <!-- 员工 - 添加modal -->
+    <!-- 产品 - 添加modal -->
     <div class="modal fade" id="modal-product-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
@@ -135,8 +133,8 @@
                             </p>
                             <p>
                                 <span>产品图片 : </span>
-                                <input type="file" name="Product[product_img]" placeholder="公司名称">
-                                <span class="error-avatar" style="color: red;"></span>
+                                <input type="file" name="Product[product_img]" placeholder="">
+                                <span class="error-product_img" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -162,9 +160,10 @@
                     <div class="modal-address">
                         <p><span>产品名称 : </span><input type="text" name="info-product_name" value="" readonly></p>
                         <p><span>产品链接 : </span><input type="text" name="info-product_url" value="" readonly></p>
+                        <p><span>创建时间 : </span><input type="text" name="info-created_at" value="" readonly></p>
                     </div>
                     <div class="modal-address-img">
-                        <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
+                        <img name="info-product_img" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
                         {{--<img name="info-avatar" src="../uploads/company/STQ564/img1493984327.jpg" alt="">--}}
                     </div>
                 </div>
@@ -201,13 +200,13 @@
                             </p>
                             <p>
                                 <span>产品图片 : </span>
-                                <input type="file" name="Product[avatar]" placeholder="公司名称">
-                                <span class="error-avatar" style="color: red;"></span>
+                                <input type="file" name="Product[product_img]" placeholder="">
+                                <span class="error-product_img" style="color: red;"></span>
                             </p>
 
                         </div>
                         <div class="modal-address-img">
-                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="" class="info-avatar">
+                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="" class="info-product_img">
                         </div>
                     </div>
                     <div class="modal-footer">

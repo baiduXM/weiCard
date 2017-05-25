@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Template;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 
 class IndexController extends Controller
@@ -96,7 +93,7 @@ class IndexController extends Controller
                     $templates = Employee::find($param[1])->company->templates;
                 }
                 if (count($templates) <= 0) { // 没有公司模板，使用默认模板
-                    $template = Template::where('type', '!=', 1)->first();
+                    $template = Template::whereIn('type', [0, 2])->first();
                 } else {
                     $template = $templates[0];
                 }
@@ -106,7 +103,7 @@ class IndexController extends Controller
                 $person = User::find($param[1]);
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有个人模板，使用默认模板
-                    $template = Template::where('type', '!=', 2)->first();
+                    $template = Template::whereIn('type', [0, 1])->first();
                 } else {
                     $template = $templates[0];
                 }
@@ -118,14 +115,9 @@ class IndexController extends Controller
         $server_name = $_SERVER['SERVER_NAME'];
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
-        $AppID = $sign_package['AppID'];
-        $timestamp = $sign_package['timestamp'];
-        $noncestr = $sign_package['noncestr'];
-        $signature = $sign_package['signature'];
-//        $jsapi_ticket = $sign_package['jsapi_ticket'];
 
         /* 二维码 */
-        $qrcodeurl['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl;
+        $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl;
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
@@ -142,19 +134,13 @@ class IndexController extends Controller
             . "NOTE:来自G宝盆名片.%0A"
             . "END:VCARD";
         //dd($message);
-        $qrcodeurl['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+        $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
         return view($template->name . '.index')->with([
-            'template' => $template,
-            'person' => $person,
-            'type' => $param[0],
-//            'employee' => $employee,
-//            'company' => $company,
-            'qrcodeurl' => $qrcodeurl,
-            'server_name' => $server_name,
-            'AppID' => $AppID,
-            'noncestr' => $noncestr,
-            'signature' => $signature,
-            'timestamp' => $timestamp,
+            'template' => $template, // 模板数据
+            'person' => $person, // 对象，用户/员工
+            'type' => $param[0], // 类型
+            'qrcodeimg' => $qrcodeimg, // 二维码图片
+            'sign_package' => $sign_package, // 微信签名包
         ]);
     }
 

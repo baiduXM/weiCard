@@ -147,7 +147,6 @@ class CardcaseController extends Controller
         $indexController = new IndexController();
         return $indexController->cardview($param);
 
-//        return view('admin.cardcase.show')->with([]);
     }
 
     public function edit($id)

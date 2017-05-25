@@ -34,6 +34,7 @@
             <p class="pass-error show">{{ $errors->first('Company.logo') }}</p>
         @endif
 
+        {{--
         <div>
             <span>地址: </span>
             <input type="text" name="Company[address]" placeholder=""
@@ -42,7 +43,7 @@
         @if ($errors->has('Company.address'))
             <p class="pass-error show">{{ $errors->first('Company.address') }}</p>
         @endif
-
+        --}}
         <div>
             <span>邮箱: </span>
             <input type="email" name="Company[email]" placeholder=""
@@ -61,6 +62,16 @@
             <p class="pass-error show">{{ $errors->first('Company.telephone') }}</p>
         @endif
 
+        <div>
+            <span>公司网址: </span>
+            <input type="url" name="Company[homepage]" placeholder=""
+                   value="{{ old('Company.homepage') ? old('Company.homepage') : $company->homepage }}">
+
+        </div>
+        @if ($errors->has('Company.homepage'))
+            <p class="pass-error show">{{ $errors->first('Company.homepage') }}</p>
+        @endif
+
         <div class="user-j">
             <span>公司简介: </span>
             <textarea name="Company[description]"
@@ -70,9 +81,27 @@
             <p class="pass-error show">{{ $errors->first('Company.description') }}</p>
         @endif
 
+        <div>
+            <span>地址：</span>
+            <input id="where" name="Company[address]" type="text" value="{{ old('Company.address') ? old('Company.address') : $company->address }}">
+            <input style="width:70px;height:35px;border:1px solid gray"type="button" value="搜索" onClick="sear(document.getElementById('where').value);" />
+            <p><输入完地址后，点击搜索，用鼠标在地图上点击定位></p>
+            {{--经度：--}}
+            <input id="lon" name="Company[coordinate_lng]" type="hidden" value="{{ old('Company.coordinate_lng') ? old('Company.coordinate_lng') : $company->coordinate_lng }}">
+            {{--纬度：--}}
+            <input id="lat" name="Company[coordinate_lat]" type="hidden" value="{{ old('Company.coordinate_lat') ? old('Company.coordinate_lat') : $company->coordinate_lat }}" >
+            <div style="width:600px;height:400px;border:1px solid gray" id="container"></div>
+        </div>
+        @if ($errors->has('Company.address'))
+            <p class="pass-error show">{{ $errors->first('Company.address') }}</p>
+        @endif
+
         <input type="submit" value="更新">
         <input type="reset" value="重置">
 
     </div>
 
 </form>
+{{--百度地图JavaScript API--}}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script>
+<script src="{{ asset('static/common/js/map.api.js') }}"></script>
