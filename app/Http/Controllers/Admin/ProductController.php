@@ -168,6 +168,8 @@ class ProductController extends Controller
     {
         $product = Product::where('id',$id)->first();
         if ($product->delete()) {
+            $uploadController = new UploadController();
+            $uploadController->deleteFile($product->product_img);
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $product->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $product->id);
@@ -183,8 +185,13 @@ class ProductController extends Controller
     public function batchDestroy(Request $request)
     {
         $ids = explode(',', $request->input('ids'));
+        $files_path = Product::whereIn('id', $ids)->pluck('product_img');
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
+            $uploadController = new UploadController();
+            foreach ($files_path as $item) {
+                $uploadController->deleteFile($item);
+            }
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');

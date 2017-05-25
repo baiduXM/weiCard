@@ -155,6 +155,8 @@ class ProductController extends Controller
 
         $res = $product->delete();
         if ($res) {
+            $uploadController = new UploadController();
+            $uploadController->deleteFile($product->product_img);
             $err_code = 400; // 删除成功
         } else {
             $err_code = 401; // 删除失败
