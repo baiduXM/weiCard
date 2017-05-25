@@ -111,13 +111,11 @@ class IndexController extends Controller
             default:
                 break;
         }
-        $geturl = URL::current();
-        $server_name = $_SERVER['SERVER_NAME'];
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
-
         /* 二维码 */
-        $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $geturl;
+        $url = url('cardview/' . $param[0] . '-' . $person->id);
+        $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
