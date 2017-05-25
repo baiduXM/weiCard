@@ -86,6 +86,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Home\ProductController@show']);
         Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Home\ProductController@update']);
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
+        /* 我的公司->公司职位 */
+        Route::get('position', ['as' => 'company.position.index', 'uses' => 'Home\PositionController@index']);
     });
 
     /* 名片夹 */

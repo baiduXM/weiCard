@@ -60,6 +60,8 @@
                         <a href="{{ url('company') }}">我的公司</a></li>
                     <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
+                    <li {{ Request::path() == 'company/position' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/position') }}">公司职位</a></li>
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     @if(Auth::user()->company)
