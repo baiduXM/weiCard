@@ -25,6 +25,18 @@ class ProductController extends Controller
             $breadcrumbs->push('产品列表', route('admin.company_product.index'));
         });
 
+        // 首页 > 产品列表 > 添加
+        Breadcrumbs::register('admin.product.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin.product');
+            $breadcrumbs->push('添加', route('admin.company_product.create'));
+        });
+
+        // 首页 > 产品列表 > 编辑
+        Breadcrumbs::register('admin.product.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('admin.product');
+            $breadcrumbs->push('编辑', route('admin.company_product.edit', $id));
+        });
+
     }
 
     /**
@@ -90,8 +102,7 @@ class ProductController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Product.avatar')) {
             $uploadController = new UploadController();
-            $name = time();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type,$name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type,Auth::user()->company->name);
         }
 
         /* 添加 */
@@ -172,7 +183,6 @@ class ProductController extends Controller
     public function batchDestroy(Request $request)
     {
         $ids = explode(',', $request->input('ids'));
-        file_put_contents('del.txt', json_encode($ids));
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
