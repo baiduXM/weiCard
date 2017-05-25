@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => 'public',
 
     /*
     |--------------------------------------------------------------------------
@@ -43,22 +43,22 @@ return [
 
     'disks' => [
 
+        'public' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'visibility' => 'public',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
 
-        'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'visibility' => 'public',
-        ],
-
-        'template' => [
-            'driver' => 'local',
-            'root' => public_path(),
-            'visibility' => 'public',
-        ],
+//        'public' => [
+//            'driver' => 'local',
+//            'root' => storage_path('app/public'),
+//            'visibility' => 'public',
+//        ],
 
         's3' => [
             'driver' => 's3',

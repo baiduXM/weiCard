@@ -162,10 +162,21 @@ class UploadController extends BaseController
      * 删除文件夹
      *
      * @param $path 文件夹路径
+     * @return boolean 是否删除成功，true/false
      */
     public function deleteFolder($path)
     {
-        $file = Storage::disk('template')->deleteDirectory($path);
-        return $file;
+        return Storage::disk('public')->deleteDirectory($path);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param string /array $files 文件名，字符串/数组
+     * @return boolean 是否删除成功，true/false
+     */
+    public function deleteFile($files)
+    {
+        return Storage::disk('public')->delete($files);
     }
 }
