@@ -3,7 +3,7 @@
 @section('content')
     <div id="search">
         <form action="">
-            <input name="name" type="text" placeholder="姓名">
+            <input name="word" type="text" placeholder="姓名" value="{{ $word }}">
             <button class="iconfont" type="submit">&#xe615;</button>
         </form>
     </div>

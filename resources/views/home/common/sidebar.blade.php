@@ -60,6 +60,8 @@
                         <a href="{{ url('company') }}">我的公司</a></li>
                     <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
+                    <li {{ Request::path() == 'company/position' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/position') }}">公司职位</a></li>
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     @if(Auth::user()->company)
@@ -80,10 +82,10 @@
                     </a>
                 </h3>
                 <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
-                    <li {{ Request::path() == 'template/type/*' ? 'class=active' : '' }}>
-                        <a href="{{ url('template/type') }}">模板中心</a></li>
-                    {{--<li {{ Request::path() == 'template/free' ? 'class=active' : '' }}>--}}
-                    {{--<a href="{{ url('template/free') }}">免费模板</a></li>--}}
+                    <li {{ Request::path() == 'template/type/1' ? 'class=active' : '' }}>
+                        <a href="{{ url('template/type/1') }}">个人模板</a></li>
+                    <li {{ Request::path() == 'template/type/2' ? 'class=active' : '' }}>
+                        <a href="{{ url('template/type/2') }}">公司模板</a></li>
                 </ul>
             </div><!--模板中心-->
         @endif

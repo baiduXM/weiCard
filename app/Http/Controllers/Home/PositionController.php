@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
 
-class ProductController extends Controller
+class PositionController extends Controller
 {
-
-    protected $path_type = 'product'; // 文件路径保存分类
 
     public function __construct()
     {
@@ -21,9 +18,9 @@ class ProductController extends Controller
         Breadcrumbs::setView('vendor/breadcrumbs');
 
         // 我的公司 > 公司产品
-        Breadcrumbs::register('company.product', function ($breadcrumbs) {
+        Breadcrumbs::register('company.position', function ($breadcrumbs) {
             $breadcrumbs->parent('company');
-            $breadcrumbs->push('公司产品', route('company.product.index'));
+            $breadcrumbs->push('公司产品', route('company.position.index'));
         });
     }
 
@@ -35,9 +32,9 @@ class ProductController extends Controller
     public function index()
     {
         if (Auth::user()->company) {
-            $products = Product::where('company_id', '=', Auth::user()->company->id)->paginate();
-            return view('home.product.index')->with([
-                'products' => $products,
+            $positions = Position::where('company_id', '=', Auth::user()->company->id)->paginate();
+            return view('home.position.index')->with([
+                'positions' => $positions,
             ]);
         } else {
             return redirect()->back()->with('error', '请先绑定公司');
@@ -155,8 +152,6 @@ class ProductController extends Controller
 
         $res = $product->delete();
         if ($res) {
-            $uploadController = new UploadController();
-            $uploadController->deleteFile($product->product_img);
             $err_code = 400; // 删除成功
         } else {
             $err_code = 401; // 删除失败

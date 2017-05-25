@@ -92,7 +92,7 @@ class EmployeeController extends Controller
             'Employee.department_id' => '',
             'Employee.position_id' => '',
             'Employee.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.name' => 'required',
+            'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
@@ -100,7 +100,7 @@ class EmployeeController extends Controller
             'Employee.department_id' => '部门',
             'Employee.position_id' => '职位',
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
+            'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
         ]);
@@ -152,7 +152,7 @@ class EmployeeController extends Controller
             'Employee.department_id' => '',
             'Employee.position_id' => '',
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.name' => 'required',
+            'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
@@ -160,7 +160,7 @@ class EmployeeController extends Controller
             'Employee.department_id' => '部门',
             'Employee.position_id' => '职位',
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
+            'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
         ]);

@@ -73,17 +73,17 @@
                             @endif
                         </div><!-- number工号 -->
 
-                        <div class="form-group {{ $errors->has('Employee.name') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
+                        <div class="form-group {{ $errors->has('Employee.nickname') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="nickname"><span class="text-danger">*</span>
                                 姓名</label>
                             <div class="col-md-6">
-                                <input id="name" name="Employee[name]" type="text" placeholder=""
+                                <input id="nickname" name="Employee[nickname]" type="text" placeholder=""
                                        class="form-control"
-                                       value="{{ old('Employee.name') ? old('Employee.name') : $employee->name }}">
+                                       value="{{ old('Employee.nickname') ? old('Employee.nickname') : $employee->nickname }}">
                             </div>
-                            @if ($errors->has('Employee.name'))
+                            @if ($errors->has('Employee.nickname'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Employee.name') }}</strong>
+                                    <strong>{{ $errors->first('Employee.nickname') }}</strong>
                                 </span>
                             @endif
                         </div><!-- name姓名 -->
