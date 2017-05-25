@@ -172,10 +172,10 @@ class UploadController extends BaseController
     /**
      * 删除文件
      *
-     * @param string /array $files 文件名，字符串/数组
+     * @param string|array $files 文件名，字符串/数组
      * @return boolean 是否删除成功，true/false
      */
-    public function deleteFile($files)
+    public function deleteFiles($files)
     {
         return Storage::disk('public')->delete($files);
     }
