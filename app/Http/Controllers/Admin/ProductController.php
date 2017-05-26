@@ -89,7 +89,7 @@ class ProductController extends Controller
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.avatar' => '产品图片',            
+            'Product.avatar' => '产品图片',
         ]);
 
         /* 获取字段类型 */
@@ -102,7 +102,7 @@ class ProductController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Product.avatar')) {
             $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type,Auth::user()->company->name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type, Auth::user()->company->name);
         }
 
         /* 添加 */
@@ -141,7 +141,7 @@ class ProductController extends Controller
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.avatar' => '产品图片',            
+            'Product.avatar' => '产品图片',
         ]);
         $data = $request->input('Product');
 
@@ -166,7 +166,7 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::where('id', $id)->first();
         if ($product->delete()) {
             $uploadController = new UploadController();
             $uploadController->deleteFile($product->product_img);
@@ -189,9 +189,7 @@ class ProductController extends Controller
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
             $uploadController = new UploadController();
-            foreach ($files_path as $item) {
-                $uploadController->deleteFile($item);
-            }
+            $uploadController->deleteFile($files_path);
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');

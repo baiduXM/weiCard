@@ -46,7 +46,7 @@
                     </th>
                     <th class="b-phone-w2"><a href="">工号</a></th>
                     <th class=" "><a href="">姓名</a></th>
-                    <th class="b-phone-w2"><a href="">职位</a></th>
+                    {{--<th class="b-phone-w2"><a href="">职位</a></th>--}}
                     <th class=" b-td-hide"><a href="">电话</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
                     <th class=" b-td-hide"><a href="">操作</a></th>
@@ -64,8 +64,8 @@
                                 <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
-                            <td class="">{{ $item->name }}</td>
-                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>
+                            <td class="">{{ $item->nickname }}</td>
+{{--                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>--}}
                             <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
@@ -139,9 +139,9 @@
                             </p>
                             <p>
                                 <span>姓名 : </span>
-                                <input type="text" name="Employee[name]" placeholder=""
-                                       value="{{ old('Employee.name') ? old('Employee.name') : '' }}">
-                                <span class="error-name" style="color: red;"></span>
+                                <input type="text" name="Employee[nickname]" placeholder=""
+                                       value="{{ old('Employee.nickname') ? old('Employee.nickname') : '' }}">
+                                <span class="error-nickname" style="color: red;"></span>
                             </p>
                             {{--<p>--}}
                             {{--<span>部门 : </span>--}}
@@ -155,7 +155,7 @@
                             {{--</p>--}}
                             <p>
                                 <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]" placeholder="公司名称">
+                                <input type="file" name="Employee[avatar]" >
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
 
@@ -191,7 +191,7 @@
                         {{--<p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>--}}
                         {{--<p><span>职位 : </span><input type="text" name="info-position" value="" readonly></p>--}}
                         <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
-                        <p><span>姓名 : </span><input type="text" name="info-name" value="" readonly></p>
+                        <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
                         <p><span>绑定用户 : </span><input type="text" name="info-user" value="" readonly></p>
                         <p><span>座机 : </span><input type="text" name="info-telephone" value="" readonly></p>
                     </div>
@@ -227,13 +227,13 @@
                             </p>
                             <p>
                                 <span>姓名 : </span>
-                                <input type="text" name="Employee[name]" placeholder="" class="info-name"
-                                       value="{{ old('Employee.name') ? old('Employee.name') : '' }}">
-                                <span class="error-name" style="color: red;"></span>
+                                <input type="text" name="Employee[nickname]" placeholder="" class="info-nickname"
+                                       value="{{ old('Employee.nickname') ? old('Employee.nickname') : '' }}">
+                                <span class="error-nickname" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]" placeholder="公司名称">
+                                <input type="file" name="Employee[avatar]" >
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
                             <p>

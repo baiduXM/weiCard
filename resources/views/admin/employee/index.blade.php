@@ -52,9 +52,9 @@
                                             <div class="fht-cell"></div>
                                         </th><!--number-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">姓名</div>
+                                            <div class="th-inner" data-name="nickname">姓名</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--name-->
+                                        </th><!--nickname-->
                                         <th style="">
                                             <div class="th-inner" data-name="company">公司</div>
                                             <div class="fht-cell"></div>
@@ -93,7 +93,7 @@
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
+                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->nickname.'</a>' : $item->nickname !!}</td>
                                             <!--姓名-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
