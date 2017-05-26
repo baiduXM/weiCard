@@ -17,6 +17,8 @@ class EmployeeController extends Controller
 
     public function __construct()
     {
+        parent::isMobile();
+
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -34,6 +36,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        if ($this->is_mobile) {
+//            dd(1);
+            return view('mobile.employee.index')->with([
+                'employee' => Auth::user()->employee,
+            ]);
+        }
         if (Auth::user()->employee) {
             $employees = Employee::with(['followers' => function ($query) {
                 $query->where('user_id', '=', Auth::id());

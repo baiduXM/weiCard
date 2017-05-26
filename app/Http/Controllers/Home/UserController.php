@@ -58,6 +58,7 @@ class UserController extends Controller
                 $isComplete = false;
             }
             return view('mobile.user.index')->with([
+                'user' => $user,
                 'isComplete' => $isComplete,
             ]);
         }
@@ -113,9 +114,6 @@ class UserController extends Controller
             'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
             'User.fax' => 'max:30',
             'User.nickname' => 'max:30',
-            'User.address' => 'max:255',
-//            'User.fax' => 'number',
-            'User.homepage' => 'url',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address' => 'max:255',
             'User.homepage' => 'url:true',
@@ -130,10 +128,10 @@ class UserController extends Controller
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
             'User.address' => '地址',
+            'User.homepage' => '个人网址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
             'User.description' => '个性签名',
-            'User.homepage' => '个人网址',
         ]);
         $data = $request->input('User');
 
@@ -146,10 +144,12 @@ class UserController extends Controller
         foreach ($data as $key => $value) {
             if ($value !== '') { // TODO:[BUG]如果有个字段原来有字段，后面更新为空，更新不了
                 $user->$key = $data[$key];
+            } elseif ($user->$key != '') {
+                $user->$key = $data[$key];
             }
         }
         if ($user->save()) {
-            return redirect()->back()->with('success', '修改成功');
+            return redirect('user')->with('success', '修改成功');
         } else {
             return redirect()->back();
         }
