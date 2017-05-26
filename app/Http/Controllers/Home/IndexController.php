@@ -97,6 +97,11 @@ class IndexController extends Controller
                 } else {
                     $template = $templates[0];
                 }
+                /* 地图导航地址 */
+                $person['map'] = 'http://api.map.baidu.com/marker?location='
+                               . $person->company['coordinate_lat'] . ','
+                               . $person->company['coordinate_lng'] . '&title=目标位置&content='
+                               . $person->company['address'] . '&output=html';
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -132,6 +137,7 @@ class IndexController extends Controller
             . "NOTE:来自G宝盆名片.%0A"
             . "END:VCARD";
         //dd($message);
+//        dd($person->company->products[0]->product_img);
         $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
         return view($template->name . '.index')->with([
             'template' => $template, // 模板数据
