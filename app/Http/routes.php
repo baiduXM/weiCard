@@ -57,7 +57,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
-    //Route::any('preview', ['as' => 'preview', 'uses' => 'Home\IndexController@preview']);
 
     /* 用户中心 */
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);

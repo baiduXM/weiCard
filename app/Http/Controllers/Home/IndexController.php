@@ -14,7 +14,7 @@ class IndexController extends Controller
     public function index()
     {
 //        return redirect('');
-        return view('home.index');
+//        return view('home.index');
     }
 
     /* 微信分享JS-API */

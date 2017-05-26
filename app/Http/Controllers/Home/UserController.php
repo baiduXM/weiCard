@@ -50,16 +50,18 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = User::find(Auth::id());
         if ($this->is_mobile) {
-            return redirect('cardcase/show');
+            // 判断个人信息是否完整
+            $isComplete = true;
+            if (!$user->mobile || !$user->email || !$user->avatar) {
+                $isComplete = false;
+            }
+            return view('mobile.user.index')->with([
+                'isComplete' => $isComplete,
+            ]);
         }
         /* 匹配用户查询所属名片 */
-        $user = User::find(Auth::id());
-        if (!$user->mobile) {
-            if (!$user->employee && $this->is_mobile) { // 没有绑定员工，先绑定员工
-                return redirect('/user/binding');
-            }
-        }
 
         $user_id = $user->id;
         if (Auth::user()->employee) {
@@ -84,7 +86,12 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
+        if ($this->is_mobile) {
+            return view('mobile.user.edit')->with([
+                'user' => $user,
+            ]);
+        }
         return view('home.user.edit')->with([
             'user' => $user,
         ]);
@@ -101,11 +108,14 @@ class UserController extends Controller
     {
         $id = Auth::id();
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
+//            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
             'User.email' => 'email|unique:users,users.email,' . $id,
             'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
             'User.fax' => 'max:30',
             'User.nickname' => 'max:30',
+            'User.address' => 'max:255',
+//            'User.fax' => 'number',
+            'User.homepage' => 'url',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address' => 'max:255',
             'User.homepage' => 'url:true',
@@ -113,7 +123,7 @@ class UserController extends Controller
 //            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
+//            'User.name' => '账号',
             'User.email' => '邮箱',
             'User.mobile' => '手机',
             'User.fax' => '传真',

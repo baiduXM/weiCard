@@ -175,8 +175,8 @@ class CardcaseController extends Controller
     /**
      * 展示名片
      *
-     * @param $type 名片类型，u-个人，e-员工，c-公司
-     * @return $this
+     * @param string $type  名片类型，u-个人，e-员工，c-公司
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function show($type = 'u')
     {
