@@ -104,8 +104,11 @@ class UserController extends Controller
             'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
             'User.email' => 'email|unique:users,users.email,' . $id,
             'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.fax' => 'max:30',
             'User.nickname' => 'max:30',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.address' => 'max:255',
+            'User.homepage' => 'url:true',
 //            'User.sex' => '',
 //            'User.age' => 'max:255',
             'User.description' => 'max:255',
@@ -113,11 +116,14 @@ class UserController extends Controller
             'User.name' => '账号',
             'User.email' => '邮箱',
             'User.mobile' => '手机',
+            'User.fax' => '传真',
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
+            'User.address' => '地址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
             'User.description' => '个性签名',
+            'User.homepage' => '个人网址',
         ]);
         $data = $request->input('User');
 
