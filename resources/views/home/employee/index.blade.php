@@ -17,8 +17,11 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
-                    <li class="b-btn-bg operate-add"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
+                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
+                    </li>
+                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" data-target="#modal-employee-import"><i
+                                    class="iconFont">&#xe67d;</i>导入Excel</a>
                     </li>
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
@@ -72,14 +75,6 @@
                                    class="operate-show"
                                    data-url="{{ url('company/employee/'.$item->id) }}"><i
                                             class="iconFont">&#xe613;</i></a>
-                                <a href="javascript:void(0);" class="w-icon-margin operate-follow"
-                                   data-url="{{ url('cardcase/follow/e-'.$item->id) }}">
-                                    @if(count($item->followers)<1)
-                                        <i class="iconFont" title="收藏">&#xe634;</i>
-                                    @else
-                                        <i class="iconFont" title="取消收藏">&#xe601;</i>
-                                    @endif
-                                </a>
                                 @if(Auth::user()->company)
                                     <a href="" data-toggle="modal" data-target="#modal-employee-edit"
                                        data-url="{{ url('company/employee/'.$item->id) }}" class="operate-edit"><i
@@ -116,6 +111,35 @@
     </div>
 @stop
 @section('modal-extend')
+    <div class="modal fade" id="modal-employee-import" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal1 modal2 modal8">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">添加部门员工</h4>
+                </div>
+                <form action="{{ url('company/employee/import') }}" method="post" class="form-create"
+                      enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="modal-address">
+                            <p>
+                                <span>excel文件 : </span>
+                                <input type="file" name="file" >
+                                <span class="error-avatar" style="color: red;"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary operate-create">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- 员工 - 添加modal -->
     <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -163,12 +187,17 @@
                                 <input type="file" name="Employee[avatar]" >
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
-
                             <p>
                                 <span>座机 : </span>
                                 <input type="text" name="Employee[telephone]" placeholder=""
                                        value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
                                 <span class="error-telephone" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>手机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder=""
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                                <span class="error-mobile" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -199,6 +228,7 @@
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
                         <p><span>绑定用户 : </span><input type="text" name="info-user" value="" readonly></p>
                         <p><span>座机 : </span><input type="text" name="info-telephone" value="" readonly></p>
+                        <p><span>手机 : </span><input type="text" name="info-mobile" value="" readonly></p>
                     </div>
                     <div class="modal-address-img">
                         <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
@@ -256,6 +286,10 @@
                                                 value="{{ $position->id }}">{{ $position->name }}</option>
                                     @endforeach
                                 </select>
+                                <span>手机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder="" class="info-mobile"
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                                <span class="error-mobile" style="color: red;"></span>
                             </p>
                         </div>
                         <div class="modal-address-img">

@@ -25,9 +25,11 @@
                     {{ $employee->nickname }}{{ $employee->position ? '&nbsp;' . $employee->position->name : '' }}
                 </div>
             </div>
-            <div class="choose_card pr"><a href="{{ url('cardcase/show/e') }}">使用这张名片</a>
-                {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
-            </div>
+            <a href="{{ url('cardcase/show/e') }}">
+                <div class="choose_card pr">使用这张名片
+                    {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                </div>
+            </a>
         @else
             <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg22.png') }}">
                 <div class="card_c_gth pa"><img src="{{ asset('static/mobile/images/gth.png') }}"></div>

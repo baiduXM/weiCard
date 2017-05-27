@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -38,7 +39,6 @@ class EmployeeController extends Controller
     public function index()
     {
         if ($this->is_mobile) {
-//            dd(1);
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
             ]);
@@ -72,11 +72,13 @@ class EmployeeController extends Controller
             'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
+            'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
+            'Employee.mobile' => '手机',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
@@ -127,11 +129,13 @@ class EmployeeController extends Controller
             'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
+            'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
+            'Employee.mobile' => '手机',
         ]);
         $data = $request->input('Employee');
 
@@ -157,12 +161,6 @@ class EmployeeController extends Controller
         return Config::get('global.ajax');
     }
 
-    /*
-     * 删除限制
-     *
-     * 绑定用户不能删除
-     * 公司创始人不能删除
-     */
     /**
      * 删除
      *
@@ -184,6 +182,27 @@ class EmployeeController extends Controller
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
+    }
+
+    /**
+     * 批量添加
+     */
+    public function batchAdd()
+    {
+
+    }
+
+    /**
+     * 导入excel
+     */
+    public function import(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            return $request->file('file');
+        } else {
+            return 1;
+        }
+//        Excel::load();
     }
 
 }
