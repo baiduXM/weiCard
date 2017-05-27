@@ -44,7 +44,7 @@
                         </div><!-- product_name产品名称 -->
 
                         <div class="form-group {{ $errors->has('Product.product_url') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="product_url">
+                            <label class="col-md-3 control-label" for="product_url"><span class="text-danger">*</span>
                                 产品链接</label>
                             <div class="col-md-6">
                                 <input id="product_url" name="Product[product_url]" type="text" placeholder=""
@@ -58,23 +58,23 @@
                             @endif
                         </div><!-- product_url产品链接 -->
 
-                        <div class="form-group {{ $errors->has('Product.avatar') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="avatar">头像</label>
+                        <div class="form-group {{ $errors->has('Product.product_img') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="product_img">产品图片</label>
                             <div class="col-md-6">
-                                <input id="avatar" name="Product[avatar]" type="file">
+                                <input id="product_img" name="Product[product_img]" type="file">
                             </div>
-                            @if ($errors->has('Product.avatar'))
+                            @if ($errors->has('Product.product_img'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Product.avatar') }}</strong>
+                                    <strong>{{ $errors->first('Product.product_img') }}</strong>
                                 </span>
                             @endif
                         </div><!-- avatar头像 -->
-                        @if ($product->avatar)
+                        @if ($product->product_img)
                             <div class="form-group">
                                 <div class="col-md-2 col-md-offset-3">
-                                    <img src="{{ asset($product->avatar) }}" class="img-responsive">
+                                    <img src="{{ asset($product->product_img) }}" class="img-responsive">
                                 </div>
-                            </div><!-- avatar头像 img显示 -->
+                            </div><!-- product_img产品图片-->
                         @endif
 
                         
@@ -82,7 +82,6 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <button type="reset" class="btn btn-warning btn-md">重置</button>
                                 <a href="{{ url()->previous() == url()->current() ? url('admin/company_product') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>

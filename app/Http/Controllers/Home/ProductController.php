@@ -55,7 +55,7 @@ class ProductController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Product.product_name' => 'required',
-            'Product.product_url' => 'required',
+            'Product.product_url' => 'required|url:true',
             'Product.product_img' => 'image|max:' . 2 * 1024, // 最大2MB
         ], [], [
             'Product.product_name' => '产品名称',
@@ -108,7 +108,7 @@ class ProductController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Product.product_name' => 'required',
-            'Product.product_url' => 'required',
+            'Product.product_url' => 'required|url:true',
             'Product.product_img' => 'image|max:' . 2 * 1024, // 最大2MB            
         ], [], [
             'Product.product_name' => '产品名称',
@@ -118,10 +118,10 @@ class ProductController extends Controller
         $data = $request->input('Product');
 
         /* 获取文件类型 */
-        if ($request->hasFile('Product.avatar')) {
+        if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
             $name = time();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type, $name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type, $name);
         }
 
         foreach ($data as $key => $value) {

@@ -90,7 +90,7 @@ class CompanyController extends Controller
         $id = Auth::user()->company->id;
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
+            'Company.name' => 'required|regex:/^[a-zA-Z0-9]+([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|unique:companies,companies.display_name,' . $id,
             'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.address' => 'max:255',

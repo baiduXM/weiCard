@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Position extends Model
 {
     public $timestamps = false;
+    const IS_ONLY = 1; // 是否唯一
 
     protected $guarded = [
         'id',

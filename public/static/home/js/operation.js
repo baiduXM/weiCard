@@ -170,11 +170,20 @@ $(function () {
                 }
             }
             if ($('[' + selector + i + ']').is('input') && n != null) {
-                if (typeof n == 'object') { // 判断是否是关系模型对象
-                    $('[' + selector + i + ']').val(n['name']);
-                } else {
-                    $('[' + selector + i + ']').val(n);
+                if($('[' + selector + i + ']').attr('type')=="checkbox"){
+                    if(n==1){
+                        $('[' + selector + i + ']').prop("checked",true);  
+                    }else{
+                        $('[' + selector + i + ']').prop("checked",false); 
+                    }                   
+                }else{
+                    if (typeof n == 'object') { // 判断是否是关系模型对象
+                        $('[' + selector + i + ']').val(n['name']);
+                    } else {
+                        $('[' + selector + i + ']').val(n);
+                    } 
                 }
+                
             }
         });
     }

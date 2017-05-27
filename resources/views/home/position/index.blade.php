@@ -16,7 +16,7 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
-                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-product-add"><i
+                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-position-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
@@ -42,6 +42,7 @@
                     </th>
                     <th class="b-phone-w2"><a href="">#</a></th>
                     <th class=" "><a href="">职位</a></th>
+                    <th class=" "><a href="">是否唯一</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
                     <th class=" b-td-hide"><a href="">操作</a></th>
                 </tr>
@@ -59,20 +60,23 @@
                             </td>
                             <td class="b-phone-w2">{{ $item->id }}</td>
                             <td class="">{{ $item->name }}</td>
+                            <td>
+                                @if($item->is_only == 1)
+                                    是
+                                @else
+                                    否
+                                @endif
+                            </td>
                             <td class="b-td-icon b-td-hide w-icon">
-                                <a href="" data-toggle="modal" data-target="#modal-employee-show"
-                                   class="operate-show"
-                                   data-url="{{ url('company/product/'.$item->id) }}"><i
-                                            class="iconFont">&#xe613;</i></a>
                                 @if(Auth::user()->company)
                                     <a href="" data-toggle="modal" data-target="#modal-employee-edit"
-                                       data-url="{{ url('company/product/'.$item->id) }}" class="operate-edit"><i
+                                       data-url="{{ url('company/position/'.$item->id) }}" class="operate-edit"><i
                                                 class="iconFont">&#xe632;</i></a>
                                     {{--<a href="javascript:void(0);" class="operate-share"--}}
                                     {{--data-url="{{ url('cardcase/follow/e-'.$item->id) }}"><i class="iconFont">&#xe921;</i></a>--}}
                                     <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
                                        class="operate-delete"
-                                       data-url="{{ url('company/product/'.$item->id) }}">
+                                       data-url="{{ url('company/position/'.$item->id) }}">
                                         <i class="iconFont">&#xe6d3;</i></a>
                                 @endif
                             </td>
@@ -100,37 +104,37 @@
     </div>
 @stop
 @section('modal-extend')
-    <!-- 产品 - 添加modal -->
-    <div class="modal fade" id="modal-product-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <!-- 职位 - 添加modal -->
+    <div class="modal fade" id="modal-position-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">添加公司产品</h4>
+                    <h4 class="modal-title">添加职位</h4>
                 </div>
-                <form action="{{ url('company/product') }}" method="post" class="form-create"
+                <form action="{{ url('company/position') }}" method="post" class="form-create"
                       enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
-                                <span>产品名称 : </span>
-                                <input type="text" name="Product[product_name]" placeholder=""
-                                       value="{{ old('Product.product_name') ? old('Product.product_name') : '' }}">
-                                <span class="error-product_name" style="color: red;"></span>
+                                <span>职位名称 : </span>
+                                <input type="text" name="Position[name]" placeholder=""
+                                       value="{{ old('Position.name') ? old('Position.name') : '' }}">
+                                <span class="error-name" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>产品链接 : </span>
-                                <input type="text" name="Product[product_url]" placeholder=""
-                                       value="{{ old('Product.product_url') ? old('Product.product_url') : '' }}">
-                                <span class="error-product_url" style="color: red;"></span>
+                                <span>职位级别 : </span>
+                                <input type="text" name="Position[level]" placeholder="填写数字，越小级别越高"
+                                       value="{{ old('Position.level') ? old('Position.level') : '' }}">
+                                <span class="error-level" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>产品图片 : </span>
-                                <input type="file" name="Product[product_img]" placeholder="">
-                                <span class="error-product_img" style="color: red;"></span>
+                                <span>是否唯一 : </span>
+                                <input type="checkbox" name="Position[is_only]" value="1" style="display:block;height:13px;" />是
+                                <span class="error-is_only" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -142,31 +146,7 @@
             </div>
         </div>
     </div>
-    <!-- 产品 - 查看modal -->
-    <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">查看</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="modal-address">
-                        <p><span>产品名称 : </span><input type="text" name="info-product_name" value="" readonly></p>
-                        <p><span>产品链接 : </span><input type="text" name="info-product_url" value="" readonly></p>
-                        <p><span>创建时间 : </span><input type="text" name="info-created_at" value="" readonly></p>
-                    </div>
-                    <div class="modal-address-img">
-                        <img name="info-product_img" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
-                        {{--<img name="info-avatar" src="../uploads/company/STQ564/img1493984327.jpg" alt="">--}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 产品 - 编辑modal -->
+    <!-- 职位 - 编辑modal -->
     <div class="modal fade" id="modal-employee-edit" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
@@ -174,7 +154,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">编辑公司产品</h4>
+                    <h4 class="modal-title">编辑职位</h4>
                 </div>
                 <form action="" method="post" class="form-update"
                       enctype="multipart/form-data">
@@ -183,26 +163,22 @@
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
-                                <span>产品名称 : </span>
-                                <input type="text" name="Product[product_name]" placeholder="" class="info-product_name"
-                                       value="{{ old('Product.product_name') ? old('Product.product_name') : '' }}">
-                                <span class="error-product_name" style="color: red;"></span>
+                                <span>职位名称 : </span>
+                                <input type="text" name="Position[name]" placeholder="" class="info-name"
+                                       value="{{ old('Position.name') ? old('Position.name') : '' }}">
+                                <span class="error-name" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>产品链接 : </span>
-                                <input type="text" name="Product[product_url]" placeholder="" class="info-product_url"
-                                       value="{{ old('Product.product_url') ? old('Product.product_url') : '' }}">
-                                <span class="error-product_url" style="color: red;"></span>
+                                <span>职位级别 : </span>
+                                <input type="text" name="Position[level]" placeholder="" class="info-level"
+                                       value="{{ old('Position.level') ? old('Position.level') : '' }}">
+                                <span class="error-level" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>产品图片 : </span>
-                                <input type="file" name="Product[product_img]" placeholder="">
-                                <span class="error-product_img" style="color: red;"></span>
+                                <span>是否唯一 : </span>
+                                <input type="checkbox" name="Position[is_only]" value="1" class="info-is_only" style="display:block;height:13px;" />是
+                                <span class="error-is_only" style="color: red;"></span>
                             </p>
-
-                        </div>
-                        <div class="modal-address-img">
-                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="" class="info-product_img">
                         </div>
                     </div>
                     <div class="modal-footer">

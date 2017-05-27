@@ -129,6 +129,9 @@
                                                     <a href="{{ url('admin/company_product?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看产品"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>产品</a>
+                                                    <a href="{{ url('admin/company_position?company_id='.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="查看职位"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>职位</a>
                                                     @if($item->deleted_at == null)
                                                         @if($item->status == $item::VERIFIED_ING)
                                                             <a href="{{ url('admin/company/'.$item->id . '/verified') }}"

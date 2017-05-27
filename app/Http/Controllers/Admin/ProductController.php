@@ -84,12 +84,12 @@ class ProductController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Product.product_name' => 'required',
-            'Product.product_url' => 'required',
-            'Product.avatar' => 'image|max:' . 2 * 1024, // 最大2MB            
+            'Product.product_url' => 'required|url:true',
+            'Product.product_img' => 'image|max:' . 2 * 1024, // 最大2MB            
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.avatar' => '产品图片',            
+            'Product.product_img' => '产品图片',            
         ]);
 
         /* 获取字段类型 */
@@ -100,9 +100,9 @@ class ProductController extends Controller
         }
 
         /* 获取文件类型 */
-        if ($request->hasFile('Product.avatar')) {
+        if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type,Auth::user()->company->name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type,$data['company_id']);
         }
 
         /* 添加 */
@@ -136,20 +136,20 @@ class ProductController extends Controller
         $product = Product::find($id);
         $this->validate($request, [
             'Product.product_name' => 'required',
-            'Product.product_url' => 'required',
-            'Product.avatar' => 'image|max:' . 2 * 1024, // 最大2MB            
+            'Product.product_url' => 'required|url:true',
+            'Product.product_img' => 'image|max:' . 2 * 1024, // 最大2MB            
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.avatar' => '产品图片',            
+            'Product.product_img' => '产品图片',            
         ]);
         $data = $request->input('Product');
 
         /* 获取文件类型 */
-        if ($request->hasFile('Product.avatar')) {
+        if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
             $name = time();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.avatar'), $this->path_type, $name);
+            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type, $data['company_id']);
         }
 
         foreach ($data as $key => $value) {

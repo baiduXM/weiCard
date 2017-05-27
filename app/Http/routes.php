@@ -88,6 +88,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
         /* 我的公司->公司职位 */
         Route::get('position', ['as' => 'company.position.index', 'uses' => 'Home\PositionController@index']);
+        Route::post('position', ['as' => 'company.position.store', 'uses' => 'Home\PositionController@store']);
+        Route::get('position/{id}', ['as' => 'company.position.show', 'uses' => 'Home\PositionController@show']);
+        Route::post('position/{id}', ['as' => 'company.position.update', 'uses' => 'Home\PositionController@update']);
+        Route::delete('position/{id}', ['as' => 'company.position.destroy', 'uses' => 'Home\PositionController@destroy']);
     });
 
     /* 名片夹 */
@@ -190,18 +194,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     /* 部门管理 */
     Route::resource('company_department', 'Admin\DepartmentController');
 
-    /* 职位管理 */
-    Route::resource('company_position', 'Admin\PositionController');
-
     /* 员工管理 */
     Route::resource('company_employee', 'Admin\EmployeeController');
     Route::group(['prefix' => 'company_employee'], function () {
         Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });
 
+    /* 职位管理 */
+    Route::group(['prefix' => 'company_position'], function () {
+        Route::delete('batch', ['as' => 'admin.position.batchDestroy', 'uses' => 'Admin\PositionController@batchDestroy']);
+    });
+    Route::resource('company_position', 'Admin\PositionController');  
+
     /* 产品管理 */
     Route::group(['prefix' => 'company_product'], function () {
-        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
+        Route::delete('batch', ['as' => 'admin.product.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
     });
     Route::resource('company_product', 'Admin\ProductController');    
 
