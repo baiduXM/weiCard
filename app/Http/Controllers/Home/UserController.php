@@ -50,13 +50,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
         if ($this->is_mobile) {
             // 判断个人信息是否完整
             $isComplete = true;
             if (!$user->mobile || !$user->email || !$user->avatar) {
                 $isComplete = false;
             }
+//            dd($isComplete);
             return view('mobile.user.index')->with([
                 'user' => $user,
                 'isComplete' => $isComplete,

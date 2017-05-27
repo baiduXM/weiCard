@@ -13,11 +13,11 @@
             @foreach($cardcases as $item)
                 <li>
                     <div class="list">
-                        @if($item->follower->avatar)
-                            <img src="{{ asset($item->avatar) }}" alt="">
-                        @else
-                            <img src="{{ asset('static/mobile/images/touxiang.png') }}" alt="">
-                        @endif
+                        {{--@if($item->follower->avatar)--}}
+                            <img src="{{ $item->follower->avatar ? asset($item->follower->avatar) : asset($item->follower->user->avatar)  }}" alt="">
+                        {{--@else--}}
+                            {{--<img src="{{ asset('static/mobile/images/touxiang.png') }}" alt="">--}}
+                        {{--@endif--}}
                         <div class="name">
                             <span>{{ $item->follower->nickname ? $item->follower->nickname : $item->follower->name }}</span>
                             <b>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人' : ($item->follower->company->display_name ? $item->follower->company->display_name : $item->follower->company->name) }}</b>

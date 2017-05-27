@@ -16,7 +16,7 @@
         </ul>
     </div>
     <div class="card_content">
-        @if(!$isComplete)
+        @if($isComplete)
             <div class="cards pr"><img src="{{ asset('static/mobile/images/bg7.png') }}">
                 <div class="cards_tx dtc tc vm pa"><img
                             src="{{ asset($user->avatar) }}"></div>
