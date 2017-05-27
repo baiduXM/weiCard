@@ -164,31 +164,41 @@ class UserController extends Controller
      */
     public function binding(Request $request)
     {
-        if ($this->is_mobile) {
-            if ($request->ajax()) {
-                $code = $request->input('code');
-                $user = new User();
-                $res = $user->binding($code, Auth::id());
-                Config::set('global.ajax.err', $res);
-                Config::set('global.ajax.msg', config('global.msg.' . $res));
-                return Config::get('global.ajax');
-            }
-            return view('mobile.user.binding');
-        } else {
-            if ($request->isMethod('POST')) { // 通过原始代码进行绑定
-                $code = $request->input('code');
-            }
-            if ($request->isMethod('GET')) { // 通过URL进行绑定
-                $code = Input::query('code');
-            }
-            $user = new User();
-            $res = $user->binding($code, Auth::id());
-            if ($res % 100 == 0) {
-                return redirect('user')->with('success', config('global.msg.' . $res));
-            } else {
-                return redirect()->back()->with('error', config('global.msg.' . $res));
-            }
+        $code = $request->input('code');
+        $user = new User();
+        $res = $user->binding($code, Auth::id());
+//        return $res;
+        if ($request->ajax()) {
+            Config::set('global.ajax.err', $res);
+            Config::set('global.ajax.msg', config('global.msg.' . $res));
+            return Config::get('global.ajax');
+//            return redirect()->back();
         }
+        if ($request->isMethod('POST')) { // 通过原始代码进行绑定
+            return redirect()->back()->with('info', config('global.msg.' . $res));
+        }
+        if ($request->isMethod('GET')) { // 通过URL进行绑定
+            return redirect()->back()->with('info', config('global.msg.' . $res));
+        }
+
+//        if ($this->is_mobile) {
+//
+//            return view('mobile.user.binding');
+//        } else {
+//            if ($request->isMethod('POST')) { // 通过原始代码进行绑定
+//                $code = $request->input('code');
+//            }
+//            if ($request->isMethod('GET')) { // 通过URL进行绑定
+//                $code = Input::query('code');
+//            }
+//            $user = new User();
+//            $res = $user->binding($code, Auth::id());
+//            if ($res % 100 == 0) {
+//                return redirect('user')->with('success', config('global.msg.' . $res));
+//            } else {
+//                return redirect()->back()->with('error', config('global.msg.' . $res));
+//            }
+//        }
     }
 
 }
