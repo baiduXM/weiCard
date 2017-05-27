@@ -6,8 +6,8 @@
 @stop
 @section('content')
     {{--<div class="card_top">--}}
-        {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
-                    {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
+    {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
+    {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
     {{--</div>--}}
     <div class="card_choose">
         <ul>
@@ -19,16 +19,18 @@
         @if($isComplete)
             <div class="cards pr">
                 <a href="{{ url('user/edit') }}" title="修改资料">
-                <img src="{{ asset('static/mobile/images/bg7.png') }}">
-                <div class="cards_tx dtc tc vm pa"><img
-                            src="{{ asset($user->avatar) }}"></div>
-                <div class="name pa">• 姓名：{{ $user->nickname }}</div>
-                <div class="tell pa">• 手机：{{ $user->mobile }}</div>
+                    <img src="{{ asset('static/mobile/images/bg7.png') }}">
+                    <div class="cards_tx dtc tc vm pa"><img
+                                src="{{ asset($user->avatar) }}"></div>
+                    <div class="name pa">• 姓名：{{ $user->nickname }}</div>
+                    <div class="tell pa">• 手机：{{ $user->mobile }}</div>
                 </a>
             </div>
-            <div class="choose_card pr"><a href="{{ url('cardcase/show/u') }}">使用这张名片</a>
-                {{--<div class="choose_box pa">已获取成功！</div>--}}
-            </div>
+            <a href="{{ url('cardcase/show/u') }}">
+                <div class="choose_card pr">使用这张名片
+                    {{--<div class="choose_box pa">已获取成功！</div>--}}
+                </div>
+            </a>
         @else
             <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg2.png') }}">
                 <div class="card_c_wephoto pa dtc tc vm"><img src="{{ asset('static/mobile/images/tx1.png') }}"></div>

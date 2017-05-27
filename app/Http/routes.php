@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
         /* 我的公司->员工 */
         Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::post('employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
 //        Route::put('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);

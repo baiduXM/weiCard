@@ -163,6 +163,7 @@ return [
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
 //        Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
         \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
+        Maatwebsite\Excel\ExcelServiceProvider::class, // added Excel插件
 
 
     ],
@@ -215,6 +216,7 @@ return [
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
         'Image' => Intervention\Image\Facades\Image::class, // added 图片处理
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added 第三方登录
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class, // added Excel插件
 
 
     ],

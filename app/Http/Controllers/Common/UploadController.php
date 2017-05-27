@@ -51,10 +51,15 @@ class UploadController extends BaseController
     }
 
 
-//    public function saveFile($file, $path_type = 'user', $name = null)
-
+    /**
+     * 保存
+     *
+     * @param $file
+     * @param string $path_type
+     * @param null $name
+     * @return bool|string
+     */
     public function saveFile($file, $path_type = 'template', $name = null)
-
     {
         $targetPath = $this->getPath($path_type, $name);
         if ($targetPath) {
@@ -65,7 +70,6 @@ class UploadController extends BaseController
 
             $file->move($targetPath, $fileName);
             /* 解压处理 */
-
             $zip = new \ZipArchive();
             if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
                 $zip->extractTo($targetPath . './');
@@ -76,8 +80,9 @@ class UploadController extends BaseController
         } else {
             return false;
         }
-
     }
+
+
 
     /**
      * 获取文件夹路径

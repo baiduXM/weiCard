@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -37,7 +38,6 @@ class EmployeeController extends Controller
     public function index()
     {
         if ($this->is_mobile) {
-//            dd(1);
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
             ]);
@@ -158,12 +158,6 @@ class EmployeeController extends Controller
         return Config::get('global.ajax');
     }
 
-    /*
-     * 删除限制
-     *
-     * 绑定用户不能删除
-     * 公司创始人不能删除
-     */
     /**
      * 删除
      *
@@ -185,6 +179,27 @@ class EmployeeController extends Controller
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
+    }
+
+    /**
+     * 批量添加
+     */
+    public function batchAdd()
+    {
+
+    }
+
+    /**
+     * 导入excel
+     */
+    public function import(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            return $request->file('file');
+        } else {
+            return 1;
+        }
+//        Excel::load();
     }
 
 }
