@@ -165,6 +165,12 @@
                                        value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
                                 <span class="error-telephone" style="color: red;"></span>
                             </p>
+                            <p>
+                                <span>手机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder=""
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                                <span class="error-mobile" style="color: red;"></span>
+                            </p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -194,6 +200,7 @@
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
                         <p><span>绑定用户 : </span><input type="text" name="info-user" value="" readonly></p>
                         <p><span>座机 : </span><input type="text" name="info-telephone" value="" readonly></p>
+                        <p><span>手机 : </span><input type="text" name="info-mobile" value="" readonly></p>
                     </div>
                     <div class="modal-address-img">
                         <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
@@ -241,6 +248,12 @@
                                 <input type="text" name="Employee[telephone]" placeholder="" class="info-telephone"
                                        value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
                                 <span class="error-telephone" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>手机 : </span>
+                                <input type="text" name="Employee[mobile]" placeholder="" class="info-mobile"
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                                <span class="error-mobile" style="color: red;"></span>
                             </p>
                         </div>
                         <div class="modal-address-img">

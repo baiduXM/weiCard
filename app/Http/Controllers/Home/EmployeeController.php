@@ -69,11 +69,13 @@ class EmployeeController extends Controller
             'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
+            'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
+            'Employee.mobile' => '手机',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
@@ -124,11 +126,13 @@ class EmployeeController extends Controller
             'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
+            'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
+            'Employee.mobile' => '手机',
         ]);
         $data = $request->input('Employee');
 
