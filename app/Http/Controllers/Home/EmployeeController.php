@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
@@ -47,8 +48,10 @@ class EmployeeController extends Controller
                 $query->where('user_id', '=', Auth::id());
             }])->where('company_id', '=', Auth::user()->employee->company_id)
                 ->paginate();
+            $positions = Position::where('company_id', '=', Auth::user()->employee->company_id)->get();
             return view('home.employee.index')->with([
                 'employees' => $employees,
+                'positions' => $positions,
             ]);
         } else {
             return redirect()->back()->with('error', '请先绑定公司');
@@ -110,7 +113,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::with('company', 'department', 'user')->find($id);
+        $employee = Employee::with('company', 'department', 'user','position')->find($id);
         return $employee;
     }
 

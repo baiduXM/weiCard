@@ -17,7 +17,7 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
-                    <li class="b-btn-bg"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
+                    <li class="b-btn-bg operate-add"><a href="" data-toggle="modal" data-target="#modal-employee-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
@@ -46,7 +46,7 @@
                     </th>
                     <th class="b-phone-w2"><a href="">工号</a></th>
                     <th class=" "><a href="">姓名</a></th>
-                    {{--<th class="b-phone-w2"><a href="">职位</a></th>--}}
+                    <th class="b-phone-w2"><a href="">职位</a></th>
                     <th class=" b-td-hide"><a href="">电话</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
                     <th class=" b-td-hide"><a href="">操作</a></th>
@@ -65,7 +65,7 @@
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
-{{--                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>--}}
+                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
@@ -148,11 +148,16 @@
                             {{--<input type="text" name="Employee[department]" placeholder=""--}}
                             {{--value="{{ old('Employee.department') ? old('Employee.department') : '' }}">--}}
                             {{--</p>--}}
-                            {{--<p>--}}
-                            {{--<span>职位 : </span>--}}
-                            {{--<input type="text" name="Employee[position]" placeholder=""--}}
-                            {{--value="{{ old('Employee.position') ? old('Employee.position') : '' }}">--}}
-                            {{--</p>--}}
+                            <p>
+                            <span>职位 : </span>
+                                <select class="info-position_id" id="position_id" name="Employee[position_id]">
+                                    <option value="">选择职位</option>
+                                    @foreach($positions as $position)
+                                        <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
+                                                value="{{ $position->id }}">{{ $position->name }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
                             <p>
                                 <span>照片 : </span>
                                 <input type="file" name="Employee[avatar]" >
@@ -189,7 +194,7 @@
                     <div class="modal-address">
                         <p><span>公司 : </span><input type="text" name="info-company" value="" readonly></p>
                         {{--<p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>--}}
-                        {{--<p><span>职位 : </span><input type="text" name="info-position" value="" readonly></p>--}}
+                        <p><span>职位 : </span><input type="text" name="info-position" value="" readonly></p>
                         <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
                         <p><span>绑定用户 : </span><input type="text" name="info-user" value="" readonly></p>
@@ -241,6 +246,16 @@
                                 <input type="text" name="Employee[telephone]" placeholder="" class="info-telephone"
                                        value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
                                 <span class="error-telephone" style="color: red;"></span>
+                            </p>
+                            <p>
+                            <span>职位 : </span>
+                                <select class="info-position_id" id="position_id" name="Employee[position_id]">
+                                    <option value="">选择职位</option>
+                                    @foreach($positions as $position)
+                                        <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
+                                                value="{{ $position->id }}">{{ $position->name }}</option>
+                                    @endforeach
+                                </select>
                             </p>
                         </div>
                         <div class="modal-address-img">

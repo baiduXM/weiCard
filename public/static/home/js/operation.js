@@ -184,6 +184,8 @@ $(function () {
                     } 
                 }
                 
+            }else if($('[' + selector + i + ']').is('select')){
+                $('[' + selector + i + ']').val(n);
             }
         });
     }

@@ -50,7 +50,7 @@ class PositionController extends Controller
                 }
             }
         }
-        $positions = $query->with('company')->paginate();
+        $positions = $query->with('company')->orderBy('level','ASC')->paginate();
         return view('admin.position.index')->with([
             'positions' => $positions,
             'common' => new Common(),

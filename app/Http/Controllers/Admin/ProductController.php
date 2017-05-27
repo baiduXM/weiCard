@@ -192,11 +192,7 @@ class ProductController extends Controller
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
             $uploadController = new UploadController();
-            foreach ($files_path as $item) {
-                if($product->product_img){
-                   $uploadController->deleteFiles($item); 
-                }                
-            }
+            $uploadController->deleteFiles($files_path); 
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
