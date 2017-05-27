@@ -59,8 +59,9 @@ class CardcaseController extends Controller
     /**
      * 收藏/取消收藏
      *
-     * @param $params
-     * @return mixed|string
+     * @param Request $request
+     * @param $params   类型-ID
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function follow(Request $request, $params)
     {
@@ -78,6 +79,14 @@ class CardcaseController extends Controller
         }
         $data['follower_id'] = $param[1];
         $data['user_id'] = Auth::id();
+
+        /* 无法关注自己 */
+        if ($data['follower_id'] == $data['user_id'] && $data['follower_type'] == 'u') {
+            $err_code = 701; // 收藏失败
+            Config::set('global.ajax.err', $err_code);
+            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+            return Config::get('global.ajax');
+        }
 
         /* 查看数据库是否有数据 */
         $query = Cardcase::query();
@@ -175,7 +184,7 @@ class CardcaseController extends Controller
     /**
      * 展示名片
      *
-     * @param string $type  名片类型，u-个人，e-员工，c-公司
+     * @param string $type 名片类型，u-个人，e-员工，c-公司
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function show($type = 'u')

@@ -89,8 +89,8 @@ class User extends Authenticatable
     /**
      * 用户绑定员工
      *
-     * @param $code
-     * @param $id
+     * @param $code 绑定代码
+     * @param $id  用户ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)

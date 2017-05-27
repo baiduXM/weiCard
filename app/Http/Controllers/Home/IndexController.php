@@ -99,9 +99,9 @@ class IndexController extends Controller
                 }
                 /* 地图导航地址 */
                 $person['map'] = 'http://api.map.baidu.com/marker?location='
-                               . $person->company['coordinate_lat'] . ','
-                               . $person->company['coordinate_lng'] . '&title=目标位置&content='
-                               . $person->company['address'] . '&output=html';
+                    . $person->company['coordinate_lat'] . ','
+                    . $person->company['coordinate_lng'] . '&title=目标位置&content='
+                    . $person->company['address'] . '&output=html';
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -128,7 +128,7 @@ class IndexController extends Controller
 //        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name. "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
         $message = "BEGIN:VCARD%0A"
             . "VERSION:3.0%0A"
-            . "N:" . $person->name . "%0A"
+            . "N:" . $person->nickname . "%0A"
 //            . "LOGO;VALUE=:" . $person->avatar . "%0A"
             . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
 //            . "ADR;type=WORK;type=pref:" . $person->address . "%0A"
