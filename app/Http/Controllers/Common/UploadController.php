@@ -67,21 +67,26 @@ class UploadController extends BaseController
         }
         $fileName = $this->getFileName($file);
         if ($targetPath && $fileName) {
-
-            $file->move($targetPath, $fileName);
-            /* 解压处理 */
-            $zip = new \ZipArchive();
-            if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
-                $zip->extractTo($targetPath . './');
-                $zip->close();
-                @unlink($targetPath . '/' . $fileName);
+            $ext = explode('.', $fileName); // 获取文件后缀
+            if ($ext[1] == 'zip') {
+                $file->move($targetPath, $fileName);
+                /* 解压处理 */
+                $zip = new \ZipArchive();
+                if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
+                    $zip->extractTo($targetPath . './');
+                    $zip->close();
+                    @unlink($targetPath . '/' . $fileName);
+                }
+                return $targetPath;
             }
-            return $targetPath;
+            if ($ext[1] != 'zip') {
+                Storage::put($targetPath . '/' . $fileName, $file);
+                return $targetPath . '/' . $fileName;
+            }
         } else {
             return false;
         }
     }
-
 
 
     /**
@@ -132,7 +137,7 @@ class UploadController extends BaseController
     {
         if (is_file($file)) {
             $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
-            $fileArr = ['zip'];
+            $fileArr = ['zip', 'xls', 'xlsx', 'csv'];
             $videoArr = [];
             $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
             if (in_array($extension, $imageArr)) {
