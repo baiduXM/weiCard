@@ -81,7 +81,7 @@ class CardcaseController extends Controller
         $data['user_id'] = Auth::id();
 
         /* 无法关注自己 */
-        if ($data['follower_id'] == $data['user_id'] && $data['follower_type'] == 'u') {
+        if (($param[1] == Auth::id() && $param[0] == 'u') || ($param[0] == 'e' && $param[1] == Auth::user()->employee->id)) {
             $err_code = 701; // 收藏失败
             Config::set('global.ajax.err', $err_code);
             Config::set('global.ajax.msg', config('global.msg.' . $err_code));
