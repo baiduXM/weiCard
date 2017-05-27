@@ -14,9 +14,11 @@
                 <li>
                     <div class="list">
                         {{--@if($item->follower->avatar)--}}
-                            <img src="{{ $item->follower->avatar ? asset($item->follower->avatar) : asset($item->follower->user->avatar)  }}" alt="">
+                        {{--{{ dd($item->follower->user) }}--}}
+                        <img src="{{ $item->follower->avatar ? asset($item->follower->avatar) : asset($item->follower->user->avatar)  }}"
+                             alt="">
                         {{--@else--}}
-                            {{--<img src="{{ asset('static/mobile/images/touxiang.png') }}" alt="">--}}
+                        {{--<img src="{{ asset('static/mobile/images/touxiang.png') }}" alt="">--}}
                         {{--@endif--}}
                         <div class="name">
                             <span>{{ $item->follower->nickname ? $item->follower->nickname : $item->follower->name }}</span>

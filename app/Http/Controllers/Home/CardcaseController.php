@@ -81,14 +81,17 @@ class CardcaseController extends Controller
         $data['user_id'] = Auth::id();
 
         /* 无法关注自己 */
-        if ($param[0] == 'e' && Auth::user()->employee) {
-            if ($param[1] == Auth::user()->employee->id) {
+        if ($param[0] == 'e') {
+            if (Auth::user()->employee && $param[1] == Auth::user()->employee->id) {
                 $err_code = 701; // 收藏失败
             }
-        } elseif ($param[0] == 'u' && $param[1] == Auth::id()) {
-            $err_code = 701; // 收藏失败
+        } elseif ($param[0] == 'u') {
+            if ($param[1] == Auth::id()) {
+                $err_code = 701; // 收藏失败
+            }
         }
-        if ($err_code) {
+//        dd(isset($err_code));
+        if (isset($err_code)) {
             Config::set('global.ajax.err', $err_code);
             Config::set('global.ajax.msg', config('global.msg.' . $err_code));
             return Config::get('global.ajax');
