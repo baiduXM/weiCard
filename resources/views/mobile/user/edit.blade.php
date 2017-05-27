@@ -5,10 +5,10 @@
     <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    <div class="card_top">
-        <a href="{{ url()->previous() }}" class="back fl"><img
-                    src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>
-    </div>
+    {{--<div class="card_top">--}}
+        {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
+                    {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
+    {{--</div>--}}
     <div class="people pr"><img src="{{ asset('static/mobile/images/bg6.png') }}">
         <div class="people_tx pa dtc tc vm"><img src="{{ $user->avatar ? asset($user->avatar) : asset('static/mobile/images/tx2.png') }}"></div>
     </div>
@@ -25,15 +25,15 @@
             <span>邮箱：
                 <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}">
             </span>
-            <span>地址：
-                <input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">
-            </span>
-            <span>主页：
-                <input name="User[homepage]" id="homepage" type="text" class="inputt" value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">
-            </span>
-            <span>传真：
-                <input name="User[fax]" id="fax" type="text" class="inputt" value="{{ old('User.fax') ? old('User.fax') : $user->fax }}">
-            </span>
+            {{--<span>地址：--}}
+                {{--<input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">--}}
+            {{--</span>--}}
+            {{--<span>主页：--}}
+                {{--<input name="User[homepage]" id="homepage" type="text" class="inputt" value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">--}}
+            {{--</span>--}}
+            {{--<span>传真：--}}
+                {{--<input name="User[fax]" id="fax" type="text" class="inputt" value="{{ old('User.fax') ? old('User.fax') : $user->fax }}">--}}
+            {{--</span>--}}
             <span class="bz">签名：
                 <textarea name="User[description]" id="description" rows="7" wrap="virtual" onfocus="ChangeStyle_hb(this,1,5)"
                           onblur="ChangeStyle_hb(this,2,5)">{{ old('User.description') ? old('User.description') : $user->description }}</textarea>

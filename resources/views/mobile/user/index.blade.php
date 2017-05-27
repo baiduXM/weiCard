@@ -5,10 +5,10 @@
     <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    <div class="card_top">
-        <a href="{{ url()->previous() }}" class="back fl"><img
-                    src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>
-    </div>
+    {{--<div class="card_top">--}}
+        {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
+                    {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
+    {{--</div>--}}
     <div class="card_choose">
         <ul>
             <li class="on"><a href="{{ url('user') }}">个人名片</a></li>
