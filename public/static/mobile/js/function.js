@@ -37,10 +37,6 @@ $(document).ready(function () {
 
     $(".qy_name").animate({right: "-0.6rem"}, 600);
 
-    $(".choose_card").click(function () {
-        $(".choose_box").show(100);
-    });
-
     $(".up6").animate({bottom: "0rem"}, 600, function () {
         $(".up2").animate({bottom: "1.05rem"}, 600, function () {
             $(".up1").animate({bottom: "3.65rem"}, 600, function () {

@@ -25,9 +25,9 @@
             <span>邮箱：
                 <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}">
             </span>
-            {{--<span>地址：--}}
-                {{--<input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">--}}
-            {{--</span>--}}
+            <span>地址：
+                <input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">
+            </span>
             {{--<span>主页：--}}
                 {{--<input name="User[homepage]" id="homepage" type="text" class="inputt" value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">--}}
             {{--</span>--}}
