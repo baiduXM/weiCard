@@ -58,6 +58,33 @@
                         <p class="pass-error show">{{ $errors->first('User.mobile') }}</p>
                     @endif
 
+                    <div>
+                        <span>传真: </span>
+                        <input type="text" name="User[fax]" placeholder="传真号码"
+                               value="{{ old('User.fax') ? old('User.fax') : $user->fax }}">
+                    </div>
+                    @if ($errors->has('User.fax'))
+                        <p class="pass-error show">{{ $errors->first('User.fax') }}</p>
+                    @endif
+
+                    <div>
+                        <span>地址: </span>
+                        <input type="text" name="User[address]" placeholder=""
+                               value="{{ old('User.address') ? old('User.address') : $user->address }}">
+                    </div>
+                    @if ($errors->has('User.address'))
+                        <p class="pass-error show">{{ $errors->first('User.address') }}</p>
+                    @endif
+
+                    <div>
+                        <span>网址: </span>
+                        <input type="text" name="User[homepage]" placeholder="个人主页网址"
+                               value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">
+                    </div>
+                    @if ($errors->has('User.homepage'))
+                        <p class="pass-error show">{{ $errors->first('User.homepage') }}</p>
+                    @endif
+
                     <div class="file">
                         <span>头像: </span>
                         <input type="file" name="User[avatar]">

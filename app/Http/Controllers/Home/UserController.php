@@ -50,16 +50,20 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         if ($this->is_mobile) {
-            return redirect('cardcase/show');
+            // 判断个人信息是否完整
+            $isComplete = true;
+            if (!$user->mobile || !$user->email || !$user->avatar) {
+                $isComplete = false;
+            }
+//            dd($isComplete);
+            return view('mobile.user.index')->with([
+                'user' => $user,
+                'isComplete' => $isComplete,
+            ]);
         }
         /* 匹配用户查询所属名片 */
-        $user = User::find(Auth::id());
-        if (!$user->mobile) {
-            if (!$user->employee && $this->is_mobile) { // 没有绑定员工，先绑定员工
-                return redirect('/user/binding');
-            }
-        }
 
         $user_id = $user->id;
         if (Auth::user()->employee) {
@@ -84,7 +88,12 @@ class UserController extends Controller
      */
     public function edit()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
+        if ($this->is_mobile) {
+            return view('mobile.user.edit')->with([
+                'user' => $user,
+            ]);
+        }
         return view('home.user.edit')->with([
             'user' => $user,
         ]);
@@ -101,20 +110,26 @@ class UserController extends Controller
     {
         $id = Auth::id();
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
+//            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
             'User.email' => 'email|unique:users,users.email,' . $id,
             'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.fax' => 'max:30',
             'User.nickname' => 'max:30',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.address' => 'max:255',
+            'User.homepage' => 'url:true',
 //            'User.sex' => '',
 //            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
+//            'User.name' => '账号',
             'User.email' => '邮箱',
             'User.mobile' => '手机',
+            'User.fax' => '传真',
             'User.nickname' => '昵称',
             'User.avatar' => '头像',
+            'User.address' => '地址',
+            'User.homepage' => '个人网址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
             'User.description' => '个性签名',
@@ -130,10 +145,12 @@ class UserController extends Controller
         foreach ($data as $key => $value) {
             if ($value !== '') { // TODO:[BUG]如果有个字段原来有字段，后面更新为空，更新不了
                 $user->$key = $data[$key];
+            } elseif ($user->$key != '') {
+                $user->$key = $data[$key];
             }
         }
         if ($user->save()) {
-            return redirect()->back()->with('success', '修改成功');
+            return redirect('user')->with('success', '修改成功');
         } else {
             return redirect()->back();
         }

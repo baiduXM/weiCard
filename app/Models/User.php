@@ -9,13 +9,13 @@ class User extends Authenticatable
 
 //    const IS_ADMIN = 1; // 管理员
 
-//    protected $guarded = [
-//        'id', 'password_confirmation',
-//    ];
-    protected $fillable = [
-        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
-        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
+    protected $guarded = [
+        'id', 'password_confirmation',
     ];
+//    protected $fillable = [
+//        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
+//        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
+//    ];
 
     protected $hidden = [
         'password', 'remember_token',
@@ -89,8 +89,8 @@ class User extends Authenticatable
     /**
      * 用户绑定员工
      *
-     * @param $code
-     * @param $id
+     * @param $code 绑定代码
+     * @param $id  用户ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)

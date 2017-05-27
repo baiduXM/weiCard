@@ -90,6 +90,7 @@ class ProductController extends Controller
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
             'Product.product_img' => '产品图片',            
+
         ]);
 
         /* 获取字段类型 */
@@ -166,10 +167,12 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::where('id', $id)->first();
         if ($product->delete()) {
             $uploadController = new UploadController();
-            $uploadController->deleteFile($product->product_img);
+            if($product->product_img){
+               $uploadController->deleteFiles($product->product_img); 
+            }            
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $product->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $product->id);
@@ -190,7 +193,9 @@ class ProductController extends Controller
         if ($res) {
             $uploadController = new UploadController();
             foreach ($files_path as $item) {
-                $uploadController->deleteFile($item);
+                if($product->product_img){
+                   $uploadController->deleteFiles($item); 
+                }                
             }
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {

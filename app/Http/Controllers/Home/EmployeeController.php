@@ -17,6 +17,8 @@ class EmployeeController extends Controller
 
     public function __construct()
     {
+        parent::isMobile();
+
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -34,6 +36,12 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        if ($this->is_mobile) {
+//            dd(1);
+            return view('mobile.employee.index')->with([
+                'employee' => Auth::user()->employee,
+            ]);
+        }
         if (Auth::user()->employee) {
             $employees = Employee::with(['followers' => function ($query) {
                 $query->where('user_id', '=', Auth::id());
@@ -58,12 +66,12 @@ class EmployeeController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
-            'Employee.name' => 'required',
+            'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
+            'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
         ]);
@@ -113,12 +121,12 @@ class EmployeeController extends Controller
         /* 验证 */
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
-            'Employee.name' => 'required',
+            'Employee.nickname' => 'required',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
             'Employee.number' => '工号',
-            'Employee.name' => '姓名',
+            'Employee.nickname' => '姓名',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
         ]);
