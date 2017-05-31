@@ -115,7 +115,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::with('company', 'department', 'user','position')->find($id);
+        $employee = Employee::with('company', 'department', 'user', 'position')->find($id);
         return $employee;
     }
 
@@ -194,14 +194,28 @@ class EmployeeController extends Controller
 
     /**
      * 导入excel
+     *
+     * 先上传文件、然后读取excel、解析、
      */
     public function import(Request $request)
     {
-        if ($request->hasFile('file')) {
-            return $request->file('file');
-        } else {
-            return 1;
+
+        if ($request->ajax()) {
+
+            if ($request->hasFile('file')) {
+                dd($request->file('file'));
+                $err_code = 800;
+            } else {
+                $err_code = 802;
+//            return false;
+            }
+            Config::set('global.ajax.err', $err_code);
+            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+            return Config::get('global.ajax');
         }
+        return redirect('company/employee');
+
+
 //        Excel::load();
     }
 

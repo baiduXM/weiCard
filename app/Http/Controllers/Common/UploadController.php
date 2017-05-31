@@ -25,64 +25,81 @@ use Illuminate\Routing\Controller as BaseController;
 class UploadController extends BaseController
 {
 
-    /**
-     * 保存图片
-     *
-     * @param $file 文件
-     * @param string $path_type 路径类型
-     * @param null $name 底层文件夹名
-     * @return string
-     *      文件路径 + 文件名
-     */
-    public function saveImg($file, $path_type = 'user', $name = null)
-    {
-        $targetPath = $this->getPath($path_type, $name);
-        if ($targetPath) {
-            $this->hasFolder($targetPath);
-        }
-        $fileName = $this->getFileName($file);
-        if ($targetPath && $fileName) {
-            Image::make($file)->save($targetPath . '/' . $fileName);
-            return $targetPath . '/' . $fileName;
-        } else {
-            return false;
-        }
-
-    }
+    protected $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
+    protected $fileArr = ['zip'];
+    protected $excelArr = ['xls', 'xlsx', 'csv'];
+    protected $videoArr = [];
 
 
     /**
-     * 保存
+     * 上传保存
      *
      * @param $file
      * @param string $path_type
      * @param null $name
      * @return bool|string
      */
-    public function saveFile($file, $path_type = 'template', $name = null)
+    public function save($file, $path_type = 'user', $name = null)
     {
-        $targetPath = $this->getPath($path_type, $name);
-        if ($targetPath) {
+        $targetPath = $this->getPath($path_type, $name); // 目标路径
+        if ($targetPath) { // 检查是否存在
             $this->hasFolder($targetPath);
         }
-        $fileName = $this->getFileName($file);
+
+        $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
+        if (in_array($extension, $this->imageArr)) {
+            $fileName = 'img' . time() . '.' . $extension;
+            $this->saveImg($file, $targetPath, $fileName);
+        } elseif (in_array($extension, $this->fileArr)) {
+            $fileName = 'zip' . time() . '.' . $extension;
+            $file->move($targetPath, $fileName);
+            $this->unZip($targetPath . '/' . $fileName);
+            //dd($fileName);
+        } elseif (in_array($extension, $this->excelArr)) {
+            $fileName = 'video' . time() . '.' . $extension;
+        } else {
+            return false;
+        }
+
+
         if ($targetPath && $fileName) {
-            $ext = explode('.', $fileName); // 获取文件后缀
-            if ($ext[1] == 'zip') {
-                $file->move($targetPath, $fileName);
-                /* 解压处理 */
-                $zip = new \ZipArchive();
-                if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
-                    $zip->extractTo($targetPath . './');
-                    $zip->close();
-                    @unlink($targetPath . '/' . $fileName);
-                }
-                return $targetPath;
-            }
-            if ($ext[1] != 'zip') {
-                Storage::put($targetPath . '/' . $fileName, $file);
-                return $targetPath . '/' . $fileName;
-            }
+            Image::make($file)->save($targetPath . '/' . $fileName);
+            return $targetPath . '/' . $fileName;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 保存图片
+     *
+     * @param $file         文件
+     * @param $targetPath   目标路径
+     * @param $fileName     文件名
+     * @return bool
+     */
+    public function saveImg($file, $targetPath, $fileName)
+    {
+        return Image::make($file)->save($targetPath . '/' . $fileName) ? true : false;
+    }
+
+
+    /**
+     * 解压Zip文件
+     *
+     * @param $targetPath   目标路径
+     * @param $fileName     文件名
+     * @return bool
+     */
+    public function unZip($targetPath, $fileName)
+    {
+        /* 解压处理 */
+        $zip = new \ZipArchive();
+        if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
+            $zip->extractTo($targetPath . './');
+            $zip->close();
+            @unlink($targetPath . '/' . $fileName);
+            return true;
         } else {
             return false;
         }
@@ -125,36 +142,9 @@ class UploadController extends BaseController
                 break;
         }
         return $targetPath;
+
     }
 
-    /**
-     * 获取文件名
-     *
-     * @param $file
-     * @return bool|string
-     */
-    public function getFileName($file)
-    {
-        if (is_file($file)) {
-            $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
-            $fileArr = ['zip', 'xls', 'xlsx', 'csv'];
-            $videoArr = [];
-            $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
-            if (in_array($extension, $imageArr)) {
-                $fileName = 'img' . time() . '.' . $extension;
-            } elseif (in_array($extension, $fileArr)) {
-                $fileName = 'file' . time() . '.' . $extension;
-                //dd($fileName);
-            } elseif (in_array($extension, $videoArr)) {
-                $fileName = 'video' . time() . '.' . $extension;
-            } else {
-                return false;
-            }
-            return $fileName;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * 检查文件夹是否存在，不存在创建
