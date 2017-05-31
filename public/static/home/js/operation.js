@@ -18,16 +18,16 @@ $(function () {
             success: function (json) {
                 console.log('success');
                 console.log(json);
-                // $('.hintModal').modal('show');
-                // $('.hintModal .modal-body').text(json.msg);
-                // $('.hintModal .after-operate').text(_url);
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .after-operate').text(_url);
                 return false;
             },
             error: function (json) {
                 console.log('failed');
                 console.log(json);
-                // var errors = json.responseJSON;
-                // showError(errors);
+                var errors = json.responseJSON;
+                showError(errors);
                 return false;
             }
         });
