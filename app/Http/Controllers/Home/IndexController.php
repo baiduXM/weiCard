@@ -110,7 +110,7 @@ class IndexController extends Controller
                     . "N:" . $person->nickname . "%0A"
                     . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
                     . "ORG:" . $person->company->display_name . "%0A"
-                    . "TITLE:" .$person->position->name; . "%0A"
+                    . "TITLE:" .$person->position->name . "%0A"
                     . "EMAIL:" .$person->email . "%0A"
                     . "NOTE:来自G宝盆名片.%0A"
                     . "END:VCARD";
