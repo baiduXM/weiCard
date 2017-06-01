@@ -102,6 +102,22 @@ class IndexController extends Controller
                     . $person->company['coordinate_lat'] . ','
                     . $person->company['coordinate_lng'] . '&title=目标位置&content='
                     . $person->company['address'] . '&output=html';
+                /* 二维码名片信息 */
+                if (count($person->position_id) <= 0) { // 判断职位是否为空
+                    $title='';
+                } else {
+                    $title=$person->position->name;
+                }
+                $message =
+                    "BEGIN:VCARD%0A"
+                    . "VERSION:3.0%0A"
+                    . "N:" . $person->nickname . "%0A"
+                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+                    . "ORG:" . $person->company->display_name . "%0A"
+                    . "TITLE:" .$title . "%0A"
+                    . "EMAIL:" .$person->email . "%0A"
+                    . "NOTE:来自G宝盆名片.%0A"
+                    . "END:VCARD";
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -112,6 +128,15 @@ class IndexController extends Controller
                 } else {
                     $template = $templates[0];
                 }
+                /* 二维码名片信息 */
+                $message =
+                    "BEGIN:VCARD%0A"
+                    . "VERSION:3.0%0A"
+                    . "N:" . $person->nickname . "%0A"
+                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+                    . "EMAIL:" .$person->email . "%0A"
+                    . "NOTE:来自G宝盆名片.%0A"
+                    . "END:VCARD";
                 break;
             default:
                 break;
@@ -124,20 +149,6 @@ class IndexController extends Controller
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
-        /* 二维码名片信息 */
-//        $message = "BEGIN:VCARD%0AVERSION:3.0%0AN:" . $employee->name. "%0ALOGO;VALUE=:http://" . $server_name . "/" . $company->logo . "%0ATEL;type=CELL;type=pref:" . $employee->mobile . "%0AADR;type=WORK;type=pref:" . $company->address . "%0AORG:" . $company->name . "%0ATITLE:" . $employee->title . "%0ANOTE:来自G宝盆名片.%0AEND:VCARD";
-        $message = "BEGIN:VCARD%0A"
-            . "VERSION:3.0%0A"
-            . "N:" . $person->nickname . "%0A"
-//            . "LOGO;VALUE=:" . $person->avatar . "%0A"
-            . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
-//            . "ADR;type=WORK;type=pref:" . $person->address . "%0A"
-//            . "ORG:" . $person->company->name . "%0A"
-//            . "TITLE:ceshi%0A"
-            . "NOTE:来自G宝盆名片.%0A"
-            . "END:VCARD";
-        //dd($message);
-//        dd($person->company->products[0]->product_img);
         $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
         return view($template->name . '.index')->with([
             'template' => $template, // 模板数据

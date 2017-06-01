@@ -202,6 +202,12 @@
                                 <span class="error-telephone" style="color: red;"></span>
                             </p>
                             <p>
+                                <span>邮箱 : </span>
+                                <input type="text" name="Employee[email]" placeholder=""
+                                       value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
+                                <span class="error-email" style="color: red;"></span>
+                            </p>
+                            <p>
                                 <span>手机 : </span>
                                 <input type="text" name="Employee[mobile]" placeholder=""
                                        value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
@@ -285,7 +291,13 @@
                                 <span class="error-telephone" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>职位 : </span>
+                                <span>邮箱 : </span>
+                                <input type="text" name="Employee[email]" placeholder="" class="info-email"
+                                       value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
+                                <span class="error-email" style="color: red;"></span>
+                            </p>
+                            <p>
+                            <span>职位 : </span>
                                 <select class="info-position_id" id="position_id" name="Employee[position_id]">
                                     <option value="">选择职位</option>
                                     @foreach($positions as $position)
