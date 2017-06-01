@@ -63,7 +63,7 @@ class TemplateController extends Controller
         /* 获取文件,解压文件到指定目录 */
         if ($request->hasFile('Template.file')) {
             $uploadController = new UploadController();
-            $data['file'] = $uploadController->saveFile($request->file('Template.file'), $this->path_type, $data['name']);
+            $data['file'] = $uploadController->save($request->file('Template.file'), $this->path_type, $data['name']);
         }
         $data['manager_id'] = Auth::guard('admin')->id();
 

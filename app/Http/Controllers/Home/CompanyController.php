@@ -118,7 +118,7 @@ class CompanyController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
             $uploadController = new UploadController();
-            $data['logo'] = $uploadController->saveImg($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $uploadController->save($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         $data['status'] = Company::VERIFIED_ING;

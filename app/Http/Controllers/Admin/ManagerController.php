@@ -93,7 +93,7 @@ class ManagerController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Manager.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('Manager.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $uploadController->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
         }
 
         /* 添加 */

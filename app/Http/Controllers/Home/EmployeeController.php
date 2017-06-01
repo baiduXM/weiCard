@@ -90,7 +90,7 @@ class EmployeeController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('Employee.avatar'), $this->path_type, $data['number']);
+            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $data['number']);
         }
 
         $data['company_id'] = Auth::user()->company->id;
@@ -142,7 +142,7 @@ class EmployeeController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('Employee.avatar'), $this->path_type, $data['number']);
+            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $data['number']);
         }
 
         foreach ($data as $key => $value) {

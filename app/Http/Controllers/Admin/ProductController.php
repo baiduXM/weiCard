@@ -103,7 +103,7 @@ class ProductController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type,$data['company_id']);
+            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type,$data['company_id']);
         }
 
         /* 添加 */
@@ -150,7 +150,7 @@ class ProductController extends Controller
         if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
             $name = time();
-            $data['product_img'] = $uploadController->saveImg($request->file('Product.product_img'), $this->path_type, $data['company_id']);
+            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $data['company_id']);
         }
 
         foreach ($data as $key => $value) {

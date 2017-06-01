@@ -127,7 +127,7 @@ class UserController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $uploadController->save($request->file('User.avatar'), $this->path_type, $data['name']);
         }
 
         // 默认激活
@@ -208,7 +208,7 @@ class UserController extends Controller
         /* 获取文件 */
         if ($request->hasFile('User.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $uploadController->save($request->file('User.avatar'), $this->path_type, $data['name']);
         }
         $user = User::find($id);
         foreach ($data as $key => $value) {

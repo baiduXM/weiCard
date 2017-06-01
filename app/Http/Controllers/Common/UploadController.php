@@ -45,29 +45,19 @@ class UploadController extends BaseController
         if ($targetPath) { // 检查是否存在
             $this->hasFolder($targetPath);
         }
-
         $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
-        if (in_array($extension, $this->imageArr)) {
+        if (in_array($extension, $this->imageArr)) { // 图片保存
             $fileName = 'img' . time() . '.' . $extension;
             $this->saveImg($file, $targetPath, $fileName);
         } elseif (in_array($extension, $this->fileArr)) {
             $fileName = 'zip' . time() . '.' . $extension;
             $file->move($targetPath, $fileName);
             $this->unZip($targetPath . '/' . $fileName);
-            //dd($fileName);
         } elseif (in_array($extension, $this->excelArr)) {
-            $fileName = 'video' . time() . '.' . $extension;
-        } else {
-            return false;
+            $fileName = 'excel' . time() . '.' . $extension;
+            Storage::put($fileName, $file);
         }
-
-
-        if ($targetPath && $fileName) {
-            Image::make($file)->save($targetPath . '/' . $fileName);
-            return $targetPath . '/' . $fileName;
-        } else {
-            return false;
-        }
+        return $targetPath . '/' . $fileName;
     }
 
     /**
@@ -99,7 +89,6 @@ class UploadController extends BaseController
             $zip->extractTo($targetPath . './');
             $zip->close();
             @unlink($targetPath . '/' . $fileName);
-            return true;
         } else {
             return false;
         }
