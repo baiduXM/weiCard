@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Template;
-use App\Models\Position;
 use App\Models\User;
 use Illuminate\Support\Facades\URL;
 
@@ -104,13 +103,18 @@ class IndexController extends Controller
                     . $person->company['coordinate_lng'] . '&title=目标位置&content='
                     . $person->company['address'] . '&output=html';
                 /* 二维码名片信息 */
+                if (count($person->position_id) <= 0) { // 判断职位是否为空
+                    $title='';
+                } else {
+                    $title=$person->position->name;
+                }
                 $message =
                     "BEGIN:VCARD%0A"
                     . "VERSION:3.0%0A"
                     . "N:" . $person->nickname . "%0A"
                     . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
                     . "ORG:" . $person->company->display_name . "%0A"
-                    . "TITLE:" .$person->position->name . "%0A"
+                    . "TITLE:" .$title . "%0A"
                     . "EMAIL:" .$person->email . "%0A"
                     . "NOTE:来自G宝盆名片.%0A"
                     . "END:VCARD";
