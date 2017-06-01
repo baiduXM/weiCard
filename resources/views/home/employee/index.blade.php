@@ -194,6 +194,12 @@
                                 <span class="error-telephone" style="color: red;"></span>
                             </p>
                             <p>
+                                <span>邮箱 : </span>
+                                <input type="text" name="Employee[email]" placeholder=""
+                                       value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
+                                <span class="error-email" style="color: red;"></span>
+                            </p>
+                            <p>
                                 <span>手机 : </span>
                                 <input type="text" name="Employee[mobile]" placeholder=""
                                        value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
@@ -276,6 +282,12 @@
                                 <input type="text" name="Employee[telephone]" placeholder="" class="info-telephone"
                                        value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
                                 <span class="error-telephone" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>邮箱 : </span>
+                                <input type="text" name="Employee[email]" placeholder="" class="info-email"
+                                       value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
+                                <span class="error-email" style="color: red;"></span>
                             </p>
                             <p>
                             <span>职位 : </span>

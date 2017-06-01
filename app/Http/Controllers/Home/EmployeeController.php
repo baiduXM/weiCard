@@ -70,12 +70,14 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname' => 'required',
+            'Employee.email' => 'email|unique:employees,employees.email,',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
             'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
+            'Employee.email' => '邮箱',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
             'Employee.mobile' => '手机',
@@ -127,12 +129,14 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname' => 'required',
+            'Employee.email' => 'email|unique:employees,employees.email,',
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
             'Employee.mobile' => '',
         ], [], [
             'Employee.number' => '工号',
             'Employee.nickname' => '姓名',
+            'Employee.email' => '邮箱',
             'Employee.avatar' => '头像',
             'Employee.telephone' => '座机',
             'Employee.mobile' => '手机',
