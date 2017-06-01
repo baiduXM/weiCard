@@ -20,7 +20,8 @@
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add"><i
                                     class="iconFont">&#xe67d;</i>添加</a>
                     </li>
-                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" data-target="#modal-employee-import"><i
+                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
+                                            data-target="#modal-employee-import"><i
                                     class="iconFont">&#xe67d;</i>导入Excel</a>
                     {{--</li>--}}
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
@@ -111,24 +112,31 @@
     </div>
 @stop
 @section('modal-extend')
+    <!-- 员工 - 导入modal -->
     <div class="modal fade" id="modal-employee-import" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2 modal8">
+            <div class="modal-content modal1 ">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">添加部门员工</h4>
+                    <h4 class="modal-title">导入员工</h4>
                 </div>
                 <form action="{{ url('company/employee/import') }}" method="post" class="form-create"
                       enctype="multipart/form-data">
+
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
                                 <span>excel文件 : </span>
-                                <input type="file" name="file" >
-                                <span class="error-avatar" style="color: red;"></span>
+                                <input type="text" name="test">
+                                <span class="error-test" style="color: red;"></span>
+                            </p>
+                            <p>
+                                <span>excel文件 : </span>
+                                <input type="file" name="file">
+                                <span class="error-file" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -173,7 +181,7 @@
                             {{--value="{{ old('Employee.department') ? old('Employee.department') : '' }}">--}}
                             {{--</p>--}}
                             <p>
-                            <span>职位 : </span>
+                                <span>职位 : </span>
                                 <select class="info-position_id" id="position_id" name="Employee[position_id]">
                                     <option value="">选择职位</option>
                                     @foreach($positions as $position)
@@ -184,7 +192,7 @@
                             </p>
                             <p>
                                 <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]" >
+                                <input type="file" name="Employee[avatar]">
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
                             <p>
@@ -232,7 +240,6 @@
                     </div>
                     <div class="modal-address-img">
                         <img name="info-avatar" src="{{ asset('static/home/images/avatar.jpg') }}" alt="">
-                        {{--<img name="info-avatar" src="../uploads/company/STQ564/img1493984327.jpg" alt="">--}}
                     </div>
                 </div>
             </div>
@@ -268,7 +275,7 @@
                             </p>
                             <p>
                                 <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]" >
+                                <input type="file" name="Employee[avatar]">
                                 <span class="error-avatar" style="color: red;"></span>
                             </p>
                             <p>
@@ -278,7 +285,7 @@
                                 <span class="error-telephone" style="color: red;"></span>
                             </p>
                             <p>
-                            <span>职位 : </span>
+                                <span>职位 : </span>
                                 <select class="info-position_id" id="position_id" name="Employee[position_id]">
                                     <option value="">选择职位</option>
                                     @foreach($positions as $position)

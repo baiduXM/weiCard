@@ -48,8 +48,8 @@ class UploadController extends BaseController
         $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
         if (in_array($extension, $this->imageArr)) { // 图片保存
             $fileName = 'img' . time() . '.' . $extension;
+//            Storage::put($targetPath . '/' . $fileName, $file);
             $this->saveImg($file, $targetPath, $fileName);
-            return $targetPath . '/' . $fileName;
         } elseif (in_array($extension, $this->fileArr)) {
             $fileName = 'zip' . time() . '.' . $extension;
             $file->move($targetPath, $fileName);
@@ -58,8 +58,8 @@ class UploadController extends BaseController
         } elseif (in_array($extension, $this->excelArr)) {
             $fileName = 'excel' . time() . '.' . $extension;
             Storage::put($fileName, $file);
-            return $targetPath . '/' . $fileName;
         }
+        return $targetPath . '/' . $fileName;
     }
 
     /**

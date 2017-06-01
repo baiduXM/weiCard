@@ -6,7 +6,14 @@ $(function () {
     $('.operate-create').on('click', function () {
         var _url = $(this).parents('form').attr('action');
         var _formData = new FormData($(this).parents('form')[0]);
+        // var _url = $('.form-create').attr('action');
+        // var _formData = new FormData($('.form-create')[0]);
         $("[class^='error-']").addClass('hidden');
+        $.ajaxSetup({ // 无form表单时
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $.ajax({
             url: _url,
             type: "post",
@@ -44,7 +51,7 @@ $(function () {
     /* 操作 - 显示名片 */
     $(".operate-cardshow").click(function () {
         var _url = $(this).data("url");
-        $("#modal-cardshow-show iframe").attr('src',_url);
+        $("#modal-cardshow-show iframe").attr('src', _url);
     });
 
     /* 操作 - 查看 */
@@ -133,7 +140,7 @@ $(function () {
     });
 
     /* 模态框消失是错误信息隐藏并置为空 */
-    $(".modal").on("hidden.bs.modal",function () {
+    $(".modal").on("hidden.bs.modal", function () {
         $("[class^='error-']").text('');
         $("[class^='error-']").addClass('hidden');
     });
@@ -175,21 +182,21 @@ $(function () {
                 }
             }
             if ($('[' + selector + i + ']').is('input') && n != null) {
-                if($('[' + selector + i + ']').attr('type')=="checkbox"){
-                    if(n==1){
-                        $('[' + selector + i + ']').prop("checked",true);  
-                    }else{
-                        $('[' + selector + i + ']').prop("checked",false); 
-                    }                   
-                }else{
+                if ($('[' + selector + i + ']').attr('type') == "checkbox") {
+                    if (n == 1) {
+                        $('[' + selector + i + ']').prop("checked", true);
+                    } else {
+                        $('[' + selector + i + ']').prop("checked", false);
+                    }
+                } else {
                     if (typeof n == 'object') { // 判断是否是关系模型对象
                         $('[' + selector + i + ']').val(n['name']);
                     } else {
                         $('[' + selector + i + ']').val(n);
-                    } 
+                    }
                 }
-                
-            }else if($('[' + selector + i + ']').is('select')){
+
+            } else if ($('[' + selector + i + ']').is('select')) {
                 $('[' + selector + i + ']').val(n);
             }
         });

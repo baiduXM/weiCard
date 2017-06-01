@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Position;
@@ -10,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
@@ -119,9 +119,16 @@ class EmployeeController extends Controller
         return $employee;
     }
 
+
+    /**
+     * 更新
+     *
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     */
     public function update(Request $request, $id)
     {
-
         $employee = Employee::find($id);
         /* 验证 */
         $this->validate($request, [
@@ -199,20 +206,26 @@ class EmployeeController extends Controller
      */
     public function import(Request $request)
     {
-
+//        return $request->file('excel_file');
         if ($request->ajax()) {
 
+//            return $request->all();
+//            return $request->file('file');
+//            return Input::get('data');
             if ($request->hasFile('file')) {
-                dd($request->file('file'));
+                $uploadController = new UploadController();
+                $excelPath = $uploadController->save($request->file('excel_file'), 'company', Auth::user()->company->name);
+                return $excelPath;
+
                 $err_code = 800;
             } else {
                 $err_code = 802;
-//            return false;
+                Config::set('global.ajax.err', $err_code);
+                Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+                return Config::get('global.ajax');
             }
-            Config::set('global.ajax.err', $err_code);
-            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-            return Config::get('global.ajax');
         }
+//        return Auth::user()->company->name;
         return redirect('company/employee');
 
 
