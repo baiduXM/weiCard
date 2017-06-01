@@ -49,15 +49,17 @@ class UploadController extends BaseController
         if (in_array($extension, $this->imageArr)) { // 图片保存
             $fileName = 'img' . time() . '.' . $extension;
             $this->saveImg($file, $targetPath, $fileName);
+            return $targetPath . '/' . $fileName;
         } elseif (in_array($extension, $this->fileArr)) {
             $fileName = 'zip' . time() . '.' . $extension;
             $file->move($targetPath, $fileName);
-            $this->unZip($targetPath . '/' . $fileName);
+            $this->unZip($targetPath, $fileName);
+            return $targetPath;
         } elseif (in_array($extension, $this->excelArr)) {
             $fileName = 'excel' . time() . '.' . $extension;
             Storage::put($fileName, $file);
+            return $targetPath . '/' . $fileName;
         }
-        return $targetPath . '/' . $fileName;
     }
 
     /**
