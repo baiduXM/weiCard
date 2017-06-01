@@ -120,8 +120,7 @@ class ProductController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $name = time();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $name);
+            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
         }
 
         foreach ($data as $key => $value) {
