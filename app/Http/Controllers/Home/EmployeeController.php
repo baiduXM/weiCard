@@ -136,7 +136,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname' => 'required',
-            'Employee.email' => 'email|unique:employees,employees.email,',
+            'Employee.email' => 'email|unique:employees,employees.email,' . $id,
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
             'Employee.mobile' => '',
