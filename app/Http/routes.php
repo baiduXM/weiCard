@@ -198,6 +198,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 员工管理 */
     Route::resource('company_employee', 'Admin\EmployeeController');
+    Route::post('company_employee/drop', ['as' => 'admin.employee.drop', 'uses' => 'Admin\EmployeeController@drop']);
     Route::group(['prefix' => 'company_employee'], function () {
         Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     });

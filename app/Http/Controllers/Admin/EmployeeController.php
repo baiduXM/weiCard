@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\Common;
@@ -82,6 +83,13 @@ class EmployeeController extends Controller
         }
     }
 
+    public function drop(Request $request)
+    {
+        $company_id = $request->input('company_id');
+        $position = Position::where('company_id','=',$company_id)->get();
+        return $position;
+    }
+
     public function store(Request $request)
     {
 
@@ -138,8 +146,10 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
+        $positions = Position::where('company_id',$employee->company_id)->get();
         return view('admin.employee.edit')->with([
             'employee' => $employee,
+            'positions' => $positions,
             'common' => new Common(),
         ]);
     }
