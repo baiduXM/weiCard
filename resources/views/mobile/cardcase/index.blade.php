@@ -44,7 +44,7 @@
                         {{--<dd>短信</dd>--}}
                         {{--</dl>--}}
                         <dl>
-                            <a href="{{ url('cardcase/unfollow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}">
+                            <a href="{{ url('cardcase/unfollow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}" onclick="return confirm('确定删除？')">
                                 <dt><i class="iconfont">&#xe67f;</i></dt>
                                 <dd>删除</dd>
                             </a>

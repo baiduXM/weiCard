@@ -85,24 +85,44 @@ class EmployeeController extends Controller
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
-        foreach ($data as $key => $value) {
-            if ($value === '') {
-                $data[$key] = null; // 未填字段设置为null，否则会保存''
+        $position_only = Position::where('id', '=', $data['position_id'])->first();
+        if ($position_only['is_only'] == 1) {
+            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+            if (!empty($employee_only)) {
+                $allow = false;       //唯一职位已存在员工时，不允许添加
+            } else {
+                $allow = true;
             }
+        } else {
+            $allow = true;        //非唯一职位，允许添加
         }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $uploadController = new UploadController();
             $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
         }
+        if ($allow) {
+            foreach ($data as $key => $value) {
+                if ($value === '') {
+                    $data[$key] = null; // 未填字段设置为null，否则会保存''
+                }
+            }
+            /* 获取文件类型 */
+            if ($request->hasFile('Employee.avatar')) {
+                $uploadController = new UploadController();
+                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+            }
 
-        $data['company_id'] = Auth::user()->company->id;
+            $data['company_id'] = Auth::user()->company->id;
 
-        /* 添加 */
-        if (Employee::create($data)) {
-            $err_code = 300;
+            /* 添加 */
+            if (Employee::create($data)) {
+                $err_code = 300;
+            } else {
+                $err_code = 301;
+            }
         } else {
-            $err_code = 301;
+            $err_code = 302;
         }
 
         Config::set('global.ajax.err', $err_code);
@@ -137,7 +157,7 @@ class EmployeeController extends Controller
         $this->validate($request, [
             'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname' => 'required',
-            'Employee.email' => 'email|unique:employees,employees.email,',
+            'Employee.email' => 'email|unique:employees,employees.email,' . $id,
             'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
             'Employee.mobile' => '',
@@ -150,22 +170,36 @@ class EmployeeController extends Controller
             'Employee.mobile' => '手机',
         ]);
         $data = $request->input('Employee');
-
-        /* 获取文件类型 */
-        if ($request->hasFile('Employee.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-        }
-
-        foreach ($data as $key => $value) {
-            if ($value !== '') {
-                $employee->$key = $data[$key];
+        $position_only = Position::where('id', '=', $data['position_id'])->first();
+        if ($position_only['is_only'] == 1) {
+            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+            if (!empty($employee_only)) {
+                $allow = false;//唯一职位已存在员工时，不允许添加
+            } else {
+                $allow = true;
             }
-        }
-        if ($employee->save()) {
-            $err_code = 500;
         } else {
-            $err_code = 501;
+            $allow = true;//非唯一职位，允许添加
+        }
+        if ($allow) {
+            /* 获取文件类型 */
+            if ($request->hasFile('Employee.avatar')) {
+                $uploadController = new UploadController();
+                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+            }
+
+            foreach ($data as $key => $value) {
+                if ($value !== '') {
+                    $employee->$key = $data[$key];
+                }
+            }
+            if ($employee->save()) {
+                $err_code = 500;
+            } else {
+                $err_code = 501;
+            }
+        } else {
+            $err_code = 502;
         }
 
         Config::set('global.ajax.err', $err_code);

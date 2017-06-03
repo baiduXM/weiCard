@@ -47,20 +47,20 @@
                             {{--@endif--}}
                         {{--</div><!-- department_id部门ID -->--}}
 
-                        {{--<div class="form-group {{ $errors->has('Employee.position_id') ? ' has-error' : '' }}">--}}
-                            {{--<label class="col-md-3 control-label" for="position_id"><span class="text-danger">*</span>--}}
-                                {{--职位</label>--}}
-                            {{--<div class="col-md-6">--}}
-                                {{--<select class="form-control" id="position_id" name="Employee[position_id]">--}}
-                                    {{--<option selected value="">无职位</option>--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
-                            {{--@if ($errors->has('Employee.position_id'))--}}
-                                {{--<span class="help-block col-md-3">--}}
-                                    {{--<strong>{{ $errors->first('Employee.position_id') }}</strong>--}}
-                                {{--</span>--}}
-                            {{--@endif--}}
-                        {{--</div><!-- position_id职位ID -->--}}
+                        <div class="form-group {{ $errors->has('Employee.position_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="position_id"><span class="text-danger">*</span>
+                                职位</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="position_id" name="Employee[position_id]">
+                                    <option selected value="">无职位</option>
+                                </select>
+                            </div>
+                            @if ($errors->has('Employee.position_id'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.position_id') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- position_id职位ID -->
 
 
                         <div class="form-group {{ $errors->has('Employee.number') ? ' has-error' : '' }}">

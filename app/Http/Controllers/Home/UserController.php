@@ -111,10 +111,10 @@ class UserController extends Controller
         $id = Auth::id();
         $this->validate($request, [
 //            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email' => 'email|unique:users,users.email,' . $id,
-            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.email' => 'email|required|unique:users,users.email,' . $id,
+            'User.mobile' => 'digits:11|required|unique:users,users.mobile,' . $id,
             'User.fax' => 'max:30',
-            'User.nickname' => 'max:30',
+            'User.nickname' => 'max:30|required',
             'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address' => 'max:255',
             'User.homepage' => 'url:true',

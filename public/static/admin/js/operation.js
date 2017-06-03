@@ -8,6 +8,36 @@ $(function () {
         location.href = _url;
     });
 
+    /* 员工-职位下拉框联动 */
+    $('#company_id').bind('change',function(){
+        $('#position_id option:gt(0)').remove();
+        var _url = 'drop';
+        var company_id = $('#company_id').val();
+        $.ajaxSetup({ // 无form表单时
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: {
+                'company_id':company_id
+            },
+            dataType: 'json',
+            success: function (json) {
+                for(var i = 0;i < json.length;i++){
+                    item = json[i];
+                    var html = '<option value='+item['id']+'>'+item['name']+'</option>';
+                    $('#position_id').append(html);
+                }
+            },
+            error: function (json) {
+
+            }
+        });
+    });
+
     /* 全选checkbox */
     $('#btSelectAll').click(function () {
         if (this.checked) {

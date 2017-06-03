@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\Common;
@@ -82,6 +83,13 @@ class EmployeeController extends Controller
         }
     }
 
+    public function drop(Request $request)
+    {
+        $company_id = $request->input('company_id');
+        $position = Position::where('company_id', '=', $company_id)->get();
+        return $position;
+    }
+
     public function store(Request $request)
     {
 
@@ -105,26 +113,43 @@ class EmployeeController extends Controller
             'Employee.telephone' => '座机',
         ]);
 
-        /* 获取字段类型 */
-        foreach ($data as $key => $value) {
-            if ($value === '') {
-                $data[$key] = null; // 未填字段设置为null，否则会保存''
+        $position_only = Position::where('id', '=', $data['position_id'])->first();
+        if ($position_only['is_only'] == 1) {
+            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+            if (!empty($employee_only)) {
+                $allow = false;//唯一职位已存在员工时，不允许添加
+            } else {
+                $allow = true;
             }
-        }
-        $company = Company::find($data['company_id']);
-        /* 获取文件类型 */
-        if ($request->hasFile('Employee.avatar')) {
-            $uploadController = new UploadController();
-
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
-        }
-
-        /* 添加 */
-        if (Employee::create($data)) {
-            return redirect('admin/company_employee')->with('success', '添加成功');
         } else {
-            return redirect()->back();
+            $allow = true;//非唯一职位，允许添加
         }
+
+        if ($allow) {
+            /* 获取字段类型 */
+            foreach ($data as $key => $value) {
+                if ($value === '') {
+                    $data[$key] = null; // 未填字段设置为null，否则会保存''
+                }
+            }
+            $company = Company::find($data['company_id']);
+
+            /* 获取文件类型 */
+            if ($request->hasFile('Employee.avatar')) {
+                $uploadController = new UploadController();
+                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
+            }
+
+            /* 添加 */
+            if (Employee::create($data)) {
+                return redirect('admin/company_employee')->with('success', '添加成功');
+            } else {
+                return redirect()->back();
+            }
+        } else {
+            return redirect()->back()->with('error', '该唯一职位已存在员工');
+        }
+
     }
 
     public function show($id)
@@ -139,8 +164,10 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
+        $positions = Position::where('company_id', $employee->company_id)->get();
         return view('admin.employee.edit')->with([
             'employee' => $employee,
+            'positions' => $positions,
             'common' => new Common(),
         ]);
     }
@@ -167,22 +194,40 @@ class EmployeeController extends Controller
         ]);
         $data = $request->input('Employee');
 
-        /* 获取文件类型 */
-        if ($request->hasFile('Employee.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+        $position_only = Position::where('id', '=', $data['position_id'])->first();
+        if ($position_only['is_only'] == 1) {
+            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+            if (!empty($employee_only)) {
+                $allow = false;//唯一职位已存在员工时，不允许添加
+            } else {
+                $allow = true;
+            }
+        } else {
+            $allow = true;//非唯一职位，允许添加
         }
 
-        foreach ($data as $key => $value) {
-            if ($value !== '') {
-                $employee->$key = $data[$key];
+        if ($allow) {
+            /* 获取文件类型 */
+            if ($request->hasFile('Employee.avatar')) {
+                $uploadController = new UploadController();
+                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+
             }
-        }
-        if ($employee->save()) {
-            return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
+
+            foreach ($data as $key => $value) {
+                if ($value !== '') {
+                    $employee->$key = $data[$key];
+                }
+            }
+            if ($employee->save()) {
+                return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
+            } else {
+                return redirect()->back();
+            }
         } else {
-            return redirect()->back();
+            return redirect()->back()->with('error', '该唯一职位已存在员工');
         }
+
     }
 
     public function destroy($id)
