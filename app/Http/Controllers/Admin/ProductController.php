@@ -89,7 +89,7 @@ class ProductController extends Controller
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.product_img' => '产品图片',            
+            'Product.product_img' => '产品图片',
 
         ]);
 
@@ -103,7 +103,8 @@ class ProductController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type,$data['company_id']);
+            $company = Company::find($data['company_id']);
+            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $company->name);
         }
 
         /* 添加 */
@@ -142,15 +143,14 @@ class ProductController extends Controller
         ], [], [
             'Product.product_name' => '产品名称',
             'Product.product_url' => '产品链接',
-            'Product.product_img' => '产品图片',            
+            'Product.product_img' => '产品图片',
         ]);
         $data = $request->input('Product');
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
             $uploadController = new UploadController();
-            $name = time();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $data['company_id']);
+            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $product->company->name);
         }
 
         foreach ($data as $key => $value) {
@@ -170,9 +170,9 @@ class ProductController extends Controller
         $product = Product::where('id', $id)->first();
         if ($product->delete()) {
             $uploadController = new UploadController();
-            if($product->product_img){
-               $uploadController->deleteFiles($product->product_img); 
-            }            
+            if ($product->product_img) {
+                $uploadController->deleteFiles($product->product_img);
+            }
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $product->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $product->id);
@@ -192,7 +192,7 @@ class ProductController extends Controller
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
             $uploadController = new UploadController();
-            $uploadController->deleteFiles($files_path); 
+            $uploadController->deleteFiles($files_path);
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');

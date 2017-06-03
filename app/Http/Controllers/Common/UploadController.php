@@ -37,18 +37,19 @@ class UploadController extends BaseController
      * @param $file
      * @param string $path_type
      * @param null $name
+     * @param null $second_name
      * @return bool|string
      */
-    public function save($file, $path_type = 'user', $name = null)
+    public function save($file, $path_type = 'user', $name = null, $second_name = null)
     {
-        $targetPath = $this->getPath($path_type, $name); // 目标路径
+        $targetPath = $this->getPath($path_type, $name, $second_name); // 目标路径
         if ($targetPath) { // 检查是否存在
             $this->hasFolder($targetPath);
         }
         $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
         if (in_array($extension, $this->imageArr)) { // 图片保存
             $fileName = 'img' . time() . '.' . $extension;
-//            Storage::put($targetPath . '/' . $fileName, $file);
+//            Storage::put($targetPath . '/' . $fileName, file_get_contents($file->getRealPath()));
             $this->saveImg($file, $targetPath, $fileName);
         } elseif (in_array($extension, $this->fileArr)) {
             $fileName = 'zip' . time() . '.' . $extension;
@@ -57,7 +58,7 @@ class UploadController extends BaseController
             return $targetPath;
         } elseif (in_array($extension, $this->excelArr)) {
             $fileName = 'excel' . time() . '.' . $extension;
-            Storage::put($fileName, $file);
+            Storage::put($targetPath . '/' . $fileName, file_get_contents($file->getRealPath()));
         }
         return $targetPath . '/' . $fileName;
     }
@@ -104,7 +105,7 @@ class UploadController extends BaseController
      * @param null $name 底层文件夹名
      * @return bool|string      路径
      */
-    public function getPath($path_type, $name = null)
+    public function getPath($path_type, $name = null, $second_name = null)
     {
         switch ($path_type) {
             case 'user':
@@ -117,10 +118,10 @@ class UploadController extends BaseController
                 $targetPath = 'uploads/company/' . $name;// .公司名称
                 break;
             case 'product':
-                $targetPath = 'uploads/company/' . $name . '/products';// .公司目录下的产品
+                $targetPath = 'uploads/company/' . $name . '/products';// .公司下的产品
                 break;
             case 'employee':
-                $targetPath = 'uploads/employee/' . $name;// .员工工号
+                $targetPath = 'uploads/company/' . $name . '/employees/' . $second_name;// .公司员工工号
                 break;
             case 'website':
                 $targetPath = 'uploads/website';
@@ -157,7 +158,9 @@ class UploadController extends BaseController
      */
     public function deleteFolder($path)
     {
-        return Storage::disk('public')->deleteDirectory($path);
+        if (Storage::exists($path)) {
+            return Storage::disk('public')->deleteDirectory($path);
+        }
     }
 
     /**

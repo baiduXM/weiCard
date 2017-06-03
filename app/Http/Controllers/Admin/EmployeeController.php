@@ -111,11 +111,12 @@ class EmployeeController extends Controller
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
         }
-
+        $company = Company::find($data['company_id']);
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $data['number']);
+
+            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
         }
 
         /* 添加 */
@@ -169,7 +170,7 @@ class EmployeeController extends Controller
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $data['number']);
+            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
         }
 
         foreach ($data as $key => $value) {
