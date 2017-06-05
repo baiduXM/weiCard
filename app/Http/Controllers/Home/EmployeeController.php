@@ -2,21 +2,35 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
 
     protected $path_type = 'employee'; // 文件路径保存分类
+    /* 导入字段 */
+    protected $inArray = array(
+        'number' => '工号',
+        'nickname' => '姓名',
+        'email' => '邮箱',
+        'mobile' => '手机',
+        'telephone' => '座机',
+    );
+    /* 导出字段 */
+    protected $outArray = array(
+        'number' => '工号',
+        'nickname' => '姓名',
+        'bind_key' => '绑定字段',
+        'bind_url' => '绑定链接',
+    );
 
     public function __construct()
     {
@@ -240,35 +254,126 @@ class EmployeeController extends Controller
 
     /**
      * 导入excel
-     *
      * 先上传文件、然后读取excel、解析、
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function import(Request $request)
     {
-//        return $request->file('excel_file');
         if ($request->ajax()) {
 
 //            return $request->all();
 //            return $request->file('file');
 //            return Input::get('data');
             if ($request->hasFile('file')) {
+                $file = $request->file('file');
                 $uploadController = new UploadController();
-                $excelPath = $uploadController->save($request->file('excel_file'), 'company', Auth::user()->company->name);
+                $excelPath = $uploadController->save($file, 'company', Auth::user()->company->name);
                 return $excelPath;
+//                Excel::load($excelPath, function ($reader) {
+//                    $data = $reader->all();
+////                    return $data->title;
+////                    dd($data);
+////
+//                    return count($data->items);
+//                });
+//                $uploadController->deleteFiles($excelPath);
+//                return $excelPath;
+//                $file->delete($excelPath);
 
                 $err_code = 800;
             } else {
                 $err_code = 802;
-                Config::set('global.ajax.err', $err_code);
-                Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-                return Config::get('global.ajax');
             }
+            Config::set('global.ajax.err', $err_code);
+            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+            return Config::get('global.ajax');
         }
+        $data = array();
+//        Excel::selectSheets('sheet1')->load();
+//        Excel::selectSheetsByIndex(0)->load("uploads/company/strong/excel1496648984.xlsx", function ($reader) use (&$data) {
+        Excel::selectSheetsByIndex(0)->load("uploads/company/strong/excel1496648984.xlsx", function ($reader) use (&$data) {
+            $data = $reader->all()->toArray();
+
+            foreach ($data as $k => $items) {
+                $res[$k]['company_id'] = Auth::user()->company->id;
+                foreach ($items as $key => $item) {
+//                    if(array_exists($key, $inArray)){
+                    $res[$k][array_search($key, $this->inArray)] = $item;
+//                    }
+                }
+                $aa[] = Employee::create($res[$k]);
+            }
+//            dd($res);
+//            $employee = new Employee();
+//            $aa=$employee->save($res);
+//            $aa = Employee::create($res);
+            dd($aa);
+//            Employee::create();
+//            dd($reader->first()->all());
+//            $reader->first()->each(function ($row) {
+//                dd($row);
+////                $data[] = $sheet;
+//            });
+//            dd($data->title);
+//            dd($data);
+//            foreach ($data)
+//
+        });
+//        dd($data);
+//        dd($this->excelToArray("uploads/company/strong/excel1496648984.xlsx"));
+//        Excel::load("uploads/company/strong/excel1496648984.xlsx", function ($reader) {
+
+//        dd(1);
+
 //        return Auth::user()->company->name;
-        return redirect('company/employee');
+//        return redirect('company/employee');
 
 
 //        Excel::load();
+    }
+
+    /*导出*/
+    public function export($format = 'xls')
+    {
+        $employees = Auth::user()->company->employees;
+        $filename = Auth::user()->company->display_name . date('Y-m-d H_i_s');
+        Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($employees) {
+            $excel->sheet(Auth::user()->company->name, function ($sheet) use ($employees) {
+                $cellData[0] = $this->outArray;
+                foreach ($employees as $k => $employee) {
+                    foreach ($this->outArray as $key => $word) {
+                        if ($key == 'bind_key') {
+                            $cellData[$k + 1][$key] = Auth::user()->company->name . '/' . $employee->number;
+                        } elseif ($key == 'bind_url') {
+                            $cellData[$k + 1][$key] = url('user/binding?code=' . Auth::user()->company->name . '/' . $employee->number);
+                        } else {
+                            $cellData[$k + 1][$key] = $employee->$key;
+                        }
+                    }
+                }
+                $sheet->rows($cellData);
+//                dd($cellData);
+            });
+        })->export($format);
+    }
+
+    /**
+     *
+     * @param $path     文件路径
+     */
+    public function excelToArray($path)
+    {
+//        $data = array();
+        return Excel::load($path, function ($reader) {
+            $data = $reader->first()->toArray();
+            return $data;
+//            dd($data->title);
+//            dd($data);
+//            foreach ($data)
+//
+        });
     }
 
 }

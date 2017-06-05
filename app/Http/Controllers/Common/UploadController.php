@@ -34,11 +34,11 @@ class UploadController extends BaseController
     /**
      * 上传保存
      *
-     * @param $file
-     * @param string $path_type
-     * @param null $name
-     * @param null $second_name
-     * @return bool|string
+     * @param $file             文件
+     * @param string $path_type 保存路径类型
+     * @param null $name        文件夹名
+     * @param null $second_name 二级文件夹名
+     * @return bool|string      返回路径
      */
     public function save($file, $path_type = 'user', $name = null, $second_name = null)
     {
@@ -49,18 +49,23 @@ class UploadController extends BaseController
         $extension = strtolower($file->getClientOriginalExtension());// 获取文件扩展名，转换为小写
         if (in_array($extension, $this->imageArr)) { // 图片保存
             $fileName = 'img' . time() . '.' . $extension;
-//            Storage::put($targetPath . '/' . $fileName, file_get_contents($file->getRealPath()));
-            $this->saveImg($file, $targetPath, $fileName);
+            if ($this->saveImg($file, $targetPath, $fileName)) {
+                return $targetPath . '/' . $fileName;
+            }
         } elseif (in_array($extension, $this->fileArr)) {
             $fileName = 'zip' . time() . '.' . $extension;
             $file->move($targetPath, $fileName);
-            $this->unZip($targetPath, $fileName);
-            return $targetPath;
+            if ($this->unZip($targetPath, $fileName)) {
+                return $targetPath;
+            }
         } elseif (in_array($extension, $this->excelArr)) {
             $fileName = 'excel' . time() . '.' . $extension;
-            Storage::put($targetPath . '/' . $fileName, file_get_contents($file->getRealPath()));
+//            $file->move($targetPath, $fileName);
+            if ($file->move($targetPath, $fileName)) {
+                return $targetPath . '/' . $fileName;
+            }
         }
-        return $targetPath . '/' . $fileName;
+        return false;
     }
 
     /**
@@ -92,6 +97,7 @@ class UploadController extends BaseController
             $zip->extractTo($targetPath . './');
             $zip->close();
             @unlink($targetPath . '/' . $fileName);
+            return true;
         } else {
             return false;
         }
@@ -102,8 +108,9 @@ class UploadController extends BaseController
      * 获取文件夹路径
      *
      * @param $path_type        路径类型
-     * @param null $name 底层文件夹名
-     * @return bool|string      路径
+     * @param null $name 文件夹名
+     * @param null $second_name 二级文件夹名
+     * @return bool|string      返回文件夹路径
      */
     public function getPath($path_type, $name = null, $second_name = null)
     {
@@ -153,8 +160,8 @@ class UploadController extends BaseController
     /**
      * 删除文件夹
      *
-     * @param $path 文件夹路径
-     * @return boolean 是否删除成功，true/false
+     * @param $path     文件夹路径
+     * @return boolean  是否删除成功，true/false
      */
     public function deleteFolder($path)
     {
@@ -166,8 +173,8 @@ class UploadController extends BaseController
     /**
      * 删除文件
      *
-     * @param string|array $files 文件名，字符串/数组
-     * @return boolean 是否删除成功，true/false
+     * @param string|array $files   文件名，字符串/数组
+     * @return boolean              是否删除成功，true/false
      */
     public function deleteFiles($files)
     {

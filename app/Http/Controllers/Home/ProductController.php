@@ -45,7 +45,7 @@ class ProductController extends Controller
     }
 
     /**
-     * 添加员工
+     *
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
@@ -74,6 +74,7 @@ class ProductController extends Controller
             $uploadController = new UploadController();
             $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
         }
+//        return $data['product_img'];
 
         $data['company_id'] = Auth::user()->company->id;
 
@@ -155,9 +156,9 @@ class ProductController extends Controller
         $res = $product->delete();
         if ($res) {
             $uploadController = new UploadController();
-            if($product->product_img){
-               $uploadController->deleteFiles($product->product_img); 
-            }            
+            if ($product->product_img) {
+                $uploadController->deleteFiles($product->product_img);
+            }
             $err_code = 400; // 删除成功
         } else {
             $err_code = 401; // 删除失败
