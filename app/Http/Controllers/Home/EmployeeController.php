@@ -28,7 +28,7 @@ class EmployeeController extends Controller
     protected $outArray = array(
         'number' => '工号',
         'nickname' => '姓名',
-        'bind_key' => '绑定字段',
+        'bind_key' => '绑定码',
         'bind_url' => '绑定链接',
     );
 
@@ -270,17 +270,17 @@ class EmployeeController extends Controller
                 $file = $request->file('file');
                 $uploadController = new UploadController();
                 $excelPath = $uploadController->save($file, 'company', Auth::user()->company->name);
-                return $excelPath;
-//                Excel::load($excelPath, function ($reader) {
-//                    $data = $reader->all();
-////                    return $data->title;
-////                    dd($data);
-////
-//                    return count($data->items);
-//                });
-//                $uploadController->deleteFiles($excelPath);
 //                return $excelPath;
-//                $file->delete($excelPath);
+                Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) {
+                    $data = $reader->all()->toArray();
+                    foreach ($data as $k => $items) {
+                        $res[$k]['company_id'] = Auth::user()->company->id;
+                        foreach ($items as $key => $item) {
+                            $res[$k][array_search($key, $this->inArray)] = $item;
+                        }
+                        Employee::create($res[$k]);
+                    }
+                });
 
                 $err_code = 800;
             } else {
@@ -290,48 +290,8 @@ class EmployeeController extends Controller
             Config::set('global.ajax.msg', config('global.msg.' . $err_code));
             return Config::get('global.ajax');
         }
-        $data = array();
-//        Excel::selectSheets('sheet1')->load();
-//        Excel::selectSheetsByIndex(0)->load("uploads/company/strong/excel1496648984.xlsx", function ($reader) use (&$data) {
-        Excel::selectSheetsByIndex(0)->load("uploads/company/strong/excel1496648984.xlsx", function ($reader) use (&$data) {
-            $data = $reader->all()->toArray();
 
-            foreach ($data as $k => $items) {
-                $res[$k]['company_id'] = Auth::user()->company->id;
-                foreach ($items as $key => $item) {
-//                    if(array_exists($key, $inArray)){
-                    $res[$k][array_search($key, $this->inArray)] = $item;
-//                    }
-                }
-                $aa[] = Employee::create($res[$k]);
-            }
-//            dd($res);
-//            $employee = new Employee();
-//            $aa=$employee->save($res);
-//            $aa = Employee::create($res);
-            dd($aa);
-//            Employee::create();
-//            dd($reader->first()->all());
-//            $reader->first()->each(function ($row) {
-//                dd($row);
-////                $data[] = $sheet;
-//            });
-//            dd($data->title);
-//            dd($data);
-//            foreach ($data)
-//
-        });
-//        dd($data);
-//        dd($this->excelToArray("uploads/company/strong/excel1496648984.xlsx"));
-//        Excel::load("uploads/company/strong/excel1496648984.xlsx", function ($reader) {
-
-//        dd(1);
-
-//        return Auth::user()->company->name;
-//        return redirect('company/employee');
-
-
-//        Excel::load();
+        return redirect('company/employee');
     }
 
     /*导出*/
@@ -357,23 +317,6 @@ class EmployeeController extends Controller
 //                dd($cellData);
             });
         })->export($format);
-    }
-
-    /**
-     *
-     * @param $path     文件路径
-     */
-    public function excelToArray($path)
-    {
-//        $data = array();
-        return Excel::load($path, function ($reader) {
-            $data = $reader->first()->toArray();
-            return $data;
-//            dd($data->title);
-//            dd($data);
-//            foreach ($data)
-//
-        });
     }
 
 }

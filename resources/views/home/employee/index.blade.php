@@ -130,11 +130,6 @@
                         <div class="modal-address">
                             <p>
                                 <span>excel文件 : </span>
-                                <input type="text" name="test">
-                                <span class="error-test" style="color: red;"></span>
-                            </p>
-                            <p>
-                                <span>excel文件 : </span>
                                 <input type="file" name="file">
                                 <span class="error-file" style="color: red;"></span>
                             </p>

@@ -1,3 +1,15 @@
+<div class="modal fade hintModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-describedby="myModalContent"  style="z-index:2000">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                提示内容
+            </div>
+            <div class="hidden after-operate"></div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- 提示模态框.hintModal -->
+
 <!-- 添加联系人modal -->
 <div class="modal fade bs1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
@@ -266,15 +278,3 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade hintModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-     aria-describedby="myModalContent">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                提示内容
-            </div>
-            <div class="hidden after-operate"></div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- 提示模态框.hintModal -->
