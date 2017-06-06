@@ -116,6 +116,7 @@
         </div>
     </div>
 @stop
+
 @section('modal-extend')
     <!-- 员工 - 导入modal -->
     <div class="modal fade" id="modal-employee-import" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -132,11 +133,6 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
-                            <p>
-                                <span>excel文件 : </span>
-                                <input type="text" name="test">
-                                <span class="error-test" style="color: red;"></span>
-                            </p>
                             <p>
                                 <span>excel文件 : </span>
                                 <input type="file" name="file">

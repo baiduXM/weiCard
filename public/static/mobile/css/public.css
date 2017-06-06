@@ -26,6 +26,9 @@ mark{background: none;}
 .oh{overflow: hidden;}.pr{position: relative;}.pa{position: absolute;}.pf{position: fixed;}.toh{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .op{filter: Alpha(opacity=0);-webkit-opacity: 0;-moz-opacity: 0;-ms-opacity: 0;-o-opacity: 0;opacity: 0;}.db{display: block;}.dtc{display: table-cell;}.ma{margin: 0 auto;}
 
+.hide{ display: none; }
+.show{ display: block; }
+
 body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640px; overflow:hidden;}
 .card_top{background: #393a3e;width: 100%;height: 1.1rem;padding: 0.45rem 0;font-size: 0.8rem;color: #fff;line-height: 1.1rem;}
 .card_top .back{display: block;width: 0.45rem;height:1.1rem;padding: 0 0.6rem 0 0.5rem;border-right: 1px solid #2d2e33;}
@@ -36,8 +39,10 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_choose ul li a{display: block;width:5.9rem;height: 1.74rem;color: #fff;}
 .card_choose ul li.on{background:#fff;}
 .card_choose ul li.on a{color: #20abff;}
-.card_content{position: relative;width: 100%;height:23.6rem;overflow: hidden;margin: 1.45rem 0 0.7rem 0;}
-.car_from{height: 21.6rem;}
+
+.card_main{ position: relative; overflow-y:auto; }
+.card_content{position: relative;width: 100%;height:auto;overflow: auto;margin: 1.45rem 0 0.7rem 0;}
+.car_from{}
 .card_content .card_c_we{width: 100%;height:8.25rem;overflow: hidden;margin-bottom:0.7rem;text-align: center;/*background: url(../images/bg2.png) center no-repeat;background-size:14.875rem 8.2rem; */}
 .card_content .card_c_we .card_c_wephoto{width:2.3rem;height: 2.75rem;top: 2.8rem;left: 4.6rem;border-radius: 50%; }
 .card_content .card_c_we .card_c_bt{width:2.15rem;height: 4.075rem;bottom: 0.4rem;left: 2.45rem;}
@@ -115,16 +120,18 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
     animation-iteration-count: infinite;}
 
 /*个人名片*/
-.people{width: 100%;height:5rem;margin-bottom:0.5rem;}
+.people{width: 100%;height:5rem;margin-bottom:0.5rem; position: relative;z-index: 9;}
 .people_tx{width: 4.9rem; height: 5.5rem;top: 1.2rem; left: 50%;transform:translateX(-50%);}
 .card_content form{width:13.5rem;height: auto;padding: 0 1.25rem;position: relative;z-index: 3;}
-.card_content form span{display: block;width:12.4rem;height:1.35rem;border: 1px solid #e6e6e6;margin-bottom: 1.5rem;border-radius: 0.3rem;line-height: 1.35rem;padding: 0 0.5rem;font-size: 0.6rem;color: #808080;}
+.card_content form span{display: block;width:12.4rem;/*height:1.35rem;*/position: relative; border: 1px solid #e6e6e6;margin-bottom: 0.5rem;border-radius: 0.3rem;line-height: 1.35rem;padding: 0 0.5rem;font-size: 0.6rem;color: #333;}
+.card_content form span p{ color: red; border-top: 1px solid #e6e6e6;}
+.card_content form span em{  color: red; position: absolute; right:0.4rem; top:0.2rem;}
 .card_content form span .inputt{width: 10.3rem;height: 1.35rem;outline: none;}
 .card_content form span.bz{width:12.4rem;height:2.95rem; }
 .card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;} 
 .card_content form .sub{display:inline-block;width: 8rem;height: 1.65rem;line-height: 1.65rem;margin:0 2.5rem;color: #fff;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 
-.sea_l{width: 100%;height:3.8rem;margin-top: 1.15rem;bottom: 0;}
+.sea_l{width: 100%;height:3.8rem;margin-top: 1.15rem;bottom: 0; position: fixed; z-index: 8;}
 .sea_l .sea_hl1{width:16rem;height:3.8rem;bottom: 0;left: 0;animation: bounce-down 2s linear infinite;}
 @-webkit-keyframes bounce-down {
 25% {-webkit-transform: translateY(-0.15rem);}
@@ -150,7 +157,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 }
 
 /*个人名片获取*/
-.cards{width:13.5rem;height:7.5rem;overflow: hidden;margin:0 auto;/*background: url(../images/bg7.png) center no-repeat;background-size:13.5rem 7.5rem;*/ }
+.cards{width:13.5rem;height:7.5rem;position: relative; overflow: hidden;margin:0 auto;/*background: url(../images/bg7.png) center no-repeat;background-size:13.5rem 7.5rem;*/ }
 .cards .cards_tx{width:3.85rem;height: 4rem; padding: 1.75rem 0 0 1rem;top: 0;
     -webkit-animation: biger 1s ease-out;  
     -moz-animation: biger 1s ease-out;  
@@ -165,6 +172,9 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .cards .name,.cards .tell{width: 7.5rem;height:1.05rem;padding: 0 0.6rem;border-radius: 0.5rem;background: #fff;color: #f1a521;line-height: 1.05rem;font-size: 0.6rem;}
 .cards .name{top: 2.5rem;right:-9rem;}
 .cards .tell{top: 4rem;right:-9rem;}
+.cards a.gr_card_btn{ position: absolute; bottom: 0.8rem; left: 1.5rem; font-size: 0.7rem;  }
+
+
 .choose_card{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 2.8rem auto;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 .choose_card .choose_box{display: none;top:-3.6rem;left: 50%;transform:translateX(-50%);box-shadow: 0px 2px 0.3rem #e5e5e5;border-radius: 0.2rem;padding-left: 2rem; width:8.5rem;height: 2.5rem;background: url(../images/bg8.png) center no-repeat;background-size: 10.5rem 2.5rem;font-size: 0.75rem;color: #51a6ff;line-height: 2.5rem; }
 
@@ -184,5 +194,9 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .qyimage_zs .xx1{width:0.5rem;height: 0.5rem;background: url(../images/xx1.png) center no-repeat;background-size: 0.5rem;top: 0.8rem;left: 2.8rem;animation: rotation 10s linear infinite;}
 .qyimage_zs .xx2{width:0.95rem;height: 0.95rem;background: url(../images/xx2.png) center no-repeat;background-size: 0.95rem;top:1.2rem;left: 8.6rem;animation: rotation 10s linear infinite;}
 
+/*模态框 start*/
+.modal {position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 1050;display: none;overflow: hidden;-webkit-overflow-scrolling: touch;outline: 0;
+}
 
+/*模态框 end*/
 

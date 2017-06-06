@@ -53,15 +53,16 @@
 
     </div>
 </div>
+@include('home.common.modal')
 @section('modal-extend')
     {{--modal扩展--}}
 @show
-@include('home.common.modal')
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/common/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('static/common/js/jquery.timers-1.2.js') }}"></script><!--jquery定时器-->
 <script src="{{ asset('static/common/js/clipboard.min.js') }}"></script><!--剪切板-->
+<script src="{{ asset('static/common/js/jquery.form.js') }}"></script><!--表单-->
 <script src="{{ asset('static/home/js/tree-box.js') }}"></script>
 <script src="{{ asset('static/home/js/operation.js') }}"></script>
 
