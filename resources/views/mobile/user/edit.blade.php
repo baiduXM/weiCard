@@ -17,19 +17,22 @@
             {{ method_field('put') }}
             {{ csrf_field() }}
             <span>姓名：
-                <input name="User[nickname]" id="nickname" type="text" class="inputt" placeholder="必填" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
+                <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
+                <em>*</em>
                 @if ($errors->has('User.nickname'))
                     <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.nickname') }}</strong>
                 @endif
             </span>
             <span>手机：
-                <input name="User[mobile]" id="mobile" type="text" class="inputt" placeholder="必填" value="{{ old('User.mobile') ? old('User.mobile') : $user->mobile }}" onblur="validatePhone()">
+                <input name="User[mobile]" id="mobile" type="text" class="inputt" value="{{ old('User.mobile') ? old('User.mobile') : $user->mobile }}" onblur="validatePhone()">
+                <em>*</em>
                 @if ($errors->has('User.mobile'))
                     <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.mobile') }}</strong>
                 @endif
             </span>            
             <span>邮箱：
-                <input name="User[email]" id="email" type="text" class="inputt" placeholder="必填" value="{{ old('User.email') ? old('User.email') : $user->email }}" onblur="validateEmail()">
+                <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}" onblur="validateEmail()">
+                <em>*</em>
                 @if ($errors->has('User.email'))
                     <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.email') }}</strong>
                 @endif
@@ -62,14 +65,12 @@
     <script>
         //验证姓名，必填
         function validateName(){
-            var mobile = $('#nickname').val();
-            if(mobile){
-                $('#nickname').parent().find('strong').remove();
-                $('#nickname').parent().css("border",'1px solid #e6e6e6'); 
+            var nickname = $('#nickname').val();
+            if(nickname){
+                $('#nickname').parent().find('p').remove();
+                $('#nickname').parent().append('<p class="show">姓名错误，请重新输入!</p>');                
             }else{
-                $('#nickname').parent().find('strong').remove();
-                $('#nickname').parent().css("border",'1px solid red');
-                $('#nickname').parent().append('<strong style="color:red;font-size:0.5rem;">姓名必填</strong>');
+                $('#nickname').parent().find('p').remove();
             }                     
         }
         //验证手机，必填，11位数
@@ -82,12 +83,10 @@
                 var res = false;
             }
             if(!res){
-                $('#mobile').parent().find('strong').remove();
-                $('#mobile').parent().css("border",'1px solid red');
-                $('#mobile').parent().append('<strong style="color:red;font-size:0.5rem;">手机号码不正确</strong>');
+                $('#mobile').parent().find('p').remove();
+                $('#mobile').parent().append('<p class="show">手机号码错误,请重新输入!</p>');
             }else{
-                $('#mobile').parent().find('strong').remove();
-                $('#mobile').parent().css("border",'1px solid #e6e6e6');
+                $('#mobile').parent().find('p').remove();
             }                        
         }
         //验证邮箱，必填，邮箱格式
@@ -100,12 +99,10 @@
                 var res = false;
             }
             if(!res){
-                $('#email').parent().find('strong').remove();
-                $('#email').parent().css("border",'1px solid red');
-                $('#email').parent().append('<strong style="color:red;font-size:0.5rem;">邮箱不正确</strong>');
+                $('#email').parent().find('p').remove();
+                $('#email').parent().append('<p class="show">邮箱错误，请重新输入!</p>');
             }else{
-                $('#email').parent().find('strong').remove();
-                $('#email').parent().css("border",'1px solid #e6e6e6');
+                $('#email').parent().find('p').remove();
             }                        
         }
     </script>
