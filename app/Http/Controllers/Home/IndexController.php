@@ -116,6 +116,7 @@ class IndexController extends Controller
                     . "ORG:" . $person->company->display_name . "%0A"
                     . "TITLE:" .$title . "%0A"
                     . "EMAIL:" .$person->email . "%0A"
+                    . "URL:" .url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
                     . "NOTE:来自G宝盆名片.%0A"
                     . "END:VCARD";
                 break;
@@ -135,6 +136,7 @@ class IndexController extends Controller
                     . "N:" . $person->nickname . "%0A"
                     . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
                     . "EMAIL:" .$person->email . "%0A"
+                    . "URL:" .url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
                     . "NOTE:来自G宝盆名片.%0A"
                     . "END:VCARD";
                 break;
