@@ -17,8 +17,13 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
-                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add"><i
-                                    class="iconFont">&#xe67d;</i>添加</a>
+                    <li class="b-btn-bg">
+                        @if(count($employees) < Auth::user()->company->limit)
+                          <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
+                        @else
+                          <a href="javaScript:alert('员工人数上限，无法添加新员工！')">
+                        @endif
+                            <i class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import"><i
@@ -148,6 +153,8 @@
         </div>
     </div>
     <!-- 员工 - 添加modal -->
+
+
     <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
@@ -157,71 +164,72 @@
                     </button>
                     <h4 class="modal-title">添加部门员工</h4>
                 </div>
-                <form action="{{ url('company/employee') }}" method="post" class="form-create"
-                      enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    <div class="modal-body">
-                        <div class="modal-address">
-                            <p>
-                                <span>工号 : </span>
-                                <input type="text" name="Employee[number]" placeholder=""
-                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
-                                <span class="error-number hidden" style="color: red;">123</span>
-                            </p>
-                            <p>
-                                <span>姓名 : </span>
-                                <input type="text" name="Employee[nickname]" placeholder=""
-                                       value="{{ old('Employee.nickname') ? old('Employee.nickname') : '' }}">
-                                <span class="error-nickname" style="color: red;"></span>
-                            </p>
-                            {{--<p>--}}
-                            {{--<span>部门 : </span>--}}
-                            {{--<input type="text" name="Employee[department]" placeholder=""--}}
-                            {{--value="{{ old('Employee.department') ? old('Employee.department') : '' }}">--}}
-                            {{--</p>--}}
-                            <p>
-                                <span>职位 : </span>
-                                <select class="info-position_id" id="position_id" name="Employee[position_id]">
-                                    <option value="">选择职位</option>
-                                    @foreach($positions as $position)
-                                        <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
-                                                value="{{ $position->id }}">{{ $position->name }}</option>
-                                    @endforeach
-                                </select>
-                            </p>
-                            <p>
-                                <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]">
-                                <span class="error-avatar" style="color: red;"></span>
-                            </p>
-                            <p>
-                                <span>座机 : </span>
-                                <input type="text" name="Employee[telephone]" placeholder=""
-                                       value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
-                                <span class="error-telephone" style="color: red;"></span>
-                            </p>
-                            <p>
-                                <span>邮箱 : </span>
-                                <input type="text" name="Employee[email]" placeholder=""
-                                       value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
-                                <span class="error-email" style="color: red;"></span>
-                            </p>
-                            <p>
-                                <span>手机 : </span>
-                                <input type="text" name="Employee[mobile]" placeholder=""
-                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
-                                <span class="error-mobile" style="color: red;"></span>
-                            </p>
+                    <form action="{{ url('company/employee') }}" method="post" class="form-create"
+                          enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="modal-body">
+                            <div class="modal-address">
+                                <p>
+                                    <span>工号 : </span>
+                                    <input type="text" name="Employee[number]" placeholder=""
+                                           value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
+                                    <span class="error-number hidden" style="color: red;">123</span>
+                                </p>
+                                <p>
+                                    <span>姓名 : </span>
+                                    <input type="text" name="Employee[nickname]" placeholder=""
+                                           value="{{ old('Employee.nickname') ? old('Employee.nickname') : '' }}">
+                                    <span class="error-nickname" style="color: red;"></span>
+                                </p>
+                                {{--<p>--}}
+                                {{--<span>部门 : </span>--}}
+                                {{--<input type="text" name="Employee[department]" placeholder=""--}}
+                                {{--value="{{ old('Employee.department') ? old('Employee.department') : '' }}">--}}
+                                {{--</p>--}}
+                                <p>
+                                    <span>职位 : </span>
+                                    <select class="info-position_id" id="position_id" name="Employee[position_id]">
+                                        <option value="">选择职位</option>
+                                        @foreach($positions as $position)
+                                            <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
+                                                    value="{{ $position->id }}">{{ $position->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </p>
+                                <p>
+                                    <span>照片 : </span>
+                                    <input type="file" name="Employee[avatar]">
+                                    <span class="error-avatar" style="color: red;"></span>
+                                </p>
+                                <p>
+                                    <span>座机 : </span>
+                                    <input type="text" name="Employee[telephone]" placeholder=""
+                                           value="{{ old('Employee.telephone') ? old('Employee.telephone') : '' }}">
+                                    <span class="error-telephone" style="color: red;"></span>
+                                </p>
+                                <p>
+                                    <span>邮箱 : </span>
+                                    <input type="text" name="Employee[email]" placeholder=""
+                                           value="{{ old('Employee.email') ? old('Employee.email') : '' }}">
+                                    <span class="error-email" style="color: red;"></span>
+                                </p>
+                                <p>
+                                    <span>手机 : </span>
+                                    <input type="text" name="Employee[mobile]" placeholder=""
+                                           value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
+                                    <span class="error-mobile" style="color: red;"></span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary operate-create">确认</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary operate-create">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        </div>
+                    </form>
             </div>
         </div>
     </div>
+
     <!-- 员工 - 查看modal -->
     <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">

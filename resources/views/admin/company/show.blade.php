@@ -24,6 +24,10 @@
                                 <td>{{ $company->display_name }}</td>
                             </tr>
                             <tr>
+                                <th class="text-right">员工人数上限</th>
+                                <td>{{ $company->limit }}</td>
+                            </tr>
+                            <tr>
                                 <th class="text-right">LOGO</th>
                                 <td>
                                     <img src="{{ $company->logo ? asset($company->logo) : ''}}" class="img-responsive"

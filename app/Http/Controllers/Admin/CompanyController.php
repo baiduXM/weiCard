@@ -89,6 +89,7 @@ class CompanyController extends Controller
             'Company.telephone' => 'unique:companies,companies.telephone',
             'Company.address' => 'max:255',
             'Company.description' => 'max:255',
+            'Company.limit' => 'numeric|required',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -98,6 +99,7 @@ class CompanyController extends Controller
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
             'Company.description' => '公司简介',
+            'Company.limit' => '员工人数设置',
         ]);
 
         /* 获取字段 */
@@ -186,6 +188,7 @@ class CompanyController extends Controller
             'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
             'Company.address' => 'max:255',
             'Company.description' => 'max:255',
+            'Company.limit' => 'numeric|required',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -195,6 +198,7 @@ class CompanyController extends Controller
             'Company.telephone' => '公司电话',
             'Company.address' => '公司地址',
             'Company.description' => '公司简介',
+            'Company.limit' => '员工人数设置',
         ]);
         $data = $request->input('Company');
 

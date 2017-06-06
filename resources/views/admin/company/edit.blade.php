@@ -41,6 +41,20 @@
                                 </span>
                             @endif
                         </div><!-- display_name公司名 -->
+                        <div class="form-group {{ $errors->has('Company.limit') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="limit"><span class="text-danger">*</span>
+                                员工人数上限</label>
+                            <div class="col-md-6">
+                                <input id="limit" name="Company[limit]" type="text" placeholder="输入员工上限人数"
+                                       class="form-control"
+                                       value="{{ old('Company.limit') ? old('Company.limit') : $company->limit }}">
+                            </div>
+                            @if ($errors->has('Company.limit'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Company.limit') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- limit公司员工人数上线设置 -->
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">Logo</label>
                             <div class="col-md-6">
