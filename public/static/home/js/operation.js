@@ -37,7 +37,6 @@ $(function () {
     $(".operate-import").click(function () {
         var _url = $(this).parents('form').data('url');
         var _formData = new FormData($('.form-import')[0]);
-        console.log(_url);
         $.ajax({
             url: _url,
             type: "post",
@@ -51,6 +50,9 @@ $(function () {
                 $('.hintModal').modal('show');
                 $('.hintModal .modal-body').text(json.msg);
                 $('.hintModal .after-operate').text(_url);
+                if (json.data) {
+                    exportFile(json.data);
+                }
                 return false;
             },
             error: function (json) {
@@ -91,11 +93,6 @@ $(function () {
         var _url = $('.form-update').attr('action');
         var _formData = new FormData($('.form-update')[0]);
         $("[class^='error-']").addClass('hidden');
-        // $.ajaxSetup({ // 无form表单时
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
-        // });
         $.ajax({
             url: _url,
             type: "post",
@@ -145,11 +142,10 @@ $(function () {
     $(".operate-share").click(function () {
         var _url = $(this).data("url");
         console.log(_url)
-        alert(1);
     });
 
     /* 提示 - 自动隐藏 */
-    $('.hintModal').on('show.bs.modal', function (event) {
+    $('.hintModal').on('show.bs.modal', function () {
         var _modal = $(this);
         _modal.oneTime('2s', function () {
             _modal.modal('hide');
@@ -157,7 +153,7 @@ $(function () {
     });
 
     /* 提示 - 隐藏后跳转 */
-    $('.hintModal').on('hidden.bs.modal', function (event) {
+    $('.hintModal').on('hidden.bs.modal', function () {
         var _url = $('.hintModal .after-operate').text();
         window.location = _url; // 为空，刷新当前页
     });
@@ -223,5 +219,40 @@ $(function () {
                 $('[' + selector + i + ']').val(n);
             }
         });
+    }
+
+
+    /**
+     * 导出文件
+     *
+     * @param data
+     */
+    function exportFile(data) {
+        console.log(data);
+        $.ajaxSetup({ // 无form表单时
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "/company/employee/export",
+            type: "post",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (json) {
+                console.log('success');
+                console.log(json);
+                // if (json.data) {
+                //     exportFile(json.data);
+                // }
+                // // $('.hintModal').modal('show');
+                // $('.hintModal .modal-body').text(json.msg);
+                // $('.hintModal .after-operate').text(_url);
+                return false;
+            },
+        });
+
     }
 });

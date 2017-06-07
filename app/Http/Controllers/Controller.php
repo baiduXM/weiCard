@@ -64,4 +64,21 @@ class Controller extends BaseController
         Session::put('is_mobile', $this->is_mobile);
     }
 
+
+    /**
+     * 导入excel文件
+     */
+    public function importExcel()
+    {
+
+    }
+
+    /**
+     * 导出excel文件
+     */
+    public function exportExcel()
+    {
+
+    }
+
 }
