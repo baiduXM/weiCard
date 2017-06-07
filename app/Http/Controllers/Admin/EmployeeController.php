@@ -124,32 +124,37 @@ class EmployeeController extends Controller
         } else {
             $allow = true;//非唯一职位，允许添加
         }
-
-        if ($allow) {
+        /* 获取该公司现有员工总人数 */
+        $employee_nums=count(Employee::where('company_id','=',$data['company_id'])->get());
+        $company=Company::find($data['company_id']);
+        /* 判断已经添加员工数是否超出设置人数 */
+        if ($employee_nums < $company->limit){
+            if ($allow) {
             /* 获取字段类型 */
-            foreach ($data as $key => $value) {
+                foreach ($data as $key => $value) {
                 if ($value === '') {
                     $data[$key] = null; // 未填字段设置为null，否则会保存''
                 }
-            }
-            $company = Company::find($data['company_id']);
+                 }
+                $company = Company::find($data['company_id']);
+                /* 获取文件类型 */
+                if ($request->hasFile('Employee.avatar')) {
+                    $uploadController = new UploadController();
+                    $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
+                }
 
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $uploadController = new UploadController();
-                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
-            }
-
-            /* 添加 */
-            if (Employee::create($data)) {
-                return redirect('admin/company_employee')->with('success', '添加成功');
+                /* 添加 */
+                if (Employee::create($data)) {
+                    return redirect('admin/company_employee')->with('success', '添加成功');
+                } else {
+                    return redirect()->back();
+                }
             } else {
-                return redirect()->back();
-            }
-        } else {
-            return redirect()->back()->with('error', '该唯一职位已存在员工');
+                return redirect()->back()->with('error', '该唯一职位已存在员工');
+             }
+        }else{
+            return redirect()->back()->with('error', '员工人数上限，无法添加新员工');
         }
-
     }
 
     public function show($id)
