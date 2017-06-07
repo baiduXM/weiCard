@@ -8,9 +8,11 @@ use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Breadcrumbs;
 
 class EmployeeController extends Controller
 {
@@ -30,6 +32,7 @@ class EmployeeController extends Controller
         'nickname' => '姓名',
         'bind_key' => '绑定码',
         'bind_url' => '绑定链接',
+        'bind_has' => '是否绑定',
     );
 
     public function __construct()
@@ -244,13 +247,6 @@ class EmployeeController extends Controller
         }
     }
 
-    /**
-     * 批量添加
-     */
-    public function batchAdd()
-    {
-
-    }
 
     /**
      * 导入excel
@@ -262,61 +258,112 @@ class EmployeeController extends Controller
     public function import(Request $request)
     {
         if ($request->ajax()) {
-
-//            return $request->all();
-//            return $request->file('file');
-//            return Input::get('data');
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $uploadController = new UploadController();
                 $excelPath = $uploadController->save($file, 'company', Auth::user()->company->name);
-//                return $excelPath;
-                Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) {
+                /* TODO：导入数据，验证数据，错误录入，导出错误表，注明错误信息 */
+                Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use ($file) {
+                    $error = array();
                     $data = $reader->all()->toArray();
+                    $time = date('Y-m-d H:i:s', time());
+                    $company_id = Auth::user()->company->id;
                     foreach ($data as $k => $items) {
-                        $res[$k]['company_id'] = Auth::user()->company->id;
                         foreach ($items as $key => $item) {
-                            $res[$k][array_search($key, $this->inArray)] = $item;
+                            if (in_array($key, $this->inArray)) {
+                                $res[$k][array_search($key, $this->inArray)] = $item;
+                            }
                         }
-                        Employee::create($res[$k]);
+                        $res[$k]['company_id'] = $company_id;
+                        $res[$k]['created_at'] = $time;
                     }
+                    $validator = Validator::make($res, [
+                        '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^([A-Za-z0-9])*$/',
+                    ], [], [
+                        '*.number' => '工号'
+                    ]);
+                    if ($validator->fails()) {
+                        $error[0] = $this->inArray;
+                        $error[0][] = '错误信息';
+                        foreach ($validator->errors()->toArray() as $key => $value) {
+                            $k = explode('.', $key)[0];
+                            $error[$k + 1] = $data[$k];
+                            $error[$k + 1][] = implode('|', $value);
+                            unset($res[$k]); // 移除错误数据
+                        }
+                    }
+                    if ($res) {
+                        Employee::insert($res);
+                    }
+                    Config::set('global.ajax.msg', '导入数据' . count($res) . '条成功，' . (count($error) - 1) . '条失败');
+                    Config::set('global.ajax.data', array('cellData' => $error, 'filename' => $file->getClientOriginalName()));
                 });
+                /* TODO:导出错误数据(ajax错误) */
+//                $extension = File::extension($excelPath);
+//                $filename = explode('.', $file->getClientOriginalName())[0];
+//                Excel::create(iconv('UTF-8', 'GBK', $filename . '[error]'), function ($excel) use ($error) {
+//                    $excel->sheet(Auth::user()->company->name, function ($sheet) use ($error) {
+//                        $sheet->rows($error);
+//                    });
+//                })->store()->download($extension);
 
-                $err_code = 800;
+                /* 导入数据后删除文件 */
+                File::delete($excelPath);
+
+
             } else {
                 $err_code = 802;
+                Config::set('global.ajax.err', $err_code);
+                Config::set('global.ajax.msg', config('global.msg.' . $err_code));
             }
-            Config::set('global.ajax.err', $err_code);
-            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
             return Config::get('global.ajax');
         }
-
+//        $excelPath = 'uploads/company/strong/excel1496710817[error].xlsx';
         return redirect('company/employee');
     }
 
-    /*导出*/
-    public function export($format = 'xls')
+    /**
+     * 导出文件
+     *
+     * @param Request $request
+     * @param string $format 导出文件格式
+     * @param null $cellData 导出数据
+     * @param null $filename 导出文件名
+     */
+    public function export(Request $request, $format = 'xls', $cellData = null, $filename = null)
     {
-        $employees = Auth::user()->company->employees;
-        $filename = Auth::user()->company->display_name . date('Y-m-d H_i_s');
-        Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($employees) {
-            $excel->sheet(Auth::user()->company->name, function ($sheet) use ($employees) {
-                $cellData[0] = $this->outArray;
-                foreach ($employees as $k => $employee) {
-                    foreach ($this->outArray as $key => $word) {
-                        if ($key == 'bind_key') {
-                            $cellData[$k + 1][$key] = Auth::user()->company->name . '/' . $employee->number;
-                        } elseif ($key == 'bind_url') {
-                            $cellData[$k + 1][$key] = url('user/binding?code=' . Auth::user()->company->name . '/' . $employee->number);
-                        } else {
-                            $cellData[$k + 1][$key] = $employee->$key;
-                        }
+//        dd($request->all());
+        $cellData = $cellData ? $cellData : $request->get('cellData');
+        $filename = $filename ? $filename : $request->get('filename');
+
+        if (!$cellData) {
+            $employees = Auth::user()->company->employees;
+            $cellData[0] = $this->outArray;
+            foreach ($employees as $k => $employee) {
+                foreach ($this->outArray as $key => $word) {
+                    if ($key == 'bind_key') {
+                        $cellData[$k + 1][$key] = Auth::user()->company->name . '/' . $employee->number;
+                    } elseif ($key == 'bind_url') {
+                        $cellData[$k + 1][$key] = url('user/binding?code=' . Auth::user()->company->name . '/' . $employee->number);
+                    } elseif ($key == 'bind_has') {
+                        $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
+                    } else {
+                        $cellData[$k + 1][$key] = $employee->$key;
                     }
                 }
+            }
+        }
+        if (!$filename) {
+            $filename = Auth::user()->company->display_name . date('Y-m-d H_i_s');
+        }
+        Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
+            $excel->sheet('sheet1', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
-//                dd($cellData);
             });
         })->export($format);
+
+//        return redirect('company/employee');
+
     }
 
 }
