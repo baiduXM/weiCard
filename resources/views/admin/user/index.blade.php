@@ -139,7 +139,7 @@
                                                 </div>
                                             </td><!--checkbox-->
                                             <td>{{ $item->id }}</td><!--ID-->
-                                            <td>{{ $item->name }}</td><!--用户名-->
+                                            <td>{{ $item->nickname }}</td><!--用户名-->
                                             <td>{!! ($item->employee) ? '<a href="'.url('admin/company/'.$item->employee->company_id).'">'.$item->employee->company->name.'</a>' : '' !!}</td><!--公司-->
                                             <td>{!! ($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->
                                             <td>

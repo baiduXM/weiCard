@@ -56,7 +56,7 @@ return [
 
         'exports' => [
             'driver' => 'local',
-            'root' => storage_path('exports'),
+            'root' => public_path('exports'),
             'visibility' => 'public',
         ],
 

@@ -162,8 +162,9 @@ return [
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
 //        Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
-        \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
+        SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
         Maatwebsite\Excel\ExcelServiceProvider::class, // added Excel插件
+        Overtrue\LaravelPinyin\ServiceProvider::class, // added 中文转拼音
 
 
     ],
@@ -217,7 +218,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class, // added 图片处理
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added 第三方登录
         'Excel' => Maatwebsite\Excel\Facades\Excel::class, // added Excel插件
-
+        'Pinyin' => Overtrue\LaravelPinyin\Facades\Pinyin::class, // added 中文转拼音
 
     ],
 

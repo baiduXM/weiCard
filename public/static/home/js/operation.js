@@ -50,9 +50,6 @@ $(function () {
                 $('.hintModal').modal('show');
                 $('.hintModal .modal-body').text(json.msg);
                 $('.hintModal .after-operate').text(_url);
-                if (json.data) {
-                    exportFile(json.data);
-                }
                 return false;
             },
             error: function (json) {
@@ -221,38 +218,4 @@ $(function () {
         });
     }
 
-
-    /**
-     * 导出文件
-     *
-     * @param data
-     */
-    function exportFile(data) {
-        console.log(data);
-        $.ajaxSetup({ // 无form表单时
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            url: "/company/employee/export",
-            type: "post",
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (json) {
-                console.log('success');
-                console.log(json);
-                // if (json.data) {
-                //     exportFile(json.data);
-                // }
-                // // $('.hintModal').modal('show');
-                // $('.hintModal .modal-body').text(json.msg);
-                // $('.hintModal .after-operate').text(_url);
-                return false;
-            },
-        });
-
-    }
 });

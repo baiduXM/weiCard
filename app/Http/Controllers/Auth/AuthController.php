@@ -185,12 +185,18 @@ class AuthController extends Controller
      */
     protected function oauth_weixinweb($data)
     {
+        // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
+
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
+//            if ($data['subscribe'] == 0) { // 未关注
+//                return redirect('/follow/public'); // 跳转公众号二维码
+//            }
+
             $array['name'] = $data['unionid'];
             $array['oauth_weixin'] = $data['unionid'];
             $array['sex'] = $data['sex'];
@@ -217,8 +223,8 @@ class AuthController extends Controller
      * 第三方绑定 - 绑定微信
      *
      * @param $data
+     * @return \Illuminate\Http\RedirectResponse
      */
-    // TODO:绑定
     protected function bind_weixinweb($data)
     {
         // 检查是否注册

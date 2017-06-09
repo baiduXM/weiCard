@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -37,6 +38,7 @@ class EmployeeController extends Controller
 
     public function __construct()
     {
+
         parent::isMobile();
 
         // 设置面包屑模板
@@ -262,23 +264,27 @@ class EmployeeController extends Controller
                 $file = $request->file('file');
                 $uploadController = new UploadController();
                 $excelPath = $uploadController->save($file, 'company', Auth::user()->company->name);
-                /* TODO：导入数据，验证数据，错误录入，导出错误表，注明错误信息 */
-                Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use ($file) {
-                    $error = array();
+                $res = array();
+                $error = array();
+                Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use (&$res, &$error) {
                     $data = $reader->all()->toArray();
                     $time = date('Y-m-d H:i:s', time());
-                    $company_id = Auth::user()->company->id;
+                    $company = Auth::user()->company;
+                    /* TODO:现有公司人数，公司人数上限，导入数据条数 */
+
+                    $company->limit;
+
                     foreach ($data as $k => $items) {
                         foreach ($items as $key => $item) {
                             if (in_array($key, $this->inArray)) {
                                 $res[$k][array_search($key, $this->inArray)] = $item;
                             }
                         }
-                        $res[$k]['company_id'] = $company_id;
+                        $res[$k]['company_id'] = $company->id;
                         $res[$k]['created_at'] = $time;
                     }
                     $validator = Validator::make($res, [
-                        '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^([A-Za-z0-9])*$/',
+                        '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',
                     ], [], [
                         '*.number' => '工号'
                     ]);
@@ -295,21 +301,24 @@ class EmployeeController extends Controller
                     if ($res) {
                         Employee::insert($res);
                     }
-                    Config::set('global.ajax.msg', '导入数据' . count($res) . '条成功，' . (count($error) - 1) . '条失败');
-                    Config::set('global.ajax.data', array('cellData' => $error, 'filename' => $file->getClientOriginalName()));
+                    if ($error) {
+                        Config::set('global.ajax.err', 1);
+                    }
+
                 });
-                /* TODO:导出错误数据(ajax错误) */
+                /* TODO:导出错误数据(ajax提交无效果) */
 //                $extension = File::extension($excelPath);
 //                $filename = explode('.', $file->getClientOriginalName())[0];
 //                Excel::create(iconv('UTF-8', 'GBK', $filename . '[error]'), function ($excel) use ($error) {
 //                    $excel->sheet(Auth::user()->company->name, function ($sheet) use ($error) {
 //                        $sheet->rows($error);
 //                    });
-//                })->store()->download($extension);
+//                })->store();
 
                 /* 导入数据后删除文件 */
                 File::delete($excelPath);
-
+                Config::set('global.ajax.msg', '导入数据' . count($res) . '条成功，' . (count($error) - 1) . '条失败');
+//                Config::set('global.ajax.data', array('filename' => $filename . '[error].' . $extension));
 
             } else {
                 $err_code = 802;
@@ -318,7 +327,60 @@ class EmployeeController extends Controller
             }
             return Config::get('global.ajax');
         }
-//        $excelPath = 'uploads/company/strong/excel1496710817[error].xlsx';
+        $excelPath = 'uploads/company/strong/excel1496825634.xlsx';
+//        dd($excelPath);
+        Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use (&$res, &$error) {
+            $data = $reader->all()->toArray();
+            $time = date('Y-m-d H:i:s', time());
+            $company = Auth::user()->company;
+            /* TODO:现有公司人数，公司人数上限，导入数据条数 */
+            $residual = $company->limit - count($company->employees); // 余量
+            if ($residual >= 0) {
+                Config::set('global.ajax.err', 1);
+                Config::set('global.ajax.msg', '公司人数已达上限');
+                return Config::get('global.ajax');
+            }
+            $differ = $residual - count($data); // 差值
+            if ($differ >= 0) { // 可以全添加
+
+            } else { // 添加
+
+            }
+//            dd(count($data));
+//            $company->limit;
+
+            foreach ($data as $k => $items) {
+                foreach ($items as $key => $item) {
+                    if (in_array($key, $this->inArray)) {
+                        $res[$k][array_search($key, $this->inArray)] = $item;
+                    }
+                }
+                $res[$k]['company_id'] = $company->id;
+                $res[$k]['created_at'] = $time;
+            }
+            $validator = Validator::make($res, [
+                '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',
+            ], [], [
+                '*.number' => '工号'
+            ]);
+            if ($validator->fails()) {
+                $error[0] = $this->inArray;
+                $error[0][] = '错误信息';
+                foreach ($validator->errors()->toArray() as $key => $value) {
+                    $k = explode('.', $key)[0];
+                    $error[$k + 1] = $data[$k];
+                    $error[$k + 1][] = implode('|', $value);
+                    unset($res[$k]); // 移除错误数据
+                }
+            }
+            if ($res) {
+                Employee::insert($res);
+            }
+            if ($error) {
+                Config::set('global.ajax.err', 1);
+            }
+
+        });
         return redirect('company/employee');
     }
 
@@ -332,7 +394,6 @@ class EmployeeController extends Controller
      */
     public function export(Request $request, $format = 'xls', $cellData = null, $filename = null)
     {
-//        dd($request->all());
         $cellData = $cellData ? $cellData : $request->get('cellData');
         $filename = $filename ? $filename : $request->get('filename');
 
@@ -362,9 +423,9 @@ class EmployeeController extends Controller
             });
         })->export($format);
 
-//        return redirect('company/employee');
 
     }
+
 
 }
 

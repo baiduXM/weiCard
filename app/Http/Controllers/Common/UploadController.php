@@ -22,9 +22,19 @@ use Illuminate\Routing\Controller as BaseController;
  * 模板   template    public/templates/{$name}/...                 url可访问
  */
 
+/**
+ * Class UploadController
+ *
+ * @package App\Http\Controllers\Common
+ */
 class UploadController extends BaseController
 {
 
+    /**
+     * 图片数组
+     *
+     * @var array 图片类型后缀
+     */
     protected $imageArr = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
     protected $fileArr = ['zip'];
     protected $excelArr = ['xls', 'xlsx', 'csv'];
@@ -34,10 +44,11 @@ class UploadController extends BaseController
     /**
      * 上传保存
      *
-     * @param $file             文件
-     * @param string $path_type 保存路径类型
-     * @param null $name        文件夹名
-     * @param null $second_name 二级文件夹名
+     * @param file   $file        文件
+     * @param string $path_type   保存路径类型
+     * @param null   $name        文件夹名
+     * @param null   $second_name 二级文件夹名
+     *
      * @return bool|string      返回路径
      */
     public function save($file, $path_type = 'user', $name = null, $second_name = null)
@@ -74,6 +85,7 @@ class UploadController extends BaseController
      * @param $file         文件
      * @param $targetPath   目标路径
      * @param $fileName     文件名
+     *
      * @return bool
      */
     public function saveImg($file, $targetPath, $fileName)
@@ -87,6 +99,7 @@ class UploadController extends BaseController
      *
      * @param $targetPath   目标路径
      * @param $fileName     文件名
+     *
      * @return bool
      */
     public function unZip($targetPath, $fileName)
@@ -107,9 +120,10 @@ class UploadController extends BaseController
     /**
      * 获取文件夹路径
      *
-     * @param $path_type        路径类型
-     * @param null $name 文件夹名
-     * @param null $second_name 二级文件夹名
+     * @param string $path_type   路径类型
+     * @param string $name        文件夹名
+     * @param string $second_name 二级文件夹名
+     *
      * @return bool|string      返回文件夹路径
      */
     public function getPath($path_type, $name = null, $second_name = null)
@@ -161,6 +175,7 @@ class UploadController extends BaseController
      * 删除文件夹
      *
      * @param $path     文件夹路径
+     *
      * @return boolean  是否删除成功，true/false
      */
     public function deleteFolder($path)
@@ -173,7 +188,8 @@ class UploadController extends BaseController
     /**
      * 删除文件
      *
-     * @param string|array $files   文件名，字符串/数组
+     * @param string|array $files 文件名，字符串/数组
+     *
      * @return boolean              是否删除成功，true/false
      */
     public function deleteFiles($files)
