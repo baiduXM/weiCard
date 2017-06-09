@@ -9,7 +9,7 @@ Homestead.json
 /public/MP_verify_3Gr04oBtCP2ydsvT.txt
 /storage
 /doc/DOCUMENT
-
+/doc/*.phar
 .idea/*
 /nbproject
 *.sublime-workspace
