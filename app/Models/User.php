@@ -38,11 +38,11 @@ class User extends Authenticatable
     }
 
     /**
-     * 关系模型(一对一) - 名片群
+     * 关系模型(一对多) - 名片群
      */
-    public function group()
+    public function groups()
     {
-        return $this->hasOne('App\Models\Group');
+        return $this->hasMany('App\Models\Group');
     }
 
     /**

@@ -1,14 +1,14 @@
 @extends('admin.common.layout')
-@section('title', '名片夹管理')
+@section('title', '群管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.cardcase') !!}
+    {!! Breadcrumbs::render('admin.group') !!}
 @stop
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    名片夹管理
+                    群管理
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -87,34 +87,34 @@
                                             <div class="fht-cell"></div>
                                         </th><!--ID-->
                                         <th style="">
-                                            <div class="th-inner" data-name="user">所属用户</div>
+                                            <div class="th-inner" data-name="name">群名</div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="follower">名片</div>
+                                            <div class="th-inner" data-name="user_nickname">群主</div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="follower_type">类型</div>
+                                            <div class="th-inner" data-name="description">群公告</div>
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="remark">备注</div>
+                                            <div class="th-inner" data-name="user_count">成员数</div>
                                             <div class="fht-cell"></div>
                                         </th>
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner">操作</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th><!--operation-->--}}
+                                        <th style="">
+                                            <div class="th-inner">操作</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!--operation-->
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(!count($cardcases))
+                                    @if(!count($groups))
                                         <tr class="no-records-found">
                                             <td colspan="10">未找到记录</td>
                                         </tr>
                                     @else
-                                        @foreach($cardcases as $item)
+                                        @foreach($groups as $item)
                                             <tr>
                                                 <td>
                                                     <div class="ckbox ckbox-default">
@@ -124,39 +124,34 @@
                                                     </div>
                                                 </td><!--checkbox-->
                                                 <td>{{ $item->id }}</td>
-                                                <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : $item->user->name !!}</td>
+                                                <td>{{ $item->name }}</td>
+                                                {{--<td>{{ dd($item->user) }}</td>--}}
+                                                <td>{!! ($item->user->nickname) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : $item->user->nickname !!}</td>
+                                                <td>{{ $item->description }}</td>
+                                                <td>{{ count($item->users) }}</td>
                                                 <td>
-                                                    @if($item->getFollowerType($item->follower_type) == 'u')
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '用户不存在' !!}
-                                                    @else
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/company_employee/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '员工不存在' !!}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : '公司员工' }}</td>
-                                                <td>{{ $item->remark }}</td>
-                                                {{--<td>--}}
-                                                {{--<a href="{{ url('admin/employee/'.$item->id) }}"--}}
-                                                {{--class="btn btn-white btn-xs" title="详情"><i--}}
-                                                {{--class="glyphicon glyphicon-list-alt"></i>详情</a>--}}
-                                                {{--<a href="{{ url('admin/employee/'. $item->id .'/edit') }}"--}}
-                                                {{--class="btn btn-primary btn-xs" title="编辑"><i--}}
-                                                {{--class="glyphicon glyphicon-pencil"></i>编辑</a>--}}
-                                                {{--@if(!isset($item->user))--}}
-                                                {{--<a class="btn btn-primary btn-xs operate-code"--}}
-                                                {{--data-toggle="modal" data-target="#shareModal"--}}
-                                                {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
-                                                {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
-                                                {{--title="代码">--}}
-                                                {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
-                                                {{--</a>--}}
-                                                {{--@endif--}}
-                                                {{--<a class="btn btn-danger btn-xs operate-delete"--}}
-                                                {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                {{--data-url="employee/{{ $item->id }}"--}}
-                                                {{--data-info="{{ $item->number }} 员工" title="删除">--}}
-                                                {{--<i class="glyphicon glyphicon-trash"></i>删除--}}
-                                                {{--</a>--}}
-                                                {{--</td><!--操作-->--}}
+                                                    <a href="{{ url('admin/user_group/'.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="详情"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                    <a href="{{ url('admin/user_group/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    {{--@if(!isset($item->user))--}}
+                                                    {{--<a class="btn btn-primary btn-xs operate-code"--}}
+                                                    {{--data-toggle="modal" data-target="#shareModal"--}}
+                                                    {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
+                                                    {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
+                                                    {{--title="代码">--}}
+                                                    {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
+                                                    {{--</a>--}}
+                                                    {{--@endif--}}
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="user_group/{{ $item->id }}"
+                                                       data-info="{{ $item->number }} 员工" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
+                                                </td><!--操作-->
                                             </tr>
                                         @endforeach
                                     @endif
@@ -165,7 +160,7 @@
                             </div><!--表单内容-->
                             <div class="fixed-table-pagination">
                                 <div class="pull-right pagination">
-                                    {!! $cardcases->appends($params)->render() !!}
+                                    {!! count($groups) ? $groups->appends($params)->render() : ''!!}
                                 </div><!--跳转页码-->
                             </div><!--页码-->
                         </div>

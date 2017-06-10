@@ -104,9 +104,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     /* 名片夹->标签 */
-//    Route::group(['prefix' => 'cardcase'], function () {
+    Route::group(['prefix' => 'cardcase'], function () {
+        Route::get('group', ['as' => 'group.index', 'uses' => 'Home\GroupController@index']);
 //        Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);
-//    });
+    });
 
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
@@ -183,7 +184,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 名片夹管理 */
     Route::resource('user_cardcase', 'Admin\CardcaseController');
-
+    /* 群管理 */
+    Route::resource('user_group', 'Admin\GroupController');
     /* 标签管理 */
     Route::resource('user_tag', 'Admin\TagController');
 

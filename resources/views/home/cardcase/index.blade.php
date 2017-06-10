@@ -84,22 +84,7 @@
 
                     @endforeach
                 @endif
-                <!--查看名片 -->
-                <div class="modal fade" id="modal-cardshow-show" tabindex="-1" role="dialog"
-                     aria-labelledby="mySmallModalLabel">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content modal1 modal11">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span>
-                                </button>
-                                <h4 class="modal-title">名片查看</h4>
-                            </div>
 
-                            <iframe src="" width="320" height="568" frameborder="0" scrolling="auto"></iframe>
-                        </div>
-                    </div>
-                </div>
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p>
@@ -107,3 +92,21 @@
         </div>
     </div>
 @stop
+@section('modal-extend')
+    <!--查看名片 -->
+    <div class="modal fade" id="modal-cardshow-show" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal1 modal11">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">名片查看</h4>
+                </div>
+
+                <iframe src="" width="320" height="568" frameborder="0" scrolling="auto"></iframe>
+            </div>
+        </div>
+    </div>
+@show

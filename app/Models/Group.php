@@ -8,7 +8,7 @@ class Group extends Model
 {
 
     /**
-     * 关系模型(一对一) - 名片群群主
+     * 关系模型(多对一) - 名片群群主
      */
     public function user()
     {
@@ -22,4 +22,5 @@ class Group extends Model
     {
         return $this->belongsToMany('App\Models\User', 'group_user');
     }
+
 }

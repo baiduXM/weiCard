@@ -25,8 +25,11 @@
                 <li class="{{ Request::path() == 'admin/user_cardcase' || Request::is('admin/user_cardcase/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/user_cardcase') }}"><span class="glyphicon glyphicon-stats"></span>名片夹管理</a>
                 </li>
+                <li class="{{ Request::path() == 'admin/user_group' || Request::is('admin/user_group/*')  ? 'active' : '' }}">
+                    <a href="{{ url('admin/user_group') }}"><span class="glyphicon glyphicon-stats"></span>群管理</a>
+                </li>
                 {{--<li class="{{ Request::path() == 'admin/user_tag' || Request::is('admin/user_tag/*')  ? 'active' : '' }}">--}}
-                    {{--<a href="{{ url('admin/user_tag') }}"><span class="glyphicon glyphicon-stats"></span>标签管理</a>--}}
+                {{--<a href="{{ url('admin/user_tag') }}"><span class="glyphicon glyphicon-stats"></span>标签管理</a>--}}
                 {{--</li>--}}
             </ul>
         </li>
@@ -44,7 +47,7 @@
                     <a href="{{ url('admin/company') }}"><span class="glyphicon glyphicon-stats"></span>公司管理</a>
                 </li>
                 {{--<li class="{{ Request::path() == 'admin/company_department' || Request::is('admin/company_department/*')  ? 'active' : '' }}">--}}
-                    {{--<a href="{{ url('admin/company_department') }}"><span class="glyphicon glyphicon-stats"></span>部门管理</a>--}}
+                {{--<a href="{{ url('admin/company_department') }}"><span class="glyphicon glyphicon-stats"></span>部门管理</a>--}}
                 {{--</li>--}}
                 <li class="{{ Request::path() == 'admin/company_position' || Request::is('admin/company_position/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/company_position') }}"><span
@@ -74,37 +77,37 @@
                     <a href="{{ url('admin/template') }}"><span class="glyphicon glyphicon-stats"></span>模板管理</a>
                 </li>
                 {{--<li class="{{ Request::path() == 'admin/template_tag' || Request::is('admin/template_tag/*')  ? 'active' : '' }}">--}}
-                    {{--<a href="{{ url('admin/template_tag') }}"><span class="glyphicon glyphicon-stats"></span>标签管理</a>--}}
+                {{--<a href="{{ url('admin/template_tag') }}"><span class="glyphicon glyphicon-stats"></span>标签管理</a>--}}
                 {{--</li>--}}
             </ul>
         </li>
 
         @if(Auth::guard('admin')->user()->name == 'admin' || Auth::guard('admin')->user()->is_super == 1)
             <li class="{{ Request::path() == 'admin/manager' || Request::is('admin/manager/*') ? 'active' : '' }}">
-                <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>客服管理</a>
+                <a href="{{ url('admin/manager') }}"><span class="glyphicon glyphicon-stats"></span>系统管理员</a>
             </li>
         @endif
 
         {{--<li class="parent ">--}}
-            {{--<a data-toggle="collapse" href="#sub-item-4" class="icon">--}}
-                {{--<span class="glyphicon glyphicon-list"></span> 设置--}}
-                {{--<span class="pull-right">--}}
-                    {{--<em class="glyphicon glyphicon-s glyphicon-plus {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'glyphicon-minus' : '' }}"></em>--}}
-                {{--</span>--}}
-            {{--</a>--}}
-            {{--<ul class="children collapse {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'in' : '' }}"--}}
-                {{--id="sub-item-4">--}}
-                {{--<li class="{{ Request::path() == 'admin/setting/safety' ? 'active' : '' }}">--}}
-                    {{--<a class="" href="{{ url('admin/setting/safety') }}">--}}
-                        {{--<span class="glyphicon glyphicon-share-alt"></span> 安全设置--}}
-                    {{--</a>--}}
-                {{--</li>--}}
-                {{--<li class="{{ Request::path() == 'admin/setting/person' ? 'active' : '' }}">--}}
-                    {{--<a class="" href="{{ url('admin/setting/person') }}">--}}
-                        {{--<span class="glyphicon glyphicon-share-alt"></span> 个人设置--}}
-                    {{--</a>--}}
-                {{--</li>--}}
-            {{--</ul>--}}
+        {{--<a data-toggle="collapse" href="#sub-item-4" class="icon">--}}
+        {{--<span class="glyphicon glyphicon-list"></span> 设置--}}
+        {{--<span class="pull-right">--}}
+        {{--<em class="glyphicon glyphicon-s glyphicon-plus {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'glyphicon-minus' : '' }}"></em>--}}
+        {{--</span>--}}
+        {{--</a>--}}
+        {{--<ul class="children collapse {{ Request::path() == 'admin/setting' || Request::is('admin/setting/*') ? 'in' : '' }}"--}}
+        {{--id="sub-item-4">--}}
+        {{--<li class="{{ Request::path() == 'admin/setting/safety' ? 'active' : '' }}">--}}
+        {{--<a class="" href="{{ url('admin/setting/safety') }}">--}}
+        {{--<span class="glyphicon glyphicon-share-alt"></span> 安全设置--}}
+        {{--</a>--}}
+        {{--</li>--}}
+        {{--<li class="{{ Request::path() == 'admin/setting/person' ? 'active' : '' }}">--}}
+        {{--<a class="" href="{{ url('admin/setting/person') }}">--}}
+        {{--<span class="glyphicon glyphicon-share-alt"></span> 个人设置--}}
+        {{--</a>--}}
+        {{--</li>--}}
+        {{--</ul>--}}
         {{--</li>--}}
 
         <li role="presentation" class="divider"></li>
