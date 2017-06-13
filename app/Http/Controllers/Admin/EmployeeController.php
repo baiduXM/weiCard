@@ -47,7 +47,6 @@ class EmployeeController extends Controller
 
     /**
      * 首页
-     *
      */
     public function index()
     {
@@ -125,17 +124,17 @@ class EmployeeController extends Controller
             $allow = true;//非唯一职位，允许添加
         }
         /* 获取该公司现有员工总人数 */
-        $employee_nums=count(Employee::where('company_id','=',$data['company_id'])->get());
-        $company=Company::find($data['company_id']);
+        $employee_nums = count(Employee::where('company_id', '=', $data['company_id'])->get());
+        $company = Company::find($data['company_id']);
         /* 判断已经添加员工数是否超出设置人数 */
-        if ($employee_nums < $company->limit){
+        if ($employee_nums < $company->limit) {
             if ($allow) {
-            /* 获取字段类型 */
+                /* 获取字段类型 */
                 foreach ($data as $key => $value) {
-                if ($value === '') {
-                    $data[$key] = null; // 未填字段设置为null，否则会保存''
+                    if ($value === '') {
+                        $data[$key] = null; // 未填字段设置为null，否则会保存''
+                    }
                 }
-                 }
                 $company = Company::find($data['company_id']);
                 /* 获取文件类型 */
                 if ($request->hasFile('Employee.avatar')) {
@@ -151,8 +150,8 @@ class EmployeeController extends Controller
                 }
             } else {
                 return redirect()->back()->with('error', '该唯一职位已存在员工');
-             }
-        }else{
+            }
+        } else {
             return redirect()->back()->with('error', '员工人数上限，无法添加新员工');
         }
     }
@@ -198,7 +197,8 @@ class EmployeeController extends Controller
             'Employee.telephone' => '座机',
         ]);
         $data = $request->input('Employee');
-
+        // TODO：可以使用关系模型获取数据
+        // eg. Employee::with('position')->find($id);
         $position_only = Position::where('id', '=', $data['position_id'])->first();
         if ($position_only['is_only'] == 1) {
             $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
@@ -254,6 +254,7 @@ class EmployeeController extends Controller
      * 批量删除
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)

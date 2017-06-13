@@ -62,6 +62,7 @@ class Template extends Model
      * 判断是否可用
      *
      * @param null $index
+     *
      * @return array|mixed
      */
     public function getType($index = null)

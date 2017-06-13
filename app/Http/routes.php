@@ -105,8 +105,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
-        Route::get('group', ['as' => 'group.index', 'uses' => 'Home\GroupController@index']);
-//        Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);
+        Route::get('group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
+        Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
+        Route::post('tag', ['as' => 'cardcase.tag.store', 'uses' => 'Home\TagController@store']);
     });
 
     /* 模板中心 */
@@ -183,10 +184,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('user', 'Admin\UserController');
 
     /* 名片夹管理 */
+    Route::group(['prefix' => 'user_cardcase'], function () {
+        Route::match(['get', 'post'], 'set', ['as' => 'admin.cardcase.set', 'uses' => 'Admin\CardcaseController@setTag']);
+    });
     Route::resource('user_cardcase', 'Admin\CardcaseController');
     /* 群管理 */
     Route::resource('user_group', 'Admin\GroupController');
     /* 标签管理 */
+    Route::group(['prefix' => 'user_tag'], function () {
+        Route::delete('batch', ['as' => 'admin.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
+    });
     Route::resource('user_tag', 'Admin\TagController');
 
     /* 公司管理 */

@@ -17,6 +17,7 @@ class TemplateController extends Controller
      * 模板列表展示
      *
      * @param $type
+     *
      * @return $this
      */
     public function index($type = 1)
@@ -45,6 +46,7 @@ class TemplateController extends Controller
      * 模板更换
      *
      * @param $params
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function change($params)

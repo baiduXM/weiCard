@@ -23,7 +23,7 @@ class GroupController extends Controller
 
         // 我的公司 > 我的同事
         Breadcrumbs::register('group', function ($breadcrumbs) {
-            $breadcrumbs->push('名片夹', route('group.index'));
+            $breadcrumbs->push('名片夹', route('cardcase.group.index'));
         });
     }
 

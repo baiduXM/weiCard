@@ -41,8 +41,8 @@
                     <a href="{{ url('cardcase') }}">我的名片夹</a></li>
                 <li {{ Request::path() == 'cardcase/group' ? 'class=active' : '' }}>
                     <a href="{{ url('cardcase/group') }}">我的名片群</a></li>
-                {{--<li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>--}}
-                {{--<a href="{{ url('cardcase/tag') }}">设置标签</a></li>--}}
+                <li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>
+                    <a href="{{ url('cardcase/tag') }}">我的分组</a></li>
             </ul>
         </div><!--名片夹-->
         @if(Auth::user()->company)

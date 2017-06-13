@@ -20,10 +20,13 @@
                     <li class="b-btn-bg">
                         @if(count($employees) < Auth::user()->company->limit)
                             <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
-                                @else
-                                    <a href="javaScript:alert('员工人数上限，无法添加新员工！')">
-                                        @endif
-                                        <i class="iconFont">&#xe67d;</i>添加</a>
+                                <i class="iconFont">&#xe67d;</i>添加
+                            </a>
+                        @else
+                            <a href="javaScript:alert('员工人数上限，无法添加新员工！')">
+                                <i class="iconFont">&#xe67d;</i>添加
+                            </a>
+                        @endif
                     </li>
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import"><i

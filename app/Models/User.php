@@ -12,6 +12,7 @@ class User extends Authenticatable
     protected $guarded = [
         'id', 'password_confirmation',
     ];
+
 //    protected $fillable = [
 //        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
 //        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
