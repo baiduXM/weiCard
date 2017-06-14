@@ -165,7 +165,6 @@ Route::group(['middleware' => 'auth'], function () {
  * admin/setting/person 个人设置
  *
  */
-
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
@@ -252,4 +251,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::any('/person', ['as' => 'admin.setting.person', 'uses' => 'Admin\SettingController@person']);
     });
 
+});
+
+/* 移动端访问地址 */
+Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
+    /* 首页 */
+    Route::get('/', function () {
+        return redirect()->route('m.index');
+    });
+    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
+
+    /* 名片夹 */
+    Route::resource('cardcase', 'Mobile\CardcaseController');
+//
 });
