@@ -7,7 +7,7 @@ return [
 
     /* 网站全局变量 */
     'website' => [
-        'product_name' => '微名片', // 项目名
+        'product_name' => 'G名片', // 项目名
         'super_admin' => 'admin', // 超级管理员默认名字
         'copyright' => 'copyright© 厦门易尔通网络科技有限公司 版权所有' // 版权声明
     ],

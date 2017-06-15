@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 
-class CardcaseController extends CommonController
+class DepartmentController extends CommonController
 {
 
     public function __construct()
@@ -40,10 +40,8 @@ class CardcaseController extends CommonController
 
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return view('mzui.cardcase.edit')->with([
-        ]);
     }
 
     public function update(Request $request, $id)

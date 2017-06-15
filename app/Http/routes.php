@@ -257,11 +257,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
     /* 首页 */
     Route::get('/', function () {
-        return redirect()->route('m.index');
+        return redirect()->route('m.cardcase.index');
     });
     Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
 
     /* 名片夹 */
-    Route::resource('cardcase', 'Mobile\CardcaseController');
+    Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
+    Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
+
+    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
+    /* 公司 */
+    Route::resource('company', 'Mobile\CompanyController');
+    /* 员工 */
+    Route::resource('employee', 'Mobile\EmployeeController');
+    /* 部门 */
+    Route::resource('department', 'Mobile\DepartmentController');
+    /* 职位 */
+    Route::resource('position', 'Mobile\PositionController');
+    /* 关系圈 */
+    Route::resource('group', 'Mobile\GroupController');
 //
 });
