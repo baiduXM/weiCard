@@ -260,12 +260,14 @@ Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
         return redirect()->route('m.cardcase.index');
     });
     Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
+    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
     Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
 
-    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
+    /* 分组 */
+    Route::resource('tag', 'Mobile\TagController');
     /* 公司 */
     Route::resource('company', 'Mobile\CompanyController');
     /* 员工 */

@@ -24,7 +24,6 @@ class CardcaseController extends CommonController
 
     public function create()
     {
-
         return view('mzui.cardcase.create')->with([
         ]);
 

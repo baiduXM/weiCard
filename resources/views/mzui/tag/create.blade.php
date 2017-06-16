@@ -1,5 +1,5 @@
 @extends('mzui.common.layout')
-@section('title', '编辑 - 名片夹')
+@section('title', '创建 - 名片夹')
 @section('content')
     @parent
     {{--内容容器--}}
