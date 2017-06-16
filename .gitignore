@@ -10,7 +10,8 @@ Homestead.json
 /public/MP_verify_*.txt
 /storage
 /doc/DOCUMENT
+/doc/*.phar
+*.phar
 .idea/*
 /nbproject
-*.phar
 weicard.sublime-*

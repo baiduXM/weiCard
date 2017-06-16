@@ -26,9 +26,9 @@
 
     {{--标签导航--}}
     <nav class="nav nav-secondary primary-pale affix dock-top justified space">
-        <a class="{{ Request::path() == 'm/cardcase' ? 'active' : '' }}" href="{{ url('m/cardcase') }}">个人</a>
-        <a class="{{ Request::path() == 'm/employee' ? 'active' : '' }}" href="{{ url('m/employee') }}">企业</a>
-        <a class="{{ Request::path() == 'm/group' ? 'active' : '' }}" href="{{ url('m/group') }}">关系圈</a>
+        <a class="{{ Request::path() == 'm/cardcase' || Request::is('m/cardcase/*') ? 'active' : '' }}" href="{{ url('m/cardcase') }}">个人</a>
+        <a class="{{ Request::path() == 'm/employee' || Request::is('m/employee/*') ? 'active' : '' }}" href="{{ url('m/employee') }}">企业</a>
+        <a class="{{ Request::path() == 'm/group' || Request::is('m/group/*') ? 'active' : '' }}" href="{{ url('m/group') }}">关系圈</a>
     </nav>
 
 @show
