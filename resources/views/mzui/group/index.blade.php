@@ -17,12 +17,18 @@
                 @foreach($groups as $item)
                     <div class="list divider">
                         <div class="item" id="{{ $item['id'] }}">
-                            <a class="btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}"><i
-                                        class="icon icon-trash has-padding-sm"></i></a>
+                            <a class="btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
+                               data-backdrop="true" data-target="#deleteModal">
+                                <i class="icon icon-trash has-padding-sm"></i>
+                            </a>
                             <a class="title {{ $item['id'] == 0 ? 'disabled' : '' }}">&nbsp;&nbsp;{{ $item['name'] }}</a>
-                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}"><i
-                                        class="icon icon-group has-padding-sm"></i></a>
-                            <a class="btn"><i class="icon icon-bars has-padding-sm"></i></a>
+                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
+                               data-backdrop="true" data-target="#editMemberModal">
+                                <i class="icon icon-group has-padding-sm"></i>
+                            </a>
+                            <a class="btn">
+                                <i class="icon icon-bars has-padding-sm"></i>
+                            </a>
                         </div>
                     </div>
                 @endforeach
@@ -37,76 +43,107 @@
     </nav>
 @stop
 @section('modal')
+    {{--添加群成员--}}
+    <div id="editMemberModal" class="modal affix dock enter-from-center fade">
+        <div class="heading divider">
+            <div class="title">编辑成员 <label class="info has-padding-h">12</label></div>
+            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
+        </div>
+        <div class="content has-padding">
+            {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
+            {{--{{ csrf_field() }}--}}
+            <div class="heading">成员</div>
+            <div class="list divider row ">
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+            </div>
+            <div class="heading">未分组</div>
+            <div class="list divider row justified">
+                <div class="checkbox">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">1</label>
+                    <input type="checkbox" name="buyMethod1">
+                    <label for="buyMethod1">2</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">3</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">4</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">5</label>
+                </div>
+            </div>
+            {{--</form>--}}
+        </div>
+        <div class="footer has-padding">
+            <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+            <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
+        </div>
+    </div>
     {{--编辑分组名--}}
-    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade hidden">
+    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
         <div class="heading divider">
             <div class="title">添加分组</div>
             <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
         </div>
         <div class="content has-padding">
-            <form id="groupForm" action="" class="">
+            <form id="groupForm" action="{{ url()->current() }}" method="post">
+                {{ csrf_field() }}
                 <div class="control">
-                    <label for="Group-name">分组名称</label>
-                    <input class="input" type="text" id="Group-name" name="Group[name]">
+                    <label for="Group[name]">分组名称</label>
+                    <input class="input" type="text" id="Group[name]" name="Group[name]">
                     <p class="help-text"></p>
                 </div>
             </form>
         </div>
         <div class="footer has-padding">
-            <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-            <button type="submit" class="btn primary pull-right" data-dismiss="display">发布</button>
+            <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+            <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
         </div>
     </div>
-    {{----}}
-    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade hidden">
+    {{--删除确认--}}
+    <div id="deleteModal" class="modal affix dock-bottom enter-from-bottom fade">
         <div class="heading divider">
-            <div class="title">添加分组</div>
-            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
-        </div>
-        <div class="content has-padding">
-            <form id="groupForm" action="" class="">
-                <div class="control">
-                    <label for="Group-name">分组名称</label>
-                    <input class="input" type="text" id="Group-name" name="Group[name]">
-                </div>
-            </form>
+            <div class="title text-center">确认删除</div>
         </div>
         <div class="footer has-padding">
-            <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-            <button type="submit" class="btn primary pull-right" data-dismiss="display">发布</button>
+            <input type="cancel" class="btn danger" data-dismiss="display">取消</input>
+            <input type="submit" class="btn primary pull-right op">确认</input>
         </div>
     </div>
-    {{--排序选项--}}
-    <div id="sortModal" class="modal affix dock-bottom enter-from-bottom fade hidden">
-        <div class="heading divider">
-            <div class="title"><strong>排序</strong></div>
-            <nav class="nav"><a data-dismiss="display"><i class="icon-remove muted"></i></a></nav>
-        </div>
-        <div class="list">
-            <a class="item" href="{{ url()->current().'?sort=group' }}">
-                <div><i class="icon icon-list-ul"></i>&nbsp;&nbsp;按分组排序</div>
-            </a>
-            <a class="item" href="{{ url()->current().'?sort=alphabet' }}">
-                <div><i class="icon icon-sort-by-alphabet"></i>&nbsp;&nbsp;按字母排序</div>
-            </a>
-            {{--<a class="item" href="{{ url()->current().'?sort=time' }}">--}}
-            {{--<div><i class="icon icon-sort-by-attributes"></i>&nbsp;&nbsp;按时间排序</div>--}}
-            {{--</a>--}}
-        </div>
-    </div>
-
 @stop
 @section('javascript')
     <script>
         $(function () {
-            /* 添加分组 */
-            /*TODO:弹窗*/
-            $('#groupForm').ajaxForm({
-                onSubmit: function (formData) {
 
+
+            /* 添加分组 */
+            $('#groupForm').ajaxform({
+                init: function () {
+//                    alert(0)
+                },
+                onSubmit: function (formData) {
+                    alert(1)
+                    console.log(formData);
                 },
                 onResult: function (response) {
-
+                    alert(2)
+                    console.log(response);
                 },
             });
             /* 删除组 */

@@ -268,6 +268,7 @@ Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
 
     /* 分组 */
     Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
+    Route::post('cardcase/group', ['as' => 'm.group.store', 'uses' => 'Mobile\GroupController@store']);
 
     /* 分组 */
     Route::resource('tag', 'Mobile\TagController');
