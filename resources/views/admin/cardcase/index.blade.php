@@ -1,5 +1,5 @@
 @extends('admin.common.layout')
-@section('title', '员工管理')
+@section('title', '名片夹管理')
 @section('breadcrumb')
     {!! Breadcrumbs::render('admin.cardcase') !!}
 @stop

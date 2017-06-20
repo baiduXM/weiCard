@@ -104,9 +104,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     /* 名片夹->标签 */
-//    Route::group(['prefix' => 'cardcase'], function () {
-//        Route::get('tag', ['as' => 'tag.index', 'uses' => 'Home\TagController@index']);
-//    });
+    Route::group(['prefix' => 'cardcase'], function () {
+        Route::get('group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
+        Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
+        Route::post('tag', ['as' => 'cardcase.tag.store', 'uses' => 'Home\TagController@store']);
+    });
 
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
@@ -163,7 +165,6 @@ Route::group(['middleware' => 'auth'], function () {
  * admin/setting/person 个人设置
  *
  */
-
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
@@ -182,9 +183,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('user', 'Admin\UserController');
 
     /* 名片夹管理 */
+    Route::group(['prefix' => 'user_cardcase'], function () {
+        Route::match(['get', 'post'], 'set', ['as' => 'admin.cardcase.set', 'uses' => 'Admin\CardcaseController@setTag']);
+    });
     Route::resource('user_cardcase', 'Admin\CardcaseController');
-
+    /* 群管理 */
+    Route::resource('user_group', 'Admin\GroupController');
     /* 标签管理 */
+    Route::group(['prefix' => 'user_tag'], function () {
+        Route::delete('batch', ['as' => 'admin.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
+    });
     Route::resource('user_tag', 'Admin\TagController');
 
     /* 公司管理 */
@@ -243,4 +251,35 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::any('/person', ['as' => 'admin.setting.person', 'uses' => 'Admin\SettingController@person']);
     });
 
+});
+
+/* ===移动端访问地址=== */
+Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
+    /* 首页 */
+    Route::get('/', function () {
+        return redirect()->route('m.cardcase.index');
+    });
+//    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
+//    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
+
+    /* 名片夹 */
+    Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
+    Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
+
+    /* 分组 */
+    Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
+
+    /* 分组 */
+    Route::resource('tag', 'Mobile\TagController');
+
+    /* 公司 */
+    Route::resource('company', 'Mobile\CompanyController');
+    /* 员工 */
+    Route::resource('employee', 'Mobile\EmployeeController');
+    /* 部门 */
+    Route::resource('department', 'Mobile\DepartmentController');
+    /* 职位 */
+    Route::resource('position', 'Mobile\PositionController');
+
+//
 });

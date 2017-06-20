@@ -7,6 +7,7 @@ $(function () {
         var _url = $('.form-create').attr('action');
         var _formData = new FormData($('.form-create')[0]);
         $("[class^='error-']").addClass('hidden');
+        console.log(_url);
         $.ajax({
             url: _url,
             type: "post",
@@ -18,9 +19,9 @@ $(function () {
             success: function (json) {
                 console.log('success');
                 console.log(json);
-                $('.hintModal').modal('show');
-                $('.hintModal .modal-body').text(json.msg);
-                $('.hintModal .after-operate').text(_url);
+                // $('.hintModal').modal('show');
+                // $('.hintModal .modal-body').text(json.msg);
+                // $('.hintModal .after-operate').text(_url);
                 return false;
             },
             error: function (json) {

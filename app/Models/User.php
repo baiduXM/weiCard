@@ -9,14 +9,18 @@ class User extends Authenticatable
 
 //    const IS_ADMIN = 1; // 管理员
 
+    /**
+     * @var array
+     */
     protected $guarded = [
         'id', 'password_confirmation',
     ];
-//    protected $fillable = [
-//        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
-//        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
-//    ];
 
+    /**
+     * 在数组中隐藏的属性
+     *
+     * @var array
+     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -38,11 +42,11 @@ class User extends Authenticatable
     }
 
     /**
-     * 关系模型(一对一) - 名片群
+     * 关系模型(一对多) - 分组
      */
-    public function group()
+    public function groups()
     {
-        return $this->hasOne('App\Models\Group');
+        return $this->hasMany('App\Models\Group');
     }
 
     /**
@@ -56,18 +60,18 @@ class User extends Authenticatable
 //    /**
 //     * 关系模型(多对多) - 名片群
 //     */
-//    public function groups()
+//    public function circles()
 //    {
 //        return $this->belongsToMany('App\Models\Group', 'group_user');
 //    }
 
-    /**
-     * 关系模型(一对多) - 标签
-     */
-    public function tags()
-    {
-        return $this->hasMany('App\Models\Tag');
-    }
+//    /**
+//     * 关系模型(一对多) - 标签
+//     */
+//    public function tags()
+//    {
+//        return $this->hasMany('App\Models\Tag');
+//    }
 
     /**
      * 关系模型(一对多,多态) - 被谁关注
@@ -90,7 +94,8 @@ class User extends Authenticatable
      * 用户绑定员工
      *
      * @param $code 绑定代码
-     * @param $id  用户ID
+     * @param $id   用户ID
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)
@@ -126,6 +131,7 @@ class User extends Authenticatable
      * 用户解绑公司-员工
      *
      * @param $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unbinding($id)

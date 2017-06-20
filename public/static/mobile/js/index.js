@@ -2,7 +2,6 @@
  * Created by Administrator on 2017/4/1.
  */
 $(function () {
-
     // 字体大小
     (function (doc, win) {
         var docEl = doc.documentElement,

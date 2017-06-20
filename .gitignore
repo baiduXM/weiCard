@@ -11,7 +11,8 @@ Homestead.json
 /storage
 /doc/DOCUMENT
 
+/doc/*.phar
+*.phar
 .idea/*
 /nbproject
-*.phar
-weicard.sublime*
+weicard.sublime-*
