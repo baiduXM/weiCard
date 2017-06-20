@@ -15,11 +15,13 @@ class GroupController extends CommonController
 
     public function index()
     {
-//        $groups = Group::with('cardcases')->where('user_id', Auth::id())->get();
+        $groups = $this->getGroups(Auth::id());
+        $groups = $this->sortArray($groups, 'order');
         return view('mzui.group.index')->with([
-//            'groups' => $groups,
+            'groups' => $groups,
         ]);
     }
+
 
 }
 

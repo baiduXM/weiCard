@@ -23,6 +23,7 @@ class Cardcase extends Model
      */
     public $query = [
         'user_id' => '=',
+        'sort' => ''
     ];
 
     /**
