@@ -10,6 +10,7 @@ Homestead.json
 /public/MP_verify_*.txt
 /storage
 /doc/DOCUMENT
+
 .idea/*
 /nbproject
 *.phar
