@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Mobile;
 
-class CompanyController extends CommonController
+use App\Http\Controllers\Common\HomeController;
+
+class CompanyController extends HomeController
 {
 
     public function __construct()

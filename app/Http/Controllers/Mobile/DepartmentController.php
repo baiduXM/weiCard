@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Controllers\Common\HomeController;
 use Illuminate\Http\Request;
 
-class DepartmentController extends CommonController
+class DepartmentController extends HomeController
 {
 
     public function __construct()

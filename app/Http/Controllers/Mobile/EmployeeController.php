@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Controllers\Common\HomeController;
 use Illuminate\Http\Request;
 
-class EmployeeController extends CommonController
+class EmployeeController extends HomeController
 {
 
     public function __construct()

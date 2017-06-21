@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Cardcase;
 use App\Models\Employee;
 use Breadcrumbs;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 
-class CardcaseController extends Controller
+class CardcaseController extends HomeController
 {
 
     public function __construct()

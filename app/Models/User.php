@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class User extends CommonModel
 {
 
 //    const IS_ADMIN = 1; // 管理员

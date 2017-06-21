@@ -54,9 +54,15 @@
             {{--{{ csrf_field() }}--}}
             <div class="heading">成员</div>
             <div class="list divider row ">
-                <div class="checkbox cell-6">
+                <div class="checkbox cell-6 with-avatar">
                     <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">使用匿名购买</label>
+                    <label for="buyMethod title">
+                        <div class="avatar-sm">
+                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
+                        </div>
+                        使用匿名购买
+                        {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>--}}
+                    </label>
                 </div>
                 <div class="checkbox cell-6">
                     <input type="checkbox" name="buyMethod">

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\UploadController;
 use App\Http\Controllers\Controller;

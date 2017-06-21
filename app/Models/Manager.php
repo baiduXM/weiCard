@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Manager extends Authenticatable
+class Manager extends CommonModel
 {
     /**
      * 是否超级管理员

@@ -6,7 +6,7 @@
  * Time: 16:59
  */
 
-namespace App\Http\Controllers\Home;
+namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;

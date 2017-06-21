@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Employee extends CommonModel
 {
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
