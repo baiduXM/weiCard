@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
 
-class PositionController extends Controller
+class PositionController extends HomeController
 {
 
     public function __construct()

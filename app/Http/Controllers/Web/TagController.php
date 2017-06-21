@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Tag;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
-class TagController extends Controller
+class TagController extends HomeController
 {
     public function __construct()
     {

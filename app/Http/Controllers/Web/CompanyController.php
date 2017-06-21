@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Common;
 use App\Models\Company;
 use Breadcrumbs;
@@ -15,7 +15,7 @@ use App\Http\Controllers\Common\UploadController;
  * 判断是否
  */
 
-class CompanyController extends Controller
+class CompanyController extends HomeController
 {
 
     protected $path_type = 'company'; // 文件路径保存分类

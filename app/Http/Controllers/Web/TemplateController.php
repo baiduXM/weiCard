@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Request;
-use App\Models\Employee;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Template;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
-class TemplateController extends Controller
+class TemplateController extends HomeController
 {
     /**
      * 模板列表展示

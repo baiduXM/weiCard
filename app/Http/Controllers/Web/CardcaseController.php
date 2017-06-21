@@ -60,7 +60,8 @@ class CardcaseController extends HomeController
      * 收藏/取消收藏
      *
      * @param Request $request
-     * @param $params   类型-ID
+     * @param         $params   类型-ID
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function follow(Request $request, $params)
@@ -193,6 +194,7 @@ class CardcaseController extends HomeController
      * 展示名片
      *
      * @param string $type 名片类型，u-个人，e-员工，c-公司
+     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function show($type = 'u')
@@ -202,8 +204,7 @@ class CardcaseController extends HomeController
         } elseif ($type == 'u') {
             $param = $type . '-' . Auth::id();
         }
-        $indexController = new IndexController();
-        return $indexController->cardview($param);
+        return $this->cardview($param);
 
     }
 

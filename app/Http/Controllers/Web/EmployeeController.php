@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Common\HomeController;
 use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Breadcrumbs;
 
-class EmployeeController extends Controller
+class EmployeeController extends HomeController
 {
 
     protected $path_type = 'employee'; // 文件路径保存分类

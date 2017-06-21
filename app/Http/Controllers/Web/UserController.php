@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Common\HomeController;
 use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
 
-class UserController extends Controller
+class UserController extends HomeController
 {
     protected $path_type = 'user'; // 文件路径保存分类
 

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Common\HomeController;
 use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Config;
 
-class ProductController extends Controller
+class ProductController extends HomeController
 {
 
     protected $path_type = 'product'; // 文件路径保存分类

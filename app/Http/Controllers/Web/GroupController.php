@@ -8,12 +8,12 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Group;
 use Breadcrumbs;
 
 
-class GroupController extends Controller
+class GroupController extends HomeController
 {
     public function __construct()
     {

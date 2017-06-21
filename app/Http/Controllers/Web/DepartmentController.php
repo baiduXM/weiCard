@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Auth;
 
-class DepartmentController extends Controller
+class DepartmentController extends HomeController
 {
 
     public function __construct()
