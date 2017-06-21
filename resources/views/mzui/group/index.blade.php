@@ -6,79 +6,146 @@
     <div class="container display ">
         <section class="section">
             <div class="list divider">
-                <div class="item">
-                    <div class="btn primary "><i class="icon icon-plus has-padding-sm"></i></div>
-                    <a class="title ">&nbsp;&nbsp;新建分组
-                    </a>
-                </div>
+                <a class="item" data-display="modal" data-backdrop="true" data-target="#editGroupModal">
+                    <div class="btn primary ">
+                        <i class="icon icon-plus has-padding-sm"></i>
+                    </div>
+                    <div class="title ">&nbsp;&nbsp;新建分组</div>
+                </a>
             </div>
-
-            <div class="list divider">
-                <div class="item" data-item="{{ 1 }}">
-                    <a class="btn danger"><i class="icon icon-trash"></i></a>
-                    <a class="title ">&nbsp;&nbsp;我的客户
-                        {{--<label class="info has-padding-h has-margin-sm">12</label>--}}
-                    </a>
-                    <a class="btn"><i class="icon icon-group"></i></a>
-                    <a class="btn"><i class="icon icon-bars"></i></a>
-                </div>
-            </div>
-            <a class="btn primary outline" data-display data-backdrop="clean" data-target="!new"
-               data-target-dismiss="true" data-content="用于覆盖层内容" data-placement="overlay"
-               data-target-class="layer red has-padding" style="fluex">打开覆盖层</a>
-
-            {{--分组--}}
-
-            {{--<div class="cardcase-group divider">--}}
-            {{--<div class="heading strong has-margin-sm" >--}}
-            {{--<div class="btn primary"><i class="icon icon-plus"></i></div>--}}
-            {{--<div class="title" data-display="collapse" data-target="#{{ 'groupDefault' }}">默认分组--}}
-            {{--</div>--}}
-            {{--</div>--}}
-            {{--<div class="heading strong has-margin-sm" >--}}
-            {{--<a class="btn danger"><i class="icon icon-trash"></i></a>--}}
-            {{--<div class="btn primary"><i class="icon icon-plus"></i></div>--}}
-            {{--<div class="title" data-display="collapse" data-target="#{{ 'groupDefault' }}">默认分组--}}
-            {{--</div>--}}
-            {{--<a class="btn"><i class="icon icon-group"></i></a>--}}
-            {{--<a class="btn"><i class="icon icon-bars"></i></a>--}}
-            {{--<button class="btn "><i class="icon icon-angle-down"></i></button>--}}
-            {{--</div>--}}
-
-            {{--子项目--}}
-            {{--<div class="list collapse in" id="{{ 'groupDefault' }}">--}}
-            {{--<a class="item" data-display="collapse" data-target="#{{ 'groupItem1' }}" data-group=".item-footer">--}}
-            {{--<div class="avatar circle">--}}
-            {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>--}}
-            {{--</div>--}}
-            {{--<div class="title">Catouse头像</div>--}}
-            {{--<i class="icon icon-ellipsis-h muted"></i>--}}
-            {{--</a>--}}
-            {{--<a class="item" data-display="collapse" data-target="#{{ 'groupItem2' }}"--}}
-            {{--data-group=".item-footer">--}}
-            {{--<div class="avatar circle"><i class="icon icon-user"></i></div>--}}
-            {{--<div class="title text-ellipsis">Catouse图标Catouse图标Catouse图标Catouse图标Catouse图标Catouse图标Catouse图标--}}
-            {{--</div>--}}
-            {{--<i class="icon icon-ellipsis-h muted"></i>--}}
-            {{--</a>--}}
-            {{--</div>--}}
-            {{--</div>--}}
-
+            @if($groups)
+                @foreach($groups as $item)
+                    <div class="list divider">
+                        <div class="item" id="{{ $item['id'] }}">
+                            <a class="btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
+                               data-backdrop="true" data-target="#deleteModal">
+                                <i class="icon icon-trash has-padding-sm"></i>
+                            </a>
+                            <a class="title {{ $item['id'] == 0 ? 'disabled' : '' }}">&nbsp;&nbsp;{{ $item['name'] }}</a>
+                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
+                               data-backdrop="true" data-target="#editMemberModal">
+                                <i class="icon icon-group has-padding-sm"></i>
+                            </a>
+                            <a class="btn">
+                                <i class="icon icon-bars has-padding-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </section>
-
     </div>
-
-    {{--编辑--}}
-    {{--<nav class="affix dock-bottom justified">--}}
-    {{--<a class="btn btn-lg danger" href="{{ url()->previous() }}">取消</a>--}}
-    {{--<div class="btn btn-lg success">完成</div>--}}
-    {{--</nav>--}}
+    {{--侧边悬浮按钮--}}
+    <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
+        <a class="btn btn-lg circle primary outline" href="{{ url()->previous() }}">
+            <i class="icon icon-chevron-left"></i>
+        </a>
+    </nav>
 @stop
 @section('modal')
+    {{--添加群成员--}}
+    <div id="editMemberModal" class="modal affix dock enter-from-center fade">
+        <div class="heading divider">
+            <div class="title">编辑成员 <label class="info has-padding-h">12</label></div>
+            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
+        </div>
+        <div class="content has-padding">
+            {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
+            {{--{{ csrf_field() }}--}}
+            <div class="heading">成员</div>
+            <div class="list divider row ">
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+                <div class="checkbox cell-6">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">使用匿名购买</label>
+                </div>
+            </div>
+            <div class="heading">未分组</div>
+            <div class="list divider row justified">
+                <div class="checkbox">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">1</label>
+                    <input type="checkbox" name="buyMethod1">
+                    <label for="buyMethod1">2</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">3</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">4</label>
+                </div>
+                <div class="checkbox flex-auto">
+                    <input type="checkbox" name="buyMethod">
+                    <label for="buyMethod">5</label>
+                </div>
+            </div>
+            {{--</form>--}}
+        </div>
+        <div class="footer has-padding">
+            <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+            <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
+        </div>
+    </div>
+    {{--编辑分组名--}}
+    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
+        <div class="heading divider">
+            <div class="title">添加分组</div>
+            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
+        </div>
+        <div class="content has-padding">
+            <form id="groupForm" action="{{ url()->current() }}" method="post">
+                {{ csrf_field() }}
+                <div class="control">
+                    <label for="Group[name]">分组名称</label>
+                    <input class="input" type="text" id="Group[name]" name="Group[name]">
+                    <p class="help-text"></p>
+                </div>
+            </form>
+        </div>
+        <div class="footer has-padding">
+            <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+            <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
+        </div>
+    </div>
+    {{--删除确认--}}
+    <div id="deleteModal" class="modal affix dock-bottom enter-from-bottom fade">
+        <div class="heading divider">
+            <div class="title text-center">确认删除</div>
+        </div>
+        <div class="footer has-padding">
+            <input type="cancel" class="btn danger" data-dismiss="display">取消</input>
+            <input type="submit" class="btn primary pull-right op">确认</input>
+        </div>
+    </div>
 @stop
 @section('javascript')
     <script>
         $(function () {
+
+
+            /* 添加分组 */
+            $('#groupForm').ajaxform({
+                init: function () {
+//                    alert(0)
+                },
+                onSubmit: function (formData) {
+                    alert(1)
+                    console.log(formData);
+                },
+                onResult: function (response) {
+                    alert(2)
+                    console.log(response);
+                },
+            });
             /* 删除组 */
             /*TODO:弹窗确认*/
             /* 组员 */

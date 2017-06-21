@@ -259,21 +259,26 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 });
 
-/* 移动端访问地址 */
+/* ===移动端访问地址=== */
 Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
     /* 首页 */
     Route::get('/', function () {
         return redirect()->route('m.cardcase.index');
     });
-    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
-    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
+//    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
+//    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
     Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
 
     /* 分组 */
+    Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
+    Route::post('cardcase/group', ['as' => 'm.group.store', 'uses' => 'Mobile\GroupController@store']);
+
+    /* 分组 */
     Route::resource('tag', 'Mobile\TagController');
+
     /* 公司 */
     Route::resource('company', 'Mobile\CompanyController');
     /* 员工 */
@@ -282,7 +287,6 @@ Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
     Route::resource('department', 'Mobile\DepartmentController');
     /* 职位 */
     Route::resource('position', 'Mobile\PositionController');
-    /* 关系圈 */
-    Route::resource('group', 'Mobile\GroupController');
+
 //
 });

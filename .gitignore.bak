@@ -10,9 +10,16 @@ Homestead.json
 /public/MP_verify_*.txt
 /storage
 /doc/DOCUMENT
+<<<<<<< HEAD
 
+.idea/*
+/nbproject
+*.phar
+weicard.sublime*
+=======
 /doc/*.phar
 *.phar
 .idea/*
 /nbproject
 weicard.sublime-*
+>>>>>>> c8ad03f9c90f8b37b740106b7af01fa94a82b52f
