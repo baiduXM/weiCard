@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\AdminController;
 use Breadcrumbs;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

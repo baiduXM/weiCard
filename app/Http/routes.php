@@ -14,7 +14,6 @@
 Route::get('phpinfo', function () {
     echo phpinfo();
 });
-Route::get('test', 'Admin\IndexController@test'); // 测试方法
 
 /* 默认首页 */
 Route::get('/', function () {
@@ -22,16 +21,14 @@ Route::get('/', function () {
 });
 
 /* 前台登录 */
-//Route::auth();
-
 // Authentication Routes...
-Route::get('login', 'Auth\AuthController@getLogin');
-Route::post('login', 'Auth\AuthController@postLogin');
-Route::get('logout', 'Auth\AuthController@logout');
+Route::get('login', 'Auth\HomeAuthController@getLogin');
+Route::post('login', 'Auth\HomeAuthController@postLogin');
+Route::get('logout', 'Auth\HomeAuthController@logout');
 
 // Registration Routes...
-Route::get('register', 'Auth\AuthController@showRegistrationForm');
-Route::post('register', 'Auth\AuthController@register');
+Route::get('register', 'Auth\HomeAuthController@showRegistrationForm');
+Route::post('register', 'Auth\HomeAuthController@register');
 
 // Password Reset Routes...
 Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
@@ -41,9 +38,9 @@ Route::post('password/reset', 'Auth\PasswordController@reset');
 /* 第三方登录 */
 Route::group(['prefix' => 'oauth'], function () {
     # 用户点击登录按钮时请求的地址
-    Route::get('{driver}', 'Auth\AuthController@redirectToProvider');
+    Route::get('{driver}', 'Auth\HomeAuthController@redirectToProvider');
     # 接口回调地址
-    Route::get('{driver}/callback', 'Auth\AuthController@handleProviderCallback');
+    Route::get('{driver}/callback', 'Auth\HomeAuthController@handleProviderCallback');
 });
 
 /* 后台登录 */
@@ -51,10 +48,7 @@ Route::get('admin/login', 'Auth\AdminAuthController@getLogin');
 Route::post('admin/login', 'Auth\AdminAuthController@postLogin');
 Route::get('admin/register', 'Auth\AdminAuthController@getRegister');
 Route::post('admin/register', 'Auth\AdminAuthController@postRegister');
-Route::get('admin/logout', function () {
-    \Illuminate\Support\Facades\Auth::guard('admin')->logout();
-    return redirect('admin');
-});
+Route::get('admin/logout', 'Auth\AdminAuthController@logout');
 
 /* 名片预览展示 */
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Web\IndexController@cardview']);
@@ -224,9 +218,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
     Route::get('/', ['as' => 'admin', function () {
-        return redirect()->route('admin.user.index');
+        return redirect()->route('admin.index');
     }]);
-//    Route::get('index', ['as' => 'admin.user.index', 'uses' => 'Admin\IndexController@index']);
+    Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
 
     /* 用户管理 */
     Route::group(['prefix' => 'user'], function () {

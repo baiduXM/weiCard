@@ -1,5 +1,8 @@
-@extends('mzui.common.layout')
+@extends('mobile.common.mzui')
 @section('title', '公司')
+@section('css')
+    <link href="{{ asset('static/lib/mzui/css/mzui.min.css') }}" rel="stylesheet">
+@stop
 @section('content')
     @parent
     {{--内容容器--}}
@@ -56,7 +59,6 @@
 @section('modal')
 @stop
 @section('javascript')
-    <script>
-    </script>
+    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
 @stop
 

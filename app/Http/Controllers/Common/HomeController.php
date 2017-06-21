@@ -4,14 +4,31 @@ namespace App\Http\Controllers\Common;
 
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\Template;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends CommonController
 {
+    public $is_owner = false; // 是否公司老板
+
     public function __construct()
     {
-        // TODO
+        $this->isMobile();
+        $this->isCompanyOwner();
     }
+
+    /**
+     * 判断是否是公司管理人员
+     */
+    public function isCompanyOwner()
+    {
+        if (Auth::user()->company) {
+            $this->is_owner = true;
+        }
+    }
+
+
 
     /* 微信分享JS-API */
     //获取微信公众号access_token

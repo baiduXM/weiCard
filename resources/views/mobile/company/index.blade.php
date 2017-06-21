@@ -6,7 +6,4 @@
 @section('content')
     @parent
 @stop
-@section('javascript')
-    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
-@stop
 

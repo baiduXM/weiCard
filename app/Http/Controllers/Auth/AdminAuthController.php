@@ -3,27 +3,34 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Common\CommonController;
-use App\Models\Manager;
-use Illuminate\Http\Request;
-use Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Manager;
+
 
 class AdminAuthController extends CommonController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+
     protected $redirectTo = '/admin'; // 登录成功后跳转页面
     protected $guard = 'admin'; // 用户守卫
     protected $loginView = 'admin.auth.login'; // 登录页面
     protected $registerView = 'admin.auth.register'; // 注册页面
     protected $redirectAfterLogout = '/admin'; // 退出登录后跳转页面
     protected $username = 'username'; // 登录账号
-    protected $redirectPath = '/admin/logout'; // 注册跳转页面
 
     public function __construct()
     {
         $this->middleware('guest:admin', ['except' => 'logout']);
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect($this->redirectAfterLogout);
     }
 
     /**
@@ -88,6 +95,5 @@ class AdminAuthController extends CommonController
         ]);
 
     }
-
 
 }

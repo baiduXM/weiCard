@@ -8,7 +8,7 @@ use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use Illuminate\Support\Facades\Input;
 
 
@@ -63,7 +63,7 @@ class EmployeeController extends AdminController
         $employees = $query->with('company')->paginate();
         return view('admin.employee.index')->with([
             'employees' => $employees,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
             'params' => $params,
         ]);
     }
@@ -74,7 +74,7 @@ class EmployeeController extends AdminController
         if (count($companies) > 0) {
             return view('admin.employee.create')->with([
                 'companies' => $companies,
-                'common' => new AuthModel(),
+                'common' => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -159,7 +159,7 @@ class EmployeeController extends AdminController
         $employee = Employee::find($id);
         return view('admin.employee.show')->with([
             'employee' => $employee,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -170,7 +170,7 @@ class EmployeeController extends AdminController
         return view('admin.employee.edit')->with([
             'employee' => $employee,
             'positions' => $positions,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 

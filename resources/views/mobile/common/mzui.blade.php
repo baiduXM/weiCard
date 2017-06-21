@@ -7,9 +7,8 @@
     <title>@yield('title', '首页') - {{ config('global.website.product_name') }}</title>
 
     <link href="{{ asset('static/lib/mzui/css/mzui.min.css') }}" rel="stylesheet">
-
+    {{--自定义css--}}
     @section('css')
-        {{--自定义css--}}
     @show
 </head>
 
@@ -31,7 +30,7 @@
         <a class="{{ Request::path() == 'm/company' || Request::is('m/company/*') ? 'active' : '' }}"
            href="{{ url('m/company') }}">企业</a>
         {{--<a class="{{ Request::path() == 'm/circle' || Request::is('m/circle/*') ? 'active' : '' }}"--}}
-           {{--href="{{ url('m/group') }}">关系圈</a>--}}
+        {{--href="{{ url('m/group') }}">关系圈</a>--}}
     </nav>
 
 @show
@@ -40,10 +39,10 @@
     {{--模态框--}}
 @show
 
-<script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
 
+<script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
+{{--自定义js--}}
 @section('javascript')
-    {{--自定义js--}}
 @show
 </body>
 </html>

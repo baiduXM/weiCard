@@ -7,7 +7,7 @@ use App\Models\Company;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use Illuminate\Support\Facades\Input;
 
 
@@ -58,7 +58,7 @@ class ProductController extends AdminController
         $products = $query->with('company')->paginate();
         return view('admin.product.index')->with([
             'products' => $products,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
             'params' => $params,
         ]);
     }
@@ -69,7 +69,7 @@ class ProductController extends AdminController
         if (count($companies) > 0) {
             return view('admin.product.create')->with([
                 'companies' => $companies,
-                'common' => new AuthModel(),
+                'common' => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -118,7 +118,7 @@ class ProductController extends AdminController
         $product = Product::find($id);
         return view('admin.product.show')->with([
             'product' => $product,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -127,7 +127,7 @@ class ProductController extends AdminController
         $product = Product::find($id);
         return view('admin.product.edit')->with([
             'product' => $product,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 

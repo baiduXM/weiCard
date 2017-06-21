@@ -68,10 +68,7 @@
     </div>
 
 @stop
-{{--自定义js--}}
-
 @section('javascript')
-    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
     <script>
         $(function () {
             /* 添加分组 */

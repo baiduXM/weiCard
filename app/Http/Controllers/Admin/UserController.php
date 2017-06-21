@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\AdminController;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
@@ -66,7 +66,7 @@ class UserController extends AdminController
         $users = $query->with('company', 'employee')->paginate();
         return view('admin.user.index')->with([
             'users' => $users,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -78,7 +78,7 @@ class UserController extends AdminController
     public function create()
     {
         return view('admin.user.create')->with([
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -153,7 +153,7 @@ class UserController extends AdminController
         }
         return view('admin.user.show')->with([
             'user' => $user,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -171,7 +171,7 @@ class UserController extends AdminController
         }
         return view('admin.user.edit')->with([
             'user' => $user,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 

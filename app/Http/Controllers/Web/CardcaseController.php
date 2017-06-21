@@ -16,7 +16,7 @@ class CardcaseController extends HomeController
 
     public function __construct()
     {
-        parent::isMobile();
+        parent::__construct();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 

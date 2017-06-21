@@ -6,45 +6,25 @@ use App\Http\Controllers\Common\CommonController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends CommonController
+class HomeAuthController extends CommonController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    protected $redirectTo = '/index';
-    protected $loginView = 'auth.login';
-    protected $registerView = 'auth.register';
-    protected $username = 'username';
-    protected $redirectAfterLogout = '/';
+    protected $redirectTo = '/index'; // 登录成功后跳转页面
+    protected $loginView = 'auth.login'; // 登录页面
+    protected $registerView = 'auth.register'; // 注册页面
+    protected $username = 'username'; // 登录账号
+    protected $redirectAfterLogout = '/'; // 退出登录后跳转页面
 
     public function __construct()
     {
         parent::isMobile();
         $this->middleware('guest', ['except' => 'logout']);
     }
-
-    public function logout()
-    {
-        dd(1);
-        Auth::logout();
-        return redirect($this->redirectAfterLogout);
-    }
-
 
     /**
      * 重写登录页面
@@ -281,5 +261,4 @@ class AuthController extends CommonController
     {
         $this->bind_weixinweb($data);
     }
-
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\AdminController;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -53,7 +53,7 @@ class CompanyController extends AdminController
         $companies = Company::with('user', 'employees')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -66,7 +66,7 @@ class CompanyController extends AdminController
     {
         return view('admin.company.create')->with([
             'company' => new Company(),
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -141,7 +141,7 @@ class CompanyController extends AdminController
         }
         return view('admin.company.show')->with([
             'company' => $company,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -157,7 +157,7 @@ class CompanyController extends AdminController
             return redirect()->back()->with('warning', '公司不存在');
         }
         if (Auth::guard('admin')->user()->is_super == 1 || $company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
-            $common = new AuthModel();
+            $common = new CommonModel();
             return view('admin.company.edit')->with([
                 'company' => $company,
                 'common' => $common,
@@ -285,7 +285,7 @@ class CompanyController extends AdminController
         $company = Company::find($id);
         return view('admin.company.verified')->with([
             'company' => $company,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 

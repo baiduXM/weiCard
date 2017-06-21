@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -70,7 +70,7 @@ class CompanyController extends HomeController
         }
         return view('home.company.index')->with([
             'company' => $company,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Common\AdminController;
-use App\Models\AuthModel;
+use App\Models\CommonModel;
 use App\Models\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ class ManagerController extends AdminController
         $managers = Manager::paginate();
         return view('admin.manager.index')->with([
             'managers' => $managers,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -52,7 +52,7 @@ class ManagerController extends AdminController
         $manager = new Manager;
         return view('admin.manager.create')->with([
             'manager' => $manager,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -110,7 +110,7 @@ class ManagerController extends AdminController
         }
         return view('admin.manager.show')->with([
             'manager' => $manager,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -123,7 +123,7 @@ class ManagerController extends AdminController
         }
         return view('admin.manager.edit')->with([
             'manager' => $manager,
-            'common' => new AuthModel(),
+            'common' => new CommonModel(),
         ]);
     }
 
