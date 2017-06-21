@@ -66,6 +66,8 @@
                         <a href="{{ url('company/position') }}">公司职位</a></li>
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
+                    <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/link') }}">微链接</a></li>
                     @if(Auth::user()->company)
                         {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}

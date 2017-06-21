@@ -25,6 +25,22 @@ a:focus {  outline:  none;outline-offset:0;}
     url('//at.alicdn.com/t/font_3kn78bl57r38r529.svg?t=1493713883803#iconfont') format('svg'); /* iOS 4.1- */
 }
 
+@font-face {
+    font-family: 'iconfonts';  /* project id 320262 */
+    src: url('//at.alicdn.com/t/font_fbgt1m0ee9udi.eot');
+    src: url('//at.alicdn.com/t/font_fbgt1m0ee9udi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_fbgt1m0ee9udi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_fbgt1m0ee9udi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_fbgt1m0ee9udi.svg#iconfont') format('svg');
+}
+.iconfonts {
+    font-family:"iconfonts" !important;
+    font-size:14px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .iconFont {
     font-family:"iconfont" !important;
     font-size:14px;
