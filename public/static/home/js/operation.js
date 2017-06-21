@@ -219,4 +219,21 @@ $(function () {
         });
     }
 
+
+    /*2017-6-20*/
+    $("#iconId").on("click", function () {
+        $("#selIcon").show();
+        console.log('failed');
+        $("#selIcon span").on("click", function () {
+            var itext = $(this).attr('name');
+            console.log(itext);
+            var erg = /[a-zA-Z0-9]+/;
+            var rep = itext.toString().replace(erg);
+            //$("#inputIcons").val(rep);
+            console.log(rep);
+            $("#iconStart").text(itext);
+            $("#selIcon").hide();
+
+        })
+    })
 });

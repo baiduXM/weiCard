@@ -90,6 +90,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Web\ProductController@show']);
         Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Web\ProductController@update']);
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Web\ProductController@destroy']);
+
+        /* 我的公司->微链接 */
+        Route::get('link', ['as' => 'company.link.index', 'uses' => 'Web\LinkController@index']);
+        Route::post('link', ['as' => 'company.link.store', 'uses' => 'Web\LinkController@store']);
+        Route::get('link/{id}', ['as' => 'company.link.show', 'uses' => 'Web\LinkController@show']);
+        Route::post('link/{id}', ['as' => 'company.link.update', 'uses' => 'Web\LinkController@update']);
+        Route::delete('link/{id}', ['as' => 'company.link.destroy', 'uses' => 'Web\LinkController@destroy']);
+
         /* 我的公司->公司职位 */
         Route::get('position', ['as' => 'company.position.index', 'uses' => 'Web\PositionController@index']);
         Route::post('position', ['as' => 'company.position.store', 'uses' => 'Web\PositionController@store']);
