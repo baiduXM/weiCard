@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use App\Models\Common;
+use App\Models\AuthModel;
 use Illuminate\Support\Facades\Input;
-use App\Http\Controllers\Common\UploadController;
 
 
-class EmployeeController extends Controller
+class EmployeeController extends AdminController
 {
     protected $path_type = 'employee'; // 文件路径保存分类
 
@@ -64,7 +63,7 @@ class EmployeeController extends Controller
         $employees = $query->with('company')->paginate();
         return view('admin.employee.index')->with([
             'employees' => $employees,
-            'common' => new Common(),
+            'common' => new AuthModel(),
             'params' => $params,
         ]);
     }
@@ -75,7 +74,7 @@ class EmployeeController extends Controller
         if (count($companies) > 0) {
             return view('admin.employee.create')->with([
                 'companies' => $companies,
-                'common' => new Common(),
+                'common' => new AuthModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -138,8 +137,7 @@ class EmployeeController extends Controller
                 $company = Company::find($data['company_id']);
                 /* 获取文件类型 */
                 if ($request->hasFile('Employee.avatar')) {
-                    $uploadController = new UploadController();
-                    $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
+                    $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
                 }
 
                 /* 添加 */
@@ -161,7 +159,7 @@ class EmployeeController extends Controller
         $employee = Employee::find($id);
         return view('admin.employee.show')->with([
             'employee' => $employee,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -172,7 +170,7 @@ class EmployeeController extends Controller
         return view('admin.employee.edit')->with([
             'employee' => $employee,
             'positions' => $positions,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -214,8 +212,7 @@ class EmployeeController extends Controller
         if ($allow) {
             /* 获取文件类型 */
             if ($request->hasFile('Employee.avatar')) {
-                $uploadController = new UploadController();
-                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
 
             }
 

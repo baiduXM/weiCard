@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Http\Controllers\Common\UploadController;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -117,8 +115,7 @@ class EmployeeController extends HomeController
         }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
         }
         if ($allow) {
             foreach ($data as $key => $value) {
@@ -128,8 +125,7 @@ class EmployeeController extends HomeController
             }
             /* 获取文件类型 */
             if ($request->hasFile('Employee.avatar')) {
-                $uploadController = new UploadController();
-                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
             }
 
             $data['company_id'] = Auth::user()->company->id;
@@ -203,8 +199,7 @@ class EmployeeController extends HomeController
         if ($allow) {
             /* 获取文件类型 */
             if ($request->hasFile('Employee.avatar')) {
-                $uploadController = new UploadController();
-                $data['avatar'] = $uploadController->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
             }
 
             foreach ($data as $key => $value) {
@@ -262,8 +257,7 @@ class EmployeeController extends HomeController
         if ($request->ajax()) {
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
-                $uploadController = new UploadController();
-                $excelPath = $uploadController->save($file, 'company', Auth::user()->company->name);
+                $excelPath = $this->save($file, 'company', Auth::user()->company->name);
                 $res = array();
                 $error = array();
                 Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use (&$res, &$error) {

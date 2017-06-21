@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Http\Controllers\Common\AdminController;
+use App\Models\AuthModel;
 use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class CompanyController extends Controller
+class CompanyController extends AdminController
 {
 
     protected $path_type = 'company'; // 文件路径保存分类
@@ -54,7 +53,7 @@ class CompanyController extends Controller
         $companies = Company::with('user', 'employees')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -67,7 +66,7 @@ class CompanyController extends Controller
     {
         return view('admin.company.create')->with([
             'company' => new Company(),
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -118,8 +117,7 @@ class CompanyController extends Controller
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
-            $uploadController = new UploadController();
-            $data['logo'] = $uploadController->save($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         /* 添加 */
@@ -143,7 +141,7 @@ class CompanyController extends Controller
         }
         return view('admin.company.show')->with([
             'company' => $company,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -159,7 +157,7 @@ class CompanyController extends Controller
             return redirect()->back()->with('warning', '公司不存在');
         }
         if (Auth::guard('admin')->user()->is_super == 1 || $company->manager_id == null || $company->manager_id == Auth::guard('admin')->id()) {
-            $common = new Common();
+            $common = new AuthModel();
             return view('admin.company.edit')->with([
                 'company' => $company,
                 'common' => $common,
@@ -204,8 +202,7 @@ class CompanyController extends Controller
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
-            $uploadController = new UploadController();
-            $data['logo'] = $uploadController->save($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
         }
         $data['status'] = Company::VERIFIED_ING;
         $data['manager_id'] = null;
@@ -288,7 +285,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
         return view('admin.company.verified')->with([
             'company' => $company,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 

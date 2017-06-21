@@ -3,17 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Models\Common;
+use App\Models\AuthModel;
 use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Common\UploadController;
 
-/*
- * index
- * 判断是否
- */
 
 class CompanyController extends HomeController
 {
@@ -75,7 +70,7 @@ class CompanyController extends HomeController
         }
         return view('home.company.index')->with([
             'company' => $company,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -117,8 +112,7 @@ class CompanyController extends HomeController
 
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
-            $uploadController = new UploadController();
-            $data['logo'] = $uploadController->save($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
         }
 
         $data['status'] = Company::VERIFIED_ING;

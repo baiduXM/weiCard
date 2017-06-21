@@ -1,4 +1,14 @@
 <?php
+/*
+ * 资源路由方法restful
+ * GET          /photo                  index       photo.index     索引
+ * GET          /photo/create           create      photo.create    创建
+ * POST         /photo                  store       photo.store     保存
+ * GET          /photo/{photo}          show        photo.show      显示
+ * GET          /photo/{photo}/edit     edit        photo.edit      编辑
+ * PUT/PATCH    /photo/{photo}          update      photo.update    更新
+ * DELETE       /photo/{photo}          destroy     photo.destroy   删除
+ */
 
 /* server information */
 Route::get('phpinfo', function () {
@@ -12,9 +22,21 @@ Route::get('/', function () {
 });
 
 /* 前台登录 */
-Route::auth();
-Route::get('login', 'Auth\AuthController@getLogin'); // 重写登录方法
-Route::post('login', 'Auth\AuthController@postLogin'); // 重写登录方法
+//Route::auth();
+
+// Authentication Routes...
+Route::get('login', 'Auth\AuthController@getLogin');
+Route::post('login', 'Auth\AuthController@postLogin');
+Route::get('logout', 'Auth\AuthController@logout');
+
+// Registration Routes...
+Route::get('register', 'Auth\AuthController@showRegistrationForm');
+Route::post('register', 'Auth\AuthController@register');
+
+// Password Reset Routes...
+Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'Auth\PasswordController@reset');
 
 /* 第三方登录 */
 Route::group(['prefix' => 'oauth'], function () {
@@ -25,11 +47,14 @@ Route::group(['prefix' => 'oauth'], function () {
 });
 
 /* 后台登录 */
-Route::get('admin/login', 'Admin\AuthController@getLogin');
-Route::post('admin/login', 'Admin\AuthController@postLogin');
-Route::get('admin/register', 'Admin\AuthController@getRegister');
-Route::post('admin/register', 'Admin\AuthController@postRegister');
-Route::get('admin/logout', 'Admin\AuthController@logout');
+Route::get('admin/login', 'Auth\AdminAuthController@getLogin');
+Route::post('admin/login', 'Auth\AdminAuthController@postLogin');
+Route::get('admin/register', 'Auth\AdminAuthController@getRegister');
+Route::post('admin/register', 'Auth\AdminAuthController@postRegister');
+Route::get('admin/logout', function () {
+    \Illuminate\Support\Facades\Auth::guard('admin')->logout();
+    return redirect('admin');
+});
 
 /* 名片预览展示 */
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Web\IndexController@cardview']);
@@ -53,7 +78,7 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Web\IndexController@err
  * security
  *
  */
-
+/* ===Web端访问地址=== */
 Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
@@ -140,18 +165,40 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('security', 'Web\SecurityController');
 
 });
+/* ===移动端访问地址=== */
+Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
+    /* 首页 */
+    Route::get('/', function () {
+        return redirect()->route('m.cardcase.index');
+    });
+//    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
+//    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
+
+    /* 名片夹 */
+    Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
+    Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
+
+    /* 分组 */
+    Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
+    Route::post('cardcase/group', ['as' => 'm.group.store', 'uses' => 'Mobile\GroupController@store']);
+
+    /* 分组 */
+    Route::resource('tag', 'Mobile\TagController');
+
+    /* 公司 */
+    Route::resource('company', 'Mobile\CompanyController');
+    /* 员工 */
+    Route::resource('employee', 'Mobile\EmployeeController');
+    /* 部门 */
+    Route::resource('department', 'Mobile\DepartmentController');
+    /* 职位 */
+    Route::resource('position', 'Mobile\PositionController');
+
+//
+});
 
 /* =====后台管理界面===== */
-/*
- * 资源路由方法restful
- * GET          /photo                  index       photo.index     索引
- * GET          /photo/create           create      photo.create    创建
- * POST         /photo                  store       photo.store     保存
- * GET          /photo/{photo}          show        photo.show      显示
- * GET          /photo/{photo}/edit     edit        photo.edit      编辑
- * PUT/PATCH    /photo/{photo}          update      photo.update    更新
- * DELETE       /photo/{photo}          destroy     photo.destroy   删除
- */
+
 /*
  * admin/user 用户管理
  * admin/user_cardcase/?user_id= 名片夹管理
@@ -177,9 +224,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
     Route::get('/', ['as' => 'admin', function () {
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.user.index');
     }]);
-    Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
+//    Route::get('index', ['as' => 'admin.user.index', 'uses' => 'Admin\IndexController@index']);
 
     /* 用户管理 */
     Route::group(['prefix' => 'user'], function () {
@@ -261,34 +308,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 });
 
-/* ===移动端访问地址=== */
-Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
-    /* 首页 */
-    Route::get('/', function () {
-        return redirect()->route('m.cardcase.index');
-    });
-//    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
-//    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
 
-    /* 名片夹 */
-    Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
-    Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
-
-    /* 分组 */
-    Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
-    Route::post('cardcase/group', ['as' => 'm.group.store', 'uses' => 'Mobile\GroupController@store']);
-
-    /* 分组 */
-    Route::resource('tag', 'Mobile\TagController');
-
-    /* 公司 */
-    Route::resource('company', 'Mobile\CompanyController');
-    /* 员工 */
-    Route::resource('employee', 'Mobile\EmployeeController');
-    /* 部门 */
-    Route::resource('department', 'Mobile\DepartmentController');
-    /* 职位 */
-    Route::resource('position', 'Mobile\PositionController');
-
-//
-});

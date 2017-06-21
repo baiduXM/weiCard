@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Http\Controllers\Common\UploadController;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -136,8 +135,7 @@ class UserController extends HomeController
 
         /* 获取文件 */
         if ($request->hasFile('User.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
         }
         $user = User::find($id);
         foreach ($data as $key => $value) {

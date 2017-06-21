@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Common\CommonController;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Validator;
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AdminAuthController extends CommonController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     protected $redirectTo = '/admin'; // 登录成功后跳转页面
@@ -30,6 +30,7 @@ class AuthController extends Controller
      * 重写登录方法
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)
@@ -54,11 +55,11 @@ class AuthController extends Controller
 
         // 判断登录账号是用户名(name)还是邮箱(email)
         if (filter_var($username, FILTER_VALIDATE_EMAIL)) { // 验证是否邮箱
-            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password, 'is_active'=>1], $request->has('remember'))) {
+            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password, 'is_active' => 1], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
         } else { // 用户名登录
-            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password, 'is_active'=>1], $request->has('remember'))) {
+            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password, 'is_active' => 1], $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
         }

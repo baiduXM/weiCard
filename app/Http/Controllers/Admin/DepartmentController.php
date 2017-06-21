@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Company;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use Breadcrumbs;
 use Illuminate\Support\Facades\Input;
 
 
-class DepartmentController extends Controller
+class DepartmentController extends AdminController
 {
 
     public function __construct()

@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Common\CommonController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Validator;
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 
-
-class AuthController extends Controller
+class AuthController extends CommonController
 {
     /*
     |--------------------------------------------------------------------------
@@ -39,9 +38,18 @@ class AuthController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
+    public function logout()
+    {
+        dd(1);
+        Auth::logout();
+        return redirect($this->redirectAfterLogout);
+    }
+
+
     /**
      * 重写登录页面
      * 隐藏登录页面，直接微信登录
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getLogin()
@@ -68,6 +76,7 @@ class AuthController extends Controller
      * 账号可以是用户名（name）或邮箱（email）
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)
@@ -117,6 +126,7 @@ class AuthController extends Controller
      * 注册验证
      *
      * @param array $data
+     *
      * @return mixed
      */
     protected function validator(array $data)
@@ -132,6 +142,7 @@ class AuthController extends Controller
      * 注册创建用户
      *
      * @param array $data
+     *
      * @return static
      */
     protected function create(array $data)
@@ -148,6 +159,7 @@ class AuthController extends Controller
      * 第三方登录 - 请求接口
      *
      * @param $driver
+     *
      * @return mixed
      */
     public function redirectToProvider($driver)
@@ -159,7 +171,8 @@ class AuthController extends Controller
      * 第三方登录 - 回调地址
      *
      * @param Request $request
-     * @param $driver
+     * @param         $driver
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function handleProviderCallback(Request $request, $driver)
@@ -181,6 +194,7 @@ class AuthController extends Controller
      * 第三方登录 - 微信网页扫码
      *
      * @param $data
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function oauth_weixinweb($data)
@@ -212,6 +226,7 @@ class AuthController extends Controller
      * 第三方登录 - 微信登录
      *
      * @param array $data 第三方数据
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function oauth_weixin($data)
@@ -223,6 +238,7 @@ class AuthController extends Controller
      * 第三方绑定 - 绑定微信
      *
      * @param $data
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function bind_weixinweb($data)

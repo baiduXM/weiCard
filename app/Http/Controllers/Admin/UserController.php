@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Http\Controllers\Common\AdminController;
+use App\Models\AuthModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Input;
 
-class UserController extends Controller
+class UserController extends AdminController
 {
 
     protected $path_type = 'user'; // 文件路径保存分类
@@ -39,7 +38,6 @@ class UserController extends Controller
 
     /**
      * 根据条件获取数据
-     *
      */
     public function index()
     {
@@ -68,7 +66,7 @@ class UserController extends Controller
         $users = $query->with('company', 'employee')->paginate();
         return view('admin.user.index')->with([
             'users' => $users,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -80,7 +78,7 @@ class UserController extends Controller
     public function create()
     {
         return view('admin.user.create')->with([
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -88,6 +86,7 @@ class UserController extends Controller
      * 添加
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -126,8 +125,7 @@ class UserController extends Controller
 
         /* 获取文件类型 */
         if ($request->hasFile('User.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
         }
 
         // 默认激活
@@ -145,6 +143,7 @@ class UserController extends Controller
      * 详情
      *
      * @param $id
+     *
      * @return $this
      */
     public function show($id)
@@ -154,7 +153,7 @@ class UserController extends Controller
         }
         return view('admin.user.show')->with([
             'user' => $user,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -162,6 +161,7 @@ class UserController extends Controller
      * 更新页面
      *
      * @param $id
+     *
      * @return $this
      */
     public function edit($id)
@@ -171,7 +171,7 @@ class UserController extends Controller
         }
         return view('admin.user.edit')->with([
             'user' => $user,
-            'common' => new Common(),
+            'common' => new AuthModel(),
         ]);
     }
 
@@ -179,7 +179,8 @@ class UserController extends Controller
      * 更新
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
@@ -207,8 +208,7 @@ class UserController extends Controller
 
         /* 获取文件 */
         if ($request->hasFile('User.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
         }
         $user = User::find($id);
         foreach ($data as $key => $value) {
@@ -227,6 +227,7 @@ class UserController extends Controller
      * 删除
      *
      * @param $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
@@ -239,24 +240,25 @@ class UserController extends Controller
         }
     }
 
-        /**
+    /**
      * 切换状态
      *
      * @param $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function refresh($id)
     {
         $user = User::find($id);
-        if($user->is_active){
+        if ($user->is_active) {
             $user->is_active = 0;
-        }else{
+        } else {
             $user->is_active = 1;
         }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', $user->name.' - 状态切换成功');
+            return redirect('admin/user')->with('success', $user->name . ' - 状态切换成功');
         } else {
-            return redirect('admin/user')->with('error', $user->name.' - 状态切换失败');
+            return redirect('admin/user')->with('error', $user->name . ' - 状态切换失败');
         }
     }
 
@@ -264,7 +266,8 @@ class UserController extends Controller
      * 批量删除
      *
      * @param Request $request
-     * @param array $ids
+     * @param array   $ids
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)
@@ -282,7 +285,8 @@ class UserController extends Controller
      * 用户关联员工
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding(Request $request, $id)
@@ -301,6 +305,7 @@ class UserController extends Controller
      * 用户解绑公司-员工
      *
      * @param $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unbinding($id)
