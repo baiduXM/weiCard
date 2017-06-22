@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Http\Controllers\Common\UploadController;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Breadcrumbs;
@@ -66,8 +65,7 @@ class LinkController extends HomeController
         }
         /*获取文件类型*/
         if ($request->hasFile('Link.link_img')) {
-            $uploadController = new UploadController();
-            $data['link_img'] = $uploadController->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
+            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
         }
         $data['company_id'] = Auth::user()->company->id;
         /*添加*/
@@ -107,8 +105,7 @@ class LinkController extends HomeController
 
             /*获取文件类型*/
             if($request->hasFile('Link.link_img')){
-                $uploadController = new UploadController();
-                $data['link_img'] =$uploadController->save($request->file('Link.link_img'),$this->path_type,Auth::user()->company->name);
+                $data['link_img'] =$this->save($request->file('Link.link_img'),$this->path_type,Auth::user()->company->name);
             }
 
             foreach ($data as $key => $value){
@@ -132,7 +129,6 @@ class LinkController extends HomeController
             $link = Link::where('id', $id)->first();
             $res = $link->delete();
             if($res){
-
                 $err_code = 400;//删除成功
             }else{
                 $err_code = 401;//删除失败

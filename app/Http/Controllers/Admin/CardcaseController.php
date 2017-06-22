@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Cardcase;
 use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
 
-class CardcaseController extends Controller
+class CardcaseController extends AdminController
 {
     public function __construct()
     {

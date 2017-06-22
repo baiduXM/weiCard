@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
+use App\Http\Controllers\Common\AdminController;
 use Breadcrumbs;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Models\CommonModel;
 use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class TemplateController extends Controller
+class TemplateController extends AdminController
 {
     protected $path_type = 'template'; //路径
 
@@ -62,8 +61,7 @@ class TemplateController extends Controller
 
         /* 获取文件,解压文件到指定目录 */
         if ($request->hasFile('Template.file')) {
-            $uploadController = new UploadController();
-            $data['file'] = $uploadController->save($request->file('Template.file'), $this->path_type, $data['name']);
+            $data['file'] = $this->save($request->file('Template.file'), $this->path_type, $data['name']);
         }
         $data['manager_id'] = Auth::guard('admin')->id();
 
@@ -95,8 +93,7 @@ class TemplateController extends Controller
     {
         $template = Template::find($id);
         if ($template->delete()) {
-            $uploadController = new UploadController();
-            $uploadController->deleteFolder($template->file);
+            $this->deleteFolder($template->file);
             return redirect('admin/template')->with('success', '删除成功 - ' . $template->name);
         } else {
             return redirect('admin/template')->with('error', '删除失败 - ' . $template->name);
@@ -115,9 +112,8 @@ class TemplateController extends Controller
         $files_path = Template::whereIn('id', $ids)->pluck('file');
         $res = Template::whereIn('id', $ids)->delete();
         if ($res) {
-            $uploadController = new UploadController();
             foreach ($files_path as $item) {
-                $uploadController->deleteFolder($item);
+                $this->deleteFolder($item);
             }
             return redirect('admin/template')->with('success', '删除成功 - ' . $res . '条记录');
         } else {

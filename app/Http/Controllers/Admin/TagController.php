@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
 
-class TagController extends Controller
+class TagController extends AdminController
 {
     public function __construct()
     {

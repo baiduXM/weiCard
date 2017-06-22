@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Common\HomeController;
-use App\Http\Controllers\Common\UploadController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,8 +70,7 @@ class ProductController extends HomeController
         }
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
         }
 //        return $data['product_img'];
 
@@ -120,8 +118,7 @@ class ProductController extends HomeController
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
         }
 
         foreach ($data as $key => $value) {
@@ -155,9 +152,8 @@ class ProductController extends HomeController
 
         $res = $product->delete();
         if ($res) {
-            $uploadController = new UploadController();
             if ($product->product_img) {
-                $uploadController->deleteFiles($product->product_img);
+                $this->deleteFiles($product->product_img);
             }
             $err_code = 400; // 删除成功
         } else {

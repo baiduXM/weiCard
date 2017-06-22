@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Company;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use App\Models\Common;
+use App\Models\CommonModel;
 use Illuminate\Support\Facades\Input;
-use App\Http\Controllers\Common\UploadController;
 
 
-class ProductController extends Controller
+class ProductController extends AdminController
 {
     protected $path_type = 'product'; // 文件路径保存分类
 
@@ -59,7 +58,7 @@ class ProductController extends Controller
         $products = $query->with('company')->paginate();
         return view('admin.product.index')->with([
             'products' => $products,
-            'common' => new Common(),
+            'common' => new CommonModel(),
             'params' => $params,
         ]);
     }
@@ -70,7 +69,7 @@ class ProductController extends Controller
         if (count($companies) > 0) {
             return view('admin.product.create')->with([
                 'companies' => $companies,
-                'common' => new Common(),
+                'common' => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -102,9 +101,8 @@ class ProductController extends Controller
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $uploadController = new UploadController();
             $company = Company::find($data['company_id']);
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $company->name);
         }
 
         /* 添加 */
@@ -120,7 +118,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         return view('admin.product.show')->with([
             'product' => $product,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -129,7 +127,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         return view('admin.product.edit')->with([
             'product' => $product,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -149,8 +147,7 @@ class ProductController extends Controller
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $uploadController = new UploadController();
-            $data['product_img'] = $uploadController->save($request->file('Product.product_img'), $this->path_type, $product->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $product->company->name);
         }
 
         foreach ($data as $key => $value) {
@@ -169,9 +166,8 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)->first();
         if ($product->delete()) {
-            $uploadController = new UploadController();
             if ($product->product_img) {
-                $uploadController->deleteFiles($product->product_img);
+                $this->deleteFiles($product->product_img);
             }
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $product->id);
         } else {
@@ -191,8 +187,7 @@ class ProductController extends Controller
         $files_path = Product::whereIn('id', $ids)->pluck('product_img');
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
-            $uploadController = new UploadController();
-            $uploadController->deleteFiles($files_path);
+            $this->deleteFiles($files_path);
             return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');

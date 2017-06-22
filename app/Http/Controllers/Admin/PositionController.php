@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Company;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
-use App\Models\Common;
+use App\Models\CommonModel;
 use Illuminate\Support\Facades\Input;
 
 
-class PositionController extends Controller
+class PositionController extends AdminController
 {
 
     public function __construct()
@@ -53,7 +53,7 @@ class PositionController extends Controller
         $positions = $query->with('company')->orderBy('level','ASC')->paginate();
         return view('admin.position.index')->with([
             'positions' => $positions,
-            'common' => new Common(),
+            'common' => new CommonModel(),
             'params' => $params,
         ]);
     }
@@ -64,7 +64,7 @@ class PositionController extends Controller
         if (count($companies) > 0) {
             return view('admin.position.create')->with([
                 'companies' => $companies,
-                'common' => new Common(),
+                'common' => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -104,7 +104,7 @@ class PositionController extends Controller
         $position = Position::find($id);
         return view('admin.position.show')->with([
             'position' => $position,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -113,7 +113,7 @@ class PositionController extends Controller
         $position = Position::find($id);
         return view('admin.position.edit')->with([
             'position' => $position,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 

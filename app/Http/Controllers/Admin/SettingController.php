@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 
-class SettingController extends Controller
+class SettingController extends AdminController
 {
     // TODO
     public function index()

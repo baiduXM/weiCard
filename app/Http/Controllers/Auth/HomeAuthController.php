@@ -2,53 +2,41 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Common\CommonController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-use Validator;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 
-
-class AuthController extends Controller
+class HomeAuthController extends CommonController
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    protected $redirectTo = '/index';
-    protected $loginView = 'auth.login';
-    protected $registerView = 'auth.register';
-    protected $username = 'username';
-    protected $redirectAfterLogout = '/';
+    protected $redirectTo = '/'; // 登录成功后跳转页面
+    protected $loginView = 'auth.login'; // 登录页面
+    protected $registerView = 'auth.register'; // 注册页面
+    protected $redirectAfterLogout = '/'; // 退出登录后跳转页面
+    protected $username = 'username'; // 登录账号
 
     public function __construct()
     {
-        parent::isMobile();
         $this->middleware('guest', ['except' => 'logout']);
     }
 
     /**
      * 重写登录页面
      * 隐藏登录页面，直接微信登录
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getLogin()
     {
-        if (session('is_mobile')) {
-            return $this->redirectToProvider('weixin');
-        } else {
+        /* 只允许通过微信登录 */
+        if (session('is_mobile')) { // mobile端，微信授权
+//            return $this->redirectToProvider('weixin');
+        } else { // web端，微信扫码
 //            return $this->redirectToProvider('weixinweb');
         }
 
@@ -68,6 +56,7 @@ class AuthController extends Controller
      * 账号可以是用户名（name）或邮箱（email）
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)
@@ -92,15 +81,15 @@ class AuthController extends Controller
 
         // 判断登录账号是“用户名(name)”还是“邮箱(email)”
         $type = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-        if ($type == 'email') {
-            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
-                return redirect()->intended($this->redirectPath());
-
-//                return $this->handleUserWasAuthenticated($request, $throttles);
-            }
-        } else {
-            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
+        if (Auth::guard($this->getGuard())->attempt([$type => $username, 'password' => $password], $request->has('remember'))) {
+            // 1、Web端，且公司拥有者 -> 跳转Web页面
+            // 2、Web端，普通用户|移动端，所有用户 -> 跳转Mobile页面
+            if (!session('is_mobile') && $this->isCompanyOwner()) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
+            } else {
+                $this->redirectTo = 'm';
+                return redirect('m');
+//                return redirect()->intended($this->redirectPath());
             }
         }
 
@@ -117,9 +106,11 @@ class AuthController extends Controller
      * 注册验证
      *
      * @param array $data
+     *
      * @return mixed
      */
-    protected function validator(array $data)
+    protected
+    function validator(array $data)
     {
 
         return Validator::make($data, [
@@ -132,9 +123,11 @@ class AuthController extends Controller
      * 注册创建用户
      *
      * @param array $data
+     *
      * @return static
      */
-    protected function create(array $data)
+    protected
+    function create(array $data)
     {
         foreach ($data as $key => $value) {
             if ($key == 'password') {
@@ -148,9 +141,11 @@ class AuthController extends Controller
      * 第三方登录 - 请求接口
      *
      * @param $driver
+     *
      * @return mixed
      */
-    public function redirectToProvider($driver)
+    public
+    function redirectToProvider($driver)
     {
         return Socialite::with($driver)->redirect();
     }
@@ -159,10 +154,12 @@ class AuthController extends Controller
      * 第三方登录 - 回调地址
      *
      * @param Request $request
-     * @param $driver
+     * @param         $driver
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function handleProviderCallback(Request $request, $driver)
+    public
+    function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
         if (Auth::check()) { // 已登录，绑定账号
@@ -181,9 +178,11 @@ class AuthController extends Controller
      * 第三方登录 - 微信网页扫码
      *
      * @param $data
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function oauth_weixinweb($data)
+    protected
+    function oauth_weixinweb($data)
     {
         // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
 
@@ -212,9 +211,11 @@ class AuthController extends Controller
      * 第三方登录 - 微信登录
      *
      * @param array $data 第三方数据
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function oauth_weixin($data)
+    protected
+    function oauth_weixin($data)
     {
         $this->oauth_weixinweb($data);
     }
@@ -223,9 +224,11 @@ class AuthController extends Controller
      * 第三方绑定 - 绑定微信
      *
      * @param $data
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function bind_weixinweb($data)
+    protected
+    function bind_weixinweb($data)
     {
         // 检查是否注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
@@ -261,9 +264,9 @@ class AuthController extends Controller
      *
      * @param $data
      */
-    protected function bind_weixin($data)
+    protected
+    function bind_weixin($data)
     {
         $this->bind_weixinweb($data);
     }
-
 }

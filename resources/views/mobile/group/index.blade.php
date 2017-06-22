@@ -137,7 +137,6 @@
     </div>
 @stop
 @section('javascript')
-    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
     <script>
         $(function () {
 

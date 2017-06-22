@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Http\Controllers\Common\AdminController;
+use App\Models\CommonModel;
 use App\Models\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 
-class ManagerController extends Controller
+class ManagerController extends AdminController
 {
     protected $path_type = 'admin'; // 文件路径保存分类
 
@@ -43,7 +42,7 @@ class ManagerController extends Controller
         $managers = Manager::paginate();
         return view('admin.manager.index')->with([
             'managers' => $managers,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -53,7 +52,7 @@ class ManagerController extends Controller
         $manager = new Manager;
         return view('admin.manager.create')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -92,8 +91,7 @@ class ManagerController extends Controller
 
         /* 获取文件类型 */
         if ($request->hasFile('Manager.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $this->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
         }
 
         /* 添加 */
@@ -112,7 +110,7 @@ class ManagerController extends Controller
         }
         return view('admin.manager.show')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -125,7 +123,7 @@ class ManagerController extends Controller
         }
         return view('admin.manager.edit')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 

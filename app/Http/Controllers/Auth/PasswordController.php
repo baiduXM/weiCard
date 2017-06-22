@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\CommonController;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Validator;
 
-class PasswordController extends Controller
+class PasswordController extends CommonController
 {
     /*
     |--------------------------------------------------------------------------

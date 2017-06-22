@@ -1,5 +1,8 @@
-@extends('mzui.common.layout')
+@extends('mobile.common.mzui')
 @section('title', '名片夹')
+@section('css')
+    <link href="{{ asset('static/lib/mzui/css/mzui.min.css') }}" rel="stylesheet">
+@stop
 @section('content')
     @parent
     {{--内容容器--}}
@@ -93,6 +96,8 @@
     </div>
 @stop
 @section('javascript')
+    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
+
     <script>
         $(function () {
 
