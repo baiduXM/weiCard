@@ -15,6 +15,7 @@ class CardcaseController extends HomeController
 
     public function __construct()
     {
+        parent::isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -31,7 +32,6 @@ class CardcaseController extends HomeController
     public function index(Request $request)
     {
         /* 切换移动端 */
-        $this->isMobile();
         if (session('is_mobile') && !$request->is('m/*')) {
             return redirect('m/' . $request->path());
         }
