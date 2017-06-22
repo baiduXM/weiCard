@@ -13,7 +13,8 @@
         <div class="myCard-content rt-main">
             <p class="phone-show add-yg">公司部门</p>
             <ul class="b-button">
-                <li class="b-btn-bg"><a href="javascript:" data-toggle="modal" data-target="#modal-department-add"><i class="iconFont">&#xe67d;</i>添加部门</a>
+                <li class="b-btn-bg"><a href="javascript:" data-toggle="modal" data-target="#modal-department-add"><i
+                                class="iconFont">&#xe67d;</i>添加</a>
                 </li>
             </ul>
             <table class="table b-table">
@@ -21,7 +22,7 @@
                 <tr class="active">
                     <th class=""><input type="checkbox" id="box4"><label for="box4"><i
                                     class="iconFont">&#xe7de;</i></label></th>
-                    <th class="b-phone-w2"><a href="">部门名称</a></th>
+                    <th class="b-phone-w2"><a href="">部门</a></th>
                     <th><a href="">负责人</a></th>
                     <th class="b-phone-w2"><a href="">绑定数/人数</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th>
@@ -29,38 +30,38 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="b-no-bor">
-                    <td></td>
+                {{--<tr class="b-no-bor">--}}
+                {{--<td></td>--}}
+                {{--</tr>--}}
+                {{--@foreach($departments as $item)--}}
+                <tr>
+                    <td class="b-phone-w"><input type="checkbox" id="box3"><label for="box3"><i class="iconFont">&#xe7de;</i></label>
+                    </td>
+                    <td class="b-phone-w2">设计部</td>
+                    <td>李四</td>
+                    <td class="b-td-width">13</td>
+                    <td class="b-td-icon b-td-hide">
+                        <a href="javascript:" data-toggle="modal" data-target=".bs7"><i
+                                    class="iconFont">&#xe613;</i></a>
+                        <a href="javascript:" data-toggle="modal" data-target=".bs8"><i
+                                    class="iconFont">&#xe67d;</i></a>
+                        <a href=""><i class="iconFont">&#xe921;</i></a>
+                        <a href="javascript:" data-toggle="modal" data-target=".bs3"><i
+                                    class="iconFont">&#xe6d3;</i></a>
+                    </td>
+                    <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
+                    </td>
                 </tr>
-                @foreach($departments as $item)
-                    <tr>
-                        <td class="b-phone-w"><input type="checkbox" id="box3"><label for="box3"><i class="iconFont">&#xe7de;</i></label>
-                        </td>
-                        <td class="b-phone-w2">设计部</td>
-                        <td>李四</td>
-                        <td class="b-td-width">13</td>
-                        <td class="b-td-icon b-td-hide">
-                            <a href="javascript:" data-toggle="modal" data-target=".bs7"><i
-                                        class="iconFont">&#xe613;</i></a>
-                            <a href="javascript:" data-toggle="modal" data-target=".bs8"><i
-                                        class="iconFont">&#xe67d;</i></a>
-                            <a href=""><i class="iconFont">&#xe921;</i></a>
-                            <a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                        class="iconFont">&#xe6d3;</i></a>
-                        </td>
-                        <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
-                        </td>
-                    </tr>
-                    <tr class="td-icon-hide none" id="firmIcon">
-                        <td id="look"><a href="wdgs-gsbm-phone-look.html"><i class="iconFont">&#xe613;</i></a></td>
-                        <td><a href="javascript:" data-toggle="modal" data-target=".bs8"><i
-                                        class="iconFont">&#xe67d;</i></a></td>
-                        <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                        <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                        class="iconFont">&#xe6d3;</i></a></td>
-                        <td><a href=""></a></td>
-                    </tr>
-                @endforeach
+                <tr class="td-icon-hide none" id="firmIcon">
+                    <td id="look"><a href="wdgs-gsbm-phone-look.html"><i class="iconFont">&#xe613;</i></a></td>
+                    <td><a href="javascript:" data-toggle="modal" data-target=".bs8"><i
+                                    class="iconFont">&#xe67d;</i></a></td>
+                    <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
+                    <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
+                                    class="iconFont">&#xe6d3;</i></a></td>
+                    <td><a href=""></a></td>
+                </tr>
+                {{--@endforeach--}}
 
                 </tbody>
             </table>
@@ -78,7 +79,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">添加职位</h4>
+                    <h4 class="modal-title">添加部门</h4>
                 </div>
                 <form action="{{ url('company/position') }}" method="post" class="form-create"
                       enctype="multipart/form-data">
@@ -86,21 +87,25 @@
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
-                                <span>职位名称 : </span>
-                                <input type="text" name="Position[name]" placeholder=""
-                                       value="{{ old('Position.name') ? old('Position.name') : '' }}">
+                                <span>名称 : </span>
+                                <input type="text" name="Department[name]" placeholder=""
+                                       value="{{ old('Department.name') ? old('Department.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>职位级别 : </span>
-                                <input type="text" name="Position[level]" placeholder="填写数字，越小级别越高"
-                                       value="{{ old('Position.level') ? old('Position.level') : '' }}">
-                                <span class="error-level" style="color: red;"></span>
+                                <span>上级部门 : </span>
+                                <select name="Department[pid]" id="">
+                                    <option value="0">顶级部门</option>
+                                    <option value=""></option>
+                                </select>
+                                <span class="error-pid" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>是否唯一 : </span>
-                                <input type="checkbox" name="Position[is_only]" value="1" style="display:block;height:13px;" />是
-                                <span class="error-is_only" style="color: red;"></span>
+                                <span>部门主管 : </span>
+                                <select name="Department[employee_id]" id="">
+                                    <option value=""></option>
+                                </select>
+                                <span class="error-employee_id" style="color: red;"></span>
                             </p>
                         </div>
                     </div>
@@ -142,7 +147,8 @@
                             </p>
                             <p>
                                 <span>是否唯一 : </span>
-                                <input type="checkbox" name="Position[is_only]" value="1" class="info-is_only" style="display:block;height:13px;" />是
+                                <input type="checkbox" name="Position[is_only]" value="1" class="info-is_only"
+                                       style="display:block;height:13px;"/>是
                                 <span class="error-is_only" style="color: red;"></span>
                             </p>
                         </div>
