@@ -1,4 +1,4 @@
-@extends('mobile.common.mzui')
+@extends('mobile.common.layout')
 @section('title', '名片夹')
 @section('content')
     <div id="search">
