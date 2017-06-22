@@ -1,4 +1,4 @@
-@extends('mobile.common.mzui')
+@extends('mobile.common.layout')
 @section('title', '获取名片')
 @section('css')
     @parent
