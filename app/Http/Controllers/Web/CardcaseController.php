@@ -31,14 +31,31 @@ class CardcaseController extends HomeController
      */
     public function index(Request $request)
     {
-        /* 切换移动端 */
-        if (session('is_mobile') && !$request->is('m/*')) {
-            return redirect('m/' . $request->path());
+
+        // TODO:后期优化分页
+        if ($this->is_mobile) {
+            $word = Input::query('word') ? Input::query('word') : '';
+            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+                if (isset($word) && $word != '') {
+                    $query->where('nickname', 'like', '%' . $word . '%');
+                }
+            }])->where('user_id', Auth::id())->get();
+            foreach ($cardcases as $key => $cardcase) {
+                if (!$cardcase->follower) {
+                    unset($cardcases[$key]);
+                }
+            }
+            return view('mobile.cardcase.index')->with([
+                'cardcases' => $cardcases,
+                'word' => $word,
+            ]);
+        } else {
+            $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
+            return view('home.cardcase.index')->with([
+                'cardcases' => $cardcases,
+            ]);
         }
-        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
-        return view('home.cardcase.index')->with([
-            'cardcases' => $cardcases,
-        ]);
+
     }
 
     /**
