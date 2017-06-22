@@ -103,7 +103,7 @@ class CardcaseController extends HomeController
     /**
      * 字符串转拼音
      *
-     * @param string $data
+     * @param array $data
      *
      * @return mixed
      */

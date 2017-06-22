@@ -28,9 +28,13 @@ class CardcaseController extends HomeController
     /**
      * 首页
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        /* 切换移动端 */
+        $this->isMobile();
+        if (session('is_mobile') && !$request->is('m/*')) {
+            return redirect('m/' . $request->path());
+        }
         $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
         return view('home.cardcase.index')->with([
             'cardcases' => $cardcases,

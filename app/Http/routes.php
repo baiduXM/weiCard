@@ -73,7 +73,7 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Web\IndexController@err
  *
  */
 /* ===Web端访问地址=== */
-Route::group(['middleware' => ['auth', 'mobile']], function () {
+Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Web\UserController@index']);
@@ -170,7 +170,6 @@ Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
-    Route::get('cardcase/show/{type?}', ['as' => 'm.cardcase.show', 'uses' => 'Web\CardcaseController@show']);
     Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
 
     /* 分组 */
