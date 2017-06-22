@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Common\CommonController;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 
-class HomeAuthController extends CommonController
+class HomeAuthController extends HomeController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     protected $redirectTo = '/'; // 登录成功后跳转页面

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Common;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 
-
-class CommonController extends Controller
+class Controller extends BaseController
 {
+    use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
+
 
     public $is_mobile = false; // 是否是手机模式
 
@@ -291,7 +296,4 @@ class CommonController extends Controller
     {
         return Storage::disk('public')->delete($files);
     }
-
-
 }
-

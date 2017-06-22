@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Common\CommonController;
+use App\Http\Controllers\Common\AdminController;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Manager;
 
 
-class AdminAuthController extends CommonController
+class AdminAuthController extends AdminController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 

@@ -7,9 +7,9 @@ use App\Models\Group;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+//use Illuminate\Support\Facades\Request;
 
-class HomeController extends CommonController
+class HomeController extends Controller
 {
     public $is_owner = false; // 是否公司老板
 

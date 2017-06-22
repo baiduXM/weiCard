@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 
 /* 前台登录 */
+
 // Authentication Routes...
 Route::get('login', 'Auth\HomeAuthController@getLogin');
 Route::post('login', 'Auth\HomeAuthController@postLogin');
@@ -51,8 +52,8 @@ Route::post('admin/register', 'Auth\AdminAuthController@postRegister');
 Route::get('admin/logout', 'Auth\AdminAuthController@logout');
 
 /* 名片预览展示 */
-Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Web\IndexController@cardview']);
-Route::any('errorview', ['as' => 'errorview', 'uses' => 'Web\IndexController@errorview']);
+Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
+Route::any('errorview', ['as' => 'errorview', 'uses' => 'Home\IndexController@errorview']);
 
 /* =====用户界面===== */
 
@@ -76,87 +77,87 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Web\IndexController@err
 Route::group(['middleware' => 'auth'], function () {
 
     /* 首页 */
-    Route::get('index', ['as' => 'index', 'uses' => 'Web\UserController@index']);
+    Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);
 
     /* 用户中心 */
-    Route::get('user', ['as' => 'user.index', 'uses' => 'Web\UserController@index']);
-    Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Web\UserController@edit']);
-    Route::put('user', ['as' => 'user.update', 'uses' => 'Web\UserController@update']);
-    Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Web\UserController@binding']);
-    Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Web\UserController@unbinding']);
+    Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
+    Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
+    Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
+    Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
+    Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
     /* 我的公司 */
-    Route::get('company', ['as' => 'company.index', 'uses' => 'Web\CompanyController@index']);
-    Route::put('company', ['as' => 'company.update', 'uses' => 'Web\CompanyController@update']);
+    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
+    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
 
     Route::group(['prefix' => 'company'], function () {
         /* 我的公司->员工 */
-        Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Web\EmployeeController@index']);
-        Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Web\EmployeeController@store']);
-        Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Web\EmployeeController@import']);
-        Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Web\EmployeeController@export']);
-        Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Web\EmployeeController@download']);
-//        Route::post('employee/import', ['as' => 'company.employee.import', 'uses' => 'Web\EmployeeController@import']);
-        Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Web\EmployeeController@show']);
-//        Route::put('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Web\EmployeeController@update']);
-        Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Web\EmployeeController@update']);
-        Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Web\EmployeeController@destroy']);
+        Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
+        Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
+        Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
+        Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
+//        Route::post('employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
+        Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
+//        Route::put('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
+        Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
+        Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         /* 我的公司->部门 */
-        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Web\DepartmentController@index']);
+        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
         /* 我的公司->公司产品 */
-        Route::get('product', ['as' => 'company.product.index', 'uses' => 'Web\ProductController@index']);
-        Route::post('product', ['as' => 'company.product.store', 'uses' => 'Web\ProductController@store']);
-        Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Web\ProductController@show']);
-        Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Web\ProductController@update']);
-        Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Web\ProductController@destroy']);
+        Route::get('product', ['as' => 'company.product.index', 'uses' => 'Home\ProductController@index']);
+        Route::post('product', ['as' => 'company.product.store', 'uses' => 'Home\ProductController@store']);
+        Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Home\ProductController@show']);
+        Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Home\ProductController@update']);
+        Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
 
         /* 我的公司->微链接 */
-        Route::get('link', ['as' => 'company.link.index', 'uses' => 'Web\LinkController@index']);
-        Route::post('link', ['as' => 'company.link.store', 'uses' => 'Web\LinkController@store']);
-        Route::get('link/{id}', ['as' => 'company.link.show', 'uses' => 'Web\LinkController@show']);
-        Route::post('link/{id}', ['as' => 'company.link.update', 'uses' => 'Web\LinkController@update']);
-        Route::delete('link/{id}', ['as' => 'company.link.destroy', 'uses' => 'Web\LinkController@destroy']);
+        Route::get('link', ['as' => 'company.link.index', 'uses' => 'Home\LinkController@index']);
+        Route::post('link', ['as' => 'company.link.store', 'uses' => 'Home\LinkController@store']);
+        Route::get('link/{id}', ['as' => 'company.link.show', 'uses' => 'Home\LinkController@show']);
+        Route::post('link/{id}', ['as' => 'company.link.update', 'uses' => 'Home\LinkController@update']);
+        Route::delete('link/{id}', ['as' => 'company.link.destroy', 'uses' => 'Home\LinkController@destroy']);
 
         /* 我的公司->公司职位 */
-        Route::get('position', ['as' => 'company.position.index', 'uses' => 'Web\PositionController@index']);
-        Route::post('position', ['as' => 'company.position.store', 'uses' => 'Web\PositionController@store']);
-        Route::get('position/{id}', ['as' => 'company.position.show', 'uses' => 'Web\PositionController@show']);
-        Route::post('position/{id}', ['as' => 'company.position.update', 'uses' => 'Web\PositionController@update']);
-        Route::delete('position/{id}', ['as' => 'company.position.destroy', 'uses' => 'Web\PositionController@destroy']);
+        Route::get('position', ['as' => 'company.position.index', 'uses' => 'Home\PositionController@index']);
+        Route::post('position', ['as' => 'company.position.store', 'uses' => 'Home\PositionController@store']);
+        Route::get('position/{id}', ['as' => 'company.position.show', 'uses' => 'Home\PositionController@show']);
+        Route::post('position/{id}', ['as' => 'company.position.update', 'uses' => 'Home\PositionController@update']);
+        Route::delete('position/{id}', ['as' => 'company.position.destroy', 'uses' => 'Home\PositionController@destroy']);
     });
 
     /* 名片夹 */
-    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Web\CardcaseController@index']);
-    Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Web\CardcaseController@show']);
-    Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Web\CardcaseController@follow']);
-    Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Web\CardcaseController@unfollow']);
+    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
+    Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
+    Route::match(['get', 'post'], 'cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
+    Route::match(['get', 'post'], 'cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
-        Route::get('group', ['as' => 'cardcase.group.index', 'uses' => 'Web\GroupController@index']);
-        Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Web\TagController@index']);
-        Route::post('tag', ['as' => 'cardcase.tag.store', 'uses' => 'Web\TagController@store']);
+        Route::get('group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
+        Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
+        Route::post('tag', ['as' => 'cardcase.tag.store', 'uses' => 'Home\TagController@store']);
     });
 
     /* 模板中心 */
-    Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Web\TemplateController@index']);
-    Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Web\TemplateController@change']);
-//    Route::resource('template', 'Web\TemplateController');
+    Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
+    Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+//    Route::resource('template', 'Home\TemplateController');
 
     /* 安全中心 */
     Route::group(['prefix' => 'security'], function () {
         /* 安全中心->验证邮箱 */
-        Route::get('email', ['as' => 'security.email', 'uses' => 'Web\SecurityController@email']);
-        Route::post('email', ['as' => 'security.postEmail', 'uses' => 'Web\SecurityController@postEmail']);
+        Route::get('email', ['as' => 'security.email', 'uses' => 'Home\SecurityController@email']);
+        Route::post('email', ['as' => 'security.postEmail', 'uses' => 'Home\SecurityController@postEmail']);
 
         /* 安全中心->绑定第三方 */
-        Route::get('binding/{driver?}', ['as' => 'security.binding', 'uses' => 'Web\SecurityController@binding']);
-        Route::get('binding/{driver}/callback', 'Web\SecurityController@bindingCallback');
+        Route::get('binding/{driver?}', ['as' => 'security.binding', 'uses' => 'Home\SecurityController@binding']);
+        Route::get('binding/{driver}/callback', 'Home\SecurityController@bindingCallback');
 
         /* 安全中心->修改密码 */
-        Route::get('password', ['as' => 'security.password', 'uses' => 'Web\SecurityController@password']);
-        Route::any('postpassword', ['as' => 'security.postpassword', 'uses' => 'Web\SecurityController@postpassword']);
+        Route::get('password', ['as' => 'security.password', 'uses' => 'Home\SecurityController@password']);
+        Route::any('postpassword', ['as' => 'security.postpassword', 'uses' => 'Home\SecurityController@postpassword']);
     });
-    Route::resource('security', 'Web\SecurityController');
+    Route::resource('security', 'Home\SecurityController');
 
 });
 /* ===移动端访问地址=== */
