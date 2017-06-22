@@ -31,19 +31,25 @@ class CardcaseController extends HomeController
 //        $order = $request->input('order') ? $request->input('order') : 'asc';
 
         $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get()->toArray();
-        $cardcases = $this->getPinyin($cardcases);
+        if (count($cardcases) > 0) {
+            $cardcases = $this->getPinyin($cardcases);
+        }
         if ($sort == 'group') {
             $field = 'order';
             $groups = $this->getGroups(Auth::id());
-            $groups = $this->sortArray($groups, $field);
-            foreach ($groups as $k => &$v) {
-                foreach ($cardcases as $ck => $vk) {
-                    if ($v['id'] == $vk['group_id']) {
-                        $v['cardcases'][] = $vk;
+            if (count($groups) > 0) {
+                $groups = $this->sortArray($groups, $field);
+                foreach ($groups as $k => &$v) {
+                    if (count($cardcases) > 0) {
+                        foreach ($cardcases as $ck => $vk) {
+                            if ($v['id'] == $vk['group_id']) {
+                                $v['cardcases'][] = $vk;
+                            }
+                        }
                     }
-                }
-                if (!isset($v['cardcases'])) {
-                    $v['cardcases'] = array();
+                    if (!isset($v['cardcases'])) {
+                        $v['cardcases'] = array();
+                    }
                 }
             }
             $data = $groups;

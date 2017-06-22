@@ -170,6 +170,7 @@ Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
 
     /* 名片夹 */
     Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
+    Route::get('cardcase/show/{type?}', ['as' => 'm.cardcase.show', 'uses' => 'Web\CardcaseController@show']);
     Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
 
     /* 分组 */

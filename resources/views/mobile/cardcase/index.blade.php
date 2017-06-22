@@ -8,7 +8,7 @@
     {{--内容容器--}}
     <div class="container">
         <section class="section">
-            @if($data)
+            @if(count($data)>0)
                 @foreach($data as $item)
                     {{--分组--}}
                     <div class="cardcase-group divider">
