@@ -56,10 +56,9 @@ class CommonController extends Controller
         // But WP7 is also Windows, with a slightly different characteristic
         if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false)
             $mobile_browser++;
-        if ($mobile_browser > 0)
+        if ($mobile_browser > 0) {
             $this->is_mobile = true;
-        else
-            $this->is_mobile = false;
+        }
 
         Session::put('is_mobile', $this->is_mobile);
     }

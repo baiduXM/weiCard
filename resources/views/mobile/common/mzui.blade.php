@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +15,8 @@
 <body class="with-heading-top with-nav-top can-scroll">
 @section('content')
     {{--头部导航--}}
-    <header class="heading primary affix dock-top dock-auto">
-        <a class="avatar circle"><i class="icon-home"></i></a>
+    <header class="heading primary affix dock-top">
+        <a class="avatar circle" href="{{ url('m') }}"><i class="icon-home"></i></a>
         <div class="title"><strong>@yield('title', '首页')</strong></div>
         <nav class="nav right">
             <a href="{{ url('m/search') }}"><i class="icon-search"></i></a>
@@ -29,8 +29,6 @@
            href="{{ url('m/cardcase') }}">个人</a>
         <a class="{{ Request::path() == 'm/company' || Request::is('m/company/*') ? 'active' : '' }}"
            href="{{ url('m/company') }}">企业</a>
-        {{--<a class="{{ Request::path() == 'm/circle' || Request::is('m/circle/*') ? 'active' : '' }}"--}}
-        {{--href="{{ url('m/group') }}">关系圈</a>--}}
     </nav>
 
 @show

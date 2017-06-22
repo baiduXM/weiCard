@@ -19,10 +19,6 @@ class CardcaseController extends HomeController
     /**
      * 首页
      *
-     * @param string  $sort     排序方式，可选。
-     *                          group|alphabet|time => 分组|字母|时间排序
-     * @param string  $order    排序顺序，可选。
-     *                          asc|desc => 升序|降序
      * @param Request $request
      *
      * @return $this

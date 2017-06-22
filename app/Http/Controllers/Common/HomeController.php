@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class HomeController extends CommonController
 {
@@ -14,18 +15,21 @@ class HomeController extends CommonController
 
     public function __construct()
     {
-        $this->isMobile();
-        $this->isCompanyOwner();
+
     }
+
 
     /**
      * 判断是否是公司管理人员
+     *
+     * @return bool
      */
     public function isCompanyOwner()
     {
         if (Auth::user()->company) {
             $this->is_owner = true;
         }
+        return $this->is_owner ? true : false;
     }
 
 

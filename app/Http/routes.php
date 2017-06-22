@@ -73,7 +73,7 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Web\IndexController@err
  *
  */
 /* ===Web端访问地址=== */
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'mobile']], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Web\UserController@index']);

@@ -9,14 +9,12 @@ use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Input;
 
 class CardcaseController extends HomeController
 {
 
     public function __construct()
     {
-        parent::__construct();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -26,34 +24,17 @@ class CardcaseController extends HomeController
         });
     }
 
+
     /**
      * 首页
      */
     public function index()
     {
-        // TODO:后期优化分页
-        if ($this->is_mobile) {
-            $word = Input::query('word') ? Input::query('word') : '';
-            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-                if (isset($word) && $word != '') {
-                    $query->where('nickname', 'like', '%' . $word . '%');
-                }
-            }])->where('user_id', Auth::id())->get();
-            foreach ($cardcases as $key => $cardcase) {
-                if (!$cardcase->follower) {
-                    unset($cardcases[$key]);
-                }
-            }
-            return view('mobile.cardcase.index')->with([
-                'cardcases' => $cardcases,
-                'word' => $word,
-            ]);
-        } else {
-            $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
-            return view('home.cardcase.index')->with([
-                'cardcases' => $cardcases,
-            ]);
-        }
+
+        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
+        return view('home.cardcase.index')->with([
+            'cardcases' => $cardcases,
+        ]);
     }
 
     /**

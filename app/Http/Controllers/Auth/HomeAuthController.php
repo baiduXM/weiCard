@@ -14,15 +14,14 @@ use Illuminate\Support\Facades\Auth;
 class HomeAuthController extends CommonController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-    protected $redirectTo = '/index'; // 登录成功后跳转页面
+    protected $redirectTo = '/'; // 登录成功后跳转页面
     protected $loginView = 'auth.login'; // 登录页面
     protected $registerView = 'auth.register'; // 注册页面
-    protected $username = 'username'; // 登录账号
     protected $redirectAfterLogout = '/'; // 退出登录后跳转页面
+    protected $username = 'username'; // 登录账号
 
     public function __construct()
     {
-        parent::isMobile();
         $this->middleware('guest', ['except' => 'logout']);
     }
 
@@ -34,9 +33,10 @@ class HomeAuthController extends CommonController
      */
     public function getLogin()
     {
-        if (session('is_mobile')) {
-            return $this->redirectToProvider('weixin');
-        } else {
+        /* 只允许通过微信登录 */
+        if (session('is_mobile')) { // mobile端，微信授权
+//            return $this->redirectToProvider('weixin');
+        } else { // web端，微信扫码
 //            return $this->redirectToProvider('weixinweb');
         }
 
@@ -81,15 +81,15 @@ class HomeAuthController extends CommonController
 
         // 判断登录账号是“用户名(name)”还是“邮箱(email)”
         $type = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-        if ($type == 'email') {
-            if (Auth::guard($this->getGuard())->attempt(['email' => $username, 'password' => $password], $request->has('remember'))) {
-                return redirect()->intended($this->redirectPath());
-
-//                return $this->handleUserWasAuthenticated($request, $throttles);
-            }
-        } else {
-            if (Auth::guard($this->getGuard())->attempt(['name' => $username, 'password' => $password], $request->has('remember'))) {
+        if (Auth::guard($this->getGuard())->attempt([$type => $username, 'password' => $password], $request->has('remember'))) {
+            // 1、Web端，且公司拥有者 -> 跳转Web页面
+            // 2、Web端，普通用户|移动端，所有用户 -> 跳转Mobile页面
+            if (!session('is_mobile') && $this->isCompanyOwner()) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
+            } else {
+                $this->redirectTo = 'm';
+                return redirect('m');
+//                return redirect()->intended($this->redirectPath());
             }
         }
 
@@ -109,7 +109,8 @@ class HomeAuthController extends CommonController
      *
      * @return mixed
      */
-    protected function validator(array $data)
+    protected
+    function validator(array $data)
     {
 
         return Validator::make($data, [
@@ -125,7 +126,8 @@ class HomeAuthController extends CommonController
      *
      * @return static
      */
-    protected function create(array $data)
+    protected
+    function create(array $data)
     {
         foreach ($data as $key => $value) {
             if ($key == 'password') {
@@ -142,7 +144,8 @@ class HomeAuthController extends CommonController
      *
      * @return mixed
      */
-    public function redirectToProvider($driver)
+    public
+    function redirectToProvider($driver)
     {
         return Socialite::with($driver)->redirect();
     }
@@ -155,7 +158,8 @@ class HomeAuthController extends CommonController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function handleProviderCallback(Request $request, $driver)
+    public
+    function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
         if (Auth::check()) { // 已登录，绑定账号
@@ -177,7 +181,8 @@ class HomeAuthController extends CommonController
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function oauth_weixinweb($data)
+    protected
+    function oauth_weixinweb($data)
     {
         // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
 
@@ -209,7 +214,8 @@ class HomeAuthController extends CommonController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function oauth_weixin($data)
+    protected
+    function oauth_weixin($data)
     {
         $this->oauth_weixinweb($data);
     }
@@ -221,7 +227,8 @@ class HomeAuthController extends CommonController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function bind_weixinweb($data)
+    protected
+    function bind_weixinweb($data)
     {
         // 检查是否注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
@@ -257,7 +264,8 @@ class HomeAuthController extends CommonController
      *
      * @param $data
      */
-    protected function bind_weixin($data)
+    protected
+    function bind_weixin($data)
     {
         $this->bind_weixinweb($data);
     }
