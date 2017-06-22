@@ -149,6 +149,7 @@ class HomeController extends CommonController
             return redirect()->route('errorview')->with('com', '$com');
         }
         $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+        //dd($person->company->links);
         return view($template->name . '.index')->with([
             'template' => $template, // 模板数据
             'person' => $person, // 对象，用户/员工

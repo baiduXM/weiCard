@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class LinkController extends HomeController
 {
@@ -29,8 +30,11 @@ class LinkController extends HomeController
     {
         if(Auth::user()->company){
             $links =Link::where('company_id','=',Auth::user()->company->id)->paginate();
+            $icons =DB::table('icons')->get();
+            //dd($icons);
             return view('home.link.index')->with([
                 'links' =>$links,
+                'icons' =>$icons,
             ]);
         }else{
             return redirect()->back()->with('error','请先绑定公司');
@@ -77,6 +81,8 @@ class LinkController extends HomeController
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
         return Config::get('global.ajax');
     }
+
+
         /*查看*/
         public function show($id)
         {
@@ -126,10 +132,7 @@ class LinkController extends HomeController
             $link = Link::where('id', $id)->first();
             $res = $link->delete();
             if($res){
-                $uploadController = new UploadController();
-                if($link->link_img){
-                    $uploadController->deldeteFiles($link->ling_img);
-                }
+
                 $err_code = 400;//删除成功
             }else{
                 $err_code = 401;//删除失败

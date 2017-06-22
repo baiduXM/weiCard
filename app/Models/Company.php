@@ -66,7 +66,15 @@ class Company extends CommonModel
     {
         return $this->hasMany('App\Models\Product');
     }
-    
+
+    /**
+     * 关系模型(一对多) - 微链接
+     */
+    public function links()
+    {
+        return $this->hasMany('App\Models\Link');
+    }
+
     /**
      * 关系模型(多对多,多态) - 模板
      */

@@ -19,9 +19,9 @@ $(function () {
             success: function (json) {
                 console.log('success');
                 console.log(json);
-                // $('.hintModal').modal('show');
-                // $('.hintModal .modal-body').text(json.msg);
-                // $('.hintModal .after-operate').text(_url);
+                 $('.hintModal').modal('show');
+                 $('.hintModal .modal-body').text(json.msg);
+                 $('.hintModal .after-operate').text(_url);
                 return false;
             },
             error: function (json) {
@@ -226,14 +226,27 @@ $(function () {
         console.log('failed');
         $("#selIcon span").on("click", function () {
             var itext = $(this).attr('name');
+            var itexts = $(this).find("i").text();
+            $("#inputIcons").val(itext);
             console.log(itext);
-            var erg = /[a-zA-Z0-9]+/;
-            var rep = itext.toString().replace(erg);
-            //$("#inputIcons").val(rep);
-            console.log(rep);
-            $("#iconStart").text(itext);
+            $("#iconStart").text(itexts);
             $("#selIcon").hide();
 
         })
     })
+    ;
+    $("#iconId1").on("click", function () {
+        $("#selIcon1").show();
+        console.log('111');
+        $("#selIcon1 span").on("click", function () {
+            var itext = $(this).attr('name');
+            var itexts = $(this).find("i").text();
+            $("#inputIcons1").val(itext);
+            console.log(itext);
+            $("#iconStart1").text(itexts);
+            $("#selIcon1").hide();
+
+        })
+    })
+
 });

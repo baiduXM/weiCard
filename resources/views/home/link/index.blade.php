@@ -62,12 +62,12 @@
                             <td class="b-phone-w2">{{ $item->id }}</td>
                             <td class="">{{ $item->link_name }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->link_url }}</td>
-                            <td class="b-td-width b-td-hide"><i style="font-size: 30px;" class="iconfonts">&#xe683;</i> </td>
+                            <td class="b-td-width b-td-hide"><i style="font-size: 30px;" class="iconfonts">{{ $item->link_img.';' }}</i> </td>
                             <td class="b-td-icon b-td-hide w-icon">
-                                <a href="" data-toggle="modal" data-target="#modal-employee-show"
-                                   class="operate-show"
-                                   data-url="{{ url('company/link/'.$item->id) }}"><i
-                                            class="iconFont">&#xe613;</i></a>
+                                {{--<a href="" data-toggle="modal" data-target="#modal-employee-show"--}}
+                                   {{--class="operate-show"--}}
+                                   {{--data-url="{{ url('company/link/'.$item->id) }}"><i--}}
+                                            {{--class="iconFont">&#xe613;</i></a>--}}
                                 @if(Auth::user()->company)
                                     <a href="" data-toggle="modal" data-target="#modal-employee-edit"
                                        data-url="{{ url('company/link/'.$item->id) }}" class="operate-edit"><i
@@ -123,34 +123,44 @@
                                 <span>名称 : </span>
                                 <input type="text" name="Link[link_name]" placeholder=""
                                        value="{{ old('Link.link_name') ? old('Link.link_name') : '' }}">
-                                <span class="error-product_name" style="color: red;"></span>
+                                <span class="error-link_name" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>网址 : </span>
                                 <input type="text" name="Link[link_url]" placeholder=""
                                        value="{{ old('Link.link_url') ? old('Link.link_url') : '' }}">
-                                <span class="error-product_url" style="color: red;"></span>
+                                <span class="error-link_url" style="color: red;"></span>
                             </p>
+                            {{--<p>--}}
+                                {{--<span>图标 : </span>--}}
+                                {{--<input type="file" name="Link[link_img]" placeholder="">--}}
+                                {{--<span class="error-link_img" style="color: red;"></span>--}}
+                            {{--</p>--}}
                             <p style="text-align: left; line-height: 40px; position: relative">
                                 <span style="line-height: 40px; float: left;">图标 : </span>
                                 <i id="iconStart" style="font-size:28px; padding-left: 10px;" class="iconfonts">&#xe645;</i>
                                 <em><i id="iconId" style="font-size: 28px;" class="iconfonts">&#xe6ab;</i></em><span>请选择图标</span>
-                                <input id="inputIcons" type="text" value="&#xe645;" name="&#xe645;">
-                                <div id="selIcon" style="display:none; position: absolute; width:400px;top:174px; height: 180px; background: #999;">
-                                    <span class="selSpan" name="{!! '&#xe645;'  !!}"><i class="iconfonts">&#xe645;</i></span>
-                                    <span class="selSpan"><i class="iconfonts">&#xe63a;111</i></span>
-                                    <span class="selSpan"><i class="iconfonts">&#xe645;</i></span>
-                                    <span class="selSpan"><i class="iconfonts">&#xe645;</i></span>
-                                    <span class="selSpan"><i class="iconfonts">&#xe645;</i></span>
-                                </div>
-                                <style>
-                                    #selIcon{ padding:10px;}
-                                    #selIcon span{ display: inline-block; line-height: 24px; padding:0 6px;}
-                                    #selIcon span i{ font-size: 24px;}
-                                </style>
+                                <input id="inputIcons" type="hidden" value="{{ old('Link.link_img') ? old('Link.link_img') : '' }}" name="Link[link_img]">
+                                <span class="error-link_img" style="color: red;"></span>
+                            <div id="selIcon" style="display:none; position: absolute; width:400px;top:174px; height: 180px; background: #999;">
 
-                                {{--<span class="error-product_img" style="color: red;"></span>--}}
+
+                                @if(!count($icons))
+                                    无图标
+                                @else
+                                    @foreach($icons as $item)
+                                        <span class="selSpan"name="{{ $item->icon_name}}"><i class="iconfonts">{{ $item->icon_name.';' }}</i></span>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <style>
+                                #selIcon{ padding:10px;}
+                                #selIcon span{ display: inline-block; line-height: 24px; padding:0 6px;}
+                                #selIcon span i{ font-size: 24px;}
+                            </style>
+
                             </p>
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -161,6 +171,7 @@
             </div>
         </div>
     </div>
+
     <!-- 产品 - 查看modal -->
     <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -206,25 +217,51 @@
                                 <span>名称 : </span>
                                 <input type="text" name="Link[link_name]" placeholder="" class="info-link_name"
                                        value="{{ old('Link.link_name') ? old('Link.link_name') : '' }}">
-                                <span class="error-product_name" style="color: red;"></span>
+                                <span class="error-link_name" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>网址 : </span>
                                 <input type="text" name="Link[link_url]" placeholder="" class="info-link_url"
                                        value="{{ old('Link.link_url') ? old('Link.link_url') : '' }}">
-                                <span class="error-product_url" style="color: red;"></span>
+                                <span class="error-link_url" style="color: red;"></span>
                             </p>
-                            <p>
-                                <span>图标 : </span>
-                                <input type="file" name="Link[link_img]" placeholder="">
+
+                            {{--<p>--}}
+                                {{--<span>图标 : </span>--}}
+                                {{--<input type="file" name="Link[link_img]" placeholder="">--}}
+                                {{--<span class="error-link_img" style="color: red;"></span>--}}
+                            {{--</p>--}}
+
+                            <p style="text-align: left; line-height: 40px; position: relative">
+                                <span style="line-height: 40px; float: left;">图标 : </span>
+                                <i id="iconStart1" style="font-size:28px; padding-left: 10px;" class="iconfonts"></i>
+                                <em><i id="iconId1" style="font-size: 28px;" class="iconfonts">&#xe6ab;</i></em><span>请选择图标</span>
+                                <input id="inputIcons1" type="hidden" value="{{ old('Link.link_img') ? old('Link.link_img') : '' }}" name="Link[link_img]">
                                 <span class="error-link_img" style="color: red;"></span>
+                            <div id="selIcon1" style="display:none; position: absolute; width:400px;top:174px; height: 180px; background: #999;">
+
+
+                                @if(!count($icons))
+                                    无图标
+                                @else
+                                    @foreach($icons as $item)
+                                        <span class="selSpan"name="{{ $item->icon_name}}"><i class="iconfonts">{{ $item->icon_name.';' }}</i></span>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <style>
+                                #selIcon1{ padding:10px;}
+                                #selIcon1 span{ display: inline-block; line-height: 24px; padding:0 6px;}
+                                #selIcon1 span i{ font-size: 24px;}
+                            </style>
+
                             </p>
 
                         </div>
-                        <div class="modal-address-img" style="display: inline-table;">
-                            <i style="font-size: 50px; display: table-cell;vertical-align: middle; text-align: center;" class="iconfonts">&#xe683;</i>
+                        {{--<div class="modal-address-img" style="display: inline-table;">--}}
+                            {{--<i style="font-size: 50px; display: table-cell;vertical-align: middle; text-align: center;" class="iconfonts">&#xe683;</i>--}}
                             {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="" class="info-link_img">--}}
-                        </div>
+                        {{--</div>--}}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary operate-update">确认</button>
