@@ -22,6 +22,7 @@ class HomeAuthController extends HomeController
 
     public function __construct()
     {
+        $this->isMobile();
         $this->middleware('guest', ['except' => 'logout']);
     }
 
@@ -30,6 +31,11 @@ class HomeAuthController extends HomeController
      * 隐藏登录页面，直接微信登录
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
      */
     public function getLogin(Request $request)
     {
