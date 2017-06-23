@@ -39,7 +39,8 @@ class HomeAuthController extends HomeController
         } else { // web端，微信扫码
             $ip = $request->ip();
             $ipArr = array(
-                '183.250.161.246', '127.0.0.1', '192.168.1.*'
+                '183.250.161.246', // 公司公网IP
+                '127.0.0.1', // 本地测试ip
             );
             if (!in_array($ip, $ipArr)) {
                 return $this->redirectToProvider('weixinweb');
