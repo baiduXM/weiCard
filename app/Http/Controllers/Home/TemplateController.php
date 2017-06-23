@@ -30,7 +30,7 @@ class TemplateController extends HomeController
             $current = $current[0];
         }
         $templates = $query->paginate(4); // type:0-全部，1-个人，2-公司
-        return view('home.template.index')->with([
+        return view('web.template.index')->with([
             'templates' => $templates,
             'current' => $current,
             'type' => $type == 1 ? 'u' : 'c',

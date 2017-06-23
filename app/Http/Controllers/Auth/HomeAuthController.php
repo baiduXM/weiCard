@@ -40,7 +40,8 @@ class HomeAuthController extends HomeController
     public function getLogin(Request $request)
     {
         /* 只允许通过微信登录 */
-        if (session('is_mobile')) { // mobile端，微信授权
+//        if (session('is_mobile')) { // mobile端，微信授权
+        if ($this->isMobile()) { // mobile端，微信授权
             return $this->redirectToProvider('weixin');
         } else { // web端，微信扫码
             $ip = $request->ip();
@@ -97,7 +98,7 @@ class HomeAuthController extends HomeController
         if (Auth::guard($this->getGuard())->attempt([$type => $username, 'password' => $password], $request->has('remember'))) {
             // 1、Web端，且公司拥有者 -> 跳转Web页面
             // 2、Web端，普通用户|移动端，所有用户 -> 跳转Mobile页面
-            if (!session('is_mobile') && $this->isCompanyOwner()) {
+            if (!$this->isMobile() && $this->isCompanyOwner()) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             } else {
                 $this->redirectTo = 'm';

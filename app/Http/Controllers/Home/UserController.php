@@ -72,7 +72,7 @@ class UserController extends HomeController
             $company_id = null;
         }
 
-        return view('home.user.index')->with([
+        return view('web.user.index')->with([
             'employee_id' => $employee_id,
             'company_id' => $company_id,
         ]);
@@ -91,7 +91,7 @@ class UserController extends HomeController
                 'user' => $user,
             ]);
         }
-        return view('home.user.edit')->with([
+        return view('web.user.edit')->with([
             'user' => $user,
         ]);
     }

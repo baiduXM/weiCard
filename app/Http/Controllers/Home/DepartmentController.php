@@ -26,7 +26,7 @@ class DepartmentController extends HomeController
     {
         $company = Auth::user()->employee->company;
         $departments = Department::where('company_id', '=', $company->id)->paginate();
-        return view('home.department.index')->with([
+        return view('web.department.index')->with([
             'departments' => $departments,
         ]);
     }

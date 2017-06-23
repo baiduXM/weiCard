@@ -32,7 +32,7 @@ class LinkController extends HomeController
             $links = Link::where('company_id', '=', Auth::user()->company->id)->paginate();
             $icons = DB::table('icons')->get();
             //dd($icons);
-            return view('home.link.index')->with([
+            return view('web.link.index')->with([
                 'links' => $links,
                 'icons' => $icons,
             ]);

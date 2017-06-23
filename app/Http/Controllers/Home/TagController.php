@@ -26,7 +26,7 @@ class TagController extends HomeController
     public function index()
     {
         $tags = Tag::paginate();
-        return view('home.tag.index')->with([
+        return view('web.tag.index')->with([
             'tags' => $tags,
         ]);
     }

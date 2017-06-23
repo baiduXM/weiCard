@@ -35,7 +35,7 @@ class ProductController extends HomeController
     {
         if (Auth::user()->company) {
             $products = Product::where('company_id', '=', Auth::user()->company->id)->paginate();
-            return view('home.product.index')->with([
+            return view('web.product.index')->with([
                 'products' => $products,
             ]);
         } else {

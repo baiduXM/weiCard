@@ -17,7 +17,7 @@ class CardcaseController extends HomeController
 
     public function __construct()
     {
-        parent::isMobile();
+        $this->isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -36,29 +36,109 @@ class CardcaseController extends HomeController
 
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $word = Input::query('word') ? Input::query('word') : '';
-            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-                if (isset($word) && $word != '') {
-                    $query->where('nickname', 'like', '%' . $word . '%');
-                }
-            }])->where('user_id', Auth::id())->get();
-            foreach ($cardcases as $key => $cardcase) {
-                if (!$cardcase->follower) {
-                    unset($cardcases[$key]);
-                }
-            }
+            $data = $this->mobileIndex();
             return view('mobile.cardcase.index')->with([
-                'cardcases' => $cardcases,
-                'word' => $word,
+                'data' => $data,
             ]);
+//            $word = Input::query('word') ? Input::query('word') : '';
+//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+//                if (isset($word) && $word != '') {
+//                    $query->where('nickname', 'like', '%' . $word . '%');
+//                }
+//            }])->where('user_id', Auth::id())->get();
+//            foreach ($cardcases as $key => $cardcase) {
+//                if (!$cardcase->follower) {
+//                    unset($cardcases[$key]);
+//                }
+//            }
+//            return view('mobile.cardcase.index')->with([
+//                'cardcases' => $cardcases,
+//                'word' => $word,
+//            ]);
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
-            return view('home.cardcase.index')->with([
+            return view('web.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
         }
 
     }
+
+    public function mobileIndex()
+    {
+        /* 排序方式 */
+        $sort = Input::query('sort') ? Input::query('sort') : 'group';
+        /* 排序顺序 */
+//        $order = $request->input('order') ? $request->input('order') : 'asc';
+
+        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get()->toArray();
+        if (count($cardcases) > 0) {
+            $cardcases = $this->getPinyin($cardcases);
+        }
+        if ($sort == 'group') {
+            $field = 'order';
+            $groups = $this->getGroups(Auth::id());
+            if (count($groups) > 0) {
+                $groups = $this->sortArray($groups, $field);
+                foreach ($groups as $k => &$v) {
+                    if (count($cardcases) > 0) {
+                        foreach ($cardcases as $ck => $vk) {
+                            if ($v['id'] == $vk['group_id']) {
+                                $v['cardcases'][] = $vk;
+                            }
+                        }
+                    }
+                    if (!isset($v['cardcases'])) {
+                        $v['cardcases'] = array();
+                    }
+                }
+            }
+            $data = $groups;
+
+        } elseif ($sort == 'alphabet') {
+            $alph = range('A', 'Z');
+            foreach ($alph as $k => $v) {
+                $groups[$v] = array(
+                    'id' => $k,
+                    'name' => $v,
+                    'cardcases' => array(),
+                );
+            }
+            foreach ($cardcases as $k => $v) {
+                $groups[strtoupper(substr($v['follower']['pinyin'], 0, 1))]['cardcases'][] = $v;
+            }
+            foreach ($groups as $k => $v) {
+                if (count($v['cardcases']) <= 0) {
+                    unset($groups[$k]);
+                }
+            }
+            $data = $groups;
+        } elseif ($sort == 'time') {
+            // TODO:时间排序怎么分组
+
+        }
+        return $data;
+
+
+    }
+
+    /**
+     * 字符串转拼音
+     *
+     * @param array $data
+     *
+     * @return mixed
+     */
+    private function getPinyin($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $k => &$v) {
+                $v['follower']['pinyin'] = $this->pinyin($v['follower']['nickname']) . ' ' . $this->pinyin($v['follower']['nickname'], 'abbr');
+            }
+        }
+        return $data;
+    }
+
 
     /**
      * 收藏/取消收藏

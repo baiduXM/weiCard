@@ -68,7 +68,7 @@ class CompanyController extends HomeController
         if (Auth::user()->company || Auth::user()->employee) {
             $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
         }
-        return view('home.company.index')->with([
+        return view('web.company.index')->with([
             'company' => $company,
             'common' => new CommonModel(),
         ]);

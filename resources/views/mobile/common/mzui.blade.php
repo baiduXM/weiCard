@@ -25,10 +25,10 @@
 
     {{--标签导航--}}
     <nav class="nav nav-secondary primary-pale affix dock-top justified space">
-        <a class="{{ Request::path() == 'm/cardcase' || Request::is('m/cardcase/*') ? 'active' : '' }}"
-           href="{{ url('m/cardcase') }}">个人</a>
-        <a class="{{ Request::path() == 'm/company' || Request::is('m/company/*') ? 'active' : '' }}"
-           href="{{ url('m/company') }}">企业</a>
+        <a class="{{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'active' : '' }}"
+           href="{{ url('cardcase') }}">个人</a>
+        <a class="{{ Request::path() == 'company' || Request::is('company/*') ? 'active' : '' }}"
+           href="{{ url('company') }}">企业</a>
     </nav>
 
 @show

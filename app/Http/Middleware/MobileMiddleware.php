@@ -20,7 +20,7 @@ class MobileMiddleware
         $commonController = new Controller();
         $commonController->isMobile();
 
-//        if (session('is_mobile') && !$request->is('m/*')) {
+//        if ($commonController->isMobile() && !$request->is('m/*')) {
 ////            return redirect('m/');
 //            return redirect('m/' . $request->path());
 //        }

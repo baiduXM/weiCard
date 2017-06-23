@@ -26,6 +26,8 @@ class Controller extends BaseController
 
     /**
      * 判断是否是移动设备
+     *
+     * @return bool
      */
     public function isMobile()
     {
@@ -64,8 +66,8 @@ class Controller extends BaseController
         if ($mobile_browser > 0) {
             $this->is_mobile = true;
         }
-
         Session::put('is_mobile', $this->is_mobile);
+        return $this->is_mobile;
     }
 
     /**

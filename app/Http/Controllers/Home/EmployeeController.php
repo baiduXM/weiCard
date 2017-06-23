@@ -67,7 +67,7 @@ class EmployeeController extends HomeController
             }])->where('company_id', '=', Auth::user()->employee->company_id)
                 ->paginate();
             $positions = Position::where('company_id', '=', Auth::user()->employee->company_id)->get();
-            return view('home.employee.index')->with([
+            return view('web.employee.index')->with([
                 'employees' => $employees,
                 'positions' => $positions,
             ]);

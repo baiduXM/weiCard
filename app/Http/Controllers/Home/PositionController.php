@@ -33,7 +33,7 @@ class PositionController extends HomeController
     {
         if (Auth::user()->company) {
             $positions = Position::where('company_id', '=', Auth::user()->company->id)->orderBy('level','ASC')->paginate();
-            return view('home.position.index')->with([
+            return view('web.position.index')->with([
                 'positions' => $positions,
             ]);
         } else {

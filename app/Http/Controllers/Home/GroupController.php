@@ -39,7 +39,7 @@ class GroupController extends HomeController
             $groups = Group::all();
             // TODO:手机页面
         }
-        return view('home.group.index')->with([
+        return view('web.group.index')->with([
             'groups' => $groups,
         ]);
     }
