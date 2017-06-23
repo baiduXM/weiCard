@@ -52,7 +52,7 @@ Route::post('admin/register', 'Auth\AdminAuthController@postRegister');
 Route::get('admin/logout', 'Auth\AdminAuthController@logout');
 
 /* 名片预览展示 */
-Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Home\IndexController@cardview']);
+Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Home\IndexController@errorview']);
 
 /* =====用户界面===== */

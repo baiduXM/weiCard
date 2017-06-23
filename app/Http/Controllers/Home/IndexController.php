@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use App\Models\Employee;
 use App\Models\Template;
 use App\Models\User;
-use Illuminate\Support\Facades\URL;
 
-class IndexController extends Controller
+class IndexController extends HomeController
 {
 
     public function index()
