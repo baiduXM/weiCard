@@ -85,6 +85,7 @@ class LinkController extends HomeController
     public function show($id)
     {
         $link = Link::where('id', $id)->first();
+//        $link->link_img=$link->link_img.';';
         return $link;
     }
 
