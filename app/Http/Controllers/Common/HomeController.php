@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class HomeController extends Controller
@@ -41,16 +42,55 @@ class HomeController extends Controller
         $AppID = env('WEIXIN_KEY');
         $AppSecret = env('WEIXIN_SECRET');
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
-        //使用crul模拟
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);//执行发送
-        $jsoninfo = json_decode($output, true);
-        $access_token = $jsoninfo["access_token"];
+        $token=DB::table('token')->get();
+        //查询数据库是否存在token数据
+        if($token)//如果存在token数据
+        {
+            $row=DB::table('token')->first();
+            $righttime=time();
+            if($row->expires_in+$row->update_time<$righttime)//如果token数据过期
+            {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $output = curl_exec($ch);
+                curl_close($ch);//执行发送
+                $jsoninfo = json_decode($output, true);
+                $access_token = $jsoninfo["access_token"];
+                //更新的token
+                $expires_in = $jsoninfo["expires_in"];
+                $time=time();
+                //将更新的access_token存入数据库
+                DB::table('token')->update([
+                    'access_token'=>$access_token,
+                    'expires_in'=>$expires_in,
+                    'update_time'=>$time,
+                ]);
+            }else{
+                $access_token = $row->access_token; //返回查询的token
+            }
+        }else{
+            //如不存在token数据
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);//执行发送
+            $jsoninfo = json_decode($output, true);
+            $access_token = $jsoninfo["access_token"];//返回新建的token
+            $expires_in = $jsoninfo["expires_in"];
+            $time=time();
+            //将新建的access_token存入数据库
+            DB::table('token')->insert([
+                'access_token'=>$access_token,
+                'expires_in'=>$expires_in,
+                'update_time'=>$time,
+            ]);
+        }
         return $access_token;//access_token有效期未7200s
     }
 
@@ -162,15 +202,15 @@ class HomeController extends Controller
                 break;
         }
         /* 获取分享js-api参数 */
-//        $sign_package = $this->getSignPackage();
-        $sign_package = array(
-            "AppID" => "wx80cfbb9a1b347f47",
-            "timestamp" => time(),
-            "noncestr" => "Wm3WZYTPz0wzccnW",
-            "jsapi_ticket" => "kgt8ON7yVITDhtdwci0qeUk5Ue2owadlxSNoqP5FXpiaJXd1Ij1ITsYew5Q_2Rv3TaiKSZqTCEA262Jb4_o3GQ",
-            "url" => "http://weicard.example.com/cardcase/show/e",
-            "signature" => "82866806f6df43458e6277c1a5d1b8053e37bf12",
-        );
+       $sign_package = $this->getSignPackage();
+//        $sign_package = array(
+//            "AppID" => "wx80cfbb9a1b347f47",
+//            "timestamp" => time(),
+//            "noncestr" => "Wm3WZYTPz0wzccnW",
+//            "jsapi_ticket" => "kgt8ON7yVITDhtdwci0qeUk5Ue2owadlxSNoqP5FXpiaJXd1Ij1ITsYew5Q_2Rv3TaiKSZqTCEA262Jb4_o3GQ",
+//            "url" => "http://weicard.example.com/cardcase/show/e",
+//            "signature" => "82866806f6df43458e6277c1a5d1b8053e37bf12",
+//        );
 //        dump($sign_package);
         /* 二维码 */
         $url = url('cardview/' . $param[0] . '-' . $person->id);
