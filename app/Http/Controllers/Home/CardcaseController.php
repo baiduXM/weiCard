@@ -36,7 +36,7 @@ class CardcaseController extends HomeController
 
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $data = $this->mobileIndex();
+            $data = $this->index4Mobile();
             return view('mobile.cardcase.index')->with([
                 'data' => $data,
             ]);
@@ -64,7 +64,12 @@ class CardcaseController extends HomeController
 
     }
 
-    public function mobileIndex()
+    /**
+     * 名片夹首页 - 移动端
+     *
+     * @return array|mixed 返回数据
+     */
+    public function index4Mobile()
     {
         /* 排序方式 */
         $sort = Input::query('sort') ? Input::query('sort') : 'group';
