@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
 //use Illuminate\Support\Facades\Request;
 
 class HomeController extends Controller
@@ -162,7 +163,16 @@ class HomeController extends Controller
                 break;
         }
         /* 获取分享js-api参数 */
-        $sign_package = $this->getSignPackage();
+//        $sign_package = $this->getSignPackage();
+        $sign_package = array(
+            "AppID" => "wx80cfbb9a1b347f47",
+            "timestamp" => time(),
+            "noncestr" => "Wm3WZYTPz0wzccnW",
+            "jsapi_ticket" => "kgt8ON7yVITDhtdwci0qeUk5Ue2owadlxSNoqP5FXpiaJXd1Ij1ITsYew5Q_2Rv3TaiKSZqTCEA262Jb4_o3GQ",
+            "url" => "http://weicard.example.com/cardcase/show/e",
+            "signature" => "82866806f6df43458e6277c1a5d1b8053e37bf12",
+        );
+//        dump($sign_package);
         /* 二维码 */
         $url = url('cardview/' . $param[0] . '-' . $person->id);
         $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
