@@ -47,7 +47,7 @@
 @stop
 @section('modal')
     {{--添加群成员--}}
-    <div id="editMemberModal" class="modal affix dock enter-from-center fade">
+    <div id="editMemberModal" class="modal affix dock enter-from-center fade in">
         <div class="heading divider">
             <div class="title">编辑成员 <label class="info has-padding-h">12</label></div>
             <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
@@ -57,23 +57,21 @@
             {{--{{ csrf_field() }}--}}
             <div class="heading">成员</div>
             <div class="list divider row ">
-                <div class="checkbox cell-6 with-avatar">
+                <div class="checkbox cell-6 with-avatar text-ellipsis" style="overflow: hidden">
                     <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod title">
-                        <div class="avatar-sm">
-                            <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
-                        </div>
-                        使用匿名购买
-                        {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>--}}
+                    <label for="buyMethod">{{ '言身寸言身寸言身寸12' }}
+                        <span class="warning has-padding-h rounded">个人</span>
                     </label>
                 </div>
                 <div class="checkbox cell-6">
                     <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">使用匿名购买</label>
+                    <label for="buyMethod">{{ '王大可' }}
+                        <span class="primary has-padding-h rounded">企业</span>
+                    </label>
                 </div>
                 <div class="checkbox cell-6">
                     <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">使用匿名购买</label>
+                    <label for="buyMethod">羊习习</label>
                 </div>
             </div>
             <div class="heading">未分组</div>

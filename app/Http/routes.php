@@ -134,6 +134,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     /* 名片夹->标签 */
     Route::group(['prefix' => 'cardcase'], function () {
         Route::get('group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
+
         Route::get('tag', ['as' => 'cardcase.tag.index', 'uses' => 'Home\TagController@index']);
         Route::post('tag', ['as' => 'cardcase.tag.store', 'uses' => 'Home\TagController@store']);
     });

@@ -17,43 +17,33 @@ class CompanyController extends HomeController
 
     public function __construct()
     {
+        $this->isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
+        // 我的公司 > 公司注册
+        Breadcrumbs::register('company.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('公司注册', route('company.create'));
+        });
 
-//        // 我的公司 > 公司注册
-//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('公司注册', route('company.create'));
-//        });
-//
-//        // 我的公司 > 编辑资料
-//        Breadcrumbs::register('company.edit', function ($breadcrumbs, $id) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('编辑资料', route('company.edit', $id));
-//        });
-//
-//        // 我的公司 > 查看资料
-//        Breadcrumbs::register('company.show', function ($breadcrumbs) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('查看资料', route('company.show'));
-//        });
+        // 我的公司 > 编辑资料
+        Breadcrumbs::register('company.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('编辑资料', route('company.edit', $id));
+        });
 
-//        // 我的公司 > 公司注册
-//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('公司注册', route('company.create'));
-//        });// 我的公司 > 公司注册
-//        Breadcrumbs::register('company.create', function ($breadcrumbs) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('公司注册', route('company.create'));
-//        });
+        // 我的公司 > 查看资料
+        Breadcrumbs::register('company.show', function ($breadcrumbs) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('查看资料', route('company.show'));
+        });
 
-//        // 我的公司 > 公司部门
-//        Breadcrumbs::register('company.department', function ($breadcrumbs) {
-//            $breadcrumbs->parent('company');
-//            $breadcrumbs->push('公司部门', route('company.department'));
-//        });
+        // 我的公司 > 公司部门
+        Breadcrumbs::register('company.department', function ($breadcrumbs) {
+            $breadcrumbs->parent('company');
+            $breadcrumbs->push('公司部门', route('company.department'));
+        });
     }
 
 
@@ -64,20 +54,35 @@ class CompanyController extends HomeController
      */
     public function index()
     {
-        $company = array();
-        if (Auth::user()->company || Auth::user()->employee) {
-            $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
+        // 判断是否绑定员工
+        if (!Auth::user()->employee) {
+            // 返回绑定员工页面
+            return view('mobile.employee.index')->with([
+                'employee' => '',
+            ]);
         }
-        return view('web.company.index')->with([
+        $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
+        return view($this->interview . '.company.index')->with([
             'company' => $company,
             'common' => new CommonModel(),
         ]);
+
+
+    }
+
+    public function index4Mobile()
+    {
+        // 判断是否
+        // 公司创始人
+        $company = Company::with('departments', 'employees', 'positions')->where('user_id', Auth::id())->get()->toArray();
+        return $company;
     }
 
     /**
      * 更新公司
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
@@ -133,7 +138,6 @@ class CompanyController extends HomeController
         }
 
     }
-
 
 
 }

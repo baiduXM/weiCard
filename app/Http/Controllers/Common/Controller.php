@@ -18,6 +18,7 @@ class Controller extends BaseController
 
 
     public $is_mobile = false; // 是否是手机模式
+    public $interview = 'web'; // 访问页面，web|mobile
 
     public function __construct()
     {
@@ -65,6 +66,7 @@ class Controller extends BaseController
             $mobile_browser++;
         if ($mobile_browser > 0) {
             $this->is_mobile = true;
+            $this->interview = 'mobile';
         }
         Session::put('is_mobile', $this->is_mobile);
         return $this->is_mobile;

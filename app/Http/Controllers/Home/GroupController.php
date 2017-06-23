@@ -11,13 +11,14 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Group;
 use Breadcrumbs;
+use Illuminate\Support\Facades\Auth;
 
 
 class GroupController extends HomeController
 {
     public function __construct()
     {
-        parent::isMobile();
+        $this->isMobile();
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -30,6 +31,13 @@ class GroupController extends HomeController
 
     public function index()
     {
+        if ($this->is_mobile) {
+            $groups = $this->getGroups(Auth::id());
+            $groups = $this->sortArray($groups, 'order');
+            return view('mobile.group.index')->with([
+                'groups' => $groups,
+            ]);
+        }
 
         $groups = Group::paginate();
 //        dd($groups);

@@ -12,24 +12,25 @@
     @show
 </head>
 
-<body class="with-heading-top with-nav-top can-scroll">
+<body class="with-heading-top can-scroll">
+{{--<body class="with-heading-top with-nav-top can-scroll">--}}
 @section('content')
     {{--头部导航--}}
     <header class="heading primary affix dock-top">
-        <a class="avatar circle" href="{{ url('m') }}"><i class="icon-home"></i></a>
+        <a class="avatar circle" href="{{ url('/') }}"><i class="icon-home"></i></a>
         <div class="title"><strong>@yield('title', '首页')</strong></div>
         <nav class="nav right">
-            <a href="{{ url('m/search') }}"><i class="icon-search"></i></a>
+            <a href="{{ url('search') }}"><i class="icon-search"></i></a>
         </nav>
     </header>
 
     {{--标签导航--}}
-    <nav class="nav nav-secondary primary-pale affix dock-top justified space">
-        <a class="{{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'active' : '' }}"
-           href="{{ url('cardcase') }}">个人</a>
-        <a class="{{ Request::path() == 'company' || Request::is('company/*') ? 'active' : '' }}"
-           href="{{ url('company') }}">企业</a>
-    </nav>
+    {{--<nav class="nav nav-secondary primary-pale affix dock-top justified space">--}}
+    {{--<a class="{{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'active' : '' }}"--}}
+    {{--href="{{ url('cardcase') }}">个人</a>--}}
+    {{--<a class="{{ Request::path() == 'company' || Request::is('company/*') ? 'active' : '' }}"--}}
+    {{--href="{{ url('company') }}">企业</a>--}}
+    {{--</nav>--}}
 
 @show
 

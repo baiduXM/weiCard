@@ -6,7 +6,7 @@
 @section('content')
     @parent
     {{--内容容器--}}
-    <div class="container">
+    <div class="has-margin-sm">
         <section class="section">
             @if(count($data)>0)
                 @foreach($data as $item)
@@ -20,7 +20,7 @@
                             <button class="btn"><i class="icon icon-angle-down"></i></button>
                         </a>
                         {{--分组名片列表--}}
-                        <div class="list collapse {{ count($item['cardcases'])>0 ? 'in' : '' }}" id="{{ $item['id'] }}">
+                        <div class="list collapse " id="{{ $item['id'] }}">
                             @foreach($item['cardcases'] as $subitem)
                                 {{--名片子项目--}}
                                 <div class="item multi-lines with-avatar">
@@ -32,11 +32,11 @@
                                         <div class="subtitle">
                                             @if($subitem['follower_type']=='App\Models\User')
                                                 <label class="warning has-padding-h rounded">
-                                                    个人名片
+                                                    个人
                                                 </label>
                                             @else
                                                 <label class="primary has-padding-h rounded">
-                                                    企业名片
+                                                    企业
                                                 </label>
                                             @endif
                                         </div>
@@ -65,14 +65,18 @@
     </div>
     {{--侧边悬浮按钮--}}
     <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
+
+        {{--排序--}}
         <a class="btn btn-lg circle primary space-sm outline" data-display data-backdrop="true"
            data-target="#sortModal">
             <i class="icon icon-list-ul"></i>
         </a>
-        {{--        <a class="btn btn-lg circle primary outline" href="{{ url('m/cardcase/group') }}">--}}
-        <a class="btn btn-lg circle primary outline" href="{{ url()->current().'/group' }}">
+        {{--编辑--}}
+        <a class="btn btn-lg circle primary outline" href="{{ 'cardcase/group' }}">
             <i class="icon icon-pencil"></i>
         </a>
+
+
     </nav>
 @stop
 @section('modal')

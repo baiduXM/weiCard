@@ -40,21 +40,6 @@ class CardcaseController extends HomeController
             return view('mobile.cardcase.index')->with([
                 'data' => $data,
             ]);
-//            $word = Input::query('word') ? Input::query('word') : '';
-//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-//                if (isset($word) && $word != '') {
-//                    $query->where('nickname', 'like', '%' . $word . '%');
-//                }
-//            }])->where('user_id', Auth::id())->get();
-//            foreach ($cardcases as $key => $cardcase) {
-//                if (!$cardcase->follower) {
-//                    unset($cardcases[$key]);
-//                }
-//            }
-//            return view('mobile.cardcase.index')->with([
-//                'cardcases' => $cardcases,
-//                'word' => $word,
-//            ]);
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('web.cardcase.index')->with([

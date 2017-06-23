@@ -58,6 +58,14 @@ class Company extends CommonModel
     }
 
     /**
+     * 关系模型(一对多) - 职位
+     */
+    public function positions()
+    {
+        return $this->hasMany('App\Models\Position');
+    }
+
+    /**
      * 关系模型(一对多) - 产品
      */
     public function products()
@@ -85,6 +93,7 @@ class Company extends CommonModel
      * 获取状态
      *
      * @param null $index
+     *
      * @return array|mixed
      */
     public function getStatus($index = null)
@@ -105,6 +114,7 @@ class Company extends CommonModel
      *
      * @param $code
      * @param $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)
