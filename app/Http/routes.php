@@ -74,7 +74,7 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@e
  *
  */
 /* ===Web端访问地址=== */
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'mobile']], function () {
 
     /* 首页 */
     Route::get('index', ['as' => 'index', 'uses' => 'Home\UserController@index']);

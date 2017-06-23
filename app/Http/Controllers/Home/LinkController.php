@@ -13,30 +13,31 @@ use Illuminate\Support\Facades\DB;
 class LinkController extends HomeController
 {
     protected $path_type = 'link'; // 文件路径保存分类
-    public function  __construct()
+
+    public function __construct()
     {
         //设置面包屑导航
         Breadcrumbs::setView('vendor/breadcrumbs');
 
         //我的公司>微链接
-        Breadcrumbs::register('company.link',function ($breadcrumbs){
+        Breadcrumbs::register('company.link', function ($breadcrumbs) {
             $breadcrumbs->parent('company');
-            $breadcrumbs->push('微链接',route('company.link.index'));
+            $breadcrumbs->push('微链接', route('company.link.index'));
         });
     }
 
     public function index()
     {
-        if(Auth::user()->company){
-            $links =Link::where('company_id','=',Auth::user()->company->id)->paginate();
-            $icons =DB::table('icons')->get();
+        if (Auth::user()->company) {
+            $links = Link::where('company_id', '=', Auth::user()->company->id)->paginate();
+            $icons = DB::table('icons')->get();
             //dd($icons);
             return view('home.link.index')->with([
-                'links' =>$links,
-                'icons' =>$icons,
+                'links' => $links,
+                'icons' => $icons,
             ]);
-        }else{
-            return redirect()->back()->with('error','请先绑定公司');
+        } else {
+            return redirect()->back()->with('error', '请先绑定公司');
         }
 
     }
@@ -71,9 +72,8 @@ class LinkController extends HomeController
         /*添加*/
         if (Link::create($data)) {
             $err_code = 300;
-        }
-        else{
-        $err_code = 301;
+        } else {
+            $err_code = 301;
         }
         Config::set('global.ajax.err', $err_code);
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
@@ -81,69 +81,71 @@ class LinkController extends HomeController
     }
 
 
-        /*查看*/
-        public function show($id)
-        {
+    /*查看*/
+    public function show($id)
+    {
         $link = Link::where('id', $id)->first();
         return $link;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $link = Link::find($id);
+        /*验证*/
+        $this->validate($request, [
+            'Link.link_name' => 'required',
+            'Link.link_url' => 'required|url:true',
+            'Link.link_img' => 'required',
+        ], [], [
+            'Link.link_name' => '微链接名称',
+            'Link.link_url' => '微链接网址',
+            'Link.link_img' => '微链接图标',
+        ]);
+        $data = $request->input('Link');
+
+        /*获取文件类型*/
+        if ($request->hasFile('Link.link_img')) {
+            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
         }
 
-        public function update(Request $request,$id)
-        {
-            $link=Link::find($id);
-            /*验证*/
-            $this->validate($request,[
-                'Link.link_name' => 'required',
-                'Link.link_url' => 'required|url:true',
-                'Link.link_img' => 'required',
-            ],[],[
-                'Link.link_name' => '微链接名称',
-                'Link.link_url' => '微链接网址',
-                'Link.link_img' => '微链接图标',
-            ]);
-            $data = $request->input('Link');
-
-            /*获取文件类型*/
-            if($request->hasFile('Link.link_img')){
-                $data['link_img'] =$this->save($request->file('Link.link_img'),$this->path_type,Auth::user()->company->name);
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $link->$key = $data[$key];
             }
-
-            foreach ($data as $key => $value){
-                if($value !== ''){
-                    $link->$key =$data[$key];
-                }
-            }
-            if($link->save()){
-                $err_code =500;
-            }else{
-                $err_code =501;
-            }
-
-            Config::set('global.ajax.err', $err_code);
-            Config::set('global.ajax.msg',config('global.msg.' . $err_code));
-            return Config::get('global.ajax');
-
         }
-            /*删除*/
-        public function destroy(Request $request, $id){
-            $link = Link::where('id', $id)->first();
-            $res = $link->delete();
-            if($res){
-                $err_code = 400;//删除成功
-            }else{
-                $err_code = 401;//删除失败
-            }
-
-            if($err_code % 100 == 0){
-                return redirect('company/link')->with('success',config('global.msg.' . $err_code));
-            }else{
-                return dedirect()->back()->with('error',config('global.msg.' . $err_code));
-            }
-
+        if ($link->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
         }
 
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
 
     }
+
+    /*删除*/
+    public function destroy(Request $request, $id)
+    {
+        $link = Link::where('id', $id)->first();
+        $res = $link->delete();
+        if ($res) {
+            $err_code = 400;//删除成功
+        } else {
+            $err_code = 401;//删除失败
+        }
+
+        if ($err_code % 100 == 0) {
+            return redirect('company/link')->with('success', config('global.msg.' . $err_code));
+        } else {
+            return dedirect()->back()->with('error', config('global.msg.' . $err_code));
+        }
+
+    }
+
+
+}
 
 
 

@@ -31,13 +31,19 @@ class HomeAuthController extends HomeController
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getLogin()
+    public function getLogin(Request $request)
     {
         /* 只允许通过微信登录 */
         if (session('is_mobile')) { // mobile端，微信授权
-//            return $this->redirectToProvider('weixin');
+            return $this->redirectToProvider('weixin');
         } else { // web端，微信扫码
-//            return $this->redirectToProvider('weixinweb');
+            $ip = $request->ip();
+            $ipArr = array(
+                '183.250.161.246', '127.0.0.1', '192.168.1.*'
+            );
+            if (!in_array($ip, $ipArr)) {
+                return $this->redirectToProvider('weixinweb');
+            }
         }
 
 
