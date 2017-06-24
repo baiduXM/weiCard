@@ -168,8 +168,8 @@
                     dataType: 'json',
                     success: function (json) {
                         console.log('success');
-                        console.log(json.data);
-                        console.log(json.status);
+                        console.log(json);
+//                        console.log(json.status);
 
                         $.Display.dismiss(); // 隐藏Modal框
 
@@ -179,8 +179,8 @@
                     },
                     error: function (json) {
                         console.log('error');
-                        var errors = json.responseJSON;
-                        console.log(errors);
+                        console.log(json);
+//                        console.log(errors);
 
 //                        showError(errors);
 //                        return false;

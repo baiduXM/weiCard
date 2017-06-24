@@ -48,7 +48,7 @@ class GroupController extends HomeController
 
     public function store(Request $request)
     {
-        return response()->json('info', 200);
+//        return response()->json('info', 200);
         /* 验证 */
         $this->validate($request, [
             'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(),
