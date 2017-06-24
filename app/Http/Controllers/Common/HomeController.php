@@ -60,7 +60,7 @@ class HomeController extends Controller
                 $jsoninfo = json_decode($output, true);
                 $access_token = $jsoninfo["access_token"];
                 //更新的token
-                $expires_in = '1000';
+                $expires_in = '300';
                 $time=time();
                 //将更新的access_token存入数据库
                 DB::table('token')->update([
@@ -82,7 +82,7 @@ class HomeController extends Controller
             curl_close($ch);//执行发送
             $jsoninfo = json_decode($output, true);
             $access_token = $jsoninfo["access_token"];//返回新建的token
-            $expires_in = '1000';
+            $expires_in = '300';
             $time=time();
             //将新建的access_token存入数据库
             DB::table('token')->insert([
@@ -107,6 +107,7 @@ class HomeController extends Controller
         $output = curl_exec($ch);
         curl_close($ch);//执行发送
         $jsoninfo = json_decode($output, true);
+        //dd($jsoninfo);
         $jsapi_ticket = $jsoninfo["ticket"];
         return $jsapi_ticket;
     }
