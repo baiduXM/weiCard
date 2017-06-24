@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Group;
 use Breadcrumbs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -38,17 +39,33 @@ class GroupController extends HomeController
                 'groups' => $groups,
             ]);
         }
-
         $groups = Group::paginate();
-//        dd($groups);
-//        $groups = Group::first();
-//        dd($groups->users);
-        if ($this->is_mobile) {
-            $groups = Group::all();
-            // TODO:手机页面
-        }
         return view('web.group.index')->with([
             'groups' => $groups,
         ]);
+    }
+
+
+    public function store(Request $request)
+    {
+        return response()->json('info', 200);
+        /* 验证 */
+        $this->validate($request, [
+            'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(),
+        ], [], [
+            'Group.name' => '分组名称',
+        ]);
+        $data = $request->input('Group');
+        $data['user_id'] = Auth::id();
+        $data['order'] = 0;
+
+        if (Group::create($data)) {
+            $err_code = 300;
+        } else {
+            $err_code = 301;
+        }
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
     }
 }

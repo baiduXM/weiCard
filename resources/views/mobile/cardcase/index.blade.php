@@ -20,7 +20,7 @@
                             <button class="btn"><i class="icon icon-angle-down"></i></button>
                         </a>
                         {{--分组名片列表--}}
-                        <div class="list collapse " id="{{ $item['id'] }}">
+                        <div class="list collapse in" id="{{ $item['id'] }}">
                             @foreach($item['cardcases'] as $subitem)
                                 {{--名片子项目--}}
                                 <div class="item multi-lines with-avatar">
@@ -35,7 +35,7 @@
                                                     个人
                                                 </label>
                                             @else
-                                                <label class="primary has-padding-h rounded">
+                                                <label class="primary has-padding-h m rounded">
                                                     企业
                                                 </label>
                                             @endif
