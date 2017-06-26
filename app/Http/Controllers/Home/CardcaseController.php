@@ -194,7 +194,6 @@ class CardcaseController extends HomeController
 
         /* ajax收藏 */
         if ($request->ajax()) {
-            return 1;
             if (!isset($err_code)) {
                 if ($cardcase) { // 有，删除
                     if ($cardcase->delete()) {
