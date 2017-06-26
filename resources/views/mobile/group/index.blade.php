@@ -44,7 +44,8 @@
     </div>
     {{--侧边悬浮按钮--}}
     <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
-        <a class="btn btn-lg circle primary outline" href="{{ url()->previous() }}">
+        <a class="btn btn-lg circle primary outline"
+           href="{{ url()->previous() == url()->current() ? url('cardcase') : url()->previous() }}">
             <i class="icon icon-chevron-left"></i>
         </a>
     </nav>
@@ -108,13 +109,7 @@
     </div>
     {{--添加/编辑分组--}}
     <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
-        {{--<form id="ajaxFormExample" action="{{ url()->current() }}">--}}
-        {{--<div class="control">--}}
-        {{--<input type="text" class="input" placeholder="请输入用户名">--}}
-        {{--</div>--}}
-        {{--<button class="btn primary" type="submit">提交</button>--}}
-        {{--</form>--}}
-        <form action="{{ url()->current() }}" method="post" >
+        <form action="{{ url()->current() }}" method="post" onsubmit="return false;">
             {{ csrf_field() }}
             <div class="heading divider">
                 <div class="title modal-title">添加分组</div>
@@ -169,6 +164,7 @@
                         // 现实成功消息，刷新当前页面
                         console.log('success');
                         console.log(data);
+                        $.messager.show(data, {type: 'success', placement: 'center'});
                         //         $('.hintModal').modal('show');
                         //         $('.hintModal .modal-body').text(json.msg);
                         //         $('.hintModal .after-operate').text(_url);

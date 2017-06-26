@@ -58,10 +58,12 @@ class GroupController extends HomeController
      */
     public function store(Request $request)
     {
+//        return 123;
+        return response()->json('test', 400);
+
         /* 验证 */
         $this->validate($request, [
             'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(), // 不允许重名
-//            'Group.name' => 'required', // 允许重名
         ], [], [
             'Group.name' => '分组名称',
         ]);
@@ -72,9 +74,8 @@ class GroupController extends HomeController
         $result = Group::create($data);
 
         if ($result) {
-            return response()->json($result, 200);
+            return response()->json('添加成功');
         } else {
-            return response()->json($result, 1);
         }
 //        Config::set('global.ajax.err', $err_code);
 //        Config::set('global.ajax.msg', config('global.msg.' . $err_code));

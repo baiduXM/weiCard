@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 
 
-
 class CardcaseController extends HomeController
 {
 
@@ -37,26 +36,29 @@ class CardcaseController extends HomeController
 
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $word = Input::query('word') ? Input::query('word') : '';
-            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-                if (isset($word) && $word != '') {
-                    $query->where('nickname', 'like', '%' . $word . '%');
-                }
-            }])->where('user_id', Auth::id())->get();
-            foreach ($cardcases as $key => $cardcase) {
-                if (!$cardcase->follower) {
-                    unset($cardcases[$key]);
-                }
-            }
-            return view('mobile.cardcase.indexbak')->with([
-                'cardcases' => $cardcases,
-                'word' => $word,
+
+            $data = $this->index4Mobile();
+            return view('mobile.cardcase.index')->with([
+                'data' => $data,
             ]);
 
-//            $data = $this->index4Mobile();
-//            return view('mobile.cardcase.index')->with([
-//                'data' => $data,
+//            $word = Input::query('word') ? Input::query('word') : '';
+//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+//                if (isset($word) && $word != '') {
+//                    $query->where('nickname', 'like', '%' . $word . '%');
+//                }
+//            }])->where('user_id', Auth::id())->get();
+//            foreach ($cardcases as $key => $cardcase) {
+//                if (!$cardcase->follower) {
+//                    unset($cardcases[$key]);
+//                }
+//            }
+//            return view('mobile.cardcase.indexbak')->with([
+//                'cardcases' => $cardcases,
+//                'word' => $word,
 //            ]);
+
+
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('web.cardcase.index')->with([
@@ -78,8 +80,7 @@ class CardcaseController extends HomeController
         /* 排序顺序 */
 //        $order = $request->input('order') ? $request->input('order') : 'asc';
 
-        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get();
-        dd($cardcases);
+        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get()->toArray();
         if (count($cardcases) > 0) {
             $cardcases = $this->getPinyin($cardcases);
         }
