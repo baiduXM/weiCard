@@ -38,11 +38,10 @@
     {{--模态框--}}
 @show
 
-
 <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
 {{--自定义js--}}
 @section('javascript')
-    <script src="{{ asset('static/mobile/js/operation.js') }}"></script>
+<script src="{{ asset('static/mobile/js/operation.js') }}"></script>
 @show
 </body>
 </html>

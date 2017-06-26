@@ -13,13 +13,15 @@ use App\Models\Group;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 
 class GroupController extends HomeController
 {
     public function __construct()
     {
-        $this->isMobile();
+//        $this->isMobile();
+        $this->is_mobile = true;
         // 设置面包屑模板
         Breadcrumbs::setView('vendor/breadcrumbs');
 
@@ -27,6 +29,7 @@ class GroupController extends HomeController
         Breadcrumbs::register('group', function ($breadcrumbs) {
             $breadcrumbs->push('名片夹', route('cardcase.group.index'));
         });
+
     }
 
 
@@ -46,12 +49,19 @@ class GroupController extends HomeController
     }
 
 
+    /**
+     * 添加分组
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
-//        return response()->json('info', 200);
         /* 验证 */
         $this->validate($request, [
-            'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(),
+            'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(), // 不允许重名
+//            'Group.name' => 'required', // 允许重名
         ], [], [
             'Group.name' => '分组名称',
         ]);
@@ -59,13 +69,47 @@ class GroupController extends HomeController
         $data['user_id'] = Auth::id();
         $data['order'] = 0;
 
-        if (Group::create($data)) {
-            $err_code = 300;
+        $result = Group::create($data);
+
+        if ($result) {
+            return response()->json($result, 200);
         } else {
-            $err_code = 301;
+            return response()->json($result, 1);
         }
-        Config::set('global.ajax.err', $err_code);
-        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-        return Config::get('global.ajax');
+//        Config::set('global.ajax.err', $err_code);
+//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+//        return Config::get('global.ajax');
     }
+
+    /**
+     * 删除
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Illuminate\Http\RedirectResponse|int
+     */
+//    public function destroy(Request $request, $id)
+//    {
+//
+//        $group = Group::find($id);
+//
+//        $res = $group->delete();
+//        if ($res) {
+//            $err_code = 400; // 删除成功
+//        } else {
+//            $err_code = 401; // 删除失败
+//        }
+//
+//        if ($request->ajax()) {
+//
+//        }
+//
+//
+//        if ($err_code % 100 == 0) {
+//            return redirect('company/position')->with('success', config('global.msg.' . $err_code));
+//        } else {
+//            return redirect()->back()->with('error', config('global.msg.' . $err_code));
+//        }
+//    }
 }

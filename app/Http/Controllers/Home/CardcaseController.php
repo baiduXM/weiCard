@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 
 
+
 class CardcaseController extends HomeController
 {
 
@@ -36,10 +37,26 @@ class CardcaseController extends HomeController
 
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $data = $this->index4Mobile();
-            return view('mobile.cardcase.index')->with([
-                'data' => $data,
+            $word = Input::query('word') ? Input::query('word') : '';
+            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+                if (isset($word) && $word != '') {
+                    $query->where('nickname', 'like', '%' . $word . '%');
+                }
+            }])->where('user_id', Auth::id())->get();
+            foreach ($cardcases as $key => $cardcase) {
+                if (!$cardcase->follower) {
+                    unset($cardcases[$key]);
+                }
+            }
+            return view('mobile.cardcase.indexbak')->with([
+                'cardcases' => $cardcases,
+                'word' => $word,
             ]);
+
+//            $data = $this->index4Mobile();
+//            return view('mobile.cardcase.index')->with([
+//                'data' => $data,
+//            ]);
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('web.cardcase.index')->with([
@@ -61,7 +78,8 @@ class CardcaseController extends HomeController
         /* 排序顺序 */
 //        $order = $request->input('order') ? $request->input('order') : 'asc';
 
-        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get()->toArray();
+        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get();
+        dd($cardcases);
         if (count($cardcases) > 0) {
             $cardcases = $this->getPinyin($cardcases);
         }
@@ -169,6 +187,7 @@ class CardcaseController extends HomeController
 
         /* 查看数据库是否有数据 */
         $query = Cardcase::query();
+        return $query;
         foreach ($data as $key => $value) {
             $query->where($key, $value);
         }
@@ -176,6 +195,7 @@ class CardcaseController extends HomeController
 
         /* ajax收藏 */
         if ($request->ajax()) {
+            return 1;
             if (!isset($err_code)) {
                 if ($cardcase) { // 有，删除
                     if ($cardcase->delete()) {
