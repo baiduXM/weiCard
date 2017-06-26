@@ -187,7 +187,6 @@ class CardcaseController extends HomeController
 
         /* 查看数据库是否有数据 */
         $query = Cardcase::query();
-        return $query;
         foreach ($data as $key => $value) {
             $query->where($key, $value);
         }
