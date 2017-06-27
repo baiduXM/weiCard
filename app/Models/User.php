@@ -22,7 +22,7 @@ class User extends CommonModel implements
      * @var array
      */
     protected $guarded = [
-        'id', 'password_confirmation',
+        'id', 'password_confirmation', 'oauth_weixin',
     ];
 
     /**

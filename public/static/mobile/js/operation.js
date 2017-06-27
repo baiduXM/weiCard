@@ -2,44 +2,65 @@
  * Created by Hsieh on 2017/4/7.
  */
 $(function () {
+
+
+    /* 显示modal时，更新form里的action */
+    $('[class^="opshow-"]').click(function () {
+        var _this  = $(this);
+        var _url   = _this.data('url');
+        var _modal = _this.data('target');
+        $(_modal).find('form').attr('action', _url);
+        $(_modal).find('.input').val('');
+    });
+    // /* 删除 */
+    // $('.op-delete').click(function () {
+    //     var _this  = $(this);
+    //     var _url   = _this.data('url');
+    //     var _modal = _this.data('target');
+    //     $(_modal).find('form').attr('action', _url);
+    // });
+
     /* 表单ajax提交 */
     $('.op-submit').click(function () {
-        var _url = $(this).parents('form').attr('action');
-        var _method = $(this).parents('form').attr('method');
-        var _formData = new FormData($('.form-import')[0]);
-        console.info(_url);
-        console.info(_method);
-        console.info(_formData);
-        $.ajaxSetup({ // 无form表单时
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        var _this     = $(this);
+        var _modal    = _this.parents('.modal');
+        var _form     = _this.parents('form');
+        var _url      = _form.attr('action');
+        var _method   = _form.attr('method');
+        var _formData = _form.serializeArray();
+        $.ajax({
+            type: _method,
+            url: _url,
+            data: _formData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+            success: function (data) {
+                /* 现实成功消息，刷新当前页面 */
+                $.Display.dismiss(_modal.data('display-name'));
+                $.messager.show("<i class='icon-check'>  " + data + "</i>", {
+                    type: 'success', placement: 'center', autoHide: 800, closeButton: false
+                });
+                setTimeout(window.location.href = _url, 1); // 1s后刷新页面
+            },
+            error: function (data) {
+                /* 显示错误 */
+                var errors = JSON.parse(data.response);
+                showError(_modal, errors);
             }
         });
-        // $.ajax({
-        //     url: _url,
-        //     type: _method,
-        //     data: _formData,
-        //     dataType: 'json',
-        //     // cache: false,
-        //     // contentType: false,
-        //     // processData: false,
-        //     success: function (json) {
-        //         console.log('success');
-        //         console.log(json);
-        //         $('.hintModal').modal('show');
-        //         $('.hintModal .modal-body').text(json.msg);
-        //         $('.hintModal .after-operate').text(_url);
-        //         return false;
-        //     },
-        //     error: function (json) {
-        //         console.log('failed');
-        //         console.log(json);
-        //         var errors = json.responseJSON;
-        //         showError(errors);
-        //         return false;
-        //     }
-        // });
-
     });
-
 });
+
+/**
+ * 显示错误信息
+ *
+ * @param scope     当前范围
+ * @param data      错误信息
+ */
+function showError(scope, data) {
+    $.each(data, function (i, n) {
+        var obj = scope.find('.error-' + i.split('.')[1]);
+        obj.addClass('has-error');
+        obj.find('.help-text').text(n);
+    });
+}

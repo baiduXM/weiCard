@@ -9,31 +9,32 @@
     <div class="container display ">
         <section class="section">
             <div class="list divider">
-                <a class="item" data-display="modal" data-backdrop="true" data-target="#editGroupModal">
+                <a class="opshow-create item" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
+                   data-url="{{ url()->current() }}">
                     <div class="btn primary">
                         <i class="icon icon-plus has-padding-sm"></i>
                     </div>
-                    <div class="title ">&nbsp;&nbsp;新建分组</div>
+                    <div class="title ">新建分组</div>
                 </a>
             </div>
             @if($groups)
                 @foreach($groups as $item)
                     <div class="list divider">
                         <div class="item" id="{{ $item['id'] }}">
-                            <a class="operate-delete btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}"
+                            <a class="opshow-delete btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}"
                                data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                               data-url="{{ url('') }}">
+                               data-url="{{ url()->current().'/'. $item['id']}}">
                                 <i class="icon icon-trash has-padding-sm"></i>
                             </a>
-                            <a class="title {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
-                               data-backdrop="true" data-target="#editGroupModal">
-                                &nbsp;&nbsp;{{ $item['name'] }}
-                            </a>
-                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
-                               data-backdrop="true" data-target="#editMemberModal">
+                            <a class="opshow-edit title {{ $item['id'] == 0 ? 'disabled' : '' }}"
+                               data-display="modal" data-backdrop="true" data-target="#editGroupModal"
+                               data-url="{{ url()->current().'/'. $item['id']}}">{{ $item['name'] }}</a>
+                            <a class="opshow-show btn {{ $item['id'] == 0 ? 'disabled' : '' }}"
+                               data-display="modal" data-backdrop="true" data-target="#editMemberModal"
+                               data-url="{{ url()->current().'/'. $item['id']}}">
                                 <i class="icon icon-group has-padding-sm"></i>
                             </a>
-                            <a class="btn">
+                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}">
                                 <i class="icon icon-bars has-padding-sm"></i>
                             </a>
                         </div>
@@ -53,135 +54,144 @@
 @section('modal')
     {{--添加群成员--}}
     <div id="editMemberModal" class="modal affix dock enter-from-center fade ">
-        <div class="heading divider">
-            <div class="title">组名 <label class="info has-padding-h">12</label></div>
-            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
-        </div>
-        <div class="content has-padding">
-            {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
-            {{--{{ csrf_field() }}--}}
-            <div class="heading">成员</div>
-            <div class="list divider row ">
-                <div class="checkbox cell-6 with-avatar text-ellipsis" style="overflow: hidden">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">{{ '言身寸言身寸言身寸12' }}
-                        <span class="warning has-padding-h rounded">个人</span>
-                    </label>
-                </div>
-                <div class="checkbox cell-6">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">{{ '王大可' }}
-                        <span class="primary has-padding-h rounded">企业</span>
-                    </label>
-                </div>
-                <div class="checkbox cell-6">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">羊习习</label>
-                </div>
+        <form action="" method="post" onsubmit="return false;">
+            <div class="heading divider">
+                <div class="title">编辑组员 <label class="info has-padding-h">12</label></div>
+                <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
             </div>
-            <div class="heading">未分组</div>
-            <div class="list divider row justified">
-                <div class="checkbox">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">1</label>
-                    <input type="checkbox" name="buyMethod1">
-                    <label for="buyMethod1">2</label>
+            <div class="content has-padding">
+                {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
+                {{--{{ csrf_field() }}--}}
+                <div class="heading">成员</div>
+                <div class="list divider row ">
+                    <div class="checkbox cell-6 with-avatar text-ellipsis" style="overflow: hidden">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">{{ '言身寸言身寸言身寸12' }}
+                            <span class="warning has-padding-h rounded">个人</span>
+                        </label>
+                    </div>
+                    <div class="checkbox cell-6">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">{{ '王大可' }}
+                            <span class="primary has-padding-h rounded">企业</span>
+                        </label>
+                    </div>
+                    <div class="checkbox cell-6">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">羊习习</label>
+                    </div>
                 </div>
-                <div class="checkbox flex-auto">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">3</label>
+                <div class="heading">未分组</div>
+                <div class="list divider row justified">
+                    <div class="checkbox">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">1</label>
+                        <input type="checkbox" name="buyMethod1">
+                        <label for="buyMethod1">2</label>
+                    </div>
+                    <div class="checkbox flex-auto">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">3</label>
+                    </div>
+                    <div class="checkbox flex-auto">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">4</label>
+                    </div>
+                    <div class="checkbox flex-auto">
+                        <input type="checkbox" name="buyMethod">
+                        <label for="buyMethod">5</label>
+                    </div>
                 </div>
-                <div class="checkbox flex-auto">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">4</label>
-                </div>
-                <div class="checkbox flex-auto">
-                    <input type="checkbox" name="buyMethod">
-                    <label for="buyMethod">5</label>
-                </div>
+                {{--</form>--}}
             </div>
-            {{--</form>--}}
-        </div>
-        <div class="footer has-padding">
-            <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-            <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
-        </div>
+            <div class="footer has-padding affix dock-bottom">
+                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+                <input type="submit" class="btn primary pull-right" value="确认">
+            </div>
+        </form>
     </div>
     {{--添加/编辑分组--}}
     <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
-        <form action="{{ url()->current() }}" method="post" onsubmit="return false;">
-            {{ csrf_field() }}
+        <form action="" method="post" onsubmit="return false;">
             <div class="heading divider">
                 <div class="title modal-title">添加分组</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
             </div>
             <div class="content has-padding">
-                <div class="control">
+                <div class="control error-name" id="">
                     <label for="Group[name]">名称</label>
                     <input class="input" type="text" id="Group[name]" name="Group[name]" value="">
                     <p class="help-text"></p>
                 </div>
             </div>
             <div class="footer has-padding">
-                <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-                <button type="submit" class="op-submit btn primary pull-right">确认</button>
+                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+                <input type="submit" class="op-submit btn primary pull-right" value="确认">
             </div>
         </form>
     </div>
-    {{--确认输入框--}}
-    <div class="confirmModal modal affix dock-bottom enter-from-bottom fade">
-        <form action="" method="post">
-            {{ method_field('delete') }}
-            <div class="heading divider">
-                <div class="title text-center">确认删除</div>
-            </div>
-            <div class="footer has-padding">
-                <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-                <button type="submit" class="btn primary pull-right op">确认</button>
-            </div>
-        </form>
-    </div>
+
 @stop
 @section('javascript')
     <script>
         $(function () {
-            /* 表单ajax提交 */
-            $('.op-submit').click(function () {
-                var _form = $(this).parents('form');
-                var _url = _form.attr('action');
-                var _method = _form.attr('method');
-                var _formData = _form.serializeArray();
-                console.info(_url);
-                console.info(_method);
-                console.info(_formData);
+
+            /* 添加 */
+            $('.opshow-create').click(function () {
+                var _this  = $(this);
+                var _modal = _this.data('target');
+                $(_modal).find('.modal-title').text('添加分组');
+            });
+
+            /* 编辑 */
+            $('.opshow-edit').click(function () {
+                var _this  = $(this);
+                var _modal = _this.data('target');
+                $(_modal).find('.modal-title').text('编辑分组名');
+                $(_modal).find('.input').val(_this.text());
+            });
+
+            /* 显示 */
+            $('.opshow-show').click(function () {
+                var _this     = $(this);
+                var _modal    = _this.parents('.modal');
+//                var _form     = _this.parents('form');
+                var _url      = _this.data('url');
+//                var _formData = _form.serializeArray();
+                console.log(_url)
+
                 $.ajax({
-                    type: _method,
+                    type: 'get',
                     url: _url,
-                    data: _formData,
+//                    data: _formData,
                     dataType: 'json',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                     success: function (data) {
-                        // 现实成功消息，刷新当前页面
-                        console.log('success');
-                        console.log(data);
-                        $.messager.show(data, {type: 'success', placement: 'center'});
-                        //         $('.hintModal').modal('show');
-                        //         $('.hintModal .modal-body').text(json.msg);
-                        //         $('.hintModal .after-operate').text(_url);
-                        //         return false;
+                        console.log('success')
+                        console.log(data)
+                        /* 现实成功消息，刷新当前页面 */
+//                        $.Display.dismiss(_modal.data('display-name'));
+//                        $.messager.show("<i class='icon-check'>  " + data + "</i>", {
+//                            type: 'success', placement: 'center', autoHide: 800, closeButton: false
+//                        });
+//                        setTimeout(window.location.href = _url, 1); // 1s后刷新页面
                     },
                     error: function (data) {
-                        console.log('failed');
-                        console.log(data);
-                        console.log(data.response);
-                        //         var errors = json.responseJSON;
-                        //         showError(errors);
-                        //         return false;
+                        console.log('error')
+
+                        console.log(data)
+
+                        /* 显示错误 */
+//                        var errors = JSON.parse(data.response);
+//                        showError(_modal, errors);
                     }
                 });
             });
 
+
         });
+
+
     </script>
 @stop
 

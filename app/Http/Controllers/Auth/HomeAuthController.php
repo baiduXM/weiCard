@@ -44,14 +44,16 @@ class HomeAuthController extends HomeController
         if ($this->isMobile()) { // mobile端，微信授权
             return $this->redirectToProvider('weixin');
         } else { // web端，微信扫码
-            $ip = $request->ip();
-            $ipArr = array(
-                '183.250.161.246', // 公司公网IP
-                '127.0.0.1', // 本地测试ip
-            );
-            if (!in_array($ip, $ipArr)) {
-                return $this->redirectToProvider('weixinweb');
-            }
+//            $ip = $request->ip();
+//            $ipArr = array(
+//                '183.250.161.246', // 公司公网IP
+//                '127.0.0.1', // 本地测试ip
+//            );
+//            if (!in_array($ip, $ipArr)) {
+//                return $this->redirectToProvider('weixinweb');
+//            }
+            return $this->redirectToProvider('weixinweb');
+
         }
 
 
@@ -123,12 +125,11 @@ class HomeAuthController extends HomeController
      *
      * @return mixed
      */
-    protected
-    function validator(array $data)
+    protected function validator(array $data)
     {
 
         return Validator::make($data, [
-            'name' => 'required|min:4|max:255|unique:users,users.name',
+            'name'     => 'required|min:4|max:255|unique:users,users.name',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -140,8 +141,7 @@ class HomeAuthController extends HomeController
      *
      * @return static
      */
-    protected
-    function create(array $data)
+    protected function create(array $data)
     {
         foreach ($data as $key => $value) {
             if ($key == 'password') {
@@ -158,8 +158,7 @@ class HomeAuthController extends HomeController
      *
      * @return mixed
      */
-    public
-    function redirectToProvider($driver)
+    public function redirectToProvider($driver)
     {
         return Socialite::with($driver)->redirect();
     }
@@ -172,10 +171,12 @@ class HomeAuthController extends HomeController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public
-    function handleProviderCallback(Request $request, $driver)
+    public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
+        if ($oauthUser->user['subscribe'] == 0) { // 未关注
+            return redirect('/follow/public'); // 跳转公众号二维码
+        }
         if (Auth::check()) { // 已登录，绑定账号
             $function_name = 'bind_' . $driver;
             $this->$function_name($oauthUser->user);
@@ -195,8 +196,7 @@ class HomeAuthController extends HomeController
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected
-    function oauth_weixinweb($data)
+    protected function oauth_weixinweb($data)
     {
         // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
 
@@ -228,8 +228,7 @@ class HomeAuthController extends HomeController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected
-    function oauth_weixin($data)
+    protected function oauth_weixin($data)
     {
         $this->oauth_weixinweb($data);
     }
@@ -241,8 +240,7 @@ class HomeAuthController extends HomeController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected
-    function bind_weixinweb($data)
+    protected function bind_weixinweb($data)
     {
         // 检查是否注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
@@ -278,8 +276,7 @@ class HomeAuthController extends HomeController
      *
      * @param $data
      */
-    protected
-    function bind_weixin($data)
+    protected function bind_weixin($data)
     {
         $this->bind_weixinweb($data);
     }

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
+use App\Models\Cardcase;
 use App\Models\Group;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -38,14 +39,29 @@ class GroupController extends HomeController
         if ($this->is_mobile) {
             $groups = $this->getGroups(Auth::id());
             $groups = $this->sortArray($groups, 'order');
+
             return view('mobile.group.index')->with([
                 'groups' => $groups,
             ]);
         }
         $groups = Group::paginate();
+
         return view('web.group.index')->with([
             'groups' => $groups,
         ]);
+    }
+
+    public function show(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $cardcases = Cardcase::with('follower')->where('group_id', $id)->where('user_id', Auth::id())->get()->toArray();
+            $nogroup = Cardcase::with('follower')->where('group_id', null)->where('user_id', Auth::id())->get()->toArray();
+            $data['group'] = $cardcases;
+            $data['none'] = $nogroup;
+            return response()->json($data);
+        }
+        return redirect()->route('cardcase.group.index');
+
     }
 
 
@@ -58,59 +74,34 @@ class GroupController extends HomeController
      */
     public function store(Request $request)
     {
-//        return 123;
-        return response()->json('test', 400);
 
         /* 验证 */
         $this->validate($request, [
             'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(), // 不允许重名
         ], [], [
-            'Group.name' => '分组名称',
+            'Group.name' => '名称',
         ]);
         $data = $request->input('Group');
         $data['user_id'] = Auth::id();
         $data['order'] = 0;
 
-        $result = Group::create($data);
-
-        if ($result) {
+        if (Group::create($data)) {
             return response()->json('添加成功');
-        } else {
         }
-//        Config::set('global.ajax.err', $err_code);
-//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-//        return Config::get('global.ajax');
     }
 
     /**
      * 删除
      *
-     * @param Request $request
-     * @param         $id
+     * @param int $id
      *
      * @return \Illuminate\Http\RedirectResponse|int
      */
-//    public function destroy(Request $request, $id)
-//    {
-//
-//        $group = Group::find($id);
-//
-//        $res = $group->delete();
-//        if ($res) {
-//            $err_code = 400; // 删除成功
-//        } else {
-//            $err_code = 401; // 删除失败
-//        }
-//
-//        if ($request->ajax()) {
-//
-//        }
-//
-//
-//        if ($err_code % 100 == 0) {
-//            return redirect('company/position')->with('success', config('global.msg.' . $err_code));
-//        } else {
-//            return redirect()->back()->with('error', config('global.msg.' . $err_code));
-//        }
-//    }
+    public function destroy($id)
+    {
+        $group = Group::find($id);
+        if ($group->delete()) {
+            return response()->json('删除成功');
+        }
+    }
 }
