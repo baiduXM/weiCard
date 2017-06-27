@@ -109,6 +109,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Home\ProductController@show']);
         Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Home\ProductController@update']);
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
+        Route::any('productlink', ['as' => 'company.product.productlink', 'uses' => 'Home\ProductController@productlink']);
 
         /* 我的公司->微链接 */
         Route::get('link', ['as' => 'company.link.index', 'uses' => 'Home\LinkController@index']);
@@ -142,6 +143,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
+    Route::get('template/mobile-change', ['as' => 'template.mindex', 'uses' => 'Home\TemplateController@mindex']);
+    Route::match(['get', 'post'], 'template/change-u/{params}', ['as' => 'template.change-u', 'uses' => 'Home\TemplateController@uchange']);
 //    Route::resource('template', 'Home\TemplateController');
 
     /* 安全中心 */

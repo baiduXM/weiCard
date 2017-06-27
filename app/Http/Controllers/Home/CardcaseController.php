@@ -219,7 +219,8 @@ class CardcaseController extends HomeController
         /* url收藏 */
         if (!isset($err_code)) {
             if ($request->isMethod('get')) {
-                if ($cardcase) { // 有，删除
+                if ($cardcase) {
+                    return redirect()->back();// 有，删除
                     $err_code = 702; // 收藏失败
                 } elseif (Cardcase::create($data)) {
                     $err_code = 700; // 收藏成功

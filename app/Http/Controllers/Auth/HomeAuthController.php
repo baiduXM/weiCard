@@ -44,16 +44,15 @@ class HomeAuthController extends HomeController
         if ($this->isMobile()) { // mobile端，微信授权
             return $this->redirectToProvider('weixin');
         } else { // web端，微信扫码
-//            $ip = $request->ip();
-//            $ipArr = array(
-//                '183.250.161.246', // 公司公网IP
-//                '127.0.0.1', // 本地测试ip
-//            );
-//            if (!in_array($ip, $ipArr)) {
-//                return $this->redirectToProvider('weixinweb');
-//            }
+            // $ip = $request->ip();
+            // $ipArr = array(
+            //     '183.250.161.246', // 公司公网IP
+            //     '127.0.0.1', // 本地测试ip
+            // );
+            // if (!in_array($ip, $ipArr)) {
+            //     return $this->redirectToProvider('weixinweb');
+            // }
             return $this->redirectToProvider('weixinweb');
-
         }
 
 
@@ -175,7 +174,7 @@ class HomeAuthController extends HomeController
     {
         $oauthUser = Socialite::with($driver)->user();
         if ($oauthUser->user['subscribe'] == 0) { // 未关注
-            return redirect('/follow/public'); // 跳转公众号二维码
+            return view('mobile.common.qrcode'); // 跳转公众号二维码
         }
         if (Auth::check()) { // 已登录，绑定账号
             $function_name = 'bind_' . $driver;
@@ -206,9 +205,7 @@ class HomeAuthController extends HomeController
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-//            if ($data['subscribe'] == 0) { // 未关注
-//                return redirect('/follow/public'); // 跳转公众号二维码
-//            }
+
 
             $array['name'] = $data['unionid'];
             $array['oauth_weixin'] = $data['unionid'];

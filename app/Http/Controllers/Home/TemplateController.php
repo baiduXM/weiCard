@@ -38,6 +38,25 @@ class TemplateController extends HomeController
     }
 
     /**
+     * 手机端模板列表展示
+     *
+     * @param $type
+     *
+     * @return $this
+     */
+    public function mindex()
+    {
+        $query = Template::query();
+        $query->where('type', 1);
+        $templates = $query->paginate(4);
+        $user = Auth::user();
+        return view('mobile.templates.index')->with([
+            'templates' => $templates,
+            'user' => $user,
+        ]);
+    }
+
+    /**
      * 模板更换
      *
      * @param $params
@@ -76,6 +95,31 @@ class TemplateController extends HomeController
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * 手机端模板更换
+     *
+     * @param $params
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function uchange($params)
+    {
+
+        $data['type'] = 'App\Models\User';
+        $model = Auth::user();
+        $data['template_id'] = $params;
+
+        $current = $model->templates;
+        if (count($current) > 0) { // 已选择模板
+            $model->templates()->detach($current[0]->id);
+            $model->templates()->attach($data['template_id']);
+        } else { // 未选择模板
+            $model->templates()->attach($data['template_id']);
+        }
+
+        return redirect()->route('index');
     }
 }
 

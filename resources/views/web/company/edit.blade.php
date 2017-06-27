@@ -71,7 +71,27 @@
         @if ($errors->has('Company.homepage'))
             <p class="pass-error show">{{ $errors->first('Company.homepage') }}</p>
         @endif
-
+        <div class="companyLink">
+            <span>是否外链:</span>
+            <div class="com">
+                @if ($company->is_profilelink=='1')
+                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio" checked="checked"   value="1">开
+                @else
+                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"    value="1">开
+                @endif
+                @if ($company->is_profilelink=='1')
+                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"    value="0">关
+                @else
+                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"  checked="checked"  value="0">关
+                @endif
+                <input type="text" name="Company[profilelink]"class="comLinkInput cardInput"
+                       value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">
+            </div>
+            <h6 class="comTap"><span>备注:</span>公司简介外链</h6>
+        </div>
+        @if ($errors->has('Company.profilelink'))
+            <p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>
+        @endif
         <div class="user-j">
             <span>公司简介: </span>
             <textarea name="Company[description]"

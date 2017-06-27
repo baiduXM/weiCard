@@ -19,7 +19,7 @@ body,input,textarea{font: 0.7rem/1.2rem "微软雅黑","Microsoft YaHei","\5FAE\
 input,button{padding: 0;margin: 0;border:none;background: none;}
 ul,ol,li,dl{list-style:none;margin:0; padding:0;}
 h1,h2,h3,h4,h5{font-weight:normal;}
-i,em,b{font-style:normal;font-weight:normal;list-style:none;}
+i,em,b,strong{font-style:normal;font-weight:normal;list-style:none;}
 img{border: none;max-width: 100%;max-height: 100%;vertical-align: middle;}
 mark{background: none;}
 .fl{float: left;}.fr{float: right;}.cl{clear:both;}.tc{text-align:center;}.tr{text-align:right;}.tl{text-align:left;}.c0{color:#000;}.c3{color:#333;}.c6{color:#666;}.c9{color:#999;}.cf{color:#fff;}.vm{vertical-align:middle;}.vt{vertical-align:top;}.vb{vertical-align:bottom;}
@@ -31,8 +31,11 @@ mark{background: none;}
 
 body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640px; overflow:hidden;}
 .card_top{background: #393a3e;width: 100%;height: 1.1rem;padding: 0.45rem 0;font-size: 0.8rem;color: #fff;line-height: 1.1rem;}
-.card_top .back{display: block;width: 0.45rem;height:1.1rem;padding: 0 0.6rem 0 0.5rem;border-right: 1px solid #2d2e33;}
-.card_top span{margin-left: 0.75rem;}
+.card_top .close{display: block;width: 1.5rem;height:1.1rem; vertical-align: middle; text-align: center; border-right: 1px solid #2d2e33;}
+.card_top .close img{ width: 0.6rem; height: 0.6rem;}
+.card_top span{ margin-left: 0.5rem;}
+.pro_header .set, .card_top .set{ width: 1.5rem; height: 1.1rem; display: inline-block; float: right;background: url(../images/shezhi.png) center no-repeat; background-size: 0.125rem 0.75rem;}
+.pro_header .set{ height: 2rem !important;}
 .card_choose{width: 100%;height: 3.5rem;background: url(../images/bg1.jpg) center no-repeat;background-size: 16rem 3.5rem;}
 .card_choose ul{height: 1.75rem;width:14rem;padding: 0.875rem 1rem; }
 .card_choose ul li{width:5.9rem;height: 1.74rem;border: 1px solid #fff;font-size: 0.75rem;line-height: 1.74rem;text-align: center;float: left;margin: 0 0.5rem;border-radius: 1rem;}
@@ -41,7 +44,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_choose ul li.on a{color: #20abff;}
 
 .card_main{ position: relative; overflow-y:auto; }
-.card_content{position: relative;width: 100%;height:auto;overflow: auto;margin: 1.45rem 0 0.7rem 0;}
+.card_content{position: relative;width: 100%;height:auto;overflow: auto;margin: 1.45rem 0 0.7rem 0; z-index: 9;}
 .car_from{}
 .card_content .card_c_we{width: 100%;height:8.25rem;overflow: hidden;margin-bottom:0.7rem;text-align: center;/*background: url(../images/bg2.png) center no-repeat;background-size:14.875rem 8.2rem; */}
 .card_content .card_c_we .card_c_wephoto{width:2.3rem;height: 2.75rem;top: 2.8rem;left: 4.6rem;border-radius: 50%; }
@@ -130,7 +133,12 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_content form span.bz{width:12.4rem;height:2.95rem; }
 .card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;} 
 .card_content form .sub{display:inline-block;width: 8rem;height: 1.65rem;line-height: 1.65rem;margin:0 2.5rem;color: #fff;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
-
+.card_content form span strong{ float: right; margin-right: 0.5rem; cursor: pointer;}
+.card_content form span strong a{ font-size: 0.6rem; color: #333;}
+.card_content form span strong i{ display: inline-block;width: 0.325rem; height: 0.6rem; background: url(../images/xiala.png) no-repeat; background-size: 100% 100%; position: relative;top: 0.1rem; left: 0.2rem;}
+// .card_content form span ul.xiala{ display: none;}
+// .card_content form span ul.xiala li{}
+// .card_content form span ul.xiala li a{ font-size: 0.6rem; color: #333; line-height: 1.35rem;}
 .sea_l{width: 100%;height:3.8rem;margin-top: 1.15rem;bottom: 0; position: fixed; z-index: 8;}
 .sea_l .sea_hl1{width:16rem;height:3.8rem;bottom: 0;left: 0;animation: bounce-down 2s linear infinite;}
 @-webkit-keyframes bounce-down {
@@ -174,8 +182,8 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .cards .tell{top: 4rem;right:-9rem;}
 .cards a.gr_card_btn{ position: absolute; bottom: 0.8rem; left: 1.5rem; font-size: 0.7rem;  }
 
-
-.choose_card{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 2.8rem auto;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
+.choose_card1{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 1.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
+.choose_card{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 1rem auto;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 .choose_card .choose_box{display: none;top:-3.6rem;left: 50%;transform:translateX(-50%);box-shadow: 0px 2px 0.3rem #e5e5e5;border-radius: 0.2rem;padding-left: 2rem; width:8.5rem;height: 2.5rem;background: url(../images/bg8.png) center no-repeat;background-size: 10.5rem 2.5rem;font-size: 0.75rem;color: #51a6ff;line-height: 2.5rem; }
 
 .image_zs{width: 13.55rem;height: 5.85rem;margin: 3.8rem 0 0 2.25rem;}
@@ -200,3 +208,71 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 /*模态框 end*/
 
+/*关注流程 start*/
+.pro_wrap{ width: 100%; position: relative;z-index: 2; overflow-y: auto; background: url(../images/probg.png) no-repeat 0 bottom; background-size: 100% 26.45rem}
+.pro_header{ position: relative; width: 100%; height: 2rem; background: #393a3e; color: #ffffff; font-size: 0.8rem; line-height: 2rem;}
+.pro_header .back{ display: inline-block; width: 1.5rem; height: 2rem; background: url(../images/back.png) center center no-repeat; background-size: 0.45rem 0.75rem;}
+.pro_header h2{ position: absolute; top: 0; left: 1.5rem; width: 12.5rem;font-size: 0.8rem; height: 2rem; }
+.pro_code{ position: relative;z-index: 3; width: 100%; height: 9.85rem;background: url(../images/propic.png) no-repeat center center; background-size: 14.1rem 8.35rem;padding-top: 2.75rem; }
+.pro_code img{ width: 7.05rem; height: 7.05rem; display: block; margin: 0 auto; box-shadow:0px 0px 15px rgba(51, 51, 51, 0.1);}
+.pro_code h2{ text-align: center;color: #333333; font-size: 0.6rem; line-height: 2.75rem;}
+.pro_way{ width: 11rem; padding: 1rem 1rem 0.6rem; margin: 1rem auto 3rem; background: rgba(255, 255, 255, 0.5); border-radius: 0.5rem; position: relative;z-index: 2;}
+.pro_way dl{}
+.pro_way dt{ font-size: 0.75rem; text-align: center; height: 1.25rem; line-height: 1.25rem; background: #2dc3fb; border-radius: 0.5rem; color: #fff;}
+.pro_way dd{ line-height: 1.2rem; color: #073b58; font-size: 0.6rem;}
+.top_imgbg{ position: absolute;left: 0; top: 0; width: 100%; height: 100%; z-index: 0;}
+.top_imgbg img{ position: absolute;}
+.top_imgbg .img1{height: 1.2rem; width: 2.2rem; left: 2.1rem; top: 16.75rem;animation: left-right 16s linear infinite; -moz-animation: left-right 16s linear infinite;-webkit-animation: left-right 16s linear infinite;}
+.top_imgbg .img2{width: 1.425rem; height: 0.8rem; left: 10.65rem; top: 17rem;animation: left-right1 22s linear infinite; -moz-animation: left-right1 22s linear infinite;-webkit-animation: left-right1 22s linear infinite;}
+.top_imgbg .img3{width: 1.25rem; height: 0.675rem; left: 12.65rem; top: 18rem; animation: left-right 20s linear infinite; -moz-animation: left-right 20s linear infinite;-webkit-animation: left-right 20s linear infinite;}
+@-webkit-keyframes left-right1 {
+25% {-webkit-transform: translate(1.6rem,2rem);}
+50%, 100% {-webkit-transform: translate(0,0);}
+75% {-webkit-transform: translate(-1.8rem,2rem);}
+}
+
+@keyframes left-right1 {
+25% {transform: translate(1.6rem,2rem);}
+50%, 100% {transform: translate(0,0);}
+75% {transform: translate(-1.8rem,2rem);}
+}
+.left-right1 {
+  -webkit-animation-name: left-right1;
+          animation-name: left-right1;
+}
+@-webkit-keyframes left-right {
+25% {-webkit-transform: translate(-1rem,-2rem);}
+50%, 100% {-webkit-transform: translate(0,0);}
+75% {-webkit-transform: translate(1rem,-2rem);}
+}
+@keyframes left-right {
+25% {transform: translate(-1rem,-2rem);}
+50%, 100% {transform: translate(0,0);}
+75% {transform: translate(1rem,-2rem);}
+}
+.left-right {
+  -webkit-animation-name: left-right;
+          animation-name: left-right;
+}
+/*关注流程 end*/
+
+
+/*模板start*/
+.muban_wrap{overflow-y: auto; }
+.muban_content{ margin-left: 0.4rem;}
+.muban_content li{ margin: 0.25rem 0.2rem; float: left; background: #fff; width: 4.65rem; box-shadow: 0px 0px 10px rgba(51, 51, 51, 0.15); height: 9.35rem;}
+.muban_content li a{ display: block; padding: 0.1rem 0.1rem 0;}
+.muban_content li a .div_img{ position: relative; width: 4.55rem; height:8.25rem; display: table-cell;text-align: center;vertical-align: middle;}
+.muban_content li a .div_img img{ max-width: 100%; max-height: 100%;}
+.muban_content li a .div_img em{display: none; position: absolute; top: 0.25rem; right: 0.25rem; width: 0.7rem; height: 0.7rem; background: url(../images/choose.png) no-repeat; background-size: 100% 100%;}
+.muban_content li a h2{ width: 100%; height: 1rem; line-height: 1rem; text-align: center; font-size: 0.6rem; color: #333333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+.muban{ display: none; z-index: 100;position:fixed; width: 100%; height: 100%; top: 0; left: 0;}
+.muban .mask{position: absolute;background-color: #000;opacity: 0.6;z-index: 9;top: 0px; left: 0;width: 100%;height: 100%;display: none;}
+.muban .mubanCon{width: 12.5rem; height: auto; border-radius: 0.6rem; position: relative; z-index: 10; left: 50%; margin-left: -6.25rem;}
+.muban .close{ background: url(../images/close.png) no-repeat; background-size: 0.85rem 0.85rem; width: 0.85rem; display: block; height: 0.85rem; float: right; margin-bottom: 0.5rem;}
+.pop_img{ width: 12rem; height: 15rem; display: table-cell;text-align: center;vertical-align: middle;}
+.pop_img img{ max-height: 100%; max-width: 100%;}
+.choose_card2{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 0.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
+.close_wrap{ width: 100%; height: 1.35rem;}
+/*模板 end*/

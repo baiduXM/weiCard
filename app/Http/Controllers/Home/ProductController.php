@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
+use App\Models\Company;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +36,10 @@ class ProductController extends HomeController
     {
         if (Auth::user()->company) {
             $products = Product::where('company_id', '=', Auth::user()->company->id)->paginate();
+            $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
             return view('web.product.index')->with([
                 'products' => $products,
+                'company' => $company,
             ]);
         } else {
             return redirect()->back()->with('error', '请先绑定公司');
@@ -165,6 +168,36 @@ class ProductController extends HomeController
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
+    }
+
+    /*产品外链*/
+
+    public function productlink(Request $request){
+        //dd($request);
+
+        $id=Auth::user()->company->id;
+        $this->validate($request,[
+            'Company.productlink' => 'url:true',
+            'Company.is_productlink' => '',
+        ],[],[
+            'Company.productlink' => '公司产品外链',
+            'Company.is_productlink' => '公司产品外链开关',
+        ]);
+
+        $data = $request->input('Company');
+        //dd($data);
+        $company= Company::find($id);
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $company->$key = $data[$key];
+            }
+        }
+        if($company->save()){
+            return redirect('company/product')->with('success','修改成功  ' );
+        }else{
+            return redirect()->back()->with('error','修改失败  ');
+        }
+
     }
 
 }
