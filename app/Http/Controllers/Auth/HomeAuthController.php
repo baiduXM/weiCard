@@ -173,9 +173,9 @@ class HomeAuthController extends HomeController
     public function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
-        if ($oauthUser->user['subscribe'] == 0) { // 未关注
-            return view('mobile.common.qrcode'); // 跳转公众号二维码
-        }
+//        if ($oauthUser->user['subscribe'] == 0) { // 未关注
+//            return view('mobile.common.qrcode'); // 跳转公众号二维码
+//        }
         if (Auth::check()) { // 已登录，绑定账号
             $function_name = 'bind_' . $driver;
             $this->$function_name($oauthUser->user);
