@@ -17,8 +17,8 @@ class MobileMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $commonController = new Controller();
-        $commonController->isMobile();
+//        $commonController = new Controller();
+//        $commonController->isMobile();
 
 //        if ($commonController->isMobile() && !$request->is('m/*')) {
 ////            return redirect('m/');

@@ -9,8 +9,7 @@
     <div class="container display ">
         <section class="section">
             <div class="list divider">
-                <a class="item op-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
-                   data-title="添加分组" data-url="{{ url()->current() }}">
+                <a class="item" data-display="modal" data-backdrop="true" data-target="#editGroupModal">
                     <div class="btn primary">
                         <i class="icon icon-plus has-padding-sm"></i>
                     </div>
@@ -21,8 +20,9 @@
                 @foreach($groups as $item)
                     <div class="list divider">
                         <div class="item" id="{{ $item['id'] }}">
-                            <a class="btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
-                               data-backdrop="true" data-target=".confirmModal">
+                            <a class="operate-delete btn danger {{ $item['id'] == 0 ? 'disabled' : '' }}"
+                               data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                               data-url="{{ url('') }}">
                                 <i class="icon icon-trash has-padding-sm"></i>
                             </a>
                             <a class="title {{ $item['id'] == 0 ? 'disabled' : '' }}" data-display="modal"
@@ -106,109 +106,84 @@
             <input type="submit" class="btn primary pull-right" data-dismiss="display" value="确认">
         </div>
     </div>
-    {{--单输入框--}}
-    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade" data-form=".inputForm">
-        <div class="heading divider">
-            <div class="title modal-title">标题</div>
-            <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
-        </div>
-        <div class="content has-padding">
-            <form class="inputForm" action="" method="post">
-                {{ csrf_field() }}
+    {{--添加/编辑分组--}}
+    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
+        {{--<form id="ajaxFormExample" action="{{ url()->current() }}">--}}
+        {{--<div class="control">--}}
+        {{--<input type="text" class="input" placeholder="请输入用户名">--}}
+        {{--</div>--}}
+        {{--<button class="btn primary" type="submit">提交</button>--}}
+        {{--</form>--}}
+        <form action="{{ url()->current() }}" method="post" >
+            {{ csrf_field() }}
+            <div class="heading divider">
+                <div class="title modal-title">添加分组</div>
+                <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
+            </div>
+            <div class="content has-padding">
                 <div class="control">
                     <label for="Group[name]">名称</label>
                     <input class="input" type="text" id="Group[name]" name="Group[name]" value="">
                     <p class="help-text"></p>
                 </div>
-            </form>
-        </div>
-        <div class="footer has-padding">
-            <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-            <button type="submit" class="op-submit btn primary pull-right">确认</button>
-        </div>
+            </div>
+            <div class="footer has-padding">
+                <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
+                <button type="submit" class="op-submit btn primary pull-right">确认</button>
+            </div>
+        </form>
     </div>
     {{--确认输入框--}}
     <div class="confirmModal modal affix dock-bottom enter-from-bottom fade">
-        <div class="heading divider">
-            <div class="title text-center">确认删除</div>
-        </div>
-        <div class="footer has-padding">
-            <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-            <button type="submit" class="btn primary pull-right op">确认</button>
-        </div>
+        <form action="" method="post">
+            {{ method_field('delete') }}
+            <div class="heading divider">
+                <div class="title text-center">确认删除</div>
+            </div>
+            <div class="footer has-padding">
+                <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
+                <button type="submit" class="btn primary pull-right op">确认</button>
+            </div>
+        </form>
     </div>
 @stop
 @section('javascript')
     <script>
         $(function () {
-
-            // 显示
-            $('.op-create').click(function () {
-                var _this = $(this);
-                var _modal = _this.data('target');
-                var _form = $(_modal).data('form');
-                $('.modal-title').text(_this.data('title'));
-                $(_form).attr('action', _this.data('url'));
-            });
-
-            // 提交
+            /* 表单ajax提交 */
             $('.op-submit').click(function () {
-//                var _this = $(this);
-                var _url = $('.inputForm').attr('action');
-                var _formData = new FormData($('.inputForm')[0]);
-//                console.log(_url);
-//                console.log(_formData);
+                var _form = $(this).parents('form');
+                var _url = _form.attr('action');
+                var _method = _form.attr('method');
+                var _formData = _form.serializeArray();
+                console.info(_url);
+                console.info(_method);
+                console.info(_formData);
                 $.ajax({
+                    type: _method,
                     url: _url,
-                    type: "post",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
                     data: _formData,
                     dataType: 'json',
-                    success: function (json) {
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                    success: function (data) {
+                        // 现实成功消息，刷新当前页面
                         console.log('success');
-                        console.log(json);
-//                        console.log(json.status);
-
-                        $.Display.dismiss(); // 隐藏Modal框
-
-//                        $('.hintModal').modal('show');
-//                        $('.hintModal .modal-body').text(json.msg);
-//                        $('.hintModal .after-operate').text();
+                        console.log(data);
+                        //         $('.hintModal').modal('show');
+                        //         $('.hintModal .modal-body').text(json.msg);
+                        //         $('.hintModal .after-operate').text(_url);
+                        //         return false;
                     },
-                    error: function (json) {
-                        console.log('error');
-                        console.log(json);
-//                        console.log(errors);
-
-//                        showError(errors);
-//                        return false;
+                    error: function (data) {
+                        console.log('failed');
+                        console.log(data);
+                        console.log(data.response);
+                        //         var errors = json.responseJSON;
+                        //         showError(errors);
+                        //         return false;
                     }
                 });
             });
-
-
-            /* 添加分组 */
-            $('#groupForm').ajaxform({
-                init: function () {
-//                    alert(0)
-                },
-                onSubmit: function (formData) {
-                    alert(1)
-                    console.log(formData);
-                },
-                onResult: function (response) {
-                    alert(2)
-                    console.log(response);
-                },
-            });
-            /* 删除组 */
-            /*TODO:弹窗确认*/
-            /* 组员 */
-            /*TODO:弹窗多选*/
-            /* 排序 */
-            /*TODO:拖动排序*/
 
         });
     </script>
