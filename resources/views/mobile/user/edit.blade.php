@@ -49,7 +49,10 @@
             <span class="bz">签名：
                 <textarea name="User[description]" id="description" rows="7" wrap="virtual" onfocus="ChangeStyle_hb(this,1,5)"
                           onblur="ChangeStyle_hb(this,2,5)">{{ old('User.description') ? old('User.description') : $user->description }}</textarea>
-              </span>
+            </span>
+            <span>当前模板：{{$template->display_name}}
+                <strong><a href="{{ url('template/mobile-change') }}">更换<i></i></a></strong>
+            </span>
             <input type="submit" class="sub fl transition tj" value="确认提交">
         </form>
         <div class="sea_l pa">

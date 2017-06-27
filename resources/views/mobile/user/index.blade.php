@@ -18,14 +18,15 @@
     <div class="card_content">
         @if($isComplete)
             <div class="cards pr">
-                <a href="{{ url('user/edit') }}" title="修改资料">
-                    <img src="{{ asset('static/mobile/images/bg7.png') }}">
-                    <div class="cards_tx dtc tc vm pa"><img
-                                src="{{ asset($user->avatar) }}"></div>
-                    <div class="name pa">• 姓名：{{ $user->nickname }}</div>
-                    <div class="tell pa">• 手机：{{ $user->mobile }}</div>
-                </a>
+                <img src="{{ asset('static/mobile/images/bg7.png') }}">
+                <div class="cards_tx dtc tc vm pa"><img
+                            src="{{ asset($user->avatar) }}"></div>
+                <div class="name pa">• 姓名：{{ $user->nickname }}</div>
+                <div class="tell pa">• 手机：{{ $user->mobile }}</div>
             </div>
+            <a href="{{ url('user/edit') }}">
+                <div class="choose_card1">编辑名片</div>
+            </a>
             <a href="{{ url('cardcase/show/u') }}">
                 <div class="choose_card pr">使用这张名片
                     {{--<div class="choose_box pa">已获取成功！</div>--}}

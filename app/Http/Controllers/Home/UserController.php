@@ -86,9 +86,11 @@ class UserController extends HomeController
     public function edit()
     {
         $user = Auth::user();
+        $template = $user->templates;
         if ($this->is_mobile) {
             return view('mobile.user.edit')->with([
                 'user' => $user,
+                'template' => $template[0],
             ]);
         }
         return view('web.user.edit')->with([
