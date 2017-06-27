@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-06-19 19:41:59
+Date: 2017-06-27 20:12:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,23 +33,24 @@ CREATE TABLE `wc_cardcases` (
   KEY `group_id` (`group_id`),
   CONSTRAINT `wc_cardcases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `wc_cardcases_ibfk_2` FOREIGN KEY (`group_id`) REFERENCES `wc_groups` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8 COMMENT='名片夹';
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COMMENT='名片夹';
 
 -- ----------------------------
 -- Records of wc_cardcases
 -- ----------------------------
-INSERT INTO `wc_cardcases` VALUES ('28', '41', null, '29', 'App\\Models\\Employee', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('30', '40', '3', '41', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('32', '40', '3', '29', 'App\\Models\\Employee', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('33', '61', null, '29', 'App\\Models\\Employee', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('34', '61', null, '40', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('35', '40', null, '61', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('36', '52', null, '61', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('38', '61', null, '52', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('41', '62', null, '29', 'App\\Models\\Employee', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('43', '41', null, '61', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('46', '52', null, '41', 'App\\Models\\User', null, null, null);
-INSERT INTO `wc_cardcases` VALUES ('48', '40', '3', '53', 'App\\Models\\Employee', null, null, null);
+INSERT INTO `wc_cardcases` VALUES ('28', '41', null, '29', 'App\\Models\\Employee', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('30', '40', '36', '41', 'App\\Models\\User', null, '2017-06-19 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('32', '40', null, '29', 'App\\Models\\Employee', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('33', '61', null, '29', 'App\\Models\\Employee', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('34', '61', null, '40', 'App\\Models\\User', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('35', '40', null, '61', 'App\\Models\\User', null, '2017-05-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('36', '52', null, '61', 'App\\Models\\User', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('38', '61', null, '52', 'App\\Models\\User', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('41', '62', null, '29', 'App\\Models\\Employee', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('43', '41', null, '61', 'App\\Models\\User', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('46', '52', null, '41', 'App\\Models\\User', null, '2017-06-20 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('48', '40', null, '53', 'App\\Models\\Employee', null, '2017-06-06 15:22:18', null);
+INSERT INTO `wc_cardcases` VALUES ('49', '42', null, '41', 'App\\Models\\User', null, '2017-06-26 16:46:03', '16:46:03');
 
 -- ----------------------------
 -- Table structure for wc_circles
@@ -92,6 +93,10 @@ CREATE TABLE `wc_companies` (
   `coordinate_lng` varchar(255) DEFAULT '118.189635' COMMENT '坐标（经度）',
   `coordinate_lat` varchar(255) DEFAULT '24.491177' COMMENT '坐标（纬度）',
   `limit` varchar(255) DEFAULT '' COMMENT '员工人数上线',
+  `is_profilelink` int(10) DEFAULT NULL COMMENT '公司简介外链开关，0为关，1为开',
+  `profilelink` varchar(255) DEFAULT NULL,
+  `is_productlink` int(10) DEFAULT NULL,
+  `productlink` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `companies_name_unique` (`name`) USING BTREE,
   KEY `wc_companies_user_id` (`user_id`),
@@ -103,13 +108,13 @@ CREATE TABLE `wc_companies` (
 -- ----------------------------
 -- Records of wc_companies
 -- ----------------------------
-INSERT INTO `wc_companies` VALUES ('39', '40', 'strong', '强壮十分', 'uploads/company/strong/img1496627224.jpg', '软件园二期观日路', 'http://www.12t.cn', 'admin@strong.com', '0592-22223333', '十分强壮的公司', '1', null, '1', '2017-05-05 15:14:30', '2017-06-05 09:48:40', '2017-06-05 09:48:40', null, '118.189635', '24.491177', '100');
-INSERT INTO `wc_companies` VALUES ('40', '41', 'ceshi', '厦门易尔通网络科技有限公司', 'uploads/company/ceshi/img1495796223.png', '厦门市思明区软件园二期观日路36号201单元', 'http://www.12t.cn', 'tousu@xm12t.com', '0592-3503777', '2005年，易尔通被百度授权建立了厦门地区“百度厦门营销服务中心”，该服务中心为厦门地区的百度客户提供专业的服务。2007年11月，百度正式授权易尔通为福建漳州、龙岩地区核心代理。\r\n目前我们的客户服务中心为厦门、泉州、漳州、龙岩及周边地区的百度客户在“咨询服务”、“开户服务”、“关键字管理 ”到“效果跟踪报告”方面提供服务。让客户充分体验产品加上专业的服务才能在网络推广中获得效益。', '1', null, '1', '2017-05-05 16:33:53', '2017-05-27 17:42:20', '2017-05-27 17:42:20', null, '118.191713', '24.490425', '100');
-INSERT INTO `wc_companies` VALUES ('41', null, 'ABC', 'ABC', null, null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 08:58:59', '2017-05-09 10:09:13', '2017-05-09 08:58:59', null, '118.189635', '24.491177', '100');
-INSERT INTO `wc_companies` VALUES ('42', '44', 'cpforest001', '公司森林001', 'uploads/company/cpforest001/img1494291962.png', null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 09:06:02', '2017-05-09 09:08:49', '2017-05-09 09:06:02', null, '118.189635', '24.491177', '100');
-INSERT INTO `wc_companies` VALUES ('43', null, 'COMPANY1', 'COMPANY', null, null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 09:40:06', '2017-05-09 09:49:36', '2017-05-09 09:40:05', null, '118.189635', '24.491177', '100');
-INSERT INTO `wc_companies` VALUES ('44', '69', 'gongsiceshi', '公司测试', 'uploads/company/gongsiceshi/img1496298504.jpg', null, 'http://www.12t.cn', null, null, null, '0', null, null, '2017-05-25 09:45:49', '2017-06-01 14:28:24', '2017-05-25 09:45:57', null, '118.189635', '24.491177', '100');
-INSERT INTO `wc_companies` VALUES ('45', '61', 'test', '测试公司', 'uploads/company/test/img1495864577.png', '厦门市思明区软件园二期观日路36号201单元 ', 'http://www.12t.cn', 'xxxxxxxx1@qq.com', '3500001', '测试公司简介--测试公司简介--测试公司简介--测试公司简介--测试公司简介--测试公司简介', '0', null, null, '2017-05-27 13:56:17', '2017-05-27 14:07:01', '2017-05-27 13:56:54', null, '118.191054', '24.49056', '100');
+INSERT INTO `wc_companies` VALUES ('39', '40', 'strong', '强壮十分', 'uploads/company/strong/img1496627224.jpg', '软件园二期观日路', 'http://www.12t.cn', 'admin@strong.com', '0592-22223333', '十分强壮的公司', '1', null, '1', '2017-05-05 15:14:30', '2017-06-05 09:48:40', '2017-06-05 09:48:40', null, '118.189635', '24.491177', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('40', '41', 'ceshi', '厦门易尔通网络科技有限公司', 'uploads/company/ceshi/img1495796223.png', '厦门市思明区软件园二期观日路36号201单元', 'http://www.12t.cn', 'tousu@xm12t.com', '0592-3503777', '2005年，易尔通被百度授权建立了厦门地区“百度厦门营销服务中心”，该服务中心为厦门地区的百度客户提供专业的服务。2007年11月，百度正式授权易尔通为福建漳州、龙岩地区核心代理。\r\n目前我们的客户服务中心为厦门、泉州、漳州、龙岩及周边地区的百度客户在“咨询服务”、“开户服务”、“关键字管理 ”到“效果跟踪报告”方面提供服务。让客户充分体验产品加上专业的服务才能在网络推广中获得效益。', '1', null, '1', '2017-05-05 16:33:53', '2017-05-27 17:42:20', '2017-05-27 17:42:20', null, '118.191713', '24.490425', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('41', null, 'ABC', 'ABC', null, null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 08:58:59', '2017-05-09 10:09:13', '2017-05-09 08:58:59', null, '118.189635', '24.491177', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('42', '44', 'cpforest001', '公司森林001', 'uploads/company/cpforest001/img1494291962.png', null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 09:06:02', '2017-05-09 09:08:49', '2017-05-09 09:06:02', null, '118.189635', '24.491177', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('43', null, 'COMPANY1', 'COMPANY', null, null, 'http://www.12t.cn', null, null, null, '1', null, '1', '2017-05-09 09:40:06', '2017-05-09 09:49:36', '2017-05-09 09:40:05', null, '118.189635', '24.491177', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('44', '69', 'gongsiceshi', '公司测试', 'uploads/company/gongsiceshi/img1496298504.jpg', null, 'http://www.12t.cn', null, null, null, '0', null, null, '2017-05-25 09:45:49', '2017-06-01 14:28:24', '2017-05-25 09:45:57', null, '118.189635', '24.491177', '100', null, null, null, null);
+INSERT INTO `wc_companies` VALUES ('45', '61', 'test', '测试公司', 'uploads/company/test/img1495864577.png', '厦门市思明区软件园二期观日路36号201单元 ', 'http://www.12t.cn', 'xxxxxxxx1@qq.com', '3500001', '测试公司简介--测试公司简介--测试公司简介--测试公司简介--测试公司简介--测试公司简介', '0', null, null, '2017-05-27 13:56:17', '2017-05-27 14:07:01', '2017-05-27 13:56:54', null, '118.191054', '24.49056', '100', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for wc_departments
@@ -120,6 +125,10 @@ CREATE TABLE `wc_departments` (
   `company_id` int(10) unsigned DEFAULT NULL COMMENT '所属公司id',
   `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属上级部门',
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '部门名字',
+  `employee_id` int(10) unsigned DEFAULT NULL COMMENT '部门负责人',
+  `is_open` tinyint(4) unsigned DEFAULT NULL COMMENT '是否全公司查看',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `wc_departments_company_id` (`company_id`),
   CONSTRAINT `wc_departments_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -212,14 +221,64 @@ CREATE TABLE `wc_groups` (
   PRIMARY KEY (`id`),
   KEY `uesr_id` (`user_id`),
   CONSTRAINT `wc_groups_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `wc_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='名片夹分组 - 个人';
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='名片夹分组 - 个人';
 
 -- ----------------------------
 -- Records of wc_groups
 -- ----------------------------
 INSERT INTO `wc_groups` VALUES ('1', '41', '测试群', '0');
-INSERT INTO `wc_groups` VALUES ('2', '40', '家人', '-1');
-INSERT INTO `wc_groups` VALUES ('3', '40', '同事', '1');
+INSERT INTO `wc_groups` VALUES ('17', '42', '123', '0');
+INSERT INTO `wc_groups` VALUES ('36', '40', '同事', '0');
+
+-- ----------------------------
+-- Table structure for wc_icons
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_icons`;
+CREATE TABLE `wc_icons` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'icon id',
+  `icon_name` varchar(255) DEFAULT NULL COMMENT 'icon名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wc_icons
+-- ----------------------------
+INSERT INTO `wc_icons` VALUES ('1', '&#xe645');
+INSERT INTO `wc_icons` VALUES ('2', '&#xe63a');
+INSERT INTO `wc_icons` VALUES ('3', '&#xe623');
+INSERT INTO `wc_icons` VALUES ('4', '&#xe838');
+INSERT INTO `wc_icons` VALUES ('5', '&#xe644');
+INSERT INTO `wc_icons` VALUES ('6', '&#xe608');
+INSERT INTO `wc_icons` VALUES ('7', '&#xe66c');
+INSERT INTO `wc_icons` VALUES ('8', '&#xe657');
+INSERT INTO `wc_icons` VALUES ('9', '&#xe664');
+INSERT INTO `wc_icons` VALUES ('10', '&#xe6cb');
+INSERT INTO `wc_icons` VALUES ('11', '&#xe714');
+INSERT INTO `wc_icons` VALUES ('12', '&#xe654');
+INSERT INTO `wc_icons` VALUES ('13', '&#xe602');
+INSERT INTO `wc_icons` VALUES ('14', '&#xe661');
+
+-- ----------------------------
+-- Table structure for wc_links
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_links`;
+CREATE TABLE `wc_links` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '微链接id',
+  `company_id` int(10) unsigned DEFAULT NULL COMMENT '所属公司id',
+  `link_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '微链接名称',
+  `link_url` varchar(255) DEFAULT NULL COMMENT '微链接网址',
+  `link_img` varchar(255) DEFAULT NULL COMMENT '微链接图标',
+  `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `delete_at` timestamp NULL DEFAULT NULL COMMENT '软删除',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  CONSTRAINT `wc_links_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='产品表';
+
+-- ----------------------------
+-- Records of wc_links
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for wc_managers
@@ -247,7 +306,7 @@ CREATE TABLE `wc_managers` (
 -- ----------------------------
 -- Records of wc_managers
 -- ----------------------------
-INSERT INTO `wc_managers` VALUES ('1', 'admin', null, null, '$2y$10$mo/nyRnfB8nMia3Tix5kkeSoEVAsdC9.y/2xYfZjnUo9/3ZRaGlMq', '5h9pSZlKZotzsYtIbP3EUmXODu4GRMDCLTMwmM6FdLNge4xZRQOsUbLTXD4R', null, '1', '1', '2017-04-06 09:41:44', '2017-06-09 09:06:36', null);
+INSERT INTO `wc_managers` VALUES ('1', 'admin', null, null, '$2y$10$mo/nyRnfB8nMia3Tix5kkeSoEVAsdC9.y/2xYfZjnUo9/3ZRaGlMq', 'rOCVHEvZ62itz4AvYjOuNnENkMcZBXlLghcIIc7MVj9rIz9vQGqXqKviBdLT', null, '1', '1', '2017-04-06 09:41:44', '2017-06-21 17:39:16', null);
 INSERT INTO `wc_managers` VALUES ('2', 'cchenjei', null, null, '$2y$10$KFyJWwsMnb5017PDqutg9.6wGJ/Kj5UYktvwyCw8SwcXNyc/SOrtO', null, null, '0', '1', '2017-04-15 12:09:16', '2017-04-26 14:52:42', null);
 INSERT INTO `wc_managers` VALUES ('3', 'linyaping', null, null, '$2y$10$2CUHsAJZRia7yxoFDx0LIusw9nJvrO1UIGVux25oL9irSfXs2OBYa', 'bFNu6mqbIwSlwo59LUKWpIg1fF77lNDPyVrFVHb5ufthNT0aoR3kFlO2zTvs', '林雅呀', '1', '1', '2017-04-26 14:25:01', '2017-04-27 18:18:31', null);
 INSERT INTO `wc_managers` VALUES ('4', 'user', null, null, '$2y$10$vNEiuYi4LOiqR1U3S9xLYeIz6GRQJ/d3c0dcs2WQLsy6aRvtGXMr2', 'QYFMZQkZa06z6RLabsV0BzvKIFp36Xjr4tXgAlsEJWW6sBIXBZGKFlbRPd6x', null, '1', '1', '2017-04-27 18:17:54', '2017-04-27 18:24:37', null);
@@ -302,7 +361,7 @@ CREATE TABLE `wc_positions` (
   PRIMARY KEY (`id`),
   KEY `wc_positions_company_id` (`company_id`),
   CONSTRAINT `wc_positions_company_id` FOREIGN KEY (`company_id`) REFERENCES `wc_companies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='职位表';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='职位表';
 
 -- ----------------------------
 -- Records of wc_positions
@@ -317,7 +376,6 @@ INSERT INTO `wc_positions` VALUES ('11', '40', '测试专员', '0', '5');
 INSERT INTO `wc_positions` VALUES ('12', '39', 'CEO', '0', '1');
 INSERT INTO `wc_positions` VALUES ('13', '44', '你好', '0', '2');
 INSERT INTO `wc_positions` VALUES ('14', '44', '你也好', '1', '2');
-INSERT INTO `wc_positions` VALUES ('15', '39', 'CTO', '0', '1');
 
 -- ----------------------------
 -- Table structure for wc_products
@@ -436,6 +494,22 @@ INSERT INTO `wc_template_useable` VALUES ('13', '39', 'App\\Models\\Company');
 INSERT INTO `wc_template_useable` VALUES ('12', '40', 'App\\Models\\User');
 
 -- ----------------------------
+-- Table structure for wc_token
+-- ----------------------------
+DROP TABLE IF EXISTS `wc_token`;
+CREATE TABLE `wc_token` (
+  `access_token` varchar(255) DEFAULT NULL COMMENT 'access_token',
+  `expires_in` varchar(255) DEFAULT NULL COMMENT 'token有效时间',
+  `update_time` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of wc_token
+-- ----------------------------
+INSERT INTO `wc_token` VALUES ('vlgYnaRwSQ3QPKxP1aAuskNeBwAXX5eiQH55OPENV8T0KcOMaDyA0lSKfb-jD1N-A_xhxN6MCQ-LltWtz2VQUT7KAFoIwK61zbrVqUqJq1n6nO5uzi3dQMgdT3ERIuadOHHhAAAIBB', '300', '1498524255');
+INSERT INTO `wc_token` VALUES ('vlgYnaRwSQ3QPKxP1aAuskNeBwAXX5eiQH55OPENV8T0KcOMaDyA0lSKfb-jD1N-A_xhxN6MCQ-LltWtz2VQUT7KAFoIwK61zbrVqUqJq1n6nO5uzi3dQMgdT3ERIuadOHHhAAAIBB', '300', '1498524255');
+
+-- ----------------------------
 -- Table structure for wc_users
 -- ----------------------------
 DROP TABLE IF EXISTS `wc_users`;
@@ -449,7 +523,7 @@ CREATE TABLE `wc_users` (
   `remember_token` varchar(100) DEFAULT NULL COMMENT '记住我',
   `nickname` varchar(30) DEFAULT NULL COMMENT '昵称中文姓名',
   `avatar` text COMMENT '头像',
-  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `address` text COMMENT '地址',
   `homepage` varchar(255) DEFAULT NULL COMMENT '个人网址',
   `sex` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '性别，0-未知，1-男，2-女',
   `description` varchar(255) DEFAULT NULL COMMENT '个性签名',
@@ -467,9 +541,9 @@ CREATE TABLE `wc_users` (
 -- ----------------------------
 -- Records of wc_users
 -- ----------------------------
-INSERT INTO `wc_users` VALUES ('40', 'Hsieh', '1195015834@qq.com', '18450104513', null, '$2y$10$EpikY0DGXqrc1WYSSgZE1.Qja4l.L7W7C6B5hmZGQxYf2oYLmmBL2', 'k7345CwrhLzMFsANAvO2X9s7A0R1KQxwr3s88S4Kxj8Z2ZzsGI2G627vI5tI', '谢大琦', 'uploads/user/Hsieh/img1496388406.gif', null, null, '1', '2017 NBA 总冠军 克利夫兰 骑士', '1', 'oruQl1R-dyRj_O8yvnQhlj2SHT60', '2017-05-05 15:32:50', '2017-06-02 15:26:46', null);
+INSERT INTO `wc_users` VALUES ('40', 'Hsieh', '1195015834@qq.com', '18450104513', null, '$2y$10$EpikY0DGXqrc1WYSSgZE1.Qja4l.L7W7C6B5hmZGQxYf2oYLmmBL2', 'KgrP79oH24PFlXyyxGT3YE5wsrrbpJErHIEdqq9nG3WmJ3eHaZXwCH62vFpS', '谢大琦', 'uploads/user/Hsieh/img1496388406.gif', null, null, '1', '2017 NBA 总冠军 克利夫兰 骑士', '1', 'oruQl1R-dyRj_O8yvnQhlj2SHT60', '2017-05-05 15:32:50', '2017-06-23 09:54:39', null);
 INSERT INTO `wc_users` VALUES ('41', 'gh', '345@qq.com', '13881111245', null, '$2y$10$O9lVJi2sqmGYFwtJEC/k4OSw.Zq.iwD7WYZv6i.3YZl1UOXpu.P7e', 'egHHsr3zPOH3XDUcdAxcW1L7g9nSWQoGui0SKrFxdGpU8f5Fo0B3oW5GKAAR', '高涵', 'http://wx.qlogo.cn/mmopen/p1FVpqO6q5ZbBiaJjwNDRyUv1uuTJaC8Luz4YqvcR3fa5FdELDiaLsBqSyg4TYicDtlIVmSpqufgsbYpoN5wlmatydXJlrSH5l2/0', 'asdfghjk', null, '2', 'gg', '1', 'oruQl1Y6Z36gxIfNw0ArkLi3ChHI', '2017-05-05 16:31:48', '2017-05-31 16:51:31', null);
-INSERT INTO `wc_users` VALUES ('42', 'test', 'test@qq.com', null, null, '$2y$10$qtqFzvlgolbgHaGP9WMlT.vtlrE5Sv2o/KIWDNcHAt4zPKWqoNfhC', 'CqCiIjoyJ3VkQLNTgCy3tagGNaJK7uXqVq5A3AYF8BJqWMVYcrOapR90ig2z', '测试专用号', 'uploads/user/test/img1494214725.png', null, null, '0', null, '1', null, '2017-05-08 11:38:45', '2017-06-02 09:11:55', null);
+INSERT INTO `wc_users` VALUES ('42', 'test', 'test@qq.com', '13812345678', null, '$2y$10$qtqFzvlgolbgHaGP9WMlT.vtlrE5Sv2o/KIWDNcHAt4zPKWqoNfhC', 'CqCiIjoyJ3VkQLNTgCy3tagGNaJK7uXqVq5A3AYF8BJqWMVYcrOapR90ig2z', '测试专用号', 'uploads/user/test/img1494214725.png', null, null, '0', null, '1', null, '2017-05-08 11:38:45', '2017-06-23 14:50:13', null);
 INSERT INTO `wc_users` VALUES ('44', 'userforest001', '164252855@qq.com', '18259175011', null, '$2y$10$EE6LZ.oxqU5QpWOkZtn7ieqiNq90fhDIUuK7R5piDdd4ldxzmfMBO', 'LumxHygeodOvO0vFeGabfRD9pjhohgecQgyqGmkDO1vKGZzEiZpyMaw88YgN', '我的用户名森林001', 'uploads/user/userforest001/img1494291905.jpg', null, null, '2', '森林001', '1', null, '2017-05-09 09:05:05', '2017-05-09 16:39:55', null);
 INSERT INTO `wc_users` VALUES ('46', 'adduser', '111111@qq.com', '13232323240', null, '$2y$10$umnPHmZvmQIallDcFFLY3eVcq83XC.c7YKkuEiRDp.c3dZD7Cfww.', '7cakrASYfgcsurUD8B4dwHizlBAGEF4xlxwWnfjE4bL1NXDpJLiIuiv4Vfwx', '添加用户', 'uploads/user/adduser/img1494320404.jpg', null, null, '0', '001', '1', null, '2017-05-09 16:39:35', '2017-05-09 17:22:30', null);
 INSERT INTO `wc_users` VALUES ('49', 'oruQl1TX8KYlfxEHSK806Wympyk4', null, null, null, '', null, 'X、H', 'http://wx.qlogo.cn/mmopen/ajNVdqHZLLBLkTDAYtiavWrTW2KfXhFjuooevpVYbbPkQyicFNVmwrNZGakd9mseXIAORZApfQuWnk8f0fRrbmNg/0', null, null, '1', null, '1', 'oruQl1TX8KYlfxEHSK806Wympyk4', '2017-05-12 19:08:01', '2017-05-12 19:08:01', null);
