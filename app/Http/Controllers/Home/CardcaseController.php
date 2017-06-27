@@ -37,26 +37,26 @@ class CardcaseController extends HomeController
         // TODO:后期优化分页
         if ($this->is_mobile) {
 
-            $data = $this->index4Mobile();
-            return view('mobile.cardcase.index')->with([
-                'data' => $data,
-            ]);
-
-//            $word = Input::query('word') ? Input::query('word') : '';
-//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-//                if (isset($word) && $word != '') {
-//                    $query->where('nickname', 'like', '%' . $word . '%');
-//                }
-//            }])->where('user_id', Auth::id())->get();
-//            foreach ($cardcases as $key => $cardcase) {
-//                if (!$cardcase->follower) {
-//                    unset($cardcases[$key]);
-//                }
-//            }
-//            return view('mobile.cardcase.indexbak')->with([
-//                'cardcases' => $cardcases,
-//                'word' => $word,
+//            $data = $this->index4Mobile();
+//            return view('mobile.cardcase.index')->with([
+//                'data' => $data,
 //            ]);
+
+            $word = Input::query('word') ? Input::query('word') : '';
+            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+                if (isset($word) && $word != '') {
+                    $query->where('nickname', 'like', '%' . $word . '%');
+                }
+            }])->where('user_id', Auth::id())->get();
+            foreach ($cardcases as $key => $cardcase) {
+                if (!$cardcase->follower) {
+                    unset($cardcases[$key]);
+                }
+            }
+            return view('mobile.cardcase.indexbak')->with([
+                'cardcases' => $cardcases,
+                'word' => $word,
+            ]);
 
 
         } else {

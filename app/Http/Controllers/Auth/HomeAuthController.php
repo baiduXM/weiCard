@@ -277,4 +277,9 @@ class HomeAuthController extends HomeController
     {
         $this->bind_weixinweb($data);
     }
+
+    protected function isSubscribe(){
+        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+    }
+
 }
