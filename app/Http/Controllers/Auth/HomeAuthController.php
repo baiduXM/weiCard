@@ -123,8 +123,7 @@ class HomeAuthController extends HomeController
      *
      * @return mixed
      */
-    protected
-    function validator(array $data)
+    protected    function validator(array $data)
     {
 
         return Validator::make($data, [
@@ -176,6 +175,10 @@ class HomeAuthController extends HomeController
     function handleProviderCallback(Request $request, $driver)
     {
         $oauthUser = Socialite::with($driver)->user();
+        if ($oauthUser->user['subscribe'] == 0) { // 未关注
+            return view('mobile.common.qrcode'); // 跳转公众号二维码
+            // return redirect('/follow/public'); // 跳转公众号二维码
+        }
         if (Auth::check()) { // 已登录，绑定账号
             $function_name = 'bind_' . $driver;
             $this->$function_name($oauthUser->user);
@@ -198,17 +201,18 @@ class HomeAuthController extends HomeController
     protected
     function oauth_weixinweb($data)
     {
-        // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
-
+        // // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
+        // if ($data['subscribe'] == 0) { // 未关注
+        //     return view('mobile.common.qrcode'); // 跳转公众号二维码
+        // }
+        
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-           if ($data['subscribe'] == 0) { // 未关注
-               return view('mobile.common.qrcode'); // 跳转公众号二维码
-           }
+          
 
             $array['name'] = $data['unionid'];
             $array['oauth_weixin'] = $data['unionid'];
