@@ -206,9 +206,9 @@ class HomeAuthController extends HomeController
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-//            if ($data['subscribe'] == 0) { // 未关注
-//                return redirect('/follow/public'); // 跳转公众号二维码
-//            }
+           if ($data['subscribe'] == 0) { // 未关注
+               return view('mobile.common.qrcode'); // 跳转公众号二维码
+           }
 
             $array['name'] = $data['unionid'];
             $array['oauth_weixin'] = $data['unionid'];
