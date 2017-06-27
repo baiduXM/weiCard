@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\Template;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -86,11 +87,18 @@ class UserController extends HomeController
     public function edit()
     {
         $user = Auth::user();
+        $query = Template::query();
+        $query->where('type', 1);
         $template = $user->templates;
+        if (!count($current)) {
+            $template = $query->first();
+        } else {
+            $template = $template[0];
+        }
         if ($this->is_mobile) {
             return view('mobile.user.edit')->with([
                 'user' => $user,
-                'template' => $template[0],
+                'template' => $template,
             ]);
         }
         return view('web.user.edit')->with([
