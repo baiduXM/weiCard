@@ -44,14 +44,15 @@ class HomeAuthController extends HomeController
         if ($this->isMobile()) { // mobile端，微信授权
             return $this->redirectToProvider('weixin');
         } else { // web端，微信扫码
-            $ip = $request->ip();
-            $ipArr = array(
-                '183.250.161.246', // 公司公网IP
-                '127.0.0.1', // 本地测试ip
-            );
-            if (!in_array($ip, $ipArr)) {
-                return $this->redirectToProvider('weixinweb');
-            }
+            // $ip = $request->ip();
+            // $ipArr = array(
+            //     '183.250.161.246', // 公司公网IP
+            //     '127.0.0.1', // 本地测试ip
+            // );
+            // if (!in_array($ip, $ipArr)) {
+            //     return $this->redirectToProvider('weixinweb');
+            // }
+            return $this->redirectToProvider('weixinweb');
         }
 
 
