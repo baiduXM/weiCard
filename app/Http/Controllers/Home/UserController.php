@@ -90,7 +90,7 @@ class UserController extends HomeController
         $query = Template::query();
         $query->where('type', 1);
         $template = $user->templates;
-        if (!count($current)) {
+        if (!count($template)) {
             $template = $query->first();
         } else {
             $template = $template[0];
