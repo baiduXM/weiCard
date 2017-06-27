@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::get('product/{id}', ['as' => 'company.product.show', 'uses' => 'Home\ProductController@show']);
         Route::post('product/{id}', ['as' => 'company.product.update', 'uses' => 'Home\ProductController@update']);
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
+        Route::any('productlink', ['as' => 'company.product.productlink', 'uses' => 'Home\ProductController@productlink']);
 
         /* 我的公司->微链接 */
         Route::get('link', ['as' => 'company.link.index', 'uses' => 'Home\LinkController@index']);

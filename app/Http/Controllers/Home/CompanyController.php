@@ -100,6 +100,8 @@ class CompanyController extends HomeController
             'Company.coordinate_lng' => 'max:255',
             'Company.coordinate_lat' => 'max:255',
             'Company.homepage' => 'url:true',
+            'Company.profilelink' => 'url:true',
+            'Company.is_profilelink' => '',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -110,11 +112,13 @@ class CompanyController extends HomeController
             'Company.description' => '公司简介',
             'Company.coordinate_lng' => '坐标（经度）',
             'Company.homepage' => '公司网址',
+            'Company.profilelink' => '公司简介外链',
+            'Company.is_profilelink' => '公司简介外链开关',
 
         ]);
         /* 获取字段类型 */
         $data = $request->input('Company');
-
+        //dd($data);
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
             $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);

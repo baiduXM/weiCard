@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Models\Cardcase;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Template;
@@ -42,13 +43,13 @@ class HomeController extends Controller
         $AppID = env('WEIXIN_KEY');
         $AppSecret = env('WEIXIN_SECRET');
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
-        $token=DB::table('token')->get();
+        $token = DB::table('token')->get();
         //查询数据库是否存在token数据
-        if($token)//如果存在token数据
+        if ($token)//如果存在token数据
         {
-            $row=DB::table('token')->first();
-            $righttime=time();
-            if($row->expires_in+$row->update_time<$righttime)//如果token数据过期
+            $row = DB::table('token')->first();
+            $righttime = time();
+            if ($row->expires_in + $row->update_time < $righttime)//如果token数据过期
             {
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -61,17 +62,17 @@ class HomeController extends Controller
                 $access_token = $jsoninfo["access_token"];
                 //更新的token
                 $expires_in = '300';
-                $time=time();
+                $time = time();
                 //将更新的access_token存入数据库
                 DB::table('token')->update([
-                    'access_token'=>$access_token,
-                    'expires_in'=>$expires_in,
-                    'update_time'=>$time,
+                    'access_token' => $access_token,
+                    'expires_in' => $expires_in,
+                    'update_time' => $time,
                 ]);
-            }else{
+            } else {
                 $access_token = $row->access_token; //返回查询的token
             }
-        }else{
+        } else {
             //如不存在token数据
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -83,12 +84,12 @@ class HomeController extends Controller
             $jsoninfo = json_decode($output, true);
             $access_token = $jsoninfo["access_token"];//返回新建的token
             $expires_in = '300';
-            $time=time();
+            $time = time();
             //将新建的access_token存入数据库
             DB::table('token')->insert([
-                'access_token'=>$access_token,
-                'expires_in'=>$expires_in,
-                'update_time'=>$time,
+                'access_token' => $access_token,
+                'expires_in' => $expires_in,
+                'update_time' => $time,
             ]);
         }
         return $access_token;//access_token有效期未7200s
@@ -143,9 +144,22 @@ class HomeController extends Controller
     {
         /* 获取参数 */
         $param = explode('-', $params);
+//        $type = $param[0] == 'e' ? 'App\Models\Employee' : 'App\Models\User';
+//        $cardcases = Cardcase::where('user_id', Auth::id())
+//            ->where('follower_type', $type)
+//            ->where('follower_id', $param[1])
+//            ->get();
+//        dd(count($cardcases));
         switch ($param[0]) {
             case 'e':
                 $data['type'] = 'App\Models\Employee';
+                $cardcases = Cardcase::where('user_id', Auth::id())
+                    ->where('follower_type', $data['type'])
+                    ->where('follower_id', $param[1])
+                    ->get();
+                $count_cardcase=count($cardcases);
+                //dd($count_cardcase);
+
                 $person = Employee::find($param[1]);
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有员工模板，使用公司模板
@@ -181,6 +195,12 @@ class HomeController extends Controller
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
+                $cardcases = Cardcase::where('user_id', Auth::id())
+                    ->where('follower_type', $data['type'])
+                    ->where('follower_id', $param[1])
+                    ->get();
+                $count_cardcase=count($cardcases);
+                //dd($count_cardcase);
                 $person = User::find($param[1]);
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有个人模板，使用默认模板
@@ -203,7 +223,7 @@ class HomeController extends Controller
                 break;
         }
         /* 获取分享js-api参数 */
-       $sign_package = $this->getSignPackage();
+        $sign_package = $this->getSignPackage();
 //        $sign_package = array(
 //            "AppID" => "wx80cfbb9a1b347f47",
 //            "timestamp" => time(),
@@ -220,6 +240,7 @@ class HomeController extends Controller
             return redirect()->route('errorview')->with('com', '$com');
         }
         $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+
         //dd($person->company->links);
         return view($template->name . '.index')->with([
             'template' => $template, // 模板数据
@@ -227,6 +248,7 @@ class HomeController extends Controller
             'type' => $param[0], // 类型
             'qrcodeimg' => $qrcodeimg, // 二维码图片
             'sign_package' => $sign_package, // 微信签名包
+            'count_cardcase'=> $count_cardcase, // 是否关注
         ]);
     }
 

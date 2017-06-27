@@ -584,21 +584,21 @@ input[type=file] {
 .modal11{width:322px;height:626px;margin-top:-250px;margin-left:-260px;}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .foot-txt{font-size:14px;color:#666;text-align: center;padding:10px 5px;line-height: 22px;}
 
 
+/*2017-6-26 公司产品外链*/
+.myCard-content .myCard-off form{font-size: 16px; text-align: left !important;}
+.myCard-content .myCard-off span{ padding-right: 20px;}
+.myCard-content .myCard-off input.cardInput{ border:1px solid #ccc; height:30px;margin:0 20px; line-height: 30px;}
+.myCard-content .myCard-off input.cardSave{background: #4dbef1;padding: 0 20px;line-height: 30px; height: 30px; color: #ffffff; border-radius:4px;}
+
+/*2017-6-26 公司简介外链*/
+.main-cont .companyLink{ line-height: 30px; vertical-align: top;}
+.main-cont .companyLink .com{ width: 276px; margin-bottom: 0;display: inline-block; text-align: left}
+.main-cont .companyLink input.comLinkInput{  width:auto; height:auto; line-height: 30px;}
+.main-cont .companyLink input.cardInput{ width: 213px; }
+.main-cont .companyLink .comTap{ text-align: left; font-size: 16px;}
+.main-cont .companyLink .comTap span{ color: red;}
 
 

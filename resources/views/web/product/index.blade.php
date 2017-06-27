@@ -10,9 +10,30 @@
                 <a href="">公司产品</a>
             </li>
         </ul>
+
         <div class="myCard-content rt-main">
+            <div class="myCard-off">
+                <form action="{{ url('company/productlink') }}">
+                    {{ csrf_field() }}
+                    <span>是否开启外链</span>
+                    @if ($company->is_productlink=='1')
+                        <input  name="Company[is_productlink]" type="radio" checked="checked"   value="1">开
+                    @else
+                        <input  name="Company[is_productlink]" type="radio"    value="1">开
+                    @endif
+                    @if ($company->is_productlink=='1')
+                        <input  name="Company[is_productlink]" type="radio"    value="0">关
+                    @else
+                        <input  name="Company[is_productlink]" type="radio"  checked="checked"  value="0">关
+                    @endif
+                    <input class="cardInput" type="text" name="Company[productlink]"
+                           value="{{ old('Company.productlink') ? old('Company.productlink') : $company->productlink }}">
+                    <input class="cardSave" type="submit" value="保存">
+                </form>
+            </div>
             @if(Auth::user()->company)
                 <ul class="b-button">
+
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
