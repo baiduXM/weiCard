@@ -63,7 +63,7 @@
                 {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
                 {{--{{ csrf_field() }}--}}
                 <div class="heading">成员</div>
-                <div class="list divider row ">
+                <div class="list divider row in-group">
                     <div class="checkbox cell-6 with-avatar text-ellipsis" style="overflow: hidden">
                         <input type="checkbox" name="buyMethod">
                         <label for="buyMethod">{{ '言身寸言身寸言身寸12' }}
@@ -82,24 +82,18 @@
                     </div>
                 </div>
                 <div class="heading">未分组</div>
-                <div class="list divider row justified">
-                    <div class="checkbox">
+                <div class="list divider row">
+                    <div class="checkbox cell-6">
                         <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">1</label>
-                        <input type="checkbox" name="buyMethod1">
-                        <label for="buyMethod1">2</label>
+                        <label for="buyMethod">{{ '王大可' }}
+                            <span class="primary has-padding-h rounded">企业</span>
+                        </label>
                     </div>
-                    <div class="checkbox flex-auto">
+                    <div class="checkbox cell-6">
                         <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">3</label>
-                    </div>
-                    <div class="checkbox flex-auto">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">4</label>
-                    </div>
-                    <div class="checkbox flex-auto">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">5</label>
+                        <label for="buyMethod">{{ '王大可' }}
+                            <span class="primary has-padding-h rounded">企业</span>
+                        </label>
                     </div>
                 </div>
                 {{--</form>--}}
@@ -153,17 +147,16 @@
 
             /* 显示 */
             $('.opshow-show').click(function () {
-                var _this     = $(this);
-                var _modal    = _this.parents('.modal');
-//                var _form     = _this.parents('form');
-                var _url      = _this.data('url');
-//                var _formData = _form.serializeArray();
-                console.log(_url)
-
+                var _this  = $(this);
+                var _modal = $(_this.data('target'));
+//                var _modal    = _this.parents('.modal');
+                var _form  = _modal.children('form');
+                var _url   = _this.data('url');
+                console.log(_modal);
+                console.log(_form);
                 $.ajax({
                     type: 'get',
                     url: _url,
-//                    data: _formData,
                     dataType: 'json',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                     success: function (data) {
@@ -190,6 +183,12 @@
 
 
         });
+
+
+        /* 显示成员 */
+        function showMember(data, select == true) {
+
+        }
 
 
     </script>

@@ -50,10 +50,13 @@
                                 <div class="item item-footer justified text-center collapse hidden"
                                      data-subid="{{ $subitem['id'] }}"
                                      id="sub{{ $subitem['id'] }}">
-                                    <a data-operation="call"><i class="icon icon-phone has-padding-sm"></i>拨号</a>
+                                    <a data-operation="call" href="tel:{{ $subitem['follower']['mobile'] }}"><i
+                                                class="icon icon-phone has-padding-sm"></i>拨号</a>
                                     <a data-operation="share"><i class="icon icon-share-alt has-padding-sm"></i>分享</a>
                                     <a data-operation="move"><i class="icon icon-exchange has-padding-sm"></i>分组</a>
-                                    <a data-operation="unfollow" class="text-danger "><i
+                                    <a data-operation="unfollow" class="text-danger "
+                                       href="{{ url('cardcase/unfollow/'.$subitem['follower_type']=='App\Models\User'?'u':'e'.'-'.$subitem['follower_id']) }}"
+                                       onclick="return confirm('确定删除？')"><i
                                                 class="icon icon-trash has-padding-sm"></i>删除</a>
                                 </div>
                             @endforeach

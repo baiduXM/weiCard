@@ -37,10 +37,10 @@ class CardcaseController extends HomeController
         // TODO:后期优化分页
         if ($this->is_mobile) {
 
-//            $data = $this->index4Mobile();
-//            return view('mobile.cardcase.index')->with([
-//                'data' => $data,
-//            ]);
+            $data = $this->index4Mobile();
+            return view('mobile.cardcase.index')->with([
+                'data' => $data,
+            ]);
 
             $word = Input::query('word') ? Input::query('word') : '';
             $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
