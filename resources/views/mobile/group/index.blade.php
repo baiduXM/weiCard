@@ -30,15 +30,16 @@
                                data-display="modal" data-backdrop="true" data-target="#editGroupModal"
                                data-url="{{ url()->current().'/'. $item['id']}}">
                                 {{ $item['name'] }}
+                                <label class="info has-padding-h has-margin-sm">{{ $item['count'] }}</label>
                             </a>
-                            <a class="opshow-show btn {{ $item['id'] == 0 ? 'disabled' : '' }}"
-                               data-display="modal" data-backdrop="true" data-target="#editMemberModal"
-                               data-url="{{ url()->current().'/'. $item['id']}}">
-                                <i class="icon icon-group has-padding-sm"></i>
-                            </a>
-                            <a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}">
-                                <i class="icon icon-bars has-padding-sm"></i>
-                            </a>
+                            {{--<a class="opshow-show btn {{ $item['id'] == 0 ? 'disabled' : '' }}"--}}
+                            {{--data-display="modal" data-backdrop="true" data-target="#editMemberModal"--}}
+                            {{--data-url="{{ url()->current().'/'. $item['id']}}">--}}
+                            {{--<i class="icon icon-group has-padding-sm"></i>--}}
+                            {{--</a>--}}
+                            {{--<a class="btn {{ $item['id'] == 0 ? 'disabled' : '' }}">--}}
+                            {{--<i class="icon icon-bars has-padding-sm"></i>--}}
+                            {{--</a>--}}
                         </div>
                     </div>
                 @endforeach
@@ -56,53 +57,24 @@
 @section('modal')
     {{--添加群成员--}}
     <div id="editMemberModal" class="modal affix dock enter-from-center fade ">
-        <form action="" method="post" onsubmit="return false;">
+        <form action="" method="put" onsubmit="return false;">
             <div class="heading divider">
-                <div class="title">编辑组员 <label class="info has-padding-h">12</label></div>
+                <div class="title">分组成员</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
             </div>
             <div class="content has-padding">
-                {{--<form id="groupForm" action="{{ url()->current() }}" method="post">--}}
-                {{--{{ csrf_field() }}--}}
-                <div class="heading">成员</div>
-                <div class="list divider row in-group">
-                    <div class="checkbox cell-6 with-avatar text-ellipsis" style="overflow: hidden">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">{{ '言身寸言身寸言身寸12' }}
-                            <span class="warning has-padding-h rounded">个人</span>
-                        </label>
-                    </div>
-                    <div class="checkbox cell-6">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">{{ '王大可' }}
-                            <span class="primary has-padding-h rounded">企业</span>
-                        </label>
-                    </div>
-                    <div class="checkbox cell-6">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">羊习习</label>
-                    </div>
-                </div>
+                {{--<div class="heading">成员 <label >(12)</label></div>--}}
+                {{--<div class="list divider row in-group">--}}
+                {{--已分组成员--}}
+                {{--</div>--}}
                 <div class="heading">未分组</div>
-                <div class="list divider row">
-                    <div class="checkbox cell-6">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">{{ '王大可' }}
-                            <span class="primary has-padding-h rounded">企业</span>
-                        </label>
-                    </div>
-                    <div class="checkbox cell-6">
-                        <input type="checkbox" name="buyMethod">
-                        <label for="buyMethod">{{ '王大可' }}
-                            <span class="primary has-padding-h rounded">企业</span>
-                        </label>
-                    </div>
+                <div class="list divider row not-in-group">
+                    {{--未分组成员--}}
                 </div>
-                {{--</form>--}}
             </div>
             <div class="footer has-padding affix dock-bottom">
                 <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-                <input type="submit" class="btn primary pull-right" value="确认">
+                <input type="submit" class="op-submit btn primary pull-right" value="确认">
             </div>
         </form>
     </div>
@@ -147,50 +119,55 @@
                 $(_modal).find('.input').val($.trim(_this.text()));
             });
 
-            /* 显示 */
+            /* 显示组员 */
             $('.opshow-show').click(function () {
-                var _this  = $(this);
-                var _modal = $(_this.data('target'));
-//                var _modal    = _this.parents('.modal');
-                var _form  = _modal.children('form');
-                var _url   = _this.data('url');
-                console.log(_modal);
-                console.log(_form);
+                var _this       = $(this);
+                var _modal      = $(_this.data('target'));
+                var _form       = $(_modal).find('form');
+                var _url        = _this.data('url');
+                var _group_name = $.trim(_this.siblings('.title').text());
+                _modal.find('.title').text(_group_name); // 更新标题
                 $.ajax({
                     type: 'get',
                     url: _url,
                     dataType: 'json',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                     success: function (data) {
-                        console.log('success')
-                        console.log(data)
-                        /* 现实成功消息，刷新当前页面 */
-//                        $.Display.dismiss(_modal.data('display-name'));
-//                        $.messager.show("<i class='icon-check'>  " + data + "</i>", {
-//                            type: 'success', placement: 'center', autoHide: 800, closeButton: false
-//                        });
-//                        setTimeout(window.location.href = _url, 1); // 1s后刷新页面
+                        var in_str     = joint(data.in_group, true);
+                        var not_in_str = joint(data.not_in_group);
+                        _form.find('.in-group').html(in_str);
+                        _form.find('.not-in-group').html(not_in_str);
                     },
-                    error: function (data) {
-                        console.log('error')
-
-                        console.log(data)
-
-                        /* 显示错误 */
-//                        var errors = JSON.parse(data.response);
-//                        showError(_modal, errors);
-                    }
                 });
             });
-
-
         });
 
 
-        /* 显示成员 */
-//        function showMember(data, select = true) {
-//
-//        }
+        /* 拼接成员 */
+        function joint(data, checked) {
+            var str = '';
+            if (data.length > 0) {
+                $.each(data, function (k, v) {
+                    str += '<div class="checkbox cell-6">';
+                    str += '<input type="checkbox" id="cardcase' + v.id + '" name="ids[]" value="' + v.id + '"';
+                    if (checked === true) {
+                        str += ' checked>';
+                    } else {
+                        str += '>';
+                    }
+                    str += '<label for="cardcase' + v.id + '">' + v.follower.nickname;
+                    if (v.follower_type == 'App\\Models\\User') {
+                        str += '  <span class="warning has-padding-h rounded">个人</span></label>';
+                    } else {
+                        str += '  <span class="primary has-padding-h rounded">企业</span></label>';
+                    }
+                    str += '</div>';
+                });
+            } else {
+                str = '<div class="cell-12"><label for="buyMethod">该组暂无成员</label></div>';
+            }
+            return str;
+        }
 
 
     </script>

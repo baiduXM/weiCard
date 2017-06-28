@@ -53,8 +53,8 @@ class HomeController extends Controller
             {
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 $output = curl_exec($ch);
                 curl_close($ch);//执行发送
@@ -66,8 +66,8 @@ class HomeController extends Controller
                 //将更新的access_token存入数据库
                 DB::table('token')->update([
                     'access_token' => $access_token,
-                    'expires_in' => $expires_in,
-                    'update_time' => $time,
+                    'expires_in'   => $expires_in,
+                    'update_time'  => $time,
                 ]);
             } else {
                 $access_token = $row->access_token; //返回查询的token
@@ -76,8 +76,8 @@ class HomeController extends Controller
             //如不存在token数据
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             curl_close($ch);//执行发送
@@ -88,8 +88,8 @@ class HomeController extends Controller
             //将新建的access_token存入数据库
             DB::table('token')->insert([
                 'access_token' => $access_token,
-                'expires_in' => $expires_in,
-                'update_time' => $time,
+                'expires_in'   => $expires_in,
+                'update_time'  => $time,
             ]);
         }
         return $access_token;//access_token有效期未7200s
@@ -102,8 +102,8 @@ class HomeController extends Controller
         //使用crul模拟
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($ch);
         curl_close($ch);//执行发送
@@ -157,7 +157,7 @@ class HomeController extends Controller
                     ->where('follower_type', $data['type'])
                     ->where('follower_id', $param[1])
                     ->get();
-                $count_cardcase=count($cardcases);
+                $count_cardcase = count($cardcases);
                 //dd($count_cardcase);
 
                 $person = Employee::find($param[1]);
@@ -199,7 +199,7 @@ class HomeController extends Controller
                     ->where('follower_type', $data['type'])
                     ->where('follower_id', $param[1])
                     ->get();
-                $count_cardcase=count($cardcases);
+                $count_cardcase = count($cardcases);
                 //dd($count_cardcase);
                 $person = User::find($param[1]);
                 $templates = $person->templates;
@@ -243,12 +243,12 @@ class HomeController extends Controller
 
         //dd($person->company->links);
         return view($template->name . '.index')->with([
-            'template' => $template, // 模板数据
-            'person' => $person, // 对象，用户/员工
-            'type' => $param[0], // 类型
-            'qrcodeimg' => $qrcodeimg, // 二维码图片
-            'sign_package' => $sign_package, // 微信签名包
-            'count_cardcase'=> $count_cardcase, // 是否关注
+            'template'       => $template, // 模板数据
+            'person'         => $person, // 对象，用户/员工
+            'type'           => $param[0], // 类型
+            'qrcodeimg'      => $qrcodeimg, // 二维码图片
+            'sign_package'   => $sign_package, // 微信签名包
+            'count_cardcase' => $count_cardcase, // 是否关注
         ]);
     }
 
@@ -268,8 +268,8 @@ class HomeController extends Controller
     {
         $groups = Group::where('user_id', $user_id)->select('id', 'name', 'order')->get()->toArray();
         $group = array(
-            'id' => 0,
-            'name' => '默认分组',
+            'id'    => 0,
+            'name'  => '默认分组',
             'order' => 0,
         );
         array_unshift($groups, $group); // 将默认数组加入到$groups中

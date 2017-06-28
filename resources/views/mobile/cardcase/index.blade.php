@@ -57,7 +57,7 @@
                                         <i class="icon icon-eye-open has-padding-sm"></i>查看
                                     </a>
                                     <a class="opshow-group"
-                                       data-url="{{ url('cardcase/group/'.$subitem['id'].'/'.$item['id']) }}"
+                                       data-url="{{ url('cardcase/move/'.$subitem['id']) }}"
                                        data-display data-backdrop="true" data-target="#groupListModal">
                                         <i class="icon icon-exchange has-padding-sm"></i>分组
                                     </a>
@@ -111,7 +111,7 @@
 
     {{--分组列表--}}
     <div id="groupListModal" class="modal affix dock-bottom enter-from-bottom fade">
-        <form action="" method="post" onsubmit="return false;">
+        <form action="" method="put" onsubmit="return false;">
             <div class="heading divider">
                 <div class="title">分组列表</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
@@ -123,7 +123,7 @@
             </div>
             <div class="footer">
                 <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-                <input type="submit" class="btn primary pull-right" value="确认">
+                <input type="submit" class="op-submit btn primary pull-right" value="确认">
             </div>
         </form>
     </div>
@@ -143,9 +143,13 @@
                 dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                 success: function (data) {
-                    var str    = '';
                     var _modal = '#groupListModal';
                     var _form  = $(_modal).find('form');
+                    var str    = '';
+                    str += '<div class="radio">';
+                    str += '<input type="radio" name="group_id" id="group0" value="0"/>';
+                    str += '<label for="group0">默认分组</label>';
+                    str += '</div>';
                     if (data.length > 0) {
                         $.each(data, function (k, v) {
                             str += '<div class="radio">';
@@ -153,42 +157,19 @@
                             str += '<label for="group' + v.id + '">' + v.name + '</label>';
                             str += '</div>';
                         });
-                    } else {
-                        str += '<div class="radio">';
-                        str += '<label for="group0">还未创建分组</label>';
-                        str += '</div>';
                     }
                     _form.find('.control').html(str);
                 },
-                error: function (data) {
-                    console.log('error');
-
-                    console.log(data);
-
-                    /* 显示错误 */
-//                        var errors = JSON.parse(data.response);
-//                        showError(_modal, errors);
-                }
             });
+
             /* 展开分组 */
             $('.opshow-group').click(function () {
-//                var _this     = $(this);
-////                var _id       = _this.parent('.item-footer').data('subid');
-//                var _group_id = _this.parents('.list').attr('id');
-//                var _modal    = $(_this.data('target'));
-//                var _form     = $(_modal).find('form');
-//                console.log(_id);
-//                console.log(_group_id);
-                console.log(_form);
-                // 获取分组列表
-
-
+                var _this     = $(this);
+                var _group_id = _this.parents('.list').attr('id');
+                var _modal    = $(_this.data('target'));
+                var _form     = $(_modal).find('form');
+                _form.find('#group' + _group_id).attr('checked', true);
             });
-            /* 分组展开 */
-            /* TODO:判断分组展开状态，变换右侧图标 icon-angle-down icon-angle-right */
-
-            /* 子项目展开 */
-            /* TODO:给当前展开子项目添加背景色 primary-pale */
 
         });
     </script>

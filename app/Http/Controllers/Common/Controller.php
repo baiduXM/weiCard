@@ -52,7 +52,7 @@ class Controller extends BaseController
             'qwap', 'sage', 'sams', 'sany', 'sch-', 'sec-', 'send', 'seri', 'sgh-', 'shar',
             'sie-', 'siem', 'smal', 'smar', 'sony', 'sph-', 'symb', 't-mo', 'teli', 'tim-',
             'tosh', 'tsm-', 'upg1', 'upsi', 'vk-v', 'voda', 'wap-', 'wapa', 'wapi', 'wapp',
-            'wapr', 'webc', 'winw', 'winw', 'xda', 'xda-'
+            'wapr', 'webc', 'winw', 'winw', 'xda', 'xda-',
         );
         if (in_array($mobile_ua, $mobile_agents))
             $mobile_browser++;
@@ -86,7 +86,7 @@ class Controller extends BaseController
     {
         $rules = array(
             'direction' => $order == 'asc' ? SORT_ASC : SORT_DESC,
-            'field' => $field,
+            'field'     => $field,
         );
         $arrSort = array();
         foreach ($array AS $unique => $row) {
@@ -210,7 +210,7 @@ class Controller extends BaseController
     {
         /* 解压处理 */
         $zip = new \ZipArchive();
-        if ($zip->open($targetPath . '/' . $fileName) === TRUE) {
+        if ($zip->open($targetPath . '/' . $fileName) === true) {
             $zip->extractTo($targetPath . './');
             $zip->close();
             @unlink($targetPath . '/' . $fileName);

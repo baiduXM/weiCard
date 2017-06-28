@@ -40,21 +40,34 @@ class GroupController extends HomeController
      */
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
             /* 分组列表 */
-            $groups = Group::with('cardcases')->where('user_id', Auth::id())->get();
+            $groups = Group::with('cardcases')->where('user_id', Auth::id())->orderBy('order')->get();
             return response()->json($groups);
         }
         if ($this->is_mobile) {
+            $cardcases = Cardcase::where('user_id', Auth::id())->get()->toArray();
             $groups = $this->getGroups(Auth::id());
             $groups = $this->sortArray($groups, 'order');
+            foreach ($groups as $k => &$v) {
+                if (!isset($v['count'])) {
+                    $v['count'] = 0;
+                }
+                if (count($cardcases) > 0) {
+                    foreach ($cardcases as $ck => $vk) {
+                        if ($v['id'] == $vk['group_id']) {
+                            $v['count'] += 1;
+                        }
+                    }
+                }
+            }
 
             return view('mobile.group.index')->with([
                 'groups' => $groups,
             ]);
         }
         $groups = Group::paginate();
-
         return view('web.group.index')->with([
             'groups' => $groups,
         ]);
@@ -71,11 +84,9 @@ class GroupController extends HomeController
     public function show(Request $request, $id)
     {
         if ($request->ajax()) {
-            $cardcases = Cardcase::with('follower')->where('group_id', $id)->where('user_id', Auth::id())->get()->toArray();
-            $nogroup = Cardcase::with('follower')->where('group_id', null)->where('user_id', Auth::id())->get()->toArray();
-            $data['group'] = $cardcases;
-            $data['none'] = $nogroup;
-            return response()->json($data);
+            $cardcases['in_group'] = Cardcase::with('follower')->where('group_id', $id)->where('user_id', Auth::id())->get();
+            $cardcases['not_in_group'] = Cardcase::with('follower')->where('group_id', null)->where('user_id', Auth::id())->get();
+            return response()->json($cardcases);
         }
         /* 除了ajax访问外，其他都跳到首页 */
         return redirect()->route('cardcase.group.index');
@@ -106,6 +117,27 @@ class GroupController extends HomeController
         if (Group::create($data)) {
             return response()->json('添加成功');
         }
+    }
+
+
+    /**
+     * @param Request $request
+     * @param int     $id 分组ID
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $ids = $request->input('ids');
+            $cardcases = Cardcase::whereIn('id', $ids)->get();
+            foreach ($cardcases as $k => &$v) {
+                $v->group_id = $id;
+                $res[] = $v->save();
+            }
+            return response()->json('成功移动' . count($res) . '条数据');
+        }
+        return redirect()->route('cardcase.group.index');
     }
 
     /**

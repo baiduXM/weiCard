@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Cardcase;
 use App\Models\Employee;
+use App\Models\Group;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,26 +38,26 @@ class CardcaseController extends HomeController
         // TODO:后期优化分页
         if ($this->is_mobile) {
 
-//            $data = $this->index4Mobile();
-//            return view('mobile.cardcase.index')->with([
-//                'data' => $data,
-//            ]);
-
-            $word = Input::query('word') ? Input::query('word') : '';
-            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-                if (isset($word) && $word != '') {
-                    $query->where('nickname', 'like', '%' . $word . '%');
-                }
-            }])->where('user_id', Auth::id())->get();
-            foreach ($cardcases as $key => $cardcase) {
-                if (!$cardcase->follower) {
-                    unset($cardcases[$key]);
-                }
-            }
-            return view('mobile.cardcase.indexbak')->with([
-                'cardcases' => $cardcases,
-                'word'      => $word,
+            $data = $this->index4Mobile();
+            return view('mobile.cardcase.index')->with([
+                'data' => $data,
             ]);
+
+//            $word = Input::query('word') ? Input::query('word') : '';
+//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
+//                if (isset($word) && $word != '') {
+//                    $query->where('nickname', 'like', '%' . $word . '%');
+//                }
+//            }])->where('user_id', Auth::id())->get();
+//            foreach ($cardcases as $key => $cardcase) {
+//                if (!$cardcase->follower) {
+//                    unset($cardcases[$key]);
+//                }
+//            }
+//            return view('mobile.cardcase.indexbak')->with([
+//                'cardcases' => $cardcases,
+//                'word'      => $word,
+//            ]);
 
 
         } else {
@@ -67,6 +68,8 @@ class CardcaseController extends HomeController
         }
 
     }
+
+
 
     /**
      * 名片夹首页 - 移动端
@@ -80,7 +83,7 @@ class CardcaseController extends HomeController
         /* 排序顺序 */
 //        $order = $request->input('order') ? $request->input('order') : 'asc';
 
-        $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->get()->toArray();
+        $cardcases = Cardcase::with('group', 'follower')->where('user_id', Auth::id())->get()->toArray();
         if (count($cardcases) > 0) {
             $cardcases = $this->getPinyin($cardcases);
         }
@@ -142,7 +145,15 @@ class CardcaseController extends HomeController
     {
         if (is_array($data)) {
             foreach ($data as $k => &$v) {
-                $v['follower']['pinyin'] = $this->pinyin($v['follower']['nickname']) . ' ' . $this->pinyin($v['follower']['nickname'], 'abbr');
+                $nickname = $v['follower']['nickname'];
+                $v['follower']['pinyin'] = $this->pinyin($nickname) . ' ' . $this->pinyin($nickname, 'abbr');
+            }
+        } else {
+            foreach ($data as $k => &$v) {
+                if (isset($v->follower)) {
+                    $nickname = $v->follower->nickname;
+                    $v->follower->pinyin = $this->pinyin($nickname) . ' ' . $this->pinyin($nickname, 'abbr');
+                }
             }
         }
         return $data;
@@ -368,20 +379,22 @@ class CardcaseController extends HomeController
      * 移动分组
      *
      * @param Request $request
-     * @param int     $id       名片ID
-     * @param int     $group_id 分组ID
+     * @param int     $id 名片ID
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function move(Request $request, $id, $group_id)
+    public function move(Request $request, $id)
     {
         if ($request->ajax()) {
+            $group_id = $request->input('group_id');
             $cardcase = Cardcase::find($id);
             $cardcase->group_id = $group_id == 0 ? null : $group_id;
             if ($cardcase->save()) {
                 return response()->json('移动成功');
             }
         }
+        return redirect()->route('cardcase.index');
+
 
     }
 }

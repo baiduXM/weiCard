@@ -128,15 +128,15 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
 
     /* 名片夹->分组 */
-    Route::get('cardcase/group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
     Route::get('cardcase/group/{id}', ['as' => 'cardcase.group.show', 'uses' => 'Home\GroupController@show']);
-    Route::post('cardcase/group', ['as' => 'cardcase.group.store', 'uses' => 'Home\GroupController@store']);
-    Route::delete('cardcase/group/{id}', ['as' => 'cardcase.group.destroy', 'uses' => 'Home\GroupController@destroy']);
     Route::put('cardcase/group/{id}', ['as' => 'cardcase.group.update', 'uses' => 'Home\GroupController@update']);
+    Route::delete('cardcase/group/{id}', ['as' => 'cardcase.group.destroy', 'uses' => 'Home\GroupController@destroy']);
+    Route::get('cardcase/group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
+    Route::post('cardcase/group', ['as' => 'cardcase.group.store', 'uses' => 'Home\GroupController@store']);
 
     /* 名片夹 */
-    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-    Route::get('cardcase/move/{id}-{group_id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
+    Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
+    Route::put('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::get('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::post('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
@@ -144,6 +144,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::post('cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     Route::delete('cardcase/{id}', ['as' => 'cardcase.destroy', 'uses' => 'Home\CardcaseController@destroy']);
     Route::get('cardcase/{id}', ['as' => 'cardcase.ajaxshow', 'uses' => 'Home\CardcaseController@ajaxshow']); // 放到cardcase路由组的最后
+    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
 
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
