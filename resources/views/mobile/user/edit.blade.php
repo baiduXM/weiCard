@@ -12,54 +12,56 @@
     <div class="people pr"><img src="{{ asset('static/mobile/images/bg6.png') }}">
         <div class="people_tx pa dtc tc vm"><img src="{{ $user->avatar ? asset($user->avatar) : asset('static/mobile/images/tx2.png') }}"></div>
     </div>
-    <div class="card_content car_from">
-        <form action="{{ url('user') }}" method="post">
-            {{ method_field('put') }}
-            {{ csrf_field() }}
-            <span>姓名：
-                <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
-                <em>*</em>
-                @if ($errors->has('User.nickname'))
-                    <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.nickname') }}</strong>
-                @endif
-            </span>
-            <span>手机：
-                <input name="User[mobile]" id="mobile" type="text" class="inputt" value="{{ old('User.mobile') ? old('User.mobile') : $user->mobile }}" onblur="validatePhone()">
-                <em>*</em>
-                @if ($errors->has('User.mobile'))
-                    <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.mobile') }}</strong>
-                @endif
-            </span>            
-            <span>邮箱：
-                <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}" onblur="validateEmail()">
-                <em>*</em>
-                @if ($errors->has('User.email'))
-                    <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.email') }}</strong>
-                @endif
-            </span>
-            <span>地址：
-                <input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">
-            </span>
-            {{--<span>主页：--}}
-                {{--<input name="User[homepage]" id="homepage" type="text" class="inputt" value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">--}}
-            {{--</span>--}}
-            {{--<span>传真：--}}
-                {{--<input name="User[fax]" id="fax" type="text" class="inputt" value="{{ old('User.fax') ? old('User.fax') : $user->fax }}">--}}
-            {{--</span>--}}
-            <span class="bz">签名：
-                <textarea name="User[description]" id="description" rows="7" wrap="virtual" onfocus="ChangeStyle_hb(this,1,5)"
-                          onblur="ChangeStyle_hb(this,2,5)">{{ old('User.description') ? old('User.description') : $user->description }}</textarea>
-            </span>
-            <span>当前模板：{{$template->display_name}}
-                <strong><a href="{{ url('template/mobile-change') }}">更换<i></i></a></strong>
-            </span>
-            <input type="submit" class="sub fl transition tj" value="确认提交">
-        </form>
-        <div class="sea_l pa">
-            <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
-            <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
-            <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
+    <div class="card_main">
+        <div class="card_content car_from">
+            <form action="{{ url('user') }}" method="post">
+                {{ method_field('put') }}
+                {{ csrf_field() }}
+                <span>姓名：
+                    <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
+                    <em>*</em>
+                    @if ($errors->has('User.nickname'))
+                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.nickname') }}</strong>
+                    @endif
+                </span>
+                <span>手机：
+                    <input name="User[mobile]" id="mobile" type="text" class="inputt" value="{{ old('User.mobile') ? old('User.mobile') : $user->mobile }}" onblur="validatePhone()">
+                    <em>*</em>
+                    @if ($errors->has('User.mobile'))
+                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.mobile') }}</strong>
+                    @endif
+                </span>            
+                <span>邮箱：
+                    <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}" onblur="validateEmail()">
+                    <em>*</em>
+                    @if ($errors->has('User.email'))
+                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.email') }}</strong>
+                    @endif
+                </span>
+                <span>地址：
+                    <input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">
+                </span>
+                {{--<span>主页：--}}
+                    {{--<input name="User[homepage]" id="homepage" type="text" class="inputt" value="{{ old('User.homepage') ? old('User.homepage') : $user->homepage }}">--}}
+                {{--</span>--}}
+                {{--<span>传真：--}}
+                    {{--<input name="User[fax]" id="fax" type="text" class="inputt" value="{{ old('User.fax') ? old('User.fax') : $user->fax }}">--}}
+                {{--</span>--}}
+                <span class="bz">签名：
+                    <textarea name="User[description]" id="description" rows="7" wrap="virtual" onfocus="ChangeStyle_hb(this,1,5)"
+                              onblur="ChangeStyle_hb(this,2,5)">{{ old('User.description') ? old('User.description') : $user->description }}</textarea>
+                </span>
+                <span>当前模板：{{$template->display_name}}
+                    <strong><a href="{{ url('template/mobile-change') }}">更换<i></i></a></strong>
+                </span>
+                <input type="submit" class="sub fl transition tj" value="确认提交">
+            </form>        
         </div>
+    </div>
+    <div class="sea_l pa">
+        <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
     </div>
 @stop
 @section('javascript')
