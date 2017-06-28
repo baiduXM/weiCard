@@ -121,7 +121,7 @@
                     {{--动态分组信息--}}
                 </div>
             </div>
-            <div class="footer">
+            <div class="footer has-padding">
                 <input type="reset" class="btn danger" data-dismiss="display" value="取消">
                 <input type="submit" class="op-submit btn primary pull-right" value="确认">
             </div>
