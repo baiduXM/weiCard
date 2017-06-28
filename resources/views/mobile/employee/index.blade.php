@@ -15,38 +15,40 @@
             <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
         </ul>
     </div>
-    <div class="card_content">
-        @if($employee)
-            <div class="cards pr"><img src="{{ asset('static/mobile/images/bg9.png') }}">
-                <div class="cards_tx dtc tc vm pa"><img
-                            src="{{ $employee->avatar ? asset($employee->avatar) : asset('static/mobile/images/qy_tx.png') }}">
+    <div class="card_main">
+        <div class="card_content">
+            @if($employee)
+                <div class="cards pr"><img src="{{ asset('static/mobile/images/bg9.png') }}">
+                    <div class="cards_tx dtc tc vm pa"><img
+                                src="{{ $employee->avatar ? asset($employee->avatar) : asset('static/mobile/images/qy_tx.png') }}">
+                    </div>
+                    <div class="qy_name pa">{{ $employee->company->name }}</br>
+                        {{ $employee->nickname }}{{ $employee->position ? '&nbsp;' . $employee->position->name : '' }}
+                    </div>
                 </div>
-                <div class="qy_name pa">{{ $employee->company->name }}</br>
-                    {{ $employee->nickname }}{{ $employee->position ? '&nbsp;' . $employee->position->name : '' }}
+                <a href="{{ url('cardcase/show/e') }}">
+                    <div class="choose_card pr">使用这张名片
+                        {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                    </div>
+                </a>
+            @else
+                <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg22.png') }}">
+                    <div class="card_c_gth pa"><img src="{{ asset('static/mobile/images/gth.png') }}"></div>
                 </div>
-            </div>
-            <a href="{{ url('cardcase/show/e') }}">
-                <div class="choose_card pr">使用这张名片
-                    {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                <div class="card_c_cjbox">
+                    <p class="qy hide">* 当前尚无企业名片！</p>
+                    <span>
+                    <input name="code" id="code" type="text" class="inputt" placeholder="输入名片码">
+                   </span>
+                    <a href="javascript:;" class="card_c_cj">立即获取</a>
                 </div>
-            </a>
-        @else
-            <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg22.png') }}">
-                <div class="card_c_gth pa"><img src="{{ asset('static/mobile/images/gth.png') }}"></div>
-            </div>
-            <div class="card_c_cjbox">
-                <p class="qy hide">* 当前尚无企业名片！</p>
-                <span>
-                <input name="code" id="code" type="text" class="inputt" placeholder="输入名片码">
-               </span>
-                <a href="javascript:;" class="card_c_cj">立即获取</a>
-            </div>
-        @endif
-        <div class="sea_l pa">
-            <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
-            <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
-            <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
+            @endif            
         </div>
+    </div>
+    <div class="sea_l pa">
+        <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
     </div>
 @stop
 @section('javascript')

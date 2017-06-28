@@ -72,10 +72,10 @@
         function validateName(){
             var nickname = $('#nickname').val();
             if(nickname){
+                $('#nickname').parent().find('p').remove();               
+            }else{                
                 $('#nickname').parent().find('p').remove();
-                $('#nickname').parent().append('<p class="show">姓名错误，请重新输入!</p>');                
-            }else{
-                $('#nickname').parent().find('p').remove();
+                $('#nickname').parent().append('<p class="show">姓名错误，请重新输入!</p>'); 
             }                     
         }
         //验证手机，必填，11位数
