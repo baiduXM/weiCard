@@ -37,10 +37,10 @@ class CardcaseController extends HomeController
         // TODO:后期优化分页
         if ($this->is_mobile) {
 
-            $data = $this->index4Mobile();
-            return view('mobile.cardcase.index')->with([
-                'data' => $data,
-            ]);
+//            $data = $this->index4Mobile();
+//            return view('mobile.cardcase.index')->with([
+//                'data' => $data,
+//            ]);
 
             $word = Input::query('word') ? Input::query('word') : '';
             $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
@@ -55,7 +55,7 @@ class CardcaseController extends HomeController
             }
             return view('mobile.cardcase.indexbak')->with([
                 'cardcases' => $cardcases,
-                'word' => $word,
+                'word'      => $word,
             ]);
 
 
@@ -108,8 +108,8 @@ class CardcaseController extends HomeController
             $alph = range('A', 'Z');
             foreach ($alph as $k => $v) {
                 $groups[$v] = array(
-                    'id' => $k,
-                    'name' => $v,
+                    'id'        => $k,
+                    'name'      => $v,
                     'cardcases' => array(),
                 );
             }
@@ -230,8 +230,19 @@ class CardcaseController extends HomeController
         return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
     }
 
+
+    /**
+     * 取消关注
+     *
+     * @param Request $request
+     * @param         $params
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function unfollow(Request $request, $params)
     {
+
+
         /* 获取参数 */
         $param = explode('-', $params);
         switch ($param[0]) {
@@ -299,6 +310,21 @@ class CardcaseController extends HomeController
             $param = $type . '-' . Auth::id();
         }
         return $this->cardview($param);
+    }
+
+    /**
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function ajaxShow(Request $request, $id)
+    {
+        if ($request->ajax()) {
+
+        }
+        /* 删除/编辑后跳回主页 */
+        return redirect()->route('cardcase.index');
 
     }
 
@@ -312,15 +338,51 @@ class CardcaseController extends HomeController
 
     }
 
-    public function destroy($id)
-    {
 
+    /**
+     * 删除名片
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $cardcase = Cardcase::find($id);
+            if ($cardcase->delete()) {
+                return response()->json('删除成功');
+            }
+        }
     }
 
     public function cardshow($id)
     {
         $employee = Employee::with('company', 'department', 'user')->find($id);
         return $employee;
+    }
+
+
+    /**
+     * 移动分组
+     *
+     * @param Request $request
+     * @param int     $id       名片ID
+     * @param int     $group_id 分组ID
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function move(Request $request, $id, $group_id)
+    {
+        if ($request->ajax()) {
+            $cardcase = Cardcase::find($id);
+            $cardcase->group_id = $group_id == 0 ? null : $group_id;
+            if ($cardcase->save()) {
+                return response()->json('移动成功');
+            }
+        }
+
     }
 }
 

@@ -39,20 +39,20 @@ class HomeAuthController extends HomeController
      */
     public function getLogin(Request $request)
     {
-        /* 只允许通过微信登录 */
-//        if (session('is_mobile')) { // mobile端，微信授权
-        if ($this->isMobile()) { // mobile端，微信授权
-            return $this->redirectToProvider('weixin');
-        } else { // web端，微信扫码
-            // $ip = $request->ip();
-            // $ipArr = array(
+
+        $ip = $request->ip();
+        $ipArr = array(
             //     '183.250.161.246', // 公司公网IP
-            //     '127.0.0.1', // 本地测试ip
-            // );
-            // if (!in_array($ip, $ipArr)) {
-            //     return $this->redirectToProvider('weixinweb');
-            // }
-            return $this->redirectToProvider('weixinweb');
+            '127.0.0.1', // 本地测试ip
+        );
+        /* 不在IP组里的微信登录，在IP组里的可账号登录 */
+        if (!in_array($ip, $ipArr)) {
+            /* 只允许通过微信登录 */
+            if ($this->isMobile()) { // mobile端，微信授权
+                return $this->redirectToProvider('weixin');
+            } else { // web端，微信扫码
+                return $this->redirectToProvider('weixinweb');
+            }
         }
 
 
@@ -278,8 +278,9 @@ class HomeAuthController extends HomeController
         $this->bind_weixinweb($data);
     }
 
-    protected function isSubscribe(){
-        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+    protected function isSubscribe()
+    {
+//        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
     }
 
 }

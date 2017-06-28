@@ -7,8 +7,11 @@ $(function () {
     /* 显示modal时，更新form里的action */
     $('[class^="opshow-"]').click(function () {
         var _this  = $(this);
+        console.log(_this);
         var _url   = _this.data('url');
         var _modal = _this.data('target');
+        console.log('opshow-');
+        console.log(_url);
         $(_modal).find('form').attr('action', _url);
         $(_modal).find('.input').val('');
     });
@@ -35,6 +38,8 @@ $(function () {
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
             success: function (data) {
+                console.log('success');
+                console.log(data);
                 /* 现实成功消息，刷新当前页面 */
                 $.Display.dismiss(_modal.data('display-name'));
                 $.messager.show("<i class='icon-check'>  " + data + "</i>", {
@@ -43,6 +48,8 @@ $(function () {
                 setTimeout(window.location.href = _url, 1); // 1s后刷新页面
             },
             error: function (data) {
+                console.log('error');
+                console.log(data);
                 /* 显示错误 */
                 var errors = JSON.parse(data.response);
                 showError(_modal, errors);

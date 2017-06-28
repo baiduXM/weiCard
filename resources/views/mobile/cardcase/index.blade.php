@@ -50,14 +50,21 @@
                                 <div class="item item-footer justified text-center collapse hidden"
                                      data-subid="{{ $subitem['id'] }}"
                                      id="sub{{ $subitem['id'] }}">
-                                    <a data-operation="call" href="tel:{{ $subitem['follower']['mobile'] }}"><i
-                                                class="icon icon-phone has-padding-sm"></i>拨号</a>
-                                    <a data-operation="share"><i class="icon icon-share-alt has-padding-sm"></i>分享</a>
-                                    <a data-operation="move"><i class="icon icon-exchange has-padding-sm"></i>分组</a>
-                                    <a data-operation="unfollow" class="text-danger "
-                                       href="{{ url('cardcase/unfollow/'.$subitem['follower_type']=='App\Models\User'?'u':'e'.'-'.$subitem['follower_id']) }}"
-                                       onclick="return confirm('确定删除？')"><i
-                                                class="icon icon-trash has-padding-sm"></i>删除</a>
+                                    <a href="tel:{{ $subitem['follower']['mobile'] }}">
+                                        <i class="icon icon-phone has-padding-sm"></i>拨号
+                                    </a>
+                                    <a href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
+                                        <i class="icon icon-eye-open has-padding-sm"></i>查看
+                                    </a>
+                                    <a class="opshow-group"
+                                       data-url="{{ url('cardcase/group/'.$subitem['id'].'/'.$item['id']) }}"
+                                       data-display data-backdrop="true" data-target="#groupListModal">
+                                        <i class="icon icon-exchange has-padding-sm"></i>分组
+                                    </a>
+                                    <a class="opshow-delete text-danger"
+                                       data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                                       data-url="{{ url()->current() . '/' . $subitem['id'] }}">
+                                        <i class="icon icon-trash has-padding-sm"></i>删除</a>
                                 </div>
                             @endforeach
                         </div>
@@ -101,11 +108,82 @@
             {{--</a>--}}
         </div>
     </div>
+
+    {{--分组列表--}}
+    <div id="groupListModal" class="modal affix dock-bottom enter-from-bottom fade">
+        <form action="" method="post" onsubmit="return false;">
+            <div class="heading divider">
+                <div class="title">分组列表</div>
+                <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
+            </div>
+            <div class="content has-padding">
+                <div class="control">
+                    {{--动态分组信息--}}
+                </div>
+            </div>
+            <div class="footer">
+                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
+                <input type="submit" class="btn primary pull-right" value="确认">
+            </div>
+        </form>
+    </div>
+
+
+    {{--<div class="item item-footer justified text-center collapse hidden"--}}
+    {{--data-subid="{{ $subitem['id'] }}"--}}
+    {{--id="sub{{ $subitem['id'] }}">--}}
 @stop
 @section('javascript')
     <script>
         $(function () {
+            /* 加载分组信息 */
+            $.ajax({
+                type: 'get',
+                url: '/cardcase/group',
+                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                success: function (data) {
+                    var str    = '';
+                    var _modal = '#groupListModal';
+                    var _form  = $(_modal).find('form');
+                    if (data.length > 0) {
+                        $.each(data, function (k, v) {
+                            str += '<div class="radio">';
+                            str += '<input type="radio" name="group_id" id="group' + v.id + '" value="' + v.id + '"/>';
+                            str += '<label for="group' + v.id + '">' + v.name + '</label>';
+                            str += '</div>';
+                        });
+                    } else {
+                        str += '<div class="radio">';
+                        str += '<label for="group0">还未创建分组</label>';
+                        str += '</div>';
+                    }
+                    _form.find('.control').html(str);
+                },
+                error: function (data) {
+                    console.log('error');
 
+                    console.log(data);
+
+                    /* 显示错误 */
+//                        var errors = JSON.parse(data.response);
+//                        showError(_modal, errors);
+                }
+            });
+            /* 展开分组 */
+            $('.opshow-group').click(function () {
+//                var _this     = $(this);
+////                var _id       = _this.parent('.item-footer').data('subid');
+//                var _group_id = _this.parents('.list').attr('id');
+//                var _modal    = $(_this.data('target'));
+//                var _form     = $(_modal).find('form');
+//                console.log(_id);
+//                console.log(_group_id);
+                console.log(_form);
+                // 获取分组列表
+
+
+            });
             /* 分组展开 */
             /* TODO:判断分组展开状态，变换右侧图标 icon-angle-down icon-angle-right */
 

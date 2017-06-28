@@ -28,7 +28,9 @@
                             </a>
                             <a class="opshow-edit title {{ $item['id'] == 0 ? 'disabled' : '' }}"
                                data-display="modal" data-backdrop="true" data-target="#editGroupModal"
-                               data-url="{{ url()->current().'/'. $item['id']}}">{{ $item['name'] }}</a>
+                               data-url="{{ url()->current().'/'. $item['id']}}">
+                                {{ $item['name'] }}
+                            </a>
                             <a class="opshow-show btn {{ $item['id'] == 0 ? 'disabled' : '' }}"
                                data-display="modal" data-backdrop="true" data-target="#editMemberModal"
                                data-url="{{ url()->current().'/'. $item['id']}}">
@@ -142,7 +144,7 @@
                 var _this  = $(this);
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('编辑分组名');
-                $(_modal).find('.input').val(_this.text());
+                $(_modal).find('.input').val($.trim(_this.text()));
             });
 
             /* 显示 */
@@ -186,9 +188,9 @@
 
 
         /* 显示成员 */
-        function showMember(data, select == true) {
-
-        }
+//        function showMember(data, select = true) {
+//
+//        }
 
 
     </script>

@@ -33,9 +33,18 @@ class GroupController extends HomeController
 
     }
 
-
-    public function index()
+    /**
+     * @param Request $request
+     *
+     * @return $this|\Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            /* 分组列表 */
+            $groups = Group::with('cardcases')->where('user_id', Auth::id())->get();
+            return response()->json($groups);
+        }
         if ($this->is_mobile) {
             $groups = $this->getGroups(Auth::id());
             $groups = $this->sortArray($groups, 'order');
@@ -51,6 +60,14 @@ class GroupController extends HomeController
         ]);
     }
 
+    /**
+     * 显示组员
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
     public function show(Request $request, $id)
     {
         if ($request->ajax()) {
@@ -60,6 +77,7 @@ class GroupController extends HomeController
             $data['none'] = $nogroup;
             return response()->json($data);
         }
+        /* 除了ajax访问外，其他都跳到首页 */
         return redirect()->route('cardcase.group.index');
 
     }
@@ -97,11 +115,13 @@ class GroupController extends HomeController
      *
      * @return \Illuminate\Http\RedirectResponse|int
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $group = Group::find($id);
-        if ($group->delete()) {
-            return response()->json('删除成功');
+        if ($request->ajax()) {
+            $group = Group::find($id);
+            if ($group->delete()) {
+                return response()->json('删除成功');
+            }
         }
     }
 }
