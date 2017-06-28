@@ -1,6 +1,7 @@
 @extends('mobile.common.layout')
 @section('title', '获取名片')
 @section('content')
+<div class="card_main">
     <div id="content2">
         <div class="content2">
             <div class="wrap_c">
@@ -14,6 +15,12 @@
             </div>
         </div>
     </div>
+</div>
+<div class="sea_l pa">
+    <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
+    <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
+    <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
+</div>
 @stop
 @section('javascript')
     <script>

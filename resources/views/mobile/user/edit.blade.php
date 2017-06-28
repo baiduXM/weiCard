@@ -21,21 +21,21 @@
                     <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
                     <em>*</em>
                     @if ($errors->has('User.nickname'))
-                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.nickname') }}</strong>
+                        <p class="show">{{ $errors->first('User.nickname') }}</p>
                     @endif
                 </span>
                 <span>手机：
                     <input name="User[mobile]" id="mobile" type="text" class="inputt" value="{{ old('User.mobile') ? old('User.mobile') : $user->mobile }}" onblur="validatePhone()">
                     <em>*</em>
                     @if ($errors->has('User.mobile'))
-                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.mobile') }}</strong>
+                        <p class="show">{{ $errors->first('User.mobile') }}</p>
                     @endif
                 </span>            
                 <span>邮箱：
                     <input name="User[email]" id="email" type="text" class="inputt" value="{{ old('User.email') ? old('User.email') : $user->email }}" onblur="validateEmail()">
                     <em>*</em>
                     @if ($errors->has('User.email'))
-                        <strong class="pass-error show" style='color:red;font-size:0.5rem;'>{{ $errors->first('User.email') }}</strong>
+                        <p class="show">{{ $errors->first('User.email') }}</p>
                     @endif
                 </span>
                 <span>地址：
