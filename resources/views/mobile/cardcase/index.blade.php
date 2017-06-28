@@ -122,8 +122,8 @@
                 </div>
             </div>
             <div class="footer has-padding">
-                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-                <input type="submit" class="op-submit btn primary pull-right" value="确认">
+                <input type="reset" class="btn-lg danger" data-dismiss="display" value="取消">
+                <input type="submit" class="op-submit btn-lg primary pull-right" value="确认">
             </div>
         </form>
     </div>

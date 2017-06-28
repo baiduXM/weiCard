@@ -29,7 +29,7 @@
                             <a class="opshow-edit title {{ $item['id'] == 0 ? 'disabled' : '' }}"
                                data-display="modal" data-backdrop="true" data-target="#editGroupModal"
                                data-url="{{ url()->current().'/'. $item['id']}}">
-                                {{ $item['name'] }}
+                                <span class="group-title">{{ $item['name'] }}</span>
                                 <label class="info has-padding-h has-margin-sm">{{ $item['count'] }}</label>
                             </a>
                             {{--<a class="opshow-show btn {{ $item['id'] == 0 ? 'disabled' : '' }}"--}}
@@ -73,8 +73,8 @@
                 </div>
             </div>
             <div class="footer has-padding affix dock-bottom">
-                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-                <input type="submit" class="op-submit btn primary pull-right" value="确认">
+                <input type="reset" class="btn-lg danger" data-dismiss="display" value="取消">
+                <input type="submit" class="op-submit btn-lg primary pull-right" value="确认">
             </div>
         </form>
     </div>
@@ -93,8 +93,8 @@
                 </div>
             </div>
             <div class="footer has-padding">
-                <input type="reset" class="btn danger" data-dismiss="display" value="取消">
-                <input type="submit" class="op-submit btn primary pull-right" value="确认">
+                <input type="reset" class="btn-lg danger" data-dismiss="display" value="取消">
+                <input type="submit" class="op-submit btn-lg primary pull-right" value="确认">
             </div>
         </form>
     </div>
@@ -116,7 +116,7 @@
                 var _this  = $(this);
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('编辑分组名');
-                $(_modal).find('.input').val($.trim(_this.text()));
+                $(_modal).find('.input').val($.trim(_this.find('.group-title').text()));
             });
 
             /* 显示组员 */

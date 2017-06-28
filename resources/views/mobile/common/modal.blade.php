@@ -5,8 +5,8 @@
             <div class="title text-center">确认删除</div>
         </div>
         <div class="footer has-padding">
-            <button type="cancel" class="btn danger" data-dismiss="display">取消</button>
-            <button type="submit" class="btn primary pull-right op-submit">确认</button>
+            <button type="cancel" class="btn-lg danger" data-dismiss="display">取消</button>
+            <button type="submit" class="btn-lg primary pull-right op-submit">确认</button>
         </div>
     </form>
 </div>
