@@ -99,13 +99,13 @@ class HomeAuthController extends HomeController
         if (Auth::guard($this->getGuard())->attempt([$type => $username, 'password' => $password], $request->has('remember'))) {
             // 1、Web端，且公司拥有者 -> 跳转Web页面
             // 2、Web端，普通用户|移动端，所有用户 -> 跳转Mobile页面
-            if (!$this->isMobile() && $this->isCompanyOwner()) {
-                return $this->handleUserWasAuthenticated($request, $throttles);
-            } else {
-                $this->redirectTo = 'm';
-                return redirect('m');
-//                return redirect()->intended($this->redirectPath());
-            }
+            return $this->handleUserWasAuthenticated($request, $throttles);
+//            if (!$this->isMobile() && $this->isCompanyOwner()) {
+//            } else {
+//                $this->redirectTo = 'm';
+//                return redirect('m');
+////                return redirect()->intended($this->redirectPath());
+//            }
         }
 
         if ($throttles && !$lockedOut) {
