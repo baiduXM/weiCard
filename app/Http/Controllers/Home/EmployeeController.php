@@ -269,20 +269,25 @@ class EmployeeController extends HomeController
      */
     public function import(Request $request)
     {
-        if ($request->ajax()) {
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                // TODO:保存excel文件
-                $excelPath = $this->save($file, 'company', Auth::user()->company->name);
-                $res = $this->dealExcel($excelPath);
-                return response()->json($res);
-            } else {
-                $err_code = 802;
-                Config::set('global.ajax.err', $err_code);
-                Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-                return Config::get('global.ajax');
-            }
+//        if ($request->ajax()) {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            // TODO:保存excel文件
+            $excelPath = $this->save($file, 'company', Auth::user()->company->name);
+            $res = $this->dealExcel($excelPath);
+//            dd($res);
+            return redirect()->to('company/employee')->with('success', '成功添加' . $res['success'] . '条数据');
+
+            return response()->json($res);
+        } else {
+            return redirect()->to('company/employee');
+
+            $err_code = 802;
+            Config::set('global.ajax.err', $err_code);
+            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+            return Config::get('global.ajax');
         }
+//        }
 //        $excelPath = 'uploads/test.xlsx';
 //        $res = $this->dealExcel($excelPath);
 //        dump($res);
@@ -343,7 +348,9 @@ class EmployeeController extends HomeController
     protected function dealExcel($filePath)
     {
         $res = array();
-        Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res) {
+        $error = array();
+
+        Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res, &$error) {
             $time = date('Y-m-d H:i:s', time());
             $data = $reader->all()->toArray();
 
@@ -352,8 +359,9 @@ class EmployeeController extends HomeController
             $data_swap = $this->swapArray($data);
             // TODO:添加部门
             $department = Department::where('company_id', $company_id)->select('id', 'name')->get()->toArray();
-            $department_swap = $this->swapArray($department);
-            $temp = array_unique($data_swap['部门']); // 去重部门
+            $department_swap = $department ? $this->swapArray($department) : array('id' => array(), 'name' => array());
+
+            $temp = array_unique($data_swap['部门']); // 去重
             foreach ($temp as $k => $v) {
                 if (isset($department_swap['name'])) { // 避免无数据时报错
                     if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
@@ -374,7 +382,8 @@ class EmployeeController extends HomeController
             // TODO:添加职位
 
             $position = Position::where('company_id', $company_id)->select('id', 'name')->get()->toArray();
-            $position_swap = $this->swapArray($position);
+
+            $position_swap = $position ? $this->swapArray($position) : array('id' => array(), 'name' => array());
             $temp = array_unique($data_swap['职位']); // 去重职位
             foreach ($temp as $k => $v) {
                 if (isset($department_swap['name'])) { // 避免无数据时报错
@@ -386,15 +395,19 @@ class EmployeeController extends HomeController
                 $position_temp[$k]['name'] = $v;
                 $position[] = array(
                     'id'   => Position::create($position_temp[$k])->id,
+//                    'id'   => $k,
                     'name' => $v,
                 );
             }
+//            dump($position_swap);
+//            dump($position);
             $position = array_combine($position_swap['id'], $position_swap['name']);
+//            dump($position);
+//            exit;
 
             // TODO:添加员工
 
             $employee = array();
-            $error = array();
             foreach ($data as $k => $items) {
                 foreach ($items as $key => $item) {
                     if (in_array($key, $this->importArray)) {

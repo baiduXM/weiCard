@@ -133,7 +133,8 @@
                     </button>
                     <h4 class="modal-title">导入员工</h4>
                 </div>
-                <form method="post" class="form-import" data-url="{{ url('company/employee/import') }}"
+                {{--<form method="post" class="form-import" data-url="{{ url('company/employee/import') }}"--}}
+                <form method="post" class="form-import" action="{{ url('company/employee/import') }}"
                       enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
@@ -146,8 +147,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary operate-import">确认</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        <input type="submit"  class="btn btn-primary" value="确认">
+                        <input type="reset"  class="btn btn-default" data-dismiss="modal" value="返回">
+                        {{--<button type="button" class="btn btn-primary operate-import">确认</button>--}}
+                        {{--<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>--}}
                     </div>
                 </form>
             </div>
