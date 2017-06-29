@@ -102,6 +102,7 @@ class CompanyController extends HomeController
             'Company.homepage' => 'url:true',
             'Company.profilelink' => 'url:true',
             'Company.is_profilelink' => '',
+            'Company.is_person' => '',
         ], [], [
             'Company.name' => '公司名称',
             'Company.display_name' => '显示名称',
@@ -113,7 +114,7 @@ class CompanyController extends HomeController
             'Company.coordinate_lng' => '坐标（经度）',
             'Company.homepage' => '公司网址',
             'Company.profilelink' => '公司简介外链',
-            'Company.is_profilelink' => '公司简介外链开关',
+            'Company.is_person' => '员工名片展示开关',
 
         ]);
         /* 获取字段类型 */

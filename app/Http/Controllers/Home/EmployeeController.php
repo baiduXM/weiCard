@@ -59,6 +59,7 @@ class EmployeeController extends HomeController
         if ($this->is_mobile) {
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
+                'company' => Auth::user()->company,
             ]);
         }
         if (Auth::user()->employee) {

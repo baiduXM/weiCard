@@ -92,6 +92,21 @@
         @if ($errors->has('Company.profilelink'))
             <p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>
         @endif
+        <div class="companyLink">
+            <span>员工名片展示:</span>
+            <div class="com">
+                @if ($company->is_person=='1')
+                    <input class="comLinkInput"  name="Company[is_person]" type="radio" checked="checked"   value="1">开
+                @else
+                    <input class="comLinkInput"  name="Company[is_person]" type="radio"    value="1">开
+                @endif
+                @if ($company->is_person=='1')
+                    <input class="comLinkInput"  name="Company[is_person]" type="radio"    value="0">关
+                @else
+                    <input class="comLinkInput"  name="Company[is_person]" type="radio"  checked="checked"  value="0">关
+                @endif
+            </div>
+        </div>
         <div class="user-j">
             <span>公司简介: </span>
             <textarea name="Company[description]"
