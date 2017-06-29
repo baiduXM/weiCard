@@ -7,7 +7,6 @@ $(function () {
     /* 显示modal时，更新form里的action */
     $('[class^="opshow-"]').click(function () {
         var _this  = $(this);
-        console.log(_this);
         var _url   = _this.data('url');
         var _modal = _this.data('target');
         console.log('opshow-');

@@ -55,9 +55,11 @@
                                     <a href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <i class="icon icon-eye-open has-padding-sm"></i>查看
                                     </a>
-                                    <a class="opshow-group" onclick="showGroup({{$item['id']}});"
+                                    {{--<a class="opshow-group" onclick="showGroup({{$item['id']}});"--}}
+                                    <a class="topshow-group"
                                        data-url="{{ url('cardcase/move/'.$subitem['id']) }}"
                                        data-display data-backdrop="true" data-target="#groupListModal">
+                                       {{--data-display data-backdrop="true">--}}
                                         <i class="icon icon-exchange has-padding-sm"></i>分组
                                     </a>
                                     <a class="opshow-delete text-danger"
@@ -160,22 +162,25 @@
                     _form.find('.control').html(str);
                 },
             });
+//            alert(1);
+            $('#groupListModal').display();
 
             /* 展开分组 */
-//            $('.opshow-group').on('click', function (e) {
-//                e.preventDefault();
-//                var _this     = $(this);
-//                var _group_id = _this.parents('.list').attr('id');
-//                var _modal    = _this.data('target');
-//                var _form     = $(_modal).find('form');
-//                _form.find('#group' + _group_id).attr('checked', true);
-//            });
+            $('.topshow-group').on('click', function (e) {
+                var _this     = $(this);
+                var _group_id = _this.parents('.list').attr('id');
+                var _modal    = $('#groupListModal');
+                var _form     = _modal.find('form');
+                var _url   = _this.data('url');
+                _modal.find('form').attr('action', _url);
+                _form.find('#group' + _group_id).attr('checked', true);
+            });
 
 
         });
-        function showGroup(group_id) {
-            document.getElementById('group' + group_id).checked = true;
-        }
+//        function showGroup(group_id) {
+//            document.getElementById('group' + group_id).checked = true;
+//        }
     </script>
 @stop
 

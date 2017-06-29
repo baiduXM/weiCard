@@ -7,8 +7,7 @@
     <title>@yield('title', '首页') - {{ config('global.website.product_name') }}</title>
 
     <link href="{{ asset('static/lib/mzui/css/mzui.min.css') }}" rel="stylesheet">
-    <script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
-    <script src="{{ asset('static/mobile/js/operation.js') }}"></script>
+
     {{--自定义css--}}
     @section('css')
     @show
@@ -42,7 +41,8 @@
 @section('modal')
 @show
 
-
+<script src="{{ asset('static/lib/mzui/js/mzui.min.js') }}"></script>
+<script src="{{ asset('static/mobile/js/operation.js') }}"></script>
 {{--自定义js--}}
 @section('javascript')
 @show
