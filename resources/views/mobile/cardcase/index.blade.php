@@ -55,7 +55,7 @@
                                     <a href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <i class="icon icon-eye-open has-padding-sm"></i>查看
                                     </a>
-                                    <a class="opshow-group"
+                                    <a class="opshow-group" onclick="showGroup({{$item['id']}});"
                                        data-url="{{ url('cardcase/move/'.$subitem['id']) }}"
                                        data-display data-backdrop="true" data-target="#groupListModal">
                                         <i class="icon icon-exchange has-padding-sm"></i>分组
@@ -77,8 +77,8 @@
 
         {{--排序--}}
         {{--<a class="btn btn-lg circle primary space-sm outline" data-display data-backdrop="true"--}}
-           {{--data-target="#sortModal">--}}
-            {{--<i class="icon icon-list-ul"></i>--}}
+        {{--data-target="#sortModal">--}}
+        {{--<i class="icon icon-list-ul"></i>--}}
         {{--</a>--}}
         {{--编辑--}}
         <a class="btn btn-lg circle primary outline" href="{{ 'cardcase/group' }}">
@@ -162,16 +162,20 @@
             });
 
             /* 展开分组 */
-            $('.opshow-group').on('click', function (e) {
-                e.preventDefault();
-                var _this     = $(this);
-                var _group_id = _this.parents('.list').attr('id');
-                var _modal    = _this.data('target');
-                var _form     = $(_modal).find('form');
-                _form.find('#group' + _group_id).attr('checked', true);
-            });
+//            $('.opshow-group').on('click', function (e) {
+//                e.preventDefault();
+//                var _this     = $(this);
+//                var _group_id = _this.parents('.list').attr('id');
+//                var _modal    = _this.data('target');
+//                var _form     = $(_modal).find('form');
+//                _form.find('#group' + _group_id).attr('checked', true);
+//            });
+
 
         });
+        function showGroup(group_id) {
+            document.getElementById('group' + group_id).checked = true;
+        }
     </script>
 @stop
 
