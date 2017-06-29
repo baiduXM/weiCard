@@ -61,10 +61,14 @@ class EmployeeController extends HomeController
      */
     public function index()
     {
+
         if ($this->is_mobile) {
+//            if (!Auth::user()->employee) {
+//                return redirect()->to('user');
+//            }
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
-                'company' => Auth::user()->company,
+                'company'  => Auth::user()->company,
             ]);
         }
         if (Auth::user()->employee) {
@@ -78,7 +82,7 @@ class EmployeeController extends HomeController
                 'positions' => $positions,
             ]);
         } else {
-            return redirect()->back()->with('error', '请先绑定公司');
+            return redirect()->to('user')->with('error', '请先绑定公司');
         }
     }
 
@@ -279,14 +283,7 @@ class EmployeeController extends HomeController
                 return Config::get('global.ajax');
             }
         }
-
-        // TODO:保存excel
-        $res = array();
-        $error = array();
-        $excelPath = 'uploads/test.xlsx';
-
-        // TODO:处理excel
-        return redirect('company/employee');
+        return redirect()->to('company/employee');
     }
 
 
