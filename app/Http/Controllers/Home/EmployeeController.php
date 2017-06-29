@@ -386,8 +386,8 @@ class EmployeeController extends HomeController
             $position_swap = $position ? $this->swapArray($position) : array('id' => array(), 'name' => array());
             $temp = array_unique($data_swap['职位']); // 去重职位
             foreach ($temp as $k => $v) {
-                if (isset($department_swap['name'])) { // 避免无数据时报错
-                    if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
+                if (isset($position_swap['name'])) { // 避免无数据时报错
+                    if (in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
                         continue;
                     }
                 }
@@ -395,15 +395,11 @@ class EmployeeController extends HomeController
                 $position_temp[$k]['name'] = $v;
                 $position[] = array(
                     'id'   => Position::create($position_temp[$k])->id,
-//                    'id'   => $k,
                     'name' => $v,
                 );
             }
-//            dump($position_swap);
-//            dump($position);
+            $position_swap = $this->swapArray($position);
             $position = array_combine($position_swap['id'], $position_swap['name']);
-//            dump($position);
-//            exit;
 
             // TODO:添加员工
 
