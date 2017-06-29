@@ -88,14 +88,27 @@ class Controller extends BaseController
             'direction' => $order == 'asc' ? SORT_ASC : SORT_DESC,
             'field'     => $field,
         );
+        $arrSort = $this->swapArray($array);
+        array_multisort($arrSort[$rules['field']], $rules['direction'], $array);
+        return $array;
+    }
+
+    /**
+     * 置换数组
+     *
+     * @param array $data 要置换的数组
+     *
+     * @return array
+     */
+    public function swapArray(array $data)
+    {
         $arrSort = array();
-        foreach ($array AS $unique => $row) {
+        foreach ($data AS $unique => $row) {
             foreach ($row AS $key => $value) {
                 $arrSort[$key][$unique] = $value;
             }
         }
-        array_multisort($arrSort[$rules['field']], $rules['direction'], $array);
-        return $array;
+        return $arrSort;
     }
 
 
@@ -218,6 +231,18 @@ class Controller extends BaseController
         } else {
             return false;
         }
+    }
+
+    /**
+     * 导入excel表
+     *
+     * @param $file
+     *
+     * @return int
+     */
+    public function importExcel($file)
+    {
+        return 1;
     }
 
 

@@ -4,7 +4,7 @@
 $(function () {
     /* 操作 - 添加 */
     $('.operate-create').on('click', function () {
-        var _url = $('.form-create').attr('action');
+        var _url      = $('.form-create').attr('action');
         var _formData = new FormData($('.form-create')[0]);
         $("[class^='error-']").addClass('hidden');
         console.log(_url);
@@ -19,9 +19,9 @@ $(function () {
             success: function (json) {
                 console.log('success');
                 console.log(json);
-                 $('.hintModal').modal('show');
-                 $('.hintModal .modal-body').text(json.msg);
-                 $('.hintModal .after-operate').text(_url);
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .after-operate').text(_url);
                 return false;
             },
             error: function (json) {
@@ -36,7 +36,7 @@ $(function () {
 
     /* 操作 - 导入 */
     $(".operate-import").click(function () {
-        var _url = $(this).parents('form').data('url');
+        var _url      = $(this).parents('form').data('url');
         var _formData = new FormData($('.form-import')[0]);
         $.ajax({
             url: _url,
@@ -49,7 +49,7 @@ $(function () {
                 console.log('success');
                 console.log(json);
                 $('.hintModal').modal('show');
-                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .modal-body').text('成功导入' + json.success + '条数据');
                 $('.hintModal .after-operate').text(_url);
                 return false;
             },
@@ -88,7 +88,7 @@ $(function () {
 
     /* 操作 - 更新*/
     $(".operate-update").click(function () {
-        var _url = $('.form-update').attr('action');
+        var _url      = $('.form-update').attr('action');
         var _formData = new FormData($('.form-update')[0]);
         $("[class^='error-']").addClass('hidden');
         $.ajax({
@@ -116,8 +116,8 @@ $(function () {
     $('.operate-delete').click(function () {
         $('.bs3').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _url = relatedTarget.data('url');
-            var _modal = $(this);
+            var _url          = relatedTarget.data('url');
+            var _modal        = $(this);
             _modal.find('form').attr('action', _url);
         });
     });
@@ -152,7 +152,7 @@ $(function () {
 
     /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function () {
-        var _url = $('.hintModal .after-operate').text();
+        var _url        = $('.hintModal .after-operate').text();
         window.location = _url; // 为空，刷新当前页
     });
 
@@ -225,7 +225,7 @@ $(function () {
         $("#selIcon").show();
         console.log('failed');
         $("#selIcon span").on("click", function () {
-            var itext = $(this).attr('name');
+            var itext  = $(this).attr('name');
             var itexts = $(this).find("i").text();
             $("#inputIcons").val(itext);
             console.log(itext);
@@ -239,7 +239,7 @@ $(function () {
         $("#selIcon1").show();
         console.log('111');
         $("#selIcon1 span").on("click", function () {
-            var itext = $(this).attr('name');
+            var itext  = $(this).attr('name');
             var itexts = $(this).find("i").text();
             $("#inputIcons1").val(itext);
             console.log(itext);

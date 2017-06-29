@@ -31,8 +31,8 @@
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import"><i
                                     class="iconFont">&#xe67d;</i>导入Excel</a>
-                    <li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">
-                            <i class="iconFont">&#xe67d;</i>导出员工</a>
+                    {{--<li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">--}}
+                            {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
                     {{--</li>--}}
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}

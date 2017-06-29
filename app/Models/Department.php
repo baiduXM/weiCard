@@ -6,7 +6,7 @@ namespace App\Models;
 class Department extends CommonModel
 {
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
