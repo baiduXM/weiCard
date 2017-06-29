@@ -276,7 +276,7 @@ class EmployeeController extends HomeController
             $excelPath = $this->save($file, 'company', Auth::user()->company->name);
             $res = $this->dealExcel($excelPath);
 //            dd($res);
-            return redirect()->to('company/employee')->with('success', '成功添加' . $res['success'] . '条数据');
+            return redirect()->to('company/employee')->with('success', '成功添加' . $res . '条数据');
 
             return response()->json($res);
         } else {
@@ -343,14 +343,14 @@ class EmployeeController extends HomeController
      *
      * @param $filePath 文件路径
      *
-     * @return array 返回已插入数据条数(int)，和错误数据（array）
+     * @return int 返回已插入数据条数(int)，和错误数据（array）
      */
     protected function dealExcel($filePath)
     {
-        $res = array();
-        $error = array();
+        $res = 0;
+//        $error = array();
 
-        Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res, &$error) {
+        Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res) {
             $time = date('Y-m-d H:i:s', time());
             $data = $reader->all()->toArray();
 
@@ -436,10 +436,10 @@ class EmployeeController extends HomeController
                 }
             }
             if (count($employee) > 0) {
-                $res = Employee::insert($employee);
+                Employee::insert($employee);
             }
 //            $res['error'] = $error;
-            $res['success'] = count($employee);
+            $res = count($employee);
         });
         return $res;
     }
