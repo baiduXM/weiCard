@@ -426,19 +426,19 @@ class EmployeeController extends HomeController
                 '*.mobile' => '手机',
             ]);
             if ($validator->fails()) {
-                $error[0] = $this->importArray;
-                $error[0]['error'] = '错误信息';
+//                $error[0] = $this->importArray;
+//                $error[0]['error'] = '错误信息';
                 foreach ($validator->errors()->toArray() as $key => $value) {
                     $k = explode('.', $key)[0];
-                    $error[$k + 1] = $data[$k];
-                    $error[$k + 1]['error'] = implode('|', $value);
+//                    $error[$k + 1] = $data[$k];
+//                    $error[$k + 1]['error'] = implode('|', $value);
                     unset($employee[$k]); // 移除错误数据
                 }
             }
             if (count($employee) > 0) {
                 $res = Employee::insert($employee);
             }
-            $res['error'] = $error;
+//            $res['error'] = $error;
             $res['success'] = count($employee);
         });
         return $res;
