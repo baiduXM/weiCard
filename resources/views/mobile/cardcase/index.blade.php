@@ -162,8 +162,6 @@
                     _form.find('.control').html(str);
                 },
             });
-//            alert(1);
-            $('#groupListModal').display();
 
             /* 展开分组 */
             $('.opshow-group').on('touchstart', function (e) {
