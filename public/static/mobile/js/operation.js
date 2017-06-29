@@ -5,14 +5,13 @@ $(function () {
 
 
     /* 显示modal时，更新form里的action */
-    $('[class^="opshow-"]').click(function () {
+    $('[class^="opshow-"]').on('touchstart', function () {
         var _this  = $(this);
         var _url   = _this.data('url');
         var _modal = _this.data('target');
-        console.log('opshow-');
-        console.log(_url);
+        // console.log('opshow-');
+        // console.log(_url);
         $(_modal).find('form').attr('action', _url);
-        $(_modal).find('.input').val('');
     });
     // /* 删除 */
     // $('.op-delete').click(function () {
@@ -23,7 +22,7 @@ $(function () {
     // });
 
     /* 表单ajax提交 */
-    $('.op-submit').click(function () {
+    $('.op-submit').on('touchstart', function () {
         var _this     = $(this);
         var _modal    = _this.parents('.modal');
         var _form     = _this.parents('form');

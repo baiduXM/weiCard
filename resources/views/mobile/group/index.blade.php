@@ -105,14 +105,16 @@
         $(function () {
 
             /* 添加 */
-            $('.opshow-create').click(function () {
+            $('.opshow-create').on('touchstart', function () {
                 var _this  = $(this);
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('添加分组');
+                $(_modal).find('.input').val('');
+
             });
 
             /* 编辑 */
-            $('.opshow-edit').click(function () {
+            $('.opshow-edit').on('touchstart', function () {
                 var _this  = $(this);
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('编辑分组名');
@@ -120,7 +122,7 @@
             });
 
             /* 显示组员 */
-            $('.opshow-show').click(function () {
+            $('.opshow-show').on('touchstart', function () {
                 var _this       = $(this);
                 var _modal      = $(_this.data('target'));
                 var _form       = $(_modal).find('form');
