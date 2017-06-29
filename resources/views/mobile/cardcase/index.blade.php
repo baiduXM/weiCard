@@ -166,7 +166,7 @@
             $('#groupListModal').display();
 
             /* 展开分组 */
-            $('.topshow-group').on('click', function (e) {
+            $('.topshow-group').on('touchstart', function (e) {
                 var _this     = $(this);
                 var _group_id = _this.parents('.list').attr('id');
                 var _modal    = $('#groupListModal');
