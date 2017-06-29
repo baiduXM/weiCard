@@ -59,6 +59,7 @@ class CompanyController extends HomeController
             // 返回绑定员工页面
             return view('mobile.employee.index')->with([
                 'employee' => '',
+                'company' => '',
             ]);
         }
         $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;

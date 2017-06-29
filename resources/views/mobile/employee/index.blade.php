@@ -9,16 +9,25 @@
     {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
     {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
     {{--</div>--}}
-    @if($company->is_person)
+    @if($company)
+        @if($company->is_person)
+            <div class="card_choose_b">
+                <ul>
+                    <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
+                </ul>
+            </div>            
+        @else
+            <div class="card_choose">
+                <ul>
+                    <li><a href="{{ url('user') }}">个人名片</a></li>
+                    <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
+                </ul>
+            </div>
+        @endif
+    @else
         <div class="card_choose">
             <ul>
                 <li><a href="{{ url('user') }}">个人名片</a></li>
-                <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
-            </ul>
-        </div>
-    @else
-        <div class="card_choose_b">
-            <ul>
                 <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
             </ul>
         </div>

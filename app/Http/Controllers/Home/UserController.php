@@ -59,13 +59,13 @@ class UserController extends HomeController
             //获取公司信息并判断是否开启员工名片展示
             $company = $user->company;
             $is_person = $company['is_person'];
-            if($is_person){//开启则进入个人名片页面，否则跳转到企业名片
+            if($is_person){//关闭为1跳转到企业名片，否则个人名片可编辑                
+                return redirect('company/employee');
+            }else{
                 return view('mobile.user.index')->with([
                     'user' => $user,
                     'isComplete' => $isComplete,
-                ]);
-            }else{
-                return redirect('company/employee');
+                ]); 
             }
             
         }
