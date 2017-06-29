@@ -346,6 +346,7 @@ class EmployeeController extends HomeController
         Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res) {
             $time = date('Y-m-d H:i:s', time());
             $data = $reader->all()->toArray();
+
             $company_id = Auth::user()->company->id;
             // TODO:置换数组
             $data_swap = $this->swapArray($data);
@@ -354,11 +355,10 @@ class EmployeeController extends HomeController
             $department_swap = $this->swapArray($department);
             $temp = array_unique($data_swap['部门']); // 去重部门
             foreach ($temp as $k => $v) {
-                if (!isset($department_swap['name'])) { // 避免无数据时报错
-                    continue;
-                }
-                if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
-                    continue;
+                if (isset($department_swap['name'])) { // 避免无数据时报错
+                    if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
+                        continue;
+                    }
                 }
                 $department_temp[$k]['company_id'] = $company_id;
                 $department_temp[$k]['name'] = $v;
@@ -377,11 +377,10 @@ class EmployeeController extends HomeController
             $position_swap = $this->swapArray($position);
             $temp = array_unique($data_swap['职位']); // 去重职位
             foreach ($temp as $k => $v) {
-                if (!isset($position_swap['name'])) { // 避免无数据时报错
-                    continue;
-                }
-                if (in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
-                    continue;
+                if (isset($department_swap['name'])) { // 避免无数据时报错
+                    if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
+                        continue;
+                    }
                 }
                 $position_temp[$k]['company_id'] = $company_id;
                 $position_temp[$k]['name'] = $v;
