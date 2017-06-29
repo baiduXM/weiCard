@@ -5,7 +5,8 @@ $(function () {
 
 
     /* 显示modal时，更新form里的action */
-    $('[class^="opshow-"]').on('touchstart', function () {
+    // $('[class^="opshow-"]').on('touchstart', function () {
+    $('[class^="opshow-"]').on('tap', function () {
         var _this  = $(this);
         var _url   = _this.data('url');
         var _modal = _this.data('target');
@@ -22,7 +23,7 @@ $(function () {
     // });
 
     /* 表单ajax提交 */
-    $('.op-submit').on('touchstart', function () {
+    $('.op-submit').on('tap', function () {
         var _this     = $(this);
         var _modal    = _this.parents('.modal');
         var _form     = _this.parents('form');
@@ -41,8 +42,17 @@ $(function () {
                 /* 现实成功消息，刷新当前页面 */
                 $.Display.dismiss(_modal.data('display-name'));
                 $.messager.show("<i class='icon-check'>  " + data + "</i>", {
-                    type: 'success', placement: 'center', autoHide: 800, closeButton: false
+                    type: 'success', placement: 'center', autoHide: 1000, closeButton: false
                 });
+                // if (_method == 'delete') {
+                //
+                // }
+                // if (_method == 'put') {
+                //
+                // }
+                // if (_method == 'post') {
+                //
+                // }
                 setTimeout(window.location.href = _url, 1); // 1s后刷新页面
             },
             error: function (data) {
