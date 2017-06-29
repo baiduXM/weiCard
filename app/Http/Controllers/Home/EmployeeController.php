@@ -283,6 +283,9 @@ class EmployeeController extends HomeController
                 return Config::get('global.ajax');
             }
         }
+//        $excelPath = 'uploads/test.xlsx';
+//        $res = $this->dealExcel($excelPath);
+//        dump($res);
         return redirect()->to('company/employee');
     }
 
@@ -351,14 +354,18 @@ class EmployeeController extends HomeController
             $department_swap = $this->swapArray($department);
             $temp = array_unique($data_swap['部门']); // 去重部门
             foreach ($temp as $k => $v) {
-                if (!in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
-                    $department_temp[$k]['company_id'] = $company_id;
-                    $department_temp[$k]['name'] = $v;
-                    $department[] = array(
-                        'id'   => Department::create($department_temp[$k])->id,
-                        'name' => $v,
-                    );
+                if (!isset($department_swap['name'])) { // 避免无数据时报错
+                    continue;
                 }
+                if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
+                    continue;
+                }
+                $department_temp[$k]['company_id'] = $company_id;
+                $department_temp[$k]['name'] = $v;
+                $department[] = array(
+                    'id'   => Department::create($department_temp[$k])->id,
+                    'name' => $v,
+                );
             }
             $department_swap = $this->swapArray($department);
 
@@ -370,14 +377,18 @@ class EmployeeController extends HomeController
             $position_swap = $this->swapArray($position);
             $temp = array_unique($data_swap['职位']); // 去重职位
             foreach ($temp as $k => $v) {
-                if (!in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
-                    $position_temp[$k]['company_id'] = $company_id;
-                    $position_temp[$k]['name'] = $v;
-                    $position[] = array(
-                        'id'   => Position::create($position_temp[$k])->id,
-                        'name' => $v,
-                    );
+                if (!isset($position_swap['name'])) { // 避免无数据时报错
+                    continue;
                 }
+                if (in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
+                    continue;
+                }
+                $position_temp[$k]['company_id'] = $company_id;
+                $position_temp[$k]['name'] = $v;
+                $position[] = array(
+                    'id'   => Position::create($position_temp[$k])->id,
+                    'name' => $v,
+                );
             }
             $position = array_combine($position_swap['id'], $position_swap['name']);
 
