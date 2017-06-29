@@ -1,7 +1,6 @@
 @extends('mobile.common.mzui')
 @section('title', '名片夹')
 @section('css')
-    <link href="{{ asset('static/lib/mzui/css/mzui.min.css') }}" rel="stylesheet">
 @stop
 @section('content')
     @parent
@@ -166,7 +165,7 @@
             $('.opshow-group').click(function () {
                 var _this     = $(this);
                 var _group_id = _this.parents('.list').attr('id');
-                var _modal    = $(_this.data('target'));
+                var _modal    = _this.data('target');
                 var _form     = $(_modal).find('form');
                 _form.find('#group' + _group_id).attr('checked', true);
             });
