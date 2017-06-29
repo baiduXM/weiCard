@@ -76,10 +76,10 @@
     <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
 
         {{--排序--}}
-        <a class="btn btn-lg circle primary space-sm outline" data-display data-backdrop="true"
-           data-target="#sortModal">
-            <i class="icon icon-list-ul"></i>
-        </a>
+        {{--<a class="btn btn-lg circle primary space-sm outline" data-display data-backdrop="true"--}}
+           {{--data-target="#sortModal">--}}
+            {{--<i class="icon icon-list-ul"></i>--}}
+        {{--</a>--}}
         {{--编辑--}}
         <a class="btn btn-lg circle primary outline" href="{{ 'cardcase/group' }}">
             <i class="icon icon-pencil"></i>
@@ -162,7 +162,8 @@
             });
 
             /* 展开分组 */
-            $('.opshow-group').on('click', function () {
+            $('.opshow-group').on('click', function (e) {
+                e.preventDefault();
                 var _this     = $(this);
                 var _group_id = _this.parents('.list').attr('id');
                 var _modal    = _this.data('target');
