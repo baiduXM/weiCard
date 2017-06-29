@@ -162,7 +162,7 @@
             });
 
             /* 展开分组 */
-            $('.opshow-group').click(function () {
+            $('.opshow-group').on('click', function () {
                 var _this     = $(this);
                 var _group_id = _this.parents('.list').attr('id');
                 var _modal    = _this.data('target');
