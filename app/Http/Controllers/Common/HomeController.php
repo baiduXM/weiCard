@@ -179,7 +179,10 @@ class HomeController extends Controller
                 if (count($person->position_id) <= 0) { // 判断职位是否为空
                     $title = '';
                 } else {
-                    $title = $person->position->name;
+                    if(count($person->position->name)<= 0){
+                        $title = $person->position->name;
+                    }
+                        $title = '';
                 }
                 $message =
                     "BEGIN:VCARD%0A"
