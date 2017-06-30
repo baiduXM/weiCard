@@ -20,9 +20,11 @@ Route::get('/', function () {
     return redirect()->to('user');
 });
 
+
 /* 前台登录 */
 
 // Authentication Routes...
+Route::get('qrcode', 'Auth\HomeAuthController@showQrcode');
 Route::get('login', 'Auth\HomeAuthController@getLogin');
 Route::post('login', 'Auth\HomeAuthController@postLogin');
 Route::get('logout', 'Auth\HomeAuthController@logout');

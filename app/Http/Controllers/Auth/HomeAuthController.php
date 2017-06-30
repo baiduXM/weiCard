@@ -231,7 +231,7 @@ class HomeAuthController extends HomeController
         $jsoninfo = json_decode($output, true);
         $subscribe = $jsoninfo["subscribe"];
         if ($subscribe == 0) {
-            return view('mobile.common.qrcode');
+            return redirect('qrcode');
         }
         $this->oauth_weixinweb($data);
     }
@@ -287,6 +287,11 @@ class HomeAuthController extends HomeController
     protected function isSubscribe()
     {
 //        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+    }
+
+    public function showQrcode()
+    {
+        return view('mobile.common.qrcode');
     }
 
 }
