@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
 
 class HomeAuthController extends HomeController
 {
@@ -164,14 +165,7 @@ class HomeAuthController extends HomeController
      */
     public function handleProviderCallback(Request $request, $driver)
     {
-
-        $oauth = Socialite::with($driver);
-//        $oauthUser = Socialite::with($driver)->user();
-        $oauthUser = $oauth->user();
-        // TODO:判断是否关注公众号->是，登录；否，跳转公众号二维码页面
-//        dump($oauthUser);
-//        exit;
-        // 未登录，登录/注册
+        $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
 
@@ -192,8 +186,8 @@ class HomeAuthController extends HomeController
      */
     protected function oauth_weixinweb($data)
     {
-        // TODO:判断是否关注公众号，是->获取信息注册/登录，否->跳转关注公众号页面
-
+        // 网页扫码没有关注公众号字段
+        // 登录/注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
             if (Auth::guard($this->getGuard())->login($user)) {
@@ -222,6 +216,23 @@ class HomeAuthController extends HomeController
      */
     protected function oauth_weixin($data)
     {
+        // TODO:判断是否关注公众号
+        $home = new HomeController;
+        $token = $home->wx_get_token();
+        $openid = $data['openid'];
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);//执行发送
+        $jsoninfo = json_decode($output, true);
+        $subscribe = $jsoninfo["subscribe"];
+        if ($subscribe == 0) {
+            return view('mobile.common.qrcode');
+        }
         $this->oauth_weixinweb($data);
     }
 
