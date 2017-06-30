@@ -165,14 +165,15 @@ class HomeAuthController extends HomeController
     public function handleProviderCallback(Request $request, $driver)
     {
 
-        $oauthUser = Socialite::with($driver)->user();
+        $oauth = Socialite::with($driver);
+//        $oauthUser = Socialite::with($driver)->user();
+        $oauthUser = $oauth->user();
         // TODO:判断是否关注公众号->是，登录；否，跳转公众号二维码页面
 //        dump($oauthUser);
 //        exit;
         // 未登录，登录/注册
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
-        return redirect($this->redirectPath());
 
 //        if (Auth::check()) { // 已登录，绑定账号
 //            $function_name = 'bind_' . $driver;
@@ -199,11 +200,13 @@ class HomeAuthController extends HomeController
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-            $array['name'] = $data['unionid'];
-            $array['oauth_weixin'] = $data['unionid'];
+            // openid:当前公众号授权唯一码
+            // unionid:同一个开发平台用户唯一码
+            $array['name'] = $data['openid']; // 当前公众号唯一码
             $array['sex'] = $data['sex'];
-            $array['avatar'] = $data['headimgurl'];
+            $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
+            $array['oauth_weixin'] = $data['unionid']; // 同一个开发平台用户唯一码
             if (Auth::guard($this->getGuard())->login($this->create($array))) {
                 return redirect($this->redirectPath());
             }
