@@ -43,26 +43,26 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">职位名称</div>
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="level">职位级别</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--level-->
+                                        </th> --><!--level-->
                                         <th style="">
                                             <div class="th-inner" data-name="company">所属公司</div>
                                             <div class="fht-cell"></div>
                                         </th><!--company-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="is_only">是否唯一</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--is_only-->
+                                        </th> --><!--is_only-->
                                         <th style="">
                                             <div class="th-inner">操作</div>
                                             <div class="fht-cell"></div>
@@ -79,18 +79,21 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                            <!--ID-->
                                             <td>{{ $item->name }}</td><!--职位名称-->
-                                            <td>{{ $item->level }}</td><!--职位级别-->
+                                            <!-- <td>{{ $item->level }}</td> -->
+                                            <!--职位级别-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>
+                                            <!-- <td>
                                                 @if($item->is_only == 1)
                                                     是
                                                 @else
                                                     否
                                                 @endif
-                                            </td><!--是否唯一-->
+                                            </td> -->
+                                            <!--是否唯一-->
                                             <td>
                                                 <a href="{{ url('admin/company_position/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i

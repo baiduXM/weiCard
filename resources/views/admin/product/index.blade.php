@@ -43,10 +43,10 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">产品名称</div>
                                             <div class="fht-cell"></div>
@@ -87,7 +87,8 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                            <!--ID-->
                                             <td>{{ $item->product_name }}</td><!--产品名称-->
                                             <td>{{ $item->product_url }}</td><!--产品链接-->
                                             <td align="center"><img style="width:128px;height:142px;margin:0 auto;" src="{{ asset($item->product_img) }}" alt=""> </td><!--产品图片-->

@@ -40,7 +40,7 @@
                 <tr class="active">
                     <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
                     </th>
-                    <th class="b-phone-w2"><a href="">#</a></th>
+                    <!-- <th class="b-phone-w2"><a href="">#</a></th> -->
                     <th class=" "><a href="">名称</a></th>
                     <th class="b-phone-w2"><a href="">网址</a></th>
                     <th class=" b-td-hide"><a href="">图标</a></th>
@@ -59,7 +59,7 @@
                             <td class="b-phone-w"><input type="checkbox" id="box10">
                                 <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
-                            <td class="b-phone-w2">{{ $item->id }}</td>
+                            <!-- <td class="b-phone-w2">{{ $item->id }}</td> -->
                             <td class="">{{ $item->link_name }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->link_url }}</td>
                             <td class="b-td-width b-td-hide"><i style="font-size: 30px;" class="iconfonts">{{ $item->link_img.';' }}</i> </td>

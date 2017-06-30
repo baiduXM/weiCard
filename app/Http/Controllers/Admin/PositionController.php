@@ -50,7 +50,8 @@ class PositionController extends AdminController
                 }
             }
         }
-        $positions = $query->with('company')->orderBy('level','ASC')->paginate();
+        // $positions = $query->with('company')->orderBy('level','ASC')->paginate();
+        $positions = $query->with('company')->paginate();
         return view('admin.position.index')->with([
             'positions' => $positions,
             'common' => new CommonModel(),
@@ -78,10 +79,10 @@ class PositionController extends AdminController
         /* 验证 */
         $this->validate($request, [
             'Position.name' => 'required',
-            'Position.level' => 'required|regex:/^[0-9]*$/',
+            // 'Position.level' => 'required|regex:/^[0-9]*$/',
         ], [], [
             'Position.name' => '职位名称',
-            'Position.level' => '职位级别',
+            // 'Position.level' => '职位级别',
         ]);
 
         /* 获取字段类型 */
@@ -122,10 +123,10 @@ class PositionController extends AdminController
         $position = Position::find($id);
         $this->validate($request, [
             'Position.name' => 'required',
-            'Position.level' => 'required|regex:/^[0-9]*$/',
+            // 'Position.level' => 'required|regex:/^[0-9]*$/',
         ], [], [
             'Position.name' => '职位名称',
-            'Position.level' => '职位级别',
+            // 'Position.level' => '职位级别',
         ]);
         $data = $request->input('Position');
 

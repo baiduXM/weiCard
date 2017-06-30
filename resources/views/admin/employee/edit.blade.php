@@ -67,7 +67,7 @@
                                 工号</label>
                             <div class="col-md-6">
                                 <input id="number" name="Employee[number]" type="text" placeholder=""
-                                       class="form-control" readonly
+                                       class="form-control"
                                        value="{{ old('Employee.number') ? old('Employee.number') : $employee->number }}">
                             </div>
                             @if ($errors->has('Employee.number'))

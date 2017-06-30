@@ -43,7 +43,7 @@
                             @endif
                         </div><!-- name职位名称 -->
 
-                        <div class="form-group {{ $errors->has('Position.level') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group {{ $errors->has('Position.level') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="level"><span class="text-danger">*</span>
                                 职位级别</label>
                             <div class="col-md-6">
@@ -56,9 +56,9 @@
                                     <strong>{{ $errors->first('Position.level') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- level职位级别 -->
+                        </div> --><!-- level职位级别 -->
 
-                        <div class="form-group {{ $errors->has('Position.is_only') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group {{ $errors->has('Position.is_only') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="is_only">是否唯一</label>
                             <div class="col-md-6">
                                 <div class="checkbox">
@@ -78,7 +78,7 @@
                                         <strong>{{ $errors->first('Position.is_only') }}</strong>
                                     </span>
                             @endif
-                        </div><!--is_only-->
+                        </div> --><!--is_only-->
 
                         <div class="form-group">
                             <div class="col-md-12 widget-left">

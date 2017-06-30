@@ -40,9 +40,9 @@
                 <tr class="active">
                     <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
                     </th>
-                    <th class="b-phone-w2"><a href="">#</a></th>
+                    <!-- <th class="b-phone-w2"><a href="">#</a></th> -->
                     <th class=" "><a href="">职位</a></th>
-                    <th class=" "><a href="">是否唯一</a></th>
+                    <!-- <th class=" "><a href="">是否唯一</a></th> -->
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
                     <th class=" b-td-hide"><a href="">操作</a></th>
                 </tr>
@@ -58,15 +58,15 @@
                             <td class="b-phone-w"><input type="checkbox" id="box10">
                                 <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
-                            <td class="b-phone-w2">{{ $item->id }}</td>
+                            <!-- <td class="b-phone-w2">{{ $item->id }}</td> -->
                             <td class="">{{ $item->name }}</td>
-                            <td>
+                            <!-- <td>
                                 @if($item->is_only == 1)
                                     是
                                 @else
                                     否
                                 @endif
-                            </td>
+                            </td> -->
                             <td class="b-td-icon b-td-hide w-icon">
                                 @if(Auth::user()->company)
                                     <a href="" data-toggle="modal" data-target="#modal-employee-edit"
@@ -125,17 +125,17 @@
                                        value="{{ old('Position.name') ? old('Position.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
-                            <p>
+                            <!-- <p>
                                 <span>职位级别 : </span>
                                 <input type="text" name="Position[level]" placeholder="填写数字，越小级别越高"
                                        value="{{ old('Position.level') ? old('Position.level') : '' }}">
                                 <span class="error-level" style="color: red;"></span>
-                            </p>
-                            <p>
+                            </p> -->
+                            <!-- <p>
                                 <span>是否唯一 : </span>
                                 <input type="checkbox" name="Position[is_only]" value="1" style="display:block;height:13px;" />是
                                 <span class="error-is_only" style="color: red;"></span>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -168,17 +168,17 @@
                                        value="{{ old('Position.name') ? old('Position.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
-                            <p>
+                            <!-- <p>
                                 <span>职位级别 : </span>
                                 <input type="text" name="Position[level]" placeholder="" class="info-level"
                                        value="{{ old('Position.level') ? old('Position.level') : '' }}">
                                 <span class="error-level" style="color: red;"></span>
-                            </p>
-                            <p>
+                            </p> -->
+                            <!-- <p>
                                 <span>是否唯一 : </span>
                                 <input type="checkbox" name="Position[is_only]" value="1" class="info-is_only" style="display:block;height:13px;" />是
                                 <span class="error-is_only" style="color: red;"></span>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -90,10 +90,10 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">用户名</div>
                                             <div class="fht-cell"></div>
@@ -138,7 +138,8 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                            <!--ID-->
                                             <td>{{ $item->nickname }}</td><!--用户名-->
                                             <td>{!! ($item->employee) ? '<a href="'.url('admin/company/'.$item->employee->company_id).'">'.$item->employee->company->name.'</a>' : '' !!}</td><!--公司-->
                                             <td>{!! ($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->

@@ -32,7 +32,8 @@ class PositionController extends HomeController
     public function index()
     {
         if (Auth::user()->company) {
-            $positions = Position::where('company_id', '=', Auth::user()->company->id)->orderBy('level','ASC')->paginate();
+            // $positions = Position::where('company_id', '=', Auth::user()->company->id)->orderBy('level','ASC')->paginate();
+            $positions = Position::where('company_id', '=', Auth::user()->company->id)->paginate();
             return view('web.position.index')->with([
                 'positions' => $positions,
             ]);
@@ -52,12 +53,12 @@ class PositionController extends HomeController
         /* 验证 */
         $this->validate($request, [
             'Position.name' => 'required',
-            'Position.level' => 'required|regex:/^[0-9]*$/',
-            'Position.is_only' => 'boolean',
+            // 'Position.level' => 'required|regex:/^[0-9]*$/',
+            // 'Position.is_only' => 'boolean',
         ], [], [
             'Position.name' => '职位名称',
-            'Position.level' => '职位级别',
-            'Position.is_only' => '是否唯一',
+            // 'Position.level' => '职位级别',
+            // 'Position.is_only' => '是否唯一',
         ]);
         /* 获取字段类型 */
         $data = $request->input('Position');
@@ -100,12 +101,12 @@ class PositionController extends HomeController
         /* 验证 */
         $this->validate($request, [
             'Position.name' => 'required',
-            'Position.level' => 'required|regex:/^[0-9]*$/',
-            'Position.is_only' => 'boolean',
+            // 'Position.level' => 'required|regex:/^[0-9]*$/',
+            // 'Position.is_only' => 'boolean',
         ], [], [
             'Position.name' => '职位名称',
-            'Position.level' => '职位级别',
-            'Position.is_only' => '是否唯一',
+            // 'Position.level' => '职位级别',
+            // 'Position.is_only' => '是否唯一',
         ]);
         $data = $request->input('Position');
 

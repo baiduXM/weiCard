@@ -52,10 +52,10 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--id-->
+                                        </th> --><!--id-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">公司名称</div>
                                             <div class="fht-cell"></div>
@@ -101,7 +101,7 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <td>{{ $item->id }}</td>
+                                                <!-- <td>{{ $item->id }}</td> -->
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
                                                 <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>

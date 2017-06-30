@@ -45,10 +45,10 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">编号</div>
                                             <div class="fht-cell"></div>
@@ -85,7 +85,8 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
+                                            <!-- <td>{{ $item->id }}</td> -->
+                                            <!--ID-->
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>{{ $item->display_name }}</td><!--display_name-->
                                             <td>

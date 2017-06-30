@@ -82,10 +82,10 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="user">所属用户</div>
                                             <div class="fht-cell"></div>
@@ -123,7 +123,7 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <td>{{ $item->id }}</td>
+                                                <!-- <td>{{ $item->id }}</td> -->
                                                 <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : $item->user->name !!}</td>
                                                 <td>
                                                     @if($item->getFollowerType($item->follower_type) == 'u')
