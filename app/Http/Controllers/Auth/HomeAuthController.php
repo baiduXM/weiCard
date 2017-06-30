@@ -217,22 +217,22 @@ class HomeAuthController extends HomeController
     protected function oauth_weixin($data)
     {
         // TODO:判断是否关注公众号
-        $home = new HomeController;
-        $token = $home->wx_get_token();
-        $openid = $data['openid'];
-        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
-        curl_close($ch);//执行发送
-        $jsoninfo = json_decode($output, true);
-        $subscribe = $jsoninfo["subscribe"];
-        if ($subscribe == 0) {
-            return redirect('qrcode');
-        }
+//        $home = new HomeController;
+//        $token = $home->wx_get_token();
+//        $openid = $data['openid'];
+//        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        $output = curl_exec($ch);
+//        curl_close($ch);//执行发送
+//        $jsoninfo = json_decode($output, true);
+//        $subscribe = $jsoninfo["subscribe"];
+//        if ($subscribe == 0) {
+//            return redirect('qrcode');
+//        }
         $this->oauth_weixinweb($data);
     }
 
