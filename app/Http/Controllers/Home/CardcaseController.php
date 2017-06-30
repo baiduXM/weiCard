@@ -70,7 +70,6 @@ class CardcaseController extends HomeController
     }
 
 
-
     /**
      * 名片夹首页 - 移动端
      *
@@ -170,8 +169,26 @@ class CardcaseController extends HomeController
      */
     public function follow(Request $request, $params)
     {
+
         /* 获取参数 */
         $param = explode('-', $params);
+
+        /* 无法关注自己 */
+        if ($param[0] == 'e') {
+            if (Auth::user()->employee) {
+                if ($param[1] == Auth::user()->employee->id) {
+                    $err_msg = '不能关注自己';
+                }
+            }
+        } elseif ($param[0] == 'u') {
+            if ($param[1] == Auth::id()) {
+                $err_msg = '不能关注自己';
+            }
+        }
+        if (isset($err_msg)) {
+            return redirect('cardcase')->with('info', $err_msg);
+        }
+
         switch ($param[0]) {
             case 'e':
                 $data['follower_type'] = 'App\Models\Employee';
@@ -185,60 +202,26 @@ class CardcaseController extends HomeController
         $data['follower_id'] = $param[1];
         $data['user_id'] = Auth::id();
 
-        /* 无法关注自己 */
-        if ($param[0] == 'e') {
-            if (Auth::user()->employee && $param[1] == Auth::user()->employee->id) {
-                $err_code = 701; // 收藏失败
-            }
-        } elseif ($param[0] == 'u') {
-            if ($param[1] == Auth::id()) {
-                $err_code = 701; // 收藏失败
-            }
-        }
-
-
         /* 查看数据库是否有数据 */
         $query = Cardcase::query();
         foreach ($data as $key => $value) {
             $query->where($key, $value);
         }
         $cardcase = $query->first();
-
+        if ($cardcase) {
+            $err_msg = '已关注';
+        } else { // 无，收藏
+            if (Cardcase::create($data)) {
+                $err_msg = '关注成功';
+            }
+        }
         /* ajax收藏 */
         if ($request->ajax()) {
-            if (!isset($err_code)) {
-                if ($cardcase) { // 有，删除
-                    if ($cardcase->delete()) {
-                        $err_code = 750; // 取消收藏成功
-                    } else {
-                        $err_code = 751; // 取消收藏失败
-                    }
-                } else { // 无，收藏
-                    /* 添加名片到名片夹 */
-                    if (Cardcase::create($data)) {
-                        $err_code = 700; // 收藏成功
-                    } else {
-                        $err_code = 701; // 收藏失败
-                    }
-                }
-            }
-            Config::set('global.ajax.err', $err_code);
-            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-            return Config::get('global.ajax');
+            return response()->json($err_msg);
+        } else {
+            return redirect('cardcase')->with('info', $err_msg);
         }
 
-        /* url收藏 */
-        if (!isset($err_code)) {
-            if ($request->isMethod('get')) {
-                if ($cardcase) {
-                    return redirect()->back();// 有，删除
-                    $err_code = 702; // 收藏失败
-                } elseif (Cardcase::create($data)) {
-                    $err_code = 700; // 收藏成功
-                }
-            }
-        }
-        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
     }
 
 
@@ -320,6 +303,7 @@ class CardcaseController extends HomeController
         } elseif ($type == 'u') {
             $param = $type . '-' . Auth::id();
         }
+
         return $this->cardview($param);
     }
 

@@ -97,15 +97,7 @@ class HomeAuthController extends HomeController
         // 判断登录账号是“用户名(name)”还是“邮箱(email)”
         $type = filter_var($username, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if (Auth::guard($this->getGuard())->attempt([$type => $username, 'password' => $password], $request->has('remember'))) {
-            // 1、Web端，且公司拥有者 -> 跳转Web页面
-            // 2、Web端，普通用户|移动端，所有用户 -> 跳转Mobile页面
             return $this->handleUserWasAuthenticated($request, $throttles);
-//            if (!$this->isMobile() && $this->isCompanyOwner()) {
-//            } else {
-//                $this->redirectTo = 'm';
-//                return redirect('m');
-////                return redirect()->intended($this->redirectPath());
-//            }
         }
 
         if ($throttles && !$lockedOut) {
@@ -172,19 +164,21 @@ class HomeAuthController extends HomeController
      */
     public function handleProviderCallback(Request $request, $driver)
     {
+
         $oauthUser = Socialite::with($driver)->user();
-//        if ($oauthUser->user['subscribe'] == 0) { // 未关注
-//            return view('mobile.common.qrcode'); // 跳转公众号二维码
+        // TODO:判断是否关注公众号->是，登录；否，跳转公众号二维码页面
+//        dump($oauthUser);
+//        exit;
+        // 未登录，登录/注册
+        $function_name = 'oauth_' . $driver;
+        $this->$function_name($oauthUser->user);
+        return redirect($this->redirectPath());
+
+//        if (Auth::check()) { // 已登录，绑定账号
+//            $function_name = 'bind_' . $driver;
+//            $this->$function_name($oauthUser->user);
+//            return redirect()->back();
 //        }
-        if (Auth::check()) { // 已登录，绑定账号
-            $function_name = 'bind_' . $driver;
-            $this->$function_name($oauthUser->user);
-            return redirect()->back();
-        } else { // 未登录，登录/注册
-            $function_name = 'oauth_' . $driver;
-            $this->$function_name($oauthUser->user);
-            return redirect($this->redirectPath());
-        }
     }
 
 
@@ -205,8 +199,6 @@ class HomeAuthController extends HomeController
                 return redirect()->intended($this->redirectPath());
             }
         } else { // 不存在，创建，登录
-
-
             $array['name'] = $data['unionid'];
             $array['oauth_weixin'] = $data['unionid'];
             $array['sex'] = $data['sex'];
