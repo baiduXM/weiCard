@@ -2,9 +2,9 @@
 @section('title', '关注公众号二维码')
 @section('content')
     <div class="pro_wrap">
-		<div class="top_imgbg"><img class="img1" src="images/cloud.png"><img class="img2" src="images/clod3.png"><img class="img3" src="images/clod3.png"></div>
+		<div class="top_imgbg"><img class="img1" src="{{ asset('static/mobile/images/cloud.png') }}"><img class="img2" src="{{ asset('static/mobile/images/clod3.png') }}"><img class="img3" src="{{ asset('static/mobile/images/clod3.png') }}"></div>
 	    <div class="pro_code">
-	    	<img src="images/procode.png">
+	    	<img src="{{ asset('static/mobile/images/procode.png') }}">
 	    	<h2>长按二维码关注名片公众号</h2>
 	    </div>
 	    <div class="pro_way">
