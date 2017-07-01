@@ -63,23 +63,26 @@ class EmployeeController extends HomeController
     {
 
         if ($this->is_mobile) {
-//            if (!Auth::user()->employee) {
-//                return redirect()->to('user');
-//            }
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
                 'company'  => Auth::user()->company,
             ]);
         }
-        if (Auth::user()->employee) {
+        if (Auth::user()->company) {
+            $company_id = Auth::user()->company->id;
             $employees = Employee::with(['followers' => function ($query) {
                 $query->where('user_id', '=', Auth::id());
             }])->where('company_id', '=', Auth::user()->employee->company_id)
                 ->paginate();
-            $positions = Position::where('company_id', '=', Auth::user()->employee->company_id)->get();
+//            dump($company_id);
+//            $employees = Employee::where('company_id', $company_id)->paginate();
+//            dump($employees);
+            $positions = Position::where('company_id', $company_id)->get();
+            $departments = Department::where('company_id', $company_id)->get();
             return view('web.employee.index')->with([
-                'employees' => $employees,
-                'positions' => $positions,
+                'employees'   => $employees,
+                'departments' => $departments,
+                'positions'   => $positions,
             ]);
         } else {
             return redirect()->to('user')->with('error', '请先绑定公司');

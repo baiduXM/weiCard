@@ -32,7 +32,7 @@
                                             data-target="#modal-employee-import"><i
                                     class="iconFont">&#xe67d;</i>导入Excel</a>
                     {{--<li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">--}}
-                            {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
+                    {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
                     {{--</li>--}}
                     {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
@@ -147,8 +147,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit"  class="btn btn-primary" value="确认">
-                        <input type="reset"  class="btn btn-default" data-dismiss="modal" value="返回">
+                        <input type="submit" class="btn btn-primary" value="确认">
+                        <input type="reset" class="btn btn-default" data-dismiss="modal" value="返回">
                         {{--<button type="button" class="btn btn-primary operate-import">确认</button>--}}
                         {{--<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>--}}
                     </div>
@@ -183,11 +183,17 @@
                                        value="{{ old('Employee.nickname') ? old('Employee.nickname') : '' }}">
                                 <span class="error-nickname" style="color: red;"></span>
                             </p>
-                            {{--<p>--}}
-                            {{--<span>部门 : </span>--}}
-                            {{--<input type="text" name="Employee[department]" placeholder=""--}}
-                            {{--value="{{ old('Employee.department') ? old('Employee.department') : '' }}">--}}
-                            {{--</p>--}}
+                            <p>
+                                <span>部门 : </span>
+
+                                <select class="info-department_id" id="department_id" name="Employee[department_id]">
+                                    <option value="">选择职位</option>
+                                    @foreach($departments as $department)
+                                        <option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}
+                                                value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
                             <p>
                                 <span>职位 : </span>
                                 <select class="info-position_id" id="position_id" name="Employee[position_id]">
@@ -244,7 +250,7 @@
                 <div class="modal-body">
                     <div class="modal-address">
                         <p><span>公司 : </span><input type="text" name="info-company" value="" readonly></p>
-                        {{--<p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>--}}
+                        <p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>
                         <p><span>职位 : </span><input type="text" name="info-position" value="" readonly></p>
                         <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
@@ -305,6 +311,16 @@
                                 <span class="error-email" style="color: red;"></span>
                             </p>
                             <p>
+                                <span>部门 : </span>
+                                <select class="info-department_id" id="department_id" name="Employee[department_id]">
+                                    <option value="">选择部门</option>
+                                    @foreach($departments as $department)
+                                        <option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}
+                                                value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
+                            <p>
                                 <span>职位 : </span>
                                 <select class="info-position_id" id="position_id" name="Employee[position_id]">
                                     <option value="">选择职位</option>
@@ -313,6 +329,8 @@
                                                 value="{{ $position->id }}">{{ $position->name }}</option>
                                     @endforeach
                                 </select>
+                            </p>
+                            <p>
                                 <span>手机 : </span>
                                 <input type="text" name="Employee[mobile]" placeholder="" class="info-mobile"
                                        value="{{ old('Employee.mobile') ? old('Employee.mobile') : '' }}">
