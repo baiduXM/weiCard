@@ -167,7 +167,10 @@ class HomeAuthController extends HomeController
     {
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
-        $this->$function_name($oauthUser->user);
+        $res = $this->$function_name($oauthUser->user);
+        if($res===0){
+            return redirect('qrcode');
+        }
         return redirect($this->redirectPath());
 
 //        if (Auth::check()) { // 已登录，绑定账号
@@ -218,22 +221,11 @@ class HomeAuthController extends HomeController
     protected function oauth_weixin($data)
     {
         // TODO:判断是否关注公众号
-//        $home = new HomeController;
-//        $token = $home->wx_get_token();
-//        $openid = $data['openid'];
-//        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        $output = curl_exec($ch);
-//        curl_close($ch);//执行发送
-//        $jsoninfo = json_decode($output, true);
-//        $subscribe = $jsoninfo["subscribe"];
-//        if ($subscribe == 0) {
-//            return redirect('qrcode');
-//        }
+        $jsoninfo = $this->isSubscribe($data);
+        $subscribe = $jsoninfo["subscribe"];
+        if ($subscribe == 0) {
+           return 0;
+        }
         $this->oauth_weixinweb($data);
     }
 
@@ -285,9 +277,22 @@ class HomeAuthController extends HomeController
         $this->bind_weixinweb($data);
     }
 
-    protected function isSubscribe()
+    protected function isSubscribe($data)
     {
 //        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        $home = new HomeController;
+        $token = $home->wx_get_token();
+        $openid = $data['openid'];
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $openid . '&lang=zh_CN';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);//执行发送
+        $jsoninfo = json_decode($output, true);
+        return $jsoninfo;
     }
 
     public function showQrcode()
