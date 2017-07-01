@@ -159,7 +159,7 @@ class HomeAuthController extends HomeController
      * 第三方登录 - 回调地址
      *
      * @param Request $request
-     * @param         $driver
+     * @param         $driver weixin|weixinweb
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -168,6 +168,7 @@ class HomeAuthController extends HomeController
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $this->$function_name($oauthUser->user);
+        return redirect($this->redirectPath());
 
 //        if (Auth::check()) { // 已登录，绑定账号
 //            $function_name = 'bind_' . $driver;
