@@ -171,7 +171,10 @@ class HomeAuthController extends HomeController
         if($res===0){
             return redirect('qrcode');
         }
-        return redirect($this->redirectPath());
+        if(Auth::check()){
+            return redirect()->intended($this->redirectPath());
+        }
+        // return redirect($this->redirectPath());
 
 //        if (Auth::check()) { // 已登录，绑定账号
 //            $function_name = 'bind_' . $driver;
@@ -194,9 +197,10 @@ class HomeAuthController extends HomeController
         // 登录/注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
-            if (Auth::guard($this->getGuard())->login($user)) {
-                return redirect()->intended($this->redirectPath());
-            }
+            // if (Auth::guard($this->getGuard())->login($user)) {
+            //     return redirect()->intended($this->redirectPath());
+            // }
+            return Auth::guard($this->getGuard())->login($user);
         } else { // 不存在，创建，登录
             // openid:当前公众号授权唯一码
             // unionid:同一个开发平台用户唯一码
@@ -205,9 +209,10 @@ class HomeAuthController extends HomeController
             $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
             $array['oauth_weixin'] = $data['unionid']; // 同一个开发平台用户唯一码
-            if (Auth::guard($this->getGuard())->login($this->create($array))) {
-                return redirect($this->redirectPath());
-            }
+            // if (Auth::guard($this->getGuard())->login($this->create($array))) {
+            //     return redirect($this->redirectPath());
+            // }
+            return Auth::guard($this->getGuard())->login($this->create($array));
         }
     }
 
