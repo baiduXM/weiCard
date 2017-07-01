@@ -1,5 +1,9 @@
 @extends('mobile.common.layout')
 @section('title', '关注公众号二维码')
+@section('css')
+    @parent
+    <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
+@stop
 @section('content')
     <div class="pro_wrap">
 		<div class="top_imgbg"><img class="img1" src="{{ asset('static/mobile/images/cloud.png') }}"><img class="img2" src="{{ asset('static/mobile/images/clod3.png') }}"><img class="img3" src="{{ asset('static/mobile/images/clod3.png') }}"></div>
