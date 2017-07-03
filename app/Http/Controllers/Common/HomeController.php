@@ -110,7 +110,44 @@ class HomeController extends Controller
         $jsoninfo = json_decode($output, true);
         //dd($jsoninfo);
         $jsapi_ticket = $jsoninfo["ticket"];
-        return $jsapi_ticket;
+        if(isset($jsapi_ticket)){
+            return $jsapi_ticket;
+        }else{
+            $AppID = env('WEIXIN_KEY');
+            $AppSecret = env('WEIXIN_SECRET');
+            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);//执行发送
+            $jsoninfo = json_decode($output, true);
+            $access_token = $jsoninfo["access_token"];//返回新建的token
+            $expires_in = '300';
+            $time = time();
+            //将新建的access_token存入数据库
+            DB::table('token')->insert([
+                'access_token' => $access_token,
+                'expires_in'   => $expires_in,
+                'update_time'  => $time,
+            ]);
+            $url = sprintf("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi", $access_token);
+            //使用crul模拟
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);//执行发送
+            $jsoninfo = json_decode($output, true);
+            //dd($jsoninfo);
+            $jsapi_ticket = $jsoninfo["ticket"];
+            return $jsapi_ticket;
+        }
+
     }
 
     //生成签名
