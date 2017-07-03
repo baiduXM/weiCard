@@ -49,7 +49,7 @@
                                 <div class="item item-footer justified text-center collapse hidden"
                                      data-subid="{{ $subitem['id'] }}"
                                      id="sub{{ $subitem['id'] }}">
-                                    <a href="tel:{{ $subitem['follower']['mobile'] }}">
+                                    <a href="tel:{{ $subitem['follower']['mobile'] or '' }}">
                                         <i class="icon icon-phone has-padding-sm"></i>拨号
                                     </a>
                                     <a href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
