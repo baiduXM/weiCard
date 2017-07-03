@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
+use App\Models\Employee;
+use App\Models\Position;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,10 +26,13 @@ class DepartmentController extends HomeController
 
     public function index()
     {
-        $company = Auth::user()->employee->company;
-        $departments = Department::where('company_id', '=', $company->id)->paginate();
+        $company = Auth::user()->company;
+        $departments = Department::with('employees', 'owner')->where('company_id', $company->id)->paginate();
+        $positions = Position::where('company_id', $company->id)->get();
         return view('web.department.index')->with([
-            'departments' => $departments,
+            'departments' => $departments, // 部门列表
+            'positions'   => $positions, // 职位列表
+//            'employees'   => $employees, // 员工列表
         ]);
     }
 }

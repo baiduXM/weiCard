@@ -98,13 +98,16 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
-//        Route::post('employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
 //        Route::put('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         /* 我的公司->部门 */
         Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+
         /* 我的公司->公司产品 */
         Route::get('product', ['as' => 'company.product.index', 'uses' => 'Home\ProductController@index']);
         Route::post('product', ['as' => 'company.product.store', 'uses' => 'Home\ProductController@store']);

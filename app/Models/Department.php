@@ -21,6 +21,15 @@ class Department extends CommonModel
     );
 
     /**
+     * 关系模型(一对一) - 交接人
+     */
+    public function owner()
+    {
+        return $this->belongsTo('App\Models\Employee', 'employee_id');
+    }
+
+
+    /**
      * 关系模型(多对一) - 公司
      */
     public function company()

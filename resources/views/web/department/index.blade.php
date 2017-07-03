@@ -23,45 +23,51 @@
                     <th class=""><input type="checkbox" id="box4"><label for="box4"><i
                                     class="iconFont">&#xe7de;</i></label></th>
                     <th class="b-phone-w2"><a href="">部门</a></th>
-                    <th><a href="">负责人</a></th>
-                    <th class="b-phone-w2"><a href="">绑定数/人数</a></th>
+                    <th><a href="">主管</a></th>
+                    <th class="b-phone-w2"><a href="">人数</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th>
                     <th class=" b-td-hide"><a href="">操作</a></th>
                 </tr>
                 </thead>
                 <tbody>
-                {{--<tr class="b-no-bor">--}}
-                {{--<td></td>--}}
-                {{--</tr>--}}
-                {{--@foreach($departments as $item)--}}
-                <tr>
-                    <td class="b-phone-w"><input type="checkbox" id="box3"><label for="box3"><i class="iconFont">&#xe7de;</i></label>
-                    </td>
-                    <td class="b-phone-w2">设计部</td>
-                    <td>李四</td>
-                    <td class="b-td-width">13</td>
-                    <td class="b-td-icon b-td-hide">
-                        <a href="javascript:" data-toggle="modal" data-target=".bs7"><i
-                                    class="iconFont">&#xe613;</i></a>
-                        <a href="javascript:" data-toggle="modal" data-target=".bs8"><i
-                                    class="iconFont">&#xe67d;</i></a>
-                        <a href=""><i class="iconFont">&#xe921;</i></a>
-                        <a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                    class="iconFont">&#xe6d3;</i></a>
-                    </td>
-                    <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
-                    </td>
-                </tr>
-                <tr class="td-icon-hide none" id="firmIcon">
-                    <td id="look"><a href="wdgs-gsbm-phone-look.html"><i class="iconFont">&#xe613;</i></a></td>
-                    <td><a href="javascript:" data-toggle="modal" data-target=".bs8"><i
-                                    class="iconFont">&#xe67d;</i></a></td>
-                    <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                    <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                    class="iconFont">&#xe6d3;</i></a></td>
-                    <td><a href=""></a></td>
-                </tr>
-                {{--@endforeach--}}
+                @if($departments)
+                    @foreach($departments as $item)
+                        <tr>
+                            <td class="b-phone-w">
+                                <input type="checkbox" id="box3"><label for="box3"><i
+                                            class="iconFont">&#xe7de;</i></label>
+                            </td>
+                            <td class="b-phone-w2">{{ $item->name }}</td>
+                            <td>{{ $item->owner->nickname or '' }}</td>
+                            <td class="b-td-width">{{ count($item->employees) }}</td>
+                            <td class="b-td-icon b-td-hide">
+                                <a href="" data-toggle="modal" data-target="#modal-department-edit"
+                                   data-url="{{ url('company/department/'.$item->id) }}" class="operate-edit"><i
+                                            class="iconFont">&#xe632;</i></a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
+                                   class="operate-delete"
+                                   data-url="{{ url('company/department/'.$item->id) }}">
+                                    <i class="iconFont">&#xe6d3;</i></a>
+                            </td>
+                            <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
+                            </td>
+                        </tr>
+                        {{--<tr class="td-icon-hide none" id="firmIcon">--}}
+                        {{--<td id="look"><a href="wdgs-gsbm-phone-look.html"><i class="iconFont">&#xe613;</i></a></td>--}}
+                        {{--<td><a href="javascript:" data-toggle="modal" data-target=".bs8"><i--}}
+                        {{--class="iconFont">&#xe67d;</i></a></td>--}}
+                        {{--<td><a href=""><i class="iconFont">&#xe921;</i></a></td>--}}
+                        {{--<td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i--}}
+                        {{--class="iconFont">&#xe6d3;</i></a></td>--}}
+                        {{--<td><a href=""></a></td>--}}
+                        {{--</tr>--}}
+                    @endforeach
+                @else
+                    <tr class="b-no-bor">
+                        <td colspan="12">还未创建部门</td>
+                    </tr>
+                @endif
+
 
                 </tbody>
             </table>
@@ -92,14 +98,14 @@
                                        value="{{ old('Department.name') ? old('Department.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
-                            <p>
-                                <span>上级部门 : </span>
-                                <select name="Department[pid]" id="">
-                                    <option value="0">顶级部门</option>
-                                    <option value=""></option>
-                                </select>
-                                <span class="error-pid" style="color: red;"></span>
-                            </p>
+                            {{--<p>--}}
+                            {{--<span>上级部门 : </span>--}}
+                            {{--<select name="Department[pid]" id="">--}}
+                            {{--<option value="0">顶级部门</option>--}}
+                            {{--<option value=""></option>--}}
+                            {{--</select>--}}
+                            {{--<span class="error-pid" style="color: red;"></span>--}}
+                            {{--</p>--}}
                             <p>
                                 <span>部门主管 : </span>
                                 <select name="Department[employee_id]" id="">

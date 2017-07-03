@@ -9,10 +9,12 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Breadcrumbs;
+use function MongoDB\BSON\toJSON;
 
 class EmployeeController extends HomeController
 {
@@ -93,7 +95,6 @@ class EmployeeController extends HomeController
      * 添加员工
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -163,7 +164,6 @@ class EmployeeController extends HomeController
      * 查看
      *
      * @param $id
-     *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null|static|static[]
      */
     public function show($id)
@@ -178,7 +178,6 @@ class EmployeeController extends HomeController
      *
      * @param Request $request
      * @param         $id
-     *
      * @return mixed
      */
     public function update(Request $request, $id)
@@ -242,7 +241,6 @@ class EmployeeController extends HomeController
      *
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\RedirectResponse|int
      */
     public function destroy(Request $request, $id)
@@ -267,33 +265,25 @@ class EmployeeController extends HomeController
      * 先上传文件、然后读取excel、解析、
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function import(Request $request)
     {
-//        if ($request->ajax()) {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            // TODO:保存excel文件
-            $excelPath = $this->save($file, 'company', Auth::user()->company->name);
-            $res = $this->dealExcel($excelPath);
-//            dd($res);
-            return redirect()->to('company/employee')->with('success', '成功添加' . $res . '条数据');
-
-            return response()->json($res);
-        } else {
-            return redirect()->to('company/employee');
-
-            $err_code = 802;
-            Config::set('global.ajax.err', $err_code);
-            Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-            return Config::get('global.ajax');
+        if ($request->isMethod('post')) {
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                // TODO:保存excel文件
+                $excelPath = $this->save($file, 'company', Auth::user()->company->name);
+                $res = $this->dealExcel($excelPath);
+                return redirect()->to('company/employee')->with('success', '成功添加' . $res . '条数据');
+            } else {
+                return redirect()->to('company/employee')->with('error', '未检测到文件');
+            }
         }
-//        }
-//        $excelPath = 'uploads/test.xlsx';
-//        $res = $this->dealExcel($excelPath);
-//        dump($res);
+
+        $employees = Employee::with('department', 'position')->where('company_id', Auth::user()->company->id)->limit(10)->get();
+        dump($employees);
+        exit;
         return redirect()->to('company/employee');
     }
 
@@ -345,14 +335,11 @@ class EmployeeController extends HomeController
      * 处理excel
      *
      * @param $filePath 文件路径
-     *
      * @return int 返回已插入数据条数(int)，和错误数据（array）
      */
     protected function dealExcel($filePath)
     {
         $res = 0;
-//        $error = array();
-
         Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$res) {
             $time = date('Y-m-d H:i:s', time());
             $data = $reader->all()->toArray();
@@ -384,25 +371,25 @@ class EmployeeController extends HomeController
 
             // TODO:添加职位
 
-            $position = Position::where('company_id', $company_id)->select('id', 'name')->get()->toArray();
-
-            $position_swap = $position ? $this->swapArray($position) : array('id' => array(), 'name' => array());
-            $temp = array_unique($data_swap['职位']); // 去重职位
-            foreach ($temp as $k => $v) {
-                if (isset($position_swap['name'])) { // 避免无数据时报错
-                    if (in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
-                        continue;
-                    }
-                }
-                $position_temp[$k]['company_id'] = $company_id;
-                $position_temp[$k]['name'] = $v;
-                $position[] = array(
-                    'id'   => Position::create($position_temp[$k])->id,
-                    'name' => $v,
-                );
-            }
-            $position_swap = $this->swapArray($position);
-            $position = array_combine($position_swap['id'], $position_swap['name']);
+//            $position = Position::where('company_id', $company_id)->select('id', 'name')->get()->toArray();
+//
+//            $position_swap = $position ? $this->swapArray($position) : array('id' => array(), 'name' => array());
+//            $temp = array_unique($data_swap['职位']); // 去重职位
+//            foreach ($temp as $k => $v) {
+//                if (isset($position_swap['name'])) { // 避免无数据时报错
+//                    if (in_array($v, $position_swap['name'])) { // 查看是否已存在，不存在添加
+//                        continue;
+//                    }
+//                }
+//                $position_temp[$k]['company_id'] = $company_id;
+//                $position_temp[$k]['name'] = $v;
+//                $position[] = array(
+//                    'id'   => Position::create($position_temp[$k])->id,
+//                    'name' => $v,
+//                );
+//            }
+//            $position_swap = $this->swapArray($position);
+//            $position = array_combine($position_swap['id'], $position_swap['name']);
 
             // TODO:添加员工
 
@@ -412,8 +399,6 @@ class EmployeeController extends HomeController
                     if (in_array($key, $this->importArray)) {
                         if ($key == '部门') {
                             $item = array_search($item, $department);
-                        } elseif ($key == '职位') {
-                            $item = array_search($item, $position);
                         }
                         $employee[$k][array_search($key, $this->importArray)] = $item;
                     }
@@ -423,7 +408,7 @@ class EmployeeController extends HomeController
             }
             $validator = Validator::make($employee, [
                 '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^([A-Za-z0-9])*$/',
-                '*.mobile' => 'required|unique:employees,employees.mobile,null,id,company_id,' . $company_id,
+                '*.mobile' => 'required|unique:employees,employees.mobile,null',
             ], [], [
                 '*.number' => '工号',
                 '*.mobile' => '手机',

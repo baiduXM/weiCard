@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver'   => env('SESSION_DRIVER', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,8 +30,9 @@ return [
     */
 
     'lifetime' => 60 * 24 * 7, // 7天，单位:min
+//    'lifetime' => 30, // 30min
 
-    'expire_on_close' => false, // 永不过期？
+    'expire_on_close' => false, // 关闭过期时间
 
     /*
     |--------------------------------------------------------------------------

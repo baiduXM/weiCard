@@ -58,27 +58,16 @@
                             <td class="b-phone-w"><input type="checkbox" id="box10">
                                 <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
-                            <!-- <td class="b-phone-w2">{{ $item->id }}</td> -->
+                        <!-- <td class="b-phone-w2">{{ $item->id }}</td> -->
                             <td class="">{{ $item->name }}</td>
-                            <!-- <td>
-                                @if($item->is_only == 1)
-                                    是
-                                @else
-                                    否
-                                @endif
-                            </td> -->
                             <td class="b-td-icon b-td-hide w-icon">
-                                @if(Auth::user()->company)
-                                    <a href="" data-toggle="modal" data-target="#modal-employee-edit"
-                                       data-url="{{ url('company/position/'.$item->id) }}" class="operate-edit"><i
-                                                class="iconFont">&#xe632;</i></a>
-                                    {{--<a href="javascript:void(0);" class="operate-share"--}}
-                                    {{--data-url="{{ url('cardcase/follow/e-'.$item->id) }}"><i class="iconFont">&#xe921;</i></a>--}}
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
-                                       class="operate-delete"
-                                       data-url="{{ url('company/position/'.$item->id) }}">
-                                        <i class="iconFont">&#xe6d3;</i></a>
-                                @endif
+                                <a href="" data-toggle="modal" data-target="#modal-employee-edit"
+                                   data-url="{{ url('company/position/'.$item->id) }}" class="operate-edit"><i
+                                            class="iconFont">&#xe632;</i></a>
+                                <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
+                                   class="operate-delete"
+                                   data-url="{{ url('company/position/'.$item->id) }}">
+                                    <i class="iconFont">&#xe6d3;</i></a>
                             </td>
                             <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
                             </td>
@@ -107,7 +96,7 @@
     <!-- 职位 - 添加modal -->
     <div class="modal fade" id="modal-position-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2 modal8">
+            <div class="modal-content modal1">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
@@ -125,7 +114,7 @@
                                        value="{{ old('Position.name') ? old('Position.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
-                            <!-- <p>
+                        <!-- <p>
                                 <span>职位级别 : </span>
                                 <input type="text" name="Position[level]" placeholder="填写数字，越小级别越高"
                                        value="{{ old('Position.level') ? old('Position.level') : '' }}">
@@ -149,7 +138,7 @@
     <!-- 职位 - 编辑modal -->
     <div class="modal fade" id="modal-employee-edit" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2 modal8">
+            <div class="modal-content modal1">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
@@ -168,7 +157,7 @@
                                        value="{{ old('Position.name') ? old('Position.name') : '' }}">
                                 <span class="error-name" style="color: red;"></span>
                             </p>
-                            <!-- <p>
+                        <!-- <p>
                                 <span>职位级别 : </span>
                                 <input type="text" name="Position[level]" placeholder="" class="info-level"
                                        value="{{ old('Position.level') ? old('Position.level') : '' }}">

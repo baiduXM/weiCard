@@ -34,6 +34,14 @@ class Company extends CommonModel
     }
 
     /**
+     * 关系模型(一对一) - 公司创始人
+     */
+    public function owner()
+    {
+        return $this->belongsTo('App\Models\Employee', 'employee_id');
+    }
+
+    /**
      * 关系模型(多对一) - 管理员
      */
     public function manager()
@@ -93,15 +101,14 @@ class Company extends CommonModel
      * 获取状态
      *
      * @param null $index
-     *
      * @return array|mixed
      */
     public function getStatus($index = null)
     {
         $array = [
-            self::VERIFIED_ING => '待审核',
+            self::VERIFIED_ING     => '待审核',
             self::VERIFIED_SUCCEED => '审核通过',
-            self::VERIFIED_FAILED => '审核失败',
+            self::VERIFIED_FAILED  => '审核失败',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : reset($array);
@@ -114,7 +121,6 @@ class Company extends CommonModel
      *
      * @param $code
      * @param $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)

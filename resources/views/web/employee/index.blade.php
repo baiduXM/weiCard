@@ -79,7 +79,7 @@
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
-                            <td class="">{{ $item->position ? $item->position->name : '' }}</td>
+                            <td class="">{{ $item->position ? $item->getPositionForOut($item->company->name, $item->position->name): '' }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"

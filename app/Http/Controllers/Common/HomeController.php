@@ -108,8 +108,7 @@ class HomeController extends Controller
         $output = curl_exec($ch);
         curl_close($ch);//执行发送
         $jsoninfo = json_decode($output, true);
-        //dd($jsoninfo);
-        $jsapi_ticket = $jsoninfo["ticket"];
+        $jsapi_ticket = isset($jsoninfo["ticket"]) ? $jsoninfo["ticket"] : '';
         return $jsapi_ticket;
     }
 
@@ -137,7 +136,6 @@ class HomeController extends Controller
      * 名片预览展示
      *
      * @param $params 类型-ID，u-个人，e-员工，
-     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function cardview($params)
@@ -179,10 +177,10 @@ class HomeController extends Controller
                 if (count($person->position_id) <= 0) { // 判断职位是否为空
                     $title = '';
                 } else {
-                    if(count($person->position->name)<= 0){
+                    if (count($person->position->name) <= 0) {
                         $title = '';
-                        }
-                        $title = $person->position->name;
+                    }
+                    $title = $person->position->name;
                 }
                 $message =
                     "BEGIN:VCARD%0A"
@@ -264,7 +262,6 @@ class HomeController extends Controller
      * 获取用户分组
      *
      * @param int $user_id 用户ID
-     *
      * @return mixed 分组数组
      */
     public function getGroups($user_id)
@@ -278,5 +275,8 @@ class HomeController extends Controller
         array_unshift($groups, $group); // 将默认数组加入到$groups中
         return $groups;
     }
+
+
+
 }
 

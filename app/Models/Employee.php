@@ -29,6 +29,22 @@ class Employee extends CommonModel
     }
 
     /**
+     * 关系模型(一对一) - 部门 负责人
+     */
+    public function ownerDepartment()
+    {
+        return $this->hasOne('App\Models\Department', 'employee_id');
+    }
+
+    /**
+     * 关系模型(一对一) - 公司 负责人
+     */
+    public function ownerCompany()
+    {
+        return $this->hasOne('App\Models\Company', 'employee_id');
+    }
+
+    /**
      * 关系模型(多对一) - 公司
      */
     public function company()
@@ -65,7 +81,7 @@ class Employee extends CommonModel
      */
     public function templates()
     {
-        return $this->morphToMany('App\Models\Template', 'useable','template_useable');
+        return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
     }
 
 }

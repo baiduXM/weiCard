@@ -137,7 +137,6 @@ class CardcaseController extends HomeController
      * 字符串转拼音
      *
      * @param array $data
-     *
      * @return mixed
      */
     private function getPinyin($data)
@@ -164,7 +163,6 @@ class CardcaseController extends HomeController
      *
      * @param Request $request
      * @param         $params   类型-ID
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function follow(Request $request, $params)
@@ -185,8 +183,13 @@ class CardcaseController extends HomeController
                 $err_msg = '不能关注自己';
             }
         }
+
         if (isset($err_msg)) {
-            return redirect('cardcase')->with('info', $err_msg);
+            if ($request->ajax()) {
+                return response()->json($err_msg);
+            } else {
+                return redirect('cardcase')->with('info', $err_msg);
+            }
         }
 
         switch ($param[0]) {
@@ -230,7 +233,6 @@ class CardcaseController extends HomeController
      *
      * @param Request $request
      * @param         $params
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unfollow(Request $request, $params)
@@ -293,7 +295,6 @@ class CardcaseController extends HomeController
      * 展示名片
      *
      * @param string $type 名片类型，u-个人，e-员工，c-公司
-     *
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function show($type = 'u')
@@ -310,7 +311,6 @@ class CardcaseController extends HomeController
     /**
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function ajaxShow(Request $request, $id)
@@ -335,11 +335,10 @@ class CardcaseController extends HomeController
 
 
     /**
-     * 删除名片
+     * 删除名片/取消关注
      *
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
@@ -364,7 +363,6 @@ class CardcaseController extends HomeController
      *
      * @param Request $request
      * @param int     $id 名片ID
-     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function move(Request $request, $id)
