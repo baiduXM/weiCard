@@ -27,7 +27,7 @@
                                         <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
                                     </div>
                                     <div class="content">
-                                        <div class="title">{{ $subitem['follower']['nickname'] }}</div>
+                                        <div class="title">{{ $subitem['follower']['nickname'] or '' }}</div>
                                         <div class="subtitle">
                                             @if($subitem['follower_type']=='App\Models\User')
                                                 <label class="warning has-padding-h rounded">
