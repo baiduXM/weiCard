@@ -167,7 +167,6 @@ class CardcaseController extends HomeController
      */
     public function follow(Request $request, $params)
     {
-
         /* 获取参数 */
         $param = explode('-', $params);
 
@@ -218,6 +217,7 @@ class CardcaseController extends HomeController
                 $err_msg = '关注成功';
             }
         }
+
         /* ajax收藏 */
         if ($request->ajax()) {
             return response()->json($err_msg);
