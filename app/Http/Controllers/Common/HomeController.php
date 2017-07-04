@@ -110,8 +110,9 @@ class HomeController extends Controller
         $jsoninfo = json_decode($output, true);
 
         //dd($jsoninfo);
-        $jsapi_ticket = $jsoninfo["ticket"];
-        if(isset($jsapi_ticket)){
+        //$jsapi_ticket = $jsoninfo["ticket"];
+        if(isset($jsoninfo["ticket"])){
+            $jsapi_ticket = $jsoninfo["ticket"];
             return $jsapi_ticket;
         }else{
             $AppID = env('WEIXIN_KEY');

@@ -96,7 +96,11 @@ class EmployeeController extends HomeController
      */
     public function store(Request $request)
     {
-        $company = Auth::user()->company;
+        if(Auth::user()->company){
+            $company = Auth::user()->company;
+        }else{
+            return redirect()->to('user')->with('error', '获取公司错误');
+        }
         /* 验证 */
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
