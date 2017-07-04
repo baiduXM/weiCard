@@ -9,12 +9,9 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Breadcrumbs;
-use function MongoDB\BSON\toJSON;
 
 class EmployeeController extends HomeController
 {
@@ -99,14 +96,15 @@ class EmployeeController extends HomeController
      */
     public function store(Request $request)
     {
+        $company = Auth::user()->company;
         /* 验证 */
         $this->validate($request, [
-            'Employee.number'    => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
-            'Employee.email'     => 'email|unique:employees,employees.email,',
+            'Employee.mobile'    => 'required|unique:employees,employees.mobile|numeric',
+            'Employee.email'     => 'email',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
-            'Employee.mobile'    => '',
         ], [], [
             'Employee.number'    => '工号',
             'Employee.nickname'  => '姓名',
@@ -117,22 +115,22 @@ class EmployeeController extends HomeController
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;       //唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
-            }
-        } else {
-            $allow = true;        //非唯一职位，允许添加
-        }
+//        $position_only = Position::where('id', '=', $data['position_id'])->first();
+//        if ($position_only['is_only'] == 1) {
+//            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+//            if (!empty($employee_only)) {
+//                $allow = false;       //唯一职位已存在员工时，不允许添加
+//            } else {
+//                $allow = true;
+//            }
+//        } else {
+//            $allow = true;        //非唯一职位，允许添加
+//        }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
         }
-        if ($allow) {
+//        if ($allow) {
             foreach ($data as $key => $value) {
                 if ($value === '') {
                     $data[$key] = null; // 未填字段设置为null，否则会保存''
@@ -151,9 +149,9 @@ class EmployeeController extends HomeController
             } else {
                 $err_code = 301;
             }
-        } else {
-            $err_code = 302;
-        }
+//        } else {
+//            $err_code = 302;
+//        }
 
         Config::set('global.ajax.err', $err_code);
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
@@ -185,12 +183,12 @@ class EmployeeController extends HomeController
         $employee = Employee::find($id);
         /* 验证 */
         $this->validate($request, [
-            'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
             'Employee.email'     => 'email|unique:employees,employees.email,' . $id,
+            'Employee.mobile'    => 'required|unique:employees,employees.mobile,' . $id . '|numeric',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
-            'Employee.mobile'    => '',
         ], [], [
             'Employee.number'    => '工号',
             'Employee.nickname'  => '姓名',
@@ -200,18 +198,18 @@ class EmployeeController extends HomeController
             'Employee.mobile'    => '手机',
         ]);
         $data = $request->input('Employee');
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;//唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
-            }
-        } else {
-            $allow = true;//非唯一职位，允许添加
-        }
-        if ($allow) {
+//        $position_only = Position::where('id', '=', $data['position_id'])->first();
+//        if ($position_only['is_only'] == 1) {
+//            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
+//            if (!empty($employee_only)) {
+//                $allow = false;//唯一职位已存在员工时，不允许添加
+//            } else {
+//                $allow = true;
+//            }
+//        } else {
+//            $allow = true;//非唯一职位，允许添加
+//        }
+//        if ($allow) {
             /* 获取文件类型 */
             if ($request->hasFile('Employee.avatar')) {
                 $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
@@ -227,9 +225,9 @@ class EmployeeController extends HomeController
             } else {
                 $err_code = 501;
             }
-        } else {
-            $err_code = 502;
-        }
+//        } else {
+//            $err_code = 502;
+//        }
 
         Config::set('global.ajax.err', $err_code);
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
@@ -280,10 +278,6 @@ class EmployeeController extends HomeController
                 return redirect()->to('company/employee')->with('error', '未检测到文件');
             }
         }
-
-        $employees = Employee::with('department', 'position')->where('company_id', Auth::user()->company->id)->limit(10)->get();
-        dump($employees);
-        exit;
         return redirect()->to('company/employee');
     }
 

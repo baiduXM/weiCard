@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::group(['prefix' => 'company'], function () {
         Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::get('employee/update/{id?}', ['uses' => 'Common\HomeController@updatePositions']);
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
@@ -103,10 +104,11 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         /* 我的公司->部门 */
-        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
-        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
-        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
-        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+        Route::resource('department', 'Home\DepartmentController');
+//        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
+//        Route::get('department/{id}', ['as' => 'company.department.show', 'uses' => 'Home\DepartmentController@show']);
+//        Route::put('department/{id}', ['as' => 'company.department.update', 'uses' => 'Home\DepartmentController@update']);
+//        Route::delete('department/{id}', ['as' => 'company.department.destroy', 'uses' => 'Home\DepartmentController@destroy']);
 
         /* 我的公司->公司产品 */
         Route::get('product', ['as' => 'company.product.index', 'uses' => 'Home\ProductController@index']);

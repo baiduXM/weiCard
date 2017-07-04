@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
-use Mockery\Exception;
 
 class HomeAuthController extends HomeController
 {
@@ -159,14 +158,7 @@ class HomeAuthController extends HomeController
      */
     public function handleProviderCallback(Request $request, $driver)
     {
-        if (Auth::check()) {
-            return redirect($this->redirectPath());
-        }
-        try{
-            $oauthUser = Socialite::with($driver)->user();
-        } catch(InvalidStateException $e){
-            return redirect('/');
-        }
+        // TODO：做异常处理
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $res = $this->$function_name($oauthUser->user);
@@ -191,9 +183,6 @@ class HomeAuthController extends HomeController
         // 登录/注册
         $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
         if ($user) { // 存在，登录
-            // if (Auth::guard($this->getGuard())->login($user)) {
-            //     return redirect()->intended($this->redirectPath());
-            // }
             return Auth::guard($this->getGuard())->login($user);
         } else { // 不存在，创建，登录
             // openid:当前公众号授权唯一码
@@ -203,9 +192,6 @@ class HomeAuthController extends HomeController
             $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
             $array['oauth_weixin'] = $data['unionid']; // 同一个开发平台用户唯一码
-            // if (Auth::guard($this->getGuard())->login($this->create($array))) {
-            //     return redirect($this->redirectPath());
-            // }
             return Auth::guard($this->getGuard())->login($this->create($array));
         }
     }
