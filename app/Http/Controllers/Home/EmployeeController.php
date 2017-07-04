@@ -104,7 +104,7 @@ class EmployeeController extends HomeController
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
-            'Employee.mobile'    => 'required|unique:employees,employees.mobile|regex:/^1[0-9]{10}*$/',
+            'Employee.mobile'    => 'required|unique:employees,employees.mobile|numeric',
             'Employee.email'     => 'email',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
@@ -189,7 +189,7 @@ class EmployeeController extends HomeController
             'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
             'Employee.email'     => 'email|unique:employees,employees.email,' . $id,
-            'Employee.mobile'    => 'required|unique:employees,employees.mobile,' . $id . '|regex:/^1[0-9]{10}*$/',
+            'Employee.mobile'    => 'required|unique:employees,employees.mobile,' . $id . '|numeric',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
@@ -213,21 +213,21 @@ class EmployeeController extends HomeController
 //            $allow = true;//非唯一职位，允许添加
 //        }
 //        if ($allow) {
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-            }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+        }
 
-            foreach ($data as $key => $value) {
-                if ($value !== '') {
-                    $employee->$key = $data[$key];
-                }
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $employee->$key = $data[$key];
             }
-            if ($employee->save()) {
-                $err_code = 500;
-            } else {
-                $err_code = 501;
-            }
+        }
+        if ($employee->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
+        }
 //        } else {
 //            $err_code = 502;
 //        }
