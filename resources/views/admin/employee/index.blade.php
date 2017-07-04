@@ -112,7 +112,9 @@
                                             <!--部门-->
                                             <td>{!! ($item->position) ? '<a href="'.url('admin/position/'.$item->position->id).'">'.$item->position->name.'</a>' : '' !!}</td>
                                             <!--头衔-->
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
+                                            <!-- <td>{{ $item->created_at->format('Y-m-d') }}</td> -->
+                                            <!--创建时间-->
+                                            <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td><!--创建时间-->
                                             <td>
                                                 <a href="{{ url('admin/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
