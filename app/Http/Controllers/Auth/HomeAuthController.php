@@ -35,7 +35,6 @@ class HomeAuthController extends HomeController
      */
     /**
      * @param Request $request
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|mixed
      */
     public function getLogin(Request $request)
@@ -72,7 +71,6 @@ class HomeAuthController extends HomeController
      * 账号可以是用户名（name）或邮箱（email）
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)
@@ -114,7 +112,6 @@ class HomeAuthController extends HomeController
      * 注册验证
      *
      * @param array $data
-     *
      * @return mixed
      */
     protected function validator(array $data)
@@ -130,7 +127,6 @@ class HomeAuthController extends HomeController
      * 注册创建用户
      *
      * @param array $data
-     *
      * @return static
      */
     protected function create(array $data)
@@ -147,7 +143,6 @@ class HomeAuthController extends HomeController
      * 第三方登录 - 请求接口
      *
      * @param $driver
-     *
      * @return mixed
      */
     public function redirectToProvider($driver)
@@ -160,27 +155,27 @@ class HomeAuthController extends HomeController
      *
      * @param Request $request
      * @param         $driver weixin|weixinweb
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function handleProviderCallback(Request $request, $driver)
     {
+        if (Auth::check()) {
+            return redirect($this->redirectPath());
+        }
+        try{
+            $oauthUser = Socialite::with($driver)->user();
+        } catch(InvalidStateException $e){
+            return redirect('/');
+        }
         $oauthUser = Socialite::with($driver)->user();
         $function_name = 'oauth_' . $driver;
         $res = $this->$function_name($oauthUser->user);
-        if($res===0){
+        if ($res === 0) {
             return redirect('qrcode');
         }
-        if(Auth::check()){
+        if (Auth::check()) {
             return redirect()->intended($this->redirectPath());
         }
-        // return redirect($this->redirectPath());
-
-//        if (Auth::check()) { // 已登录，绑定账号
-//            $function_name = 'bind_' . $driver;
-//            $this->$function_name($oauthUser->user);
-//            return redirect()->back();
-//        }
     }
 
 
@@ -188,7 +183,6 @@ class HomeAuthController extends HomeController
      * 第三方登录 - 微信网页扫码
      *
      * @param $data
-     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     protected function oauth_weixinweb($data)
@@ -220,7 +214,6 @@ class HomeAuthController extends HomeController
      * 第三方登录 - 微信登录
      *
      * @param array $data 第三方数据
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function oauth_weixin($data)
@@ -229,7 +222,7 @@ class HomeAuthController extends HomeController
         $jsoninfo = $this->isSubscribe($data);
         $subscribe = $jsoninfo["subscribe"];
         if ($subscribe == 0) {
-           return 0;
+            return 0;
         }
         $this->oauth_weixinweb($data);
     }
@@ -238,7 +231,6 @@ class HomeAuthController extends HomeController
      * 第三方绑定 - 绑定微信
      *
      * @param $data
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function bind_weixinweb($data)

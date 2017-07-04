@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
 use Breadcrumbs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends HomeController
@@ -28,11 +29,26 @@ class DepartmentController extends HomeController
     {
         $company = Auth::user()->company;
         $departments = Department::with('employees', 'owner')->where('company_id', $company->id)->paginate();
-        $positions = Position::where('company_id', $company->id)->get();
+//        $positions = Position::where('company_id', $company->id)->get();
         return view('web.department.index')->with([
             'departments' => $departments, // 部门列表
-            'positions'   => $positions, // 职位列表
-//            'employees'   => $employees, // 员工列表
+//            'positions'   => $positions, // 职位列表
         ]);
     }
+
+    public function store(Request $request)
+    {
+        // TODO:添加部门，只需要名称
+    }
+
+    public function update($id)
+    {
+        // TODO:更新，设置主管
+    }
+
+    public function destroy($id)
+    {
+        // TODO:删除部门，所属员工无部门
+    }
+
 }
