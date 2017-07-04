@@ -79,7 +79,7 @@
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
-                            <td class="">{{ $item->positions or $item->position->name }}</td>
+                            <td class="">{{ $item->positions or (isset($item->position->name)?$item->position->name:'') }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
@@ -156,7 +156,7 @@
             </div>
         </div>
     </div><!-- 员工 - 导入modal -->
-
+    <!-- 员工 - 添加modal star-->
     <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal2 modal8">
@@ -196,13 +196,9 @@
                             </p>
                             <p>
                                 <span>职位 : </span>
-                                <select class="info-position_id" id="position_id" name="Employee[position_id]">
-                                    <option value="">选择职位</option>
-                                    @foreach($positions as $position)
-                                        <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
-                                                value="{{ $position->id }}">{{ $position->name }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="Employee[positions]" placeholder=""
+                                       value="{{ old('Employee.positions') ? old('Employee.positions') : '' }}">
+                                <span class="error-positions" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>照片 : </span>
@@ -251,7 +247,7 @@
                     <div class="modal-address">
                         <p><span>公司 : </span><input type="text" name="info-company" value="" readonly></p>
                         <p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>
-                        <p><span>职位 : </span><input type="text" name="info-position" value="" readonly></p>
+                        <p><span>职位 : </span><input type="text" name="info-positions" value="" readonly></p>
                         <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
                         <p><span>绑定用户 : </span><input type="text" name="info-user" value="" readonly></p>
@@ -322,13 +318,9 @@
                             </p>
                             <p>
                                 <span>职位 : </span>
-                                <select class="info-position_id" id="position_id" name="Employee[position_id]">
-                                    <option value="">选择职位</option>
-                                    @foreach($positions as $position)
-                                        <option {{ old('Employee.position_id') == $position->id ? 'selected' : '' }}
-                                                value="{{ $position->id }}">{{ $position->name }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="Employee[positions]" placeholder="" class="info-positions"
+                                       value="{{ old('Employee.positions') ? old('Employee.positions') : '' }}">
+                                <span class="error-positions" style="color: red;"></span>
                             </p>
                             <p>
                                 <span>手机 : </span>

@@ -321,13 +321,25 @@ class HomeController extends Controller
         $company_id = $company_id ? $company_id : Auth::user()->company->id;
 
         $employees = Employee::with('department', 'position')->where('company_id', $company_id)->get();
+        $success = 0;
+        $error = 0;
         foreach ($employees as $k => $v) {
 //            dump($v->position->name);
-            $v->positions = $this->getPosition4Out($v->department->name, $v->position->name);
-            if ($v->save())
-                dump($v->department->name . '+' . $v->position->name . '->' . $v->positions);
+            if (!$v->positions) {
+                $v->positions = $this->getPosition4Out($v->department->name, $v->position->name);
+                if ($v->positions) {
+                    if ($v->save()) {
+                        $success++;
+                        dump($v->department->name . ' + ' . $v->position->name . ' -> ' . $v->positions);
+                    }
+                } else {
+                    $error++;
+                    echo($v->department->name . ' + ' . $v->position->name . ' ->  null  ' . $v->nickname . '(id:' . $v->id . ')<br>');
+                }
+            }
+
         }
-        echo '更新' . count($employees) . '条记录';
+        echo '更新成功' . $success . '条记录，失败' . $error . '条记录';
         exit;
     }
 
@@ -342,8 +354,7 @@ class HomeController extends Controller
     {
         if ($department && $position) {
             $res = DB::table('dp2out')->where('department', $department)->where('position', $position)->first();
-            return $res->external;
-            return (isset($res->external) && !empty($res->external)) ? $res->external : $position;
+            return isset($res->external) ? $res->external : '';
         }
     }
 
