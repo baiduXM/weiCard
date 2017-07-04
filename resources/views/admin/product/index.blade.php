@@ -14,6 +14,16 @@
                     <div class="bootstrap-table">
                         {{--表单功能栏--}}
                         <div class="fixed-table-toolbar">
+                            <select name="cpr-menu" id="cpr-menu" class="columns btn-group pull-left">
+                                <option value="0">选择公司</option>
+                                @foreach($companies as $company)
+                                    @if($company_id == $company->id)
+                                        <option value="{{$company->id}}" selected>{{$company->display_name}}</option>
+                                    @else
+                                        <option value="{{$company->id}}" >{{$company->display_name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                             <div class="columns btn-group pull-left">
                                 <button class="btn btn-default operate-batch-delete" type="button"
                                         name="operate-batch-delete" data-url="company_product/batch"

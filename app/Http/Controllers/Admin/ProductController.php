@@ -54,12 +54,19 @@ class ProductController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
+            $company_id = $params['company_id'];
+        }else{
+            $company_id = 0;
         }
         $products = $query->with('company')->paginate();
+        $company = new Company;
+        $companies = $company->get();
         return view('admin.product.index')->with([
             'products' => $products,
             'common' => new CommonModel(),
             'params' => $params,
+            'company_id' => $company_id,
+            'companies' => $companies,
         ]);
     }
 

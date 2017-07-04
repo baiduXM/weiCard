@@ -49,13 +49,20 @@ class PositionController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
+            $company_id = $params['company_id'];
+        }else{
+            $company_id = 0;
         }
         // $positions = $query->with('company')->orderBy('level','ASC')->paginate();
         $positions = $query->with('company')->paginate();
+        $company = new Company;
+        $companies = $company->get();
         return view('admin.position.index')->with([
             'positions' => $positions,
             'common' => new CommonModel(),
             'params' => $params,
+            'companies' => $companies,
+            'company_id' => $company_id,
         ]);
     }
 

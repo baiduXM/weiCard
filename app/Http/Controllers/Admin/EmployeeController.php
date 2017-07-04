@@ -59,12 +59,19 @@ class EmployeeController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
+            $company_id = $params['company_id'];
+        }else{
+            $company_id = 0;
         }
+        $company = new Company;
+        $companies = $company->get();
         $employees = $query->with('company')->paginate();
         return view('admin.employee.index')->with([
             'employees' => $employees,
             'common' => new CommonModel(),
             'params' => $params,
+            'companies' => $companies,
+            'company_id' => $company_id,
         ]);
     }
 
