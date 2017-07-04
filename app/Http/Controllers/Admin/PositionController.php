@@ -49,7 +49,11 @@ class PositionController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
-            $company_id = $params['company_id'];
+            if(isset($params['company_id'])){
+                $company_id = $params['company_id'];
+            }else{
+                $company_id = 0;
+            }
         }else{
             $company_id = 0;
         }
