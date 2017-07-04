@@ -278,9 +278,6 @@ class HomeAuthController extends HomeController
         return $jsoninfo;
     }
 
-    public function showQrcode()
-    {
-        return view('mobile.common.qrcode');
-    }
+
 
 }

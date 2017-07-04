@@ -24,7 +24,7 @@ Route::get('/', function () {
 /* 前台登录 */
 
 // Authentication Routes...
-Route::get('qrcode', 'Auth\HomeAuthController@showQrcode');
+Route::get('qrcode', 'Common\HomeController@showQrcode');
 Route::get('login', 'Auth\HomeAuthController@getLogin');
 Route::post('login', 'Auth\HomeAuthController@postLogin');
 Route::get('logout', 'Auth\HomeAuthController@logout');

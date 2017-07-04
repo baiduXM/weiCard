@@ -34,7 +34,10 @@ class HomeController extends Controller
         return $this->is_owner ? true : false;
     }
 
-
+    public function showQrcode()
+    {
+        return view('mobile.common.qrcode');
+    }
 
     /* 微信分享JS-API */
     //获取微信公众号access_token
