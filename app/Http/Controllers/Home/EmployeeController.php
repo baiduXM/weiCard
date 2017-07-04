@@ -99,9 +99,14 @@ class EmployeeController extends HomeController
      */
     public function store(Request $request)
     {
+        if(Auth::user()->company){
+            $company_id = Auth::user()->company->id;
+        }else{
+            return redirect()->to('user')->with('error', '获取公司错误');
+        }
         /* 验证 */
         $this->validate($request, [
-            'Employee.number'    => 'required|unique:employees,employees.number|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
+            'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
             'Employee.email'     => 'email|unique:employees,employees.email,',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
