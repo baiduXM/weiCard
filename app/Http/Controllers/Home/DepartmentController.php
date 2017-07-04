@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
-use App\Models\Employee;
-use App\Models\Position;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class DepartmentController extends HomeController
 {
@@ -44,41 +43,63 @@ class DepartmentController extends HomeController
     public function store(Request $request)
     {
         /* 验证 */
-//        $this->validate($request, [
-//            'Position.name' => 'required',
-//            // 'Position.level' => 'required|regex:/^[0-9]*$/',
-//            // 'Position.is_only' => 'boolean',
-//        ], [], [
-//            'Position.name' => '职位名称',
-//            // 'Position.level' => '职位级别',
-//            // 'Position.is_only' => '是否唯一',
-//        ]);
-//        /* 获取字段类型 */
-//        $data = $request->input('Position');
-//        foreach ($data as $key => $value) {
-//            if ($value === '') {
-//                $data[$key] = null; // 未填字段设置为null，否则会保存''
-//            }
-//        }
-//
-//        $data['company_id'] = Auth::user()->company->id;
-//
-//        /* 添加 */
-//        if (Position::create($data)) {
-//            $err_code = 300;
-//        } else {
-//            $err_code = 301;
-//        }
-//
-//        Config::set('global.ajax.err', $err_code);
-//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-//        return Config::get('global.ajax');
-//        // TODO:添加部门，只需要名称
+        $this->validate($request, [
+            'Department.name' => 'required',
+        ], [], [
+            'Department.name' => '部门名称',
+        ]);
+        /* 获取字段类型 */
+        $data = $request->input('Department');
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
+            }
+        }
+
+        $data['company_id'] = Auth::user()->company->id;
+
+        /* 添加 */
+        if (Department::create($data)) {
+            $err_code = 300;
+        } else {
+            $err_code = 301;
+        }
+
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
         // TODO:更新，设置主管
+        $department = Department::find($id);
+        /* 验证 */
+        $this->validate($request, [
+            'Department.name' => 'required',
+        ], [], [
+            'Department.name' => '部门名称',
+        ]);
+        $data = $request->input('Department');
+
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                if (empty($value)) {
+                    $department->$key = null;
+                    continue;
+                }
+                $department->$key = $data[$key];
+            }
+        }
+        if ($department->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
+        }
+
+        Config::set('global.ajax.err', $err_code);
+        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
+        return Config::get('global.ajax');
     }
 
     public function destroy($id)

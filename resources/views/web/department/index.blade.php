@@ -78,7 +78,7 @@
                     </button>
                     <h4 class="modal-title">添加部门</h4>
                 </div>
-                <form action="{{ url('company/position') }}" method="post" class="form-create"
+                <form action="{{ url('company/department') }}" method="post" class="form-create"
                       enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="modal-body">
@@ -123,20 +123,19 @@
                             </p>
                             <p>
                                 <span>部门主管 : </span>
-                                <select name="Department[employee_id]" id="employee_id" class="info-employee_id" >
-                                    <option value="">选择人员</option>
+                                <select name="Department[employee_id]" id="employee_id" class="info-employee_id">
                                     {{--@foreach($departments as $department)--}}
-                                        {{--<option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}--}}
-                                                {{--value="{{ $department->id }}">{{ $department->name }}</option>--}}
+                                    {{--<option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}--}}
+                                    {{--value="{{ $department->id }}">{{ $department->name }}</option>--}}
                                     {{--@endforeach--}}
                                     {{--@if($department->employees)--}}
-                                        {{--@foreach($department->employees as $employee)--}}
-                                            {{--<option value="{{ $employee->id }}">--}}
-                                                {{--{{ $employee->nickname }}--}}
-                                            {{--</option>--}}
-                                        {{--@endforeach--}}
+                                    {{--@foreach($department->employees as $employee)--}}
+                                    {{--<option value="{{ $employee->id }}">--}}
+                                    {{--{{ $employee->nickname }}--}}
+                                    {{--</option>--}}
+                                    {{--@endforeach--}}
                                     {{--@else--}}
-                                        {{--<option value="">该部门下暂无员工</option>--}}
+                                    {{--<option value="">该部门下暂无员工</option>--}}
                                     {{--@endif--}}
                                 </select>
                                 <span class="error-employee_id" style="color: red;"></span>
@@ -155,7 +154,27 @@
 @section('javascript')
     <script>
         $(function () {
-
+            /* 操作 - 显示 */
+            $(".operate-edit").unbind('click').on('click', function () {
+                var _url  = $(this).data("url");
+                var _form = $(".form-update");
+                _form.attr("action", _url);
+                $.get(_url, function (data) {
+                    _form.find('.info-name').val(data.name);
+                    var str = '<option value="0">选择人员</option>';
+                    if (data.employees.length > 0) { // 加载员工
+                        $.each(data.employees, function (k, v) {
+                            str += '<option value="' + v.id + '">' + v.nickname + '</option>';
+                        });
+                    } else {
+                        str = '<option value="0">部门内暂无员工</option>';
+                    }
+                    _form.find('#employee_id').html(str);
+                    if (data.owner) { // 选中主管
+                        _form.find('#employee_id').val(data.owner.id);
+                    }
+                });
+            });
         });
     </script>
 @stop

@@ -162,63 +162,6 @@ $(function () {
         $("[class^='error-']").addClass('hidden');
     });
 
-    /**
-     * 显示错误信息
-     *
-     * @param data       错误信息
-     */
-    function showError(data) {
-        $.each(data, function (i, n) {
-            $('.error-' + i.split('.')[1]).removeClass('hidden').text(n);
-        });
-    }
-
-    /**
-     * 显示信息
-     *
-     * @param data      数据，必填
-     * @param label     标签名，默认class
-     * @param prefix    前缀，默认空
-     */
-    function showInformation(data, label, prefix) {
-        var selector = '';
-        if (label) {
-            selector = label + '=';
-        } else {
-            selector = 'class=';
-        }
-        if (prefix) {
-            selector = selector + prefix;
-        }
-        $.each(data, function (i, n) {
-            if ($('[' + selector + i + ']').is('img') && n != null) {
-                if (n != null) {
-                    $('[' + selector + i + ']').attr('src', '../' + n);
-                } else {
-                    $('[' + selector + i + ']').attr('src', '../static/home/images/avatar.jpg');
-                }
-            }
-            if ($('[' + selector + i + ']').is('input') && n != null) {
-                if ($('[' + selector + i + ']').attr('type') == "checkbox") {
-                    if (n == 1) {
-                        $('[' + selector + i + ']').prop("checked", true);
-                    } else {
-                        $('[' + selector + i + ']').prop("checked", false);
-                    }
-                } else {
-                    if (typeof n == 'object') { // 判断是否是关系模型对象
-                        $('[' + selector + i + ']').val(n['name']);
-                    } else {
-                        $('[' + selector + i + ']').val(n);
-                    }
-                }
-
-            } else if ($('[' + selector + i + ']').is('select')) {
-                $('[' + selector + i + ']').val(n);
-            }
-        });
-    }
-
 
     /*2017-6-20*/
     $("#iconId").on("click", function () {
@@ -250,3 +193,60 @@ $(function () {
     })
 
 });
+
+/**
+ * 显示错误信息
+ *
+ * @param data       错误信息
+ */
+function showError(data) {
+    $.each(data, function (i, n) {
+        $('.error-' + i.split('.')[1]).removeClass('hidden').text(n);
+    });
+}
+
+/**
+ * 显示信息
+ *
+ * @param data      数据，必填
+ * @param label     标签名，默认class
+ * @param prefix    前缀，默认空
+ */
+function showInformation(data, label, prefix) {
+    var selector = '';
+    if (label) {
+        selector = label + '=';
+    } else {
+        selector = 'class=';
+    }
+    if (prefix) {
+        selector = selector + prefix;
+    }
+    $.each(data, function (i, n) {
+        if ($('[' + selector + i + ']').is('img') && n != null) {
+            if (n != null) {
+                $('[' + selector + i + ']').attr('src', '../' + n);
+            } else {
+                $('[' + selector + i + ']').attr('src', '../static/home/images/avatar.jpg');
+            }
+        }
+        if ($('[' + selector + i + ']').is('input') && n != null) {
+            if ($('[' + selector + i + ']').attr('type') == "checkbox") {
+                if (n == 1) {
+                    $('[' + selector + i + ']').prop("checked", true);
+                } else {
+                    $('[' + selector + i + ']').prop("checked", false);
+                }
+            } else {
+                if (typeof n == 'object') { // 判断是否是关系模型对象
+                    $('[' + selector + i + ']').val(n['name']);
+                } else {
+                    $('[' + selector + i + ']').val(n);
+                }
+            }
+
+        } else if ($('[' + selector + i + ']').is('select')) {
+            $('[' + selector + i + ']').val(n);
+        }
+    });
+}
