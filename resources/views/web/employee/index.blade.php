@@ -280,7 +280,7 @@
                             <p>
                                 <span>工号 : </span>
                                 <input type="text" name="Employee[number]" placeholder="" class="info-number"
-                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}" readonly>
+                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}" >
                                 <span class="error-number" style="color: red;"></span>
                             </p>
                             <p>
