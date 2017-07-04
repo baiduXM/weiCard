@@ -280,10 +280,6 @@ class EmployeeController extends HomeController
                 return redirect()->to('company/employee')->with('error', '未检测到文件');
             }
         }
-
-        $employees = Employee::with('department', 'position')->where('company_id', Auth::user()->company->id)->limit(10)->get();
-        dump($employees);
-        exit;
         return redirect()->to('company/employee');
     }
 

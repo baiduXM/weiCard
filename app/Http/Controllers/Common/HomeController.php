@@ -111,9 +111,9 @@ class HomeController extends Controller
 
         //dd($jsoninfo);
         $jsapi_ticket = $jsoninfo["ticket"];
-        if(isset($jsapi_ticket)){
+        if (isset($jsapi_ticket)) {
             return $jsapi_ticket;
-        }else{
+        } else {
             $AppID = env('WEIXIN_KEY');
             $AppSecret = env('WEIXIN_SECRET');
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
@@ -316,6 +316,37 @@ class HomeController extends Controller
         return $groups;
     }
 
+
+    public function updatePositions($company_id = 0)
+    {
+        $company_id = $company_id ? $company_id : Auth::user()->company->id;
+
+        $employees = Employee::with('department', 'position')->where('company_id', $company_id)->get();
+        foreach ($employees as $k => $v) {
+//            dump($v->position->name);
+            $v->positions = $this->getPosition4Out($v->department->name, $v->position->name);
+            if ($v->save())
+                dump($v->department->name . '+' . $v->position->name . '->' . $v->positions);
+        }
+        echo '更新' . count($employees) . '条记录';
+        exit;
+    }
+
+    /**
+     * 获取对外职位（根据部门-职位）
+     *
+     * @param $department 部门名称
+     * @param $position   职位名称
+     * @return string 对外职位名称
+     */
+    public function getPosition4Out($department, $position)
+    {
+        if ($department && $position) {
+            $res = DB::table('dp2out')->where('department', $department)->where('position', $position)->first();
+            return $res->external;
+            return (isset($res->external) && !empty($res->external)) ? $res->external : $position;
+        }
+    }
 
 
 }

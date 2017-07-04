@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::group(['prefix' => 'company'], function () {
         Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::get('employee/update/{id?}', ['uses' => 'Common\HomeController@updatePositions']);
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);

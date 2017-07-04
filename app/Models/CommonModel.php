@@ -71,20 +71,7 @@ class CommonModel extends Model
         return $array;
     }
 
-    /**
-     * 获取对外职位（根据部门-职位）
-     *
-     * @param $department 部门名称
-     * @param $position   职位名称
-     * @return string 对外职位名称
-     */
-    public function getPositionForOut($department, $position)
-    {
-        if ($department && $position) {
-            $res = DB::table('dp2out')->where('department', $department)->where('position', $position)->first();
-            return (isset($res->external) && !empty($res->external)) ? $res->external : $position;
-        }
-    }
+
 
 //    public function updatePosition($)
 
