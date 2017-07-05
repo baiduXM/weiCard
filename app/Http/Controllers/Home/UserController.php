@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Employee;
+use App\Models\Company;
 use App\Models\User;
 use App\Models\Template;
 use Illuminate\Support\Facades\Auth;
@@ -57,7 +58,9 @@ class UserController extends HomeController
             }
 //            dd($isComplete);
             //获取公司信息并判断是否开启员工名片展示
-            $company = $user->company;
+            $user_id = $user->id;
+            $employee = Employee::where('user_id',$user_id)->first();
+            $company = Company::where('id',$employee['company_id'])->first();
             $is_person = $company['is_person'];
             if($is_person){//关闭为1跳转到企业名片，否则个人名片可编辑                
                 return redirect('company/employee');
