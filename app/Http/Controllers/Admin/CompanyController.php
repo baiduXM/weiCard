@@ -53,7 +53,7 @@ class CompanyController extends AdminController
         $companies = Company::with('user', 'employees')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'common' => new CommonModel(),
+            'common'    => new CommonModel(),
         ]);
     }
 
@@ -66,7 +66,7 @@ class CompanyController extends AdminController
     {
         return view('admin.company.create')->with([
             'company' => new Company(),
-            'common' => new CommonModel(),
+            'common'  => new CommonModel(),
         ]);
     }
 
@@ -80,25 +80,25 @@ class CompanyController extends AdminController
     {
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z0-9]+([A-Za-z0-9])*$/',
+            'Company.name'         => 'required|max:255|unique:companies,companies.name|regex:/^[a-zA-Z0-9]+([A-Za-z0-9])*$/',
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
-            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.homepage' => 'url',
-            'Company.email' => 'email|max:255|unique:companies,companies.email',
-            'Company.telephone' => 'unique:companies,companies.telephone',
-            'Company.address' => 'max:255',
-            'Company.description' => 'max:255',
-            'Company.limit' => 'numeric|required',
+            'Company.logo'         => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.homepage'     => 'url',
+            'Company.email'        => 'email|max:255|unique:companies,companies.email',
+            'Company.telephone'    => 'unique:companies,companies.telephone',
+            'Company.address'      => 'max:255',
+            'Company.description'  => 'max:255',
+//            'Company.limit' => 'numeric|required',
         ], [], [
-            'Company.name' => '公司名称',
+            'Company.name'         => '公司名称',
             'Company.display_name' => '显示名称',
-            'Company.logo' => '公司LOGO',
-            'Company.homepage' => '公司主页',
-            'Company.email' => '公司邮箱',
-            'Company.telephone' => '公司电话',
-            'Company.address' => '公司地址',
-            'Company.description' => '公司简介',
-            'Company.limit' => '员工人数设置',
+            'Company.logo'         => '公司LOGO',
+            'Company.homepage'     => '公司主页',
+            'Company.email'        => '公司邮箱',
+            'Company.telephone'    => '公司电话',
+            'Company.address'      => '公司地址',
+            'Company.description'  => '公司简介',
+//            'Company.limit' => '员工人数设置',
         ]);
 
         /* 获取字段 */
@@ -110,10 +110,10 @@ class CompanyController extends AdminController
         }
 
         /* 默认添加审核通过 */
-        // $data['status'] = 1;
-        $data['status'] = 0;
+        $data['status'] = 1;
+//        $data['status'] = 0;
         $data['manager_id'] = Auth::guard('admin')->id();
-        $data['verified_at'] = date('Y-m-d H:i:s', time());
+//        $data['verified_at'] = date('Y-m-d H:i:s', time());
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
@@ -141,7 +141,7 @@ class CompanyController extends AdminController
         }
         return view('admin.company.show')->with([
             'company' => $company,
-            'common' => new CommonModel(),
+            'common'  => new CommonModel(),
         ]);
     }
 
@@ -160,7 +160,7 @@ class CompanyController extends AdminController
             $common = new CommonModel();
             return view('admin.company.edit')->with([
                 'company' => $company,
-                'common' => $common,
+                'common'  => $common,
             ]);
         } else {
             return redirect('admin/company')->with('error', '您不是超级管理员/审核者，无法修改！');
@@ -171,32 +171,32 @@ class CompanyController extends AdminController
      * 更新
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
 
         $this->validate($request, [
-            'Company.name' => 'required|max:255|unique:companies,companies.name,' . $id,
+            'Company.name'         => 'required|max:255|unique:companies,companies.name,' . $id,
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
-            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.homepage' => 'url',
-            'Company.email' => 'email|max:255|unique:companies,companies.email,' . $id,
-            'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
-            'Company.address' => 'max:255',
-            'Company.description' => 'max:255',
-            'Company.limit' => 'numeric|required',
+            'Company.logo'         => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.homepage'     => 'url',
+            'Company.email'        => 'email|max:255|unique:companies,companies.email,' . $id,
+            'Company.telephone'    => 'unique:companies,companies.telephone,' . $id,
+            'Company.address'      => 'max:255',
+            'Company.description'  => 'max:255',
+//            'Company.limit' => 'numeric|required',
         ], [], [
-            'Company.name' => '公司名称',
+            'Company.name'         => '公司名称',
             'Company.display_name' => '显示名称',
-            'Company.logo' => '公司LOGO',
-            'Company.homepage' => '公司主页',
-            'Company.email' => '公司邮箱',
-            'Company.telephone' => '公司电话',
-            'Company.address' => '公司地址',
-            'Company.description' => '公司简介',
-            'Company.limit' => '员工人数设置',
+            'Company.logo'         => '公司LOGO',
+            'Company.homepage'     => '公司主页',
+            'Company.email'        => '公司邮箱',
+            'Company.telephone'    => '公司电话',
+            'Company.address'      => '公司地址',
+            'Company.description'  => '公司简介',
+//            'Company.limit' => '员工人数设置',
         ]);
         $data = $request->input('Company');
 
@@ -204,8 +204,8 @@ class CompanyController extends AdminController
         if ($request->hasFile('Company.logo')) {
             $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
         }
-        $data['status'] = Company::VERIFIED_ING;
-        $data['manager_id'] = null;
+//        $data['status'] = Company::VERIFIED_ING;
+//        $data['manager_id'] = null;
 
         $company = Company::find($id);
         foreach ($data as $key => $value) {
@@ -255,22 +255,39 @@ class CompanyController extends AdminController
         }
     }
 
+//    /**
+//     * 公司关联用户
+//     *
+//     * @param Request $request
+//     * @param         $id
+//     * @return \Illuminate\Http\RedirectResponse
+//     */
+//    public function binding(Request $request, $id)
+//    {
+//        $code = $request->input('code');
+//        $company = new Company();
+//        $res = $company->binding($code, $id);
+//        if ($res % 100 == 0) {
+//            return redirect('admin/company')->with('success', config('global.msg.' . $res));
+//        } else {
+//            return redirect()->back()->with('error', config('global.msg.' . $res));
+//        }
+//    }
+
+
     /**
-     * 公司关联用户
+     * 解绑公司
      *
-     * @param Request $request
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function binding(Request $request, $id)
+    public function unbinding($id)
     {
-        $code = $request->input('code');
-        $company = new Company();
-        $res = $company->binding($code, $id);
-        if ($res % 100 == 0) {
-            return redirect('admin/company')->with('success', config('global.msg.' . $res));
+        $res = $this->unbindCompany($id);
+        if ($res === true) {
+            return redirect('admin/company')->with('success', '解绑成功');
         } else {
-            return redirect()->back()->with('error', config('global.msg.' . $res));
+            return redirect()->back()->with('error', $res);
         }
     }
 
@@ -285,7 +302,7 @@ class CompanyController extends AdminController
         $company = Company::find($id);
         return view('admin.company.verified')->with([
             'company' => $company,
-            'common' => new CommonModel(),
+            'common'  => new CommonModel(),
         ]);
     }
 
@@ -293,7 +310,7 @@ class CompanyController extends AdminController
      * 提交审核
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postVerified(Request $request, $id)
@@ -329,8 +346,6 @@ class CompanyController extends AdminController
             return redirect()->back();
         }
     }
-
-
 
 
 }

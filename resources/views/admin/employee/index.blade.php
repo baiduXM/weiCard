@@ -20,7 +20,7 @@
                                     @if($company_id == $company->id)
                                         <option value="{{$company->id}}" selected>{{$company->display_name}}</option>
                                     @else
-                                        <option value="{{$company->id}}" >{{$company->display_name}}</option>
+                                        <option value="{{$company->id}}">{{$company->display_name}}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -101,18 +101,19 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <!-- <td>{{ $item->id }}</td> -->
+                                        <!-- <td>{{ $item->id }}</td> -->
                                             <!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
                                             <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->nickname.'</a>' : $item->nickname !!}</td>
                                             <!--姓名-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
                                             <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
                                             <td>{!! ($item->position) ? '<a href="'.url('admin/position/'.$item->position->id).'">'.$item->position->name.'</a>' : '' !!}</td>
                                             <!--头衔-->
-                                            <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td><!--创建时间-->
+                                            <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td>
+                                            <!--创建时间-->
                                             <td>
                                                 <a href="{{ url('admin/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
@@ -120,14 +121,21 @@
                                                 <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(!isset($item->user))
-                                                    <a class="btn btn-primary btn-xs operate-code"
-                                                       data-toggle="modal" data-target="#shareModal"
-                                                       data-code="{{ $item->company->name . '/' . $item->number }}"
-                                                       data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
-                                                       title="代码">
-                                                        <i class="glyphicon glyphicon-copy"></i>代码
-                                                    </a>
+                                                @if($item->user)
+                                                    {{--<a class="btn btn-primary btn-xs operate-code"--}}
+                                                       {{--data-toggle="modal" data-target="#shareModal"--}}
+                                                       {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
+                                                       {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
+                                                       {{--title="代码">--}}
+                                                        {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
+                                                    {{--</a>--}}
+                                                {{--@else--}}
+                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="company_employee/{{ $item->id }}/unbinding"
+                                                       data-info="{{ $item->user->nickname }}"
+                                                       title="解绑用户">
+                                                        <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                 @endif
                                                 <a class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"

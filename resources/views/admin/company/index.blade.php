@@ -57,25 +57,25 @@
                                             <div class="fht-cell"></div>
                                         </th> --><!--id-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">公司名称</div>
+                                            <div class="th-inner" data-name="name">公司账号</div>
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="display_name">显示名称</div>
+                                            <div class="th-inner" data-name="display_name">公司名称</div>
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
                                         <th style="">
                                             <div class="th-inner" data-name="user_name">创始人</div>
                                             <div class="fht-cell"></div>
                                         </th><!--user_name-->
-                                        <th style="">
-                                            <div class="th-inner sortable" data-name="status">状态
-                                                <span class="order">
-                                                    <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span>
-                                            </div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--status-->
+                                        {{--<th style="">--}}
+                                        {{--<div class="th-inner sortable" data-name="status">状态--}}
+                                        {{--<span class="order">--}}
+                                        {{--<span class="caret" style="margin: 10px 5px;"></span>--}}
+                                        {{--</span>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="fht-cell"></div>--}}
+                                        {{--</th><!--status-->--}}
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
@@ -101,23 +101,23 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <!-- <td>{{ $item->id }}</td> -->
+                                            <!-- <td>{{ $item->id }}</td> -->
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
-                                                <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>
-                                                <td>
-                                                    @if($item->deleted_at != null)
-                                                        <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
-                                                    @else
-                                                        @if($item->status == $item::VERIFIED_ING)
-                                                            <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_SUCCEED)
-                                                            <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_FAILED)
-                                                            <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
-                                                        @endif
-                                                    @endif
-                                                </td>
+                                                <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
+                                                {{--<td>--}}
+                                                {{--@if($item->deleted_at != null)--}}
+                                                {{--<span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>--}}
+                                                {{--@else--}}
+                                                {{--@if($item->status == $item::VERIFIED_ING)--}}
+                                                {{--<span class="label label-primary">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@elseif($item->status == $item::VERIFIED_SUCCEED)--}}
+                                                {{--<span class="label label-success">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@elseif($item->status == $item::VERIFIED_FAILED)--}}
+                                                {{--<span class="label label-default">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@endif--}}
+                                                {{--@endif--}}
+                                                {{--</td>--}}
                                                 <td>{{ $item->created_at }}</td>
                                                 <td>
                                                     <a href="{{ url('admin/company/'.$item->id) }}"
@@ -133,16 +133,18 @@
                                                        class="btn btn-white btn-xs" title="查看职位"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>职位</a>
                                                     @if($item->deleted_at == null)
-                                                        @if($item->status == $item::VERIFIED_ING)
-                                                            <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
-                                                               class="btn btn-success btn-xs" title="审核"><i
-                                                                        class="glyphicon glyphicon-bookmark"></i>审核</a>
-                                                        @endif
-                                                        @if(!$item->user)
-                                                            <a href="" class="btn btn-success btn-xs operate-binding"
-                                                               data-toggle="modal" data-target="#bindingModal"
-                                                               data-url="company/{{ $item->id }}/binding" title="绑定用户">
-                                                                <i class="glyphicon glyphicon-link"></i>绑定</a>
+                                                        {{--@if($item->status == $item::VERIFIED_ING)--}}
+                                                            {{--<a href="{{ url('admin/company/'.$item->id . '/verified') }}"--}}
+                                                               {{--class="btn btn-success btn-xs" title="审核"><i--}}
+                                                                        {{--class="glyphicon glyphicon-bookmark"></i>审核</a>--}}
+                                                        {{--@endif--}}
+                                                        @if($item->user)
+                                                            <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                               data-toggle="modal" data-target=".confirmModal"
+                                                               data-url="company/{{ $item->id }}/unbinding"
+                                                               data-info="{{ $item->user->nickname }}"
+                                                               title="解绑用户">
+                                                                <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                         @endif
                                                         <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
                                                            class="btn btn-primary btn-xs" title="编辑"><i

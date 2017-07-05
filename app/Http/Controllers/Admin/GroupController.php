@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\AdminController;
 use App\Models\Group;
-use App\Models\User;
 use Breadcrumbs;
-use Illuminate\Support\Facades\Auth;
 
-class GroupController extends Controller
+class GroupController extends AdminController
 {
     public function __construct()
     {

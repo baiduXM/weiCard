@@ -33,13 +33,6 @@ class Company extends CommonModel
         return $this->belongsTo('App\Models\User');
     }
 
-    /**
-     * 关系模型(一对一) - 公司创始人
-     */
-    public function owner()
-    {
-        return $this->belongsTo('App\Models\Employee', 'employee_id');
-    }
 
     /**
      * 关系模型(多对一) - 管理员

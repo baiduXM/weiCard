@@ -4,14 +4,14 @@
 $(function () {
     /* 添加 */
     $('.operate-add').click(function () {
-        var _url = $(this).data('url');
+        var _url      = $(this).data('url');
         location.href = _url;
     });
 
     /* 员工-职位下拉框联动 */
-    $('#company_id').bind('change',function(){
+    $('#company_id').bind('change', function () {
         $('#position_id option:gt(0)').remove();
-        var _url = 'drop';
+        var _url       = 'drop';
         var company_id = $('#company_id').val();
         $.ajaxSetup({ // 无form表单时
             headers: {
@@ -22,13 +22,13 @@ $(function () {
             url: _url,
             type: "post",
             data: {
-                'company_id':company_id
+                'company_id': company_id
             },
             dataType: 'json',
             success: function (json) {
-                for(var i = 0;i < json.length;i++){
-                    item = json[i];
-                    var html = '<option value='+item['id']+'>'+item['name']+'</option>';
+                for (var i = 0; i < json.length; i++) {
+                    item     = json[i];
+                    var html = '<option value=' + item['id'] + '>' + item['name'] + '</option>';
                     $('#position_id').append(html);
                 }
             },
@@ -39,36 +39,36 @@ $(function () {
     });
 
     /* 产品按公司筛选 */
-    $('#cpr-menu').bind('change',function(){
+    $('#cpr-menu').bind('change', function () {
         var company_id = $("#cpr-menu").val();
-        if(company_id!=0){
-            location.href = 'company_product?company_id='+company_id;
-        }else{
+        if (company_id != 0) {
+            location.href = 'company_product?company_id=' + company_id;
+        } else {
             location.href = 'company_product';
         }
-        
+
     });
 
     /* 职位按公司筛选 */
-    $('#cpo-menu').bind('change',function(){
+    $('#cpo-menu').bind('change', function () {
         var company_id = $("#cpo-menu").val();
-        if(company_id!=0){
-            location.href = 'company_position?company_id='+company_id;
-        }else{
+        if (company_id != 0) {
+            location.href = 'company_position?company_id=' + company_id;
+        } else {
             location.href = 'company_position';
         }
-        
+
     });
 
     /* 员工按公司筛选 */
-    $('#cem-menu').bind('change',function(){
+    $('#cem-menu').bind('change', function () {
         var company_id = $("#cem-menu").val();
-        if(company_id!=0){
-            location.href = 'company_employee?company_id='+company_id;
-        }else{
+        if (company_id != 0) {
+            location.href = 'company_employee?company_id=' + company_id;
+        } else {
             location.href = 'company_employee';
         }
-        
+
     });
 
     /* 全选checkbox */
@@ -82,7 +82,7 @@ $(function () {
 
     /* 单选 */
     $('.selectall-item').click(function () {
-        var length = $('.selectall-item').length;
+        var length        = $('.selectall-item').length;
         var select_length = $('.selectall-item:checked').length;
         if (length == select_length) {
             $('#btSelectAll').prop('checked', true);
@@ -95,9 +95,9 @@ $(function () {
     $('.operate-delete').click(function () {
         $('#confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _info = relatedTarget.data('info');
-            var _url = relatedTarget.data('url');
-            var modal = $(this);
+            var _info         = relatedTarget.data('info');
+            var _url          = relatedTarget.data('url');
+            var modal         = $(this);
             modal.find('.modal-title').text('删除确认');
             modal.find('.modal-body').text('确定删除 ' + _info + ' ？');
             modal.find('form').attr('action', _url);
@@ -118,7 +118,7 @@ $(function () {
     /* 批量删除 */
     $(".operate-batch-delete").click(function () {
         var length = $('.selectall-item:checked').length;
-        var _url = $(this).data('url');
+        var _url   = $(this).data('url');
         if (length == 0) {
             alert('未选择');
             return false;
@@ -138,31 +138,16 @@ $(function () {
             });
         }
     });
-    /* 用户绑定公司 */
-    $(".operate-binding").click(function () {
-        $('#bindingModal').on('show.bs.modal', function (event) {
-            var relatedTarget = $(event.relatedTarget);
-            var _url = relatedTarget.data('url');
-            var _title = relatedTarget.attr('title');
-            var modal = $(this);
-            modal.find('.modal-title').text(_title);
-            if(_title=='绑定员工'){
-                modal.find('#code').attr('placeholder','获取：公司模块组>员工管理>代码');
-            } else {
-                modal.find('#code').attr('placeholder','获取：公司模块组>用户管理>用户名');
-            }
-            modal.find('form').attr('action', _url);
-        });
-    });
+
 
     /* 用户解绑公司 */
     $(".operate-unbinding").click(function () {
         $('#confirmModal').on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _id = relatedTarget.data('id');
-            var _info = relatedTarget.data('info');
-            var _url = relatedTarget.data('url');
-            var modal = $(this);
+            var _id           = relatedTarget.data('id');
+            var _info         = relatedTarget.data('info');
+            var _url          = relatedTarget.data('url');
+            var modal         = $(this);
             modal.find('.modal-title').text('解绑确认');
             modal.find('.modal-body').text('确定与 ' + _info + ' 解除绑定？');
             modal.find('form').attr('action', _url);
@@ -175,8 +160,8 @@ $(function () {
     $(".operate-code").click(function () {
         $('#shareModal').off().on('show.bs.modal', function (event) {
             var relatedTarget = $(event.relatedTarget);
-            var _code = relatedTarget.data('code');
-            var _url_code = relatedTarget.data('url-code');
+            var _code         = relatedTarget.data('code');
+            var _url_code     = relatedTarget.data('url-code');
             console.log(_url_code);
             var modal = $(this);
             // 赋值
@@ -216,7 +201,7 @@ $(function () {
     /* 搜索下拉框 */
     $('.dropdown-item').click(function () {
         var column = $(this).data('column');
-        var txt = $(this).text() + ' <span class="caret"></span>';
+        var txt    = $(this).text() + ' <span class="caret"></span>';
         $('[name="search_column"]').html(txt);
         $('[name="column"]').val(column);
     });
@@ -247,7 +232,7 @@ $(function () {
 
     /* 刷新 */
     $('.operate-refresh').click(function () {
-        var _url = $(this).data('url');
+        var _url      = $(this).data('url');
         location.href = _url;
     });
 
@@ -257,7 +242,7 @@ $(function () {
     });
 
     $('.operate-back').click(function () {
-        var _url = $(this).data('url');
+        var _url  = $(this).data('url');
         var _back = $(this).data('back');
         if (_back == window.location.href) {
             location.href = _url;
@@ -269,17 +254,17 @@ $(function () {
     /* 初始化 */
     function init() {
         // 搜索初始值
-        var column = getQueryString('column');
+        var column  = getQueryString('column');
         var keyword = getQueryString('keyword');
-        column = (column != null) ? column : 'name';
-        keyword = (keyword != null) ? decodeURIComponent(keyword) : '';
-        var txt = $('[name="column_' + column + '"]').text() + ' <span class="caret"></span>';
+        column      = (column != null) ? column : 'name';
+        keyword     = (keyword != null) ? decodeURIComponent(keyword) : '';
+        var txt     = $('[name="column_' + column + '"]').text() + ' <span class="caret"></span>';
         $('[name="search_column"]').html(txt);
         $('[name="column"]').val(column);
         $('[name="keyword"]').val(keyword);
         // 排序初始值
         var sort_column = getQueryString('sort_column');
-        var sort_way = getQueryString('sort_way');
+        var sort_way    = getQueryString('sort_way');
         if (sort_column != null) {
             var _column = $('[data-name="' + sort_column + '"]');
             _column.addClass('color-orange');
@@ -292,7 +277,7 @@ $(function () {
     /* 获取url参数 */
     function getQueryString(name) {
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-        var r = window.location.search.substr(1).match(reg);
+        var r   = window.location.search.substr(1).match(reg);
         if (r != null) {
             return (r[2]);
         }

@@ -177,37 +177,6 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::resource('security', 'Home\SecurityController');
 
 });
-///* ===移动端访问地址=== */
-//Route::group(['prefix' => 'm', 'middleware' => 'auth'], function () {
-//    /* 首页 */
-//    Route::get('/', function () {
-//        return redirect()->route('m.cardcase.index');
-//    });
-////    Route::get('index', ['as' => 'm.index', 'uses' => 'Mobile\IndexController@index']);
-////    Route::get('search', ['as' => 'm.search.index', 'uses' => 'Mobile\IndexController@search']);
-//
-//    /* 名片夹 */
-//    Route::get('cardcase', ['as' => 'm.cardcase.index', 'uses' => 'Mobile\CardcaseController@index']);
-//    Route::get('cardcase/edit', ['as' => 'm.cardcase.edit', 'uses' => 'Mobile\CardcaseController@edit']);
-//
-//    /* 分组 */
-//    Route::get('cardcase/group', ['as' => 'm.group.index', 'uses' => 'Mobile\GroupController@index']);
-//    Route::post('cardcase/group', ['as' => 'm.group.store', 'uses' => 'Mobile\GroupController@store']);
-//
-//    /* 分组 */
-//    Route::resource('tag', 'Mobile\TagController');
-//
-//    /* 公司 */
-//    Route::resource('company', 'Mobile\CompanyController');
-//    /* 员工 */
-//    Route::resource('employee', 'Mobile\EmployeeController');
-//    /* 部门 */
-//    Route::resource('department', 'Mobile\DepartmentController');
-//    /* 职位 */
-//    Route::resource('position', 'Mobile\PositionController');
-//
-////
-//});
 
 /* =====后台管理界面===== */
 
@@ -245,7 +214,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::delete('batch', ['as' => 'admin.user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
         Route::post('{id}/binding', ['as' => 'admin.user.binding', 'uses' => 'Admin\UserController@binding']);
         Route::get('{id}/refresh', ['as' => 'admin.user.refresh', 'uses' => 'Admin\UserController@refresh']);
-        Route::delete('{id}/binding', ['as' => 'admin.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
+//        Route::delete('{id}/binding', ['as' => 'admin.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
     });
     Route::resource('user', 'Admin\UserController');
 
@@ -267,7 +236,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\CompanyController@batchDestroy']);
         Route::get('{id}/verified', ['as' => 'admin.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
         Route::post('{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@postVerified']);
-        Route::post('{id}/binding', ['as' => 'admin.company.binding', 'uses' => 'Admin\CompanyController@binding']);
+        Route::delete('{id}/unbinding', ['as' => 'admin.company.unbinding', 'uses' => 'Admin\CompanyController@unbinding']);
     });
     Route::resource('company', 'Admin\CompanyController');
 
@@ -279,6 +248,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('company_employee/drop', ['as' => 'admin.employee.drop', 'uses' => 'Admin\EmployeeController@drop']);
     Route::group(['prefix' => 'company_employee'], function () {
         Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+        Route::delete('{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+
     });
 
     /* 职位管理 */
