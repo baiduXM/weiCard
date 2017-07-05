@@ -93,7 +93,7 @@
             <p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>
         @endif
         <div class="companyLink">
-            <span>员工名片展示:</span>
+            <span>个人名片展示:</span>
             <div class="com">
                 @if ($company->is_person=='0')
                     <input class="comLinkInput"  name="Company[is_person]" type="radio" checked="checked"   value="0">开
