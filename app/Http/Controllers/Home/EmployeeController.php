@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Company;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +63,12 @@ class EmployeeController extends HomeController
     {
 
         if ($this->is_mobile) {
+            $user_id = Auth::user()->id;
+            $employee = Employee::where('user_id',$user_id)->first();
+            $company = Company::where('id',$employee['company_id'])->first();
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
-                'company'  => Auth::user()->company,
+                'company'  => $company,
             ]);
         }
         if (Auth::user()->company) {
