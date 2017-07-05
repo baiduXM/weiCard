@@ -23,10 +23,10 @@
                             @foreach($item['cardcases'] as $subitem)
                                 {{--名片子项目--}}
                                 <div class="item multi-lines with-avatar">
-                                    <div class="avatar circle">
+                                    <a class="avatar circle" href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
-                                    </div>
-                                    <div class="content">
+                                    </a>
+                                    <a class="content" href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <div class="title">{{ $subitem['follower']['nickname'] or '' }}</div>
                                         <div class="subtitle">
                                             @if($subitem['follower_type']=='App\Models\User')
@@ -39,7 +39,7 @@
                                                 </label>
                                             @endif
                                         </div>
-                                    </div>
+                                    </a>
                                     <a class="btn" data-display="collapse" data-target="#sub{{ $subitem['id'] }}"
                                        data-group=".item-footer">
                                         <i class="icon icon-ellipsis-h muted"></i>

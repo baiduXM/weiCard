@@ -72,7 +72,6 @@ class DepartmentController extends HomeController
 
     public function update(Request $request, $id)
     {
-        // TODO:更新，设置主管
         $department = Department::find($id);
         /* 验证 */
         $this->validate($request, [
@@ -104,7 +103,16 @@ class DepartmentController extends HomeController
 
     public function destroy($id)
     {
-        // TODO:删除部门，所属员工无部门
+        $department = Department::find($id);
+        $err_code = 401; // 删除失败
+        if ($department->delete()) {
+            $err_code = 400; // 删除成功
+        }
+        if ($err_code % 100 == 0) {
+            return redirect('company/department')->with('success', config('global.msg.' . $err_code));
+        } else {
+            return redirect()->back()->with('error', config('global.msg.' . $err_code));
+        }
     }
 
 }
