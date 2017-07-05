@@ -114,10 +114,10 @@ class HomeController extends Controller
 
         //dd($jsoninfo);
         //$jsapi_ticket = $jsoninfo["ticket"];
-        if(isset($jsoninfo["ticket"])){
+        if (isset($jsoninfo["ticket"])) {
             $jsapi_ticket = $jsoninfo["ticket"];
             return $jsapi_ticket;
-        }else{
+        } else {
             $AppID = env('WEIXIN_KEY');
             $AppSecret = env('WEIXIN_SECRET');
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $AppID . '&secret=' . $AppSecret;
@@ -218,14 +218,7 @@ class HomeController extends Controller
                     . $person->company['coordinate_lng'] . '&title=目标位置&content='
                     . $person->company['address'] . '&output=html';
                 /* 二维码名片信息 */
-                if (count($person->position_id) <= 0) { // 判断职位是否为空
-                    $title = '';
-                } else {
-                    if (count($person->position->name) <= 0) {
-                        $title = '';
-                    }
-                    $title = $person->position->name;
-                }
+                $title = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
                 $message =
                     "BEGIN:VCARD%0A"
                     . "VERSION:3.0%0A"
@@ -319,7 +312,6 @@ class HomeController extends Controller
         array_unshift($groups, $group); // 将默认数组加入到$groups中
         return $groups;
     }
-
 
 
 }
