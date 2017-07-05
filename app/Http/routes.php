@@ -88,9 +88,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
-    /* 我的公司 */
-    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
-    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
+
     /* 我的公司->员工 */
     Route::group(['prefix' => 'company'], function () {
         Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
@@ -132,6 +130,11 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::post('position/{id}', ['as' => 'company.position.update', 'uses' => 'Home\PositionController@update']);
         Route::delete('position/{id}', ['as' => 'company.position.destroy', 'uses' => 'Home\PositionController@destroy']);
     });
+    /* 我的公司 */
+//    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
+//    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
+    Route::post('company/binding', ['as' => 'company.binding', 'uses' => 'Home\CompanyController@binding']);
+    Route::resource('company', 'Home\CompanyController');
 
 
     /* 名片夹->分组 */

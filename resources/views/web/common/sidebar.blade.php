@@ -65,7 +65,7 @@
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
                     {{--<li {{ Request::path() == 'company/position' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('company/position') }}">公司职位</a></li>--}}
+                    {{--<a href="{{ url('company/position') }}">公司职位</a></li>--}}
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
@@ -94,6 +94,22 @@
                         <a href="{{ url('template/type/2') }}">公司模板</a></li>
                 </ul>
             </div><!--模板中心-->
+        @else
+            <div class="tree_box nav">
+                <h3 {{ Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
+                    <a href="javascript:"><em class="iconFont">&#xe658;</em>我的公司
+                        @if(Request::path() == 'company' || Request::is('company/*'))
+                            <i class="nav-j"></i>
+                        @else
+                            <i></i>
+                        @endif
+                    </a>
+                </h3>
+                <ul class="tree_one" {{ Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
+                    <li {{ Request::path() == 'company' ? 'class=active' : '' }}>
+                        <a href="{{ url('company') }}">我的公司</a></li>
+                </ul>
+            </div><!--我的公司-->
         @endif
         {{--<div class="tree_box nav ">--}}
         {{--<h3 {{ Request::path() == 'security' || Request::is('security/*') ? 'class=h3-active' : '' }}>--}}

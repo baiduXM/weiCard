@@ -59,18 +59,18 @@ class UserController extends HomeController
 //            dd($isComplete);
             //获取公司信息并判断是否开启员工名片展示
             $user_id = $user->id;
-            $employee = Employee::where('user_id',$user_id)->first();
-            $company = Company::where('id',$employee['company_id'])->first();
+            $employee = Employee::where('user_id', $user_id)->first();
+            $company = Company::where('id', $employee['company_id'])->first();
             $is_person = $company['is_person'];
-            if($is_person){//关闭为1跳转到企业名片，否则个人名片可编辑                
+            if ($is_person) {//关闭为1跳转到企业名片，否则个人名片可编辑
                 return redirect('company/employee');
-            }else{
+            } else {
                 return view('mobile.user.index')->with([
-                    'user' => $user,
+                    'user'       => $user,
                     'isComplete' => $isComplete,
-                ]); 
+                ]);
             }
-            
+
         }
         /* 匹配用户查询所属名片 */
 
@@ -86,7 +86,7 @@ class UserController extends HomeController
 
         return view('web.user.index')->with([
             'employee_id' => $employee_id,
-            'company_id' => $company_id,
+            'company_id'  => $company_id,
         ]);
     }
 
@@ -108,7 +108,7 @@ class UserController extends HomeController
         }
         if ($this->is_mobile) {
             return view('mobile.user.edit')->with([
-                'user' => $user,
+                'user'     => $user,
                 'template' => $template,
             ]);
         }
@@ -129,25 +129,25 @@ class UserController extends HomeController
         $id = Auth::id();
         $this->validate($request, [
 //            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email' => 'email|required|unique:users,users.email,' . $id,
-            'User.mobile' => 'digits:11|required|unique:users,users.mobile,' . $id,
-            'User.fax' => 'max:30',
-            'User.nickname' => 'max:30|required',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.address' => 'max:255',
-            'User.homepage' => 'url:true',
+            'User.email'       => 'email|required|unique:users,users.email,' . $id,
+            'User.mobile'      => 'digits:11|required|unique:users,users.mobile,' . $id,
+            'User.fax'         => 'max:30',
+            'User.nickname'    => 'max:30|required',
+            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.address'     => 'max:255',
+            'User.homepage'    => 'url:true',
 //            'User.sex' => '',
 //            'User.age' => 'max:255',
             'User.description' => 'max:255',
         ], [], [
 //            'User.name' => '账号',
-            'User.email' => '邮箱',
-            'User.mobile' => '手机',
-            'User.fax' => '传真',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.address' => '地址',
-            'User.homepage' => '个人网址',
+            'User.email'       => '邮箱',
+            'User.mobile'      => '手机',
+            'User.fax'         => '传真',
+            'User.nickname'    => '昵称',
+            'User.avatar'      => '头像',
+            'User.address'     => '地址',
+            'User.homepage'    => '个人网址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
             'User.description' => '个性签名',
@@ -182,40 +182,16 @@ class UserController extends HomeController
     public function binding(Request $request)
     {
         $code = $request->input('code');
-        $user = new User();
-        $res = $user->binding($code, Auth::id());
-//        return $res;
+        $res = $this->bindEmployee('mobile', $code, Auth::id());
         if ($request->ajax()) {
             Config::set('global.ajax.err', $res);
             Config::set('global.ajax.msg', config('global.msg.' . $res));
             return Config::get('global.ajax');
-//            return redirect()->back();
         }
-        if ($request->isMethod('POST')) { // 通过原始代码进行绑定
-            return redirect()->back()->with('info', config('global.msg.' . $res));
+        if ($res === true) {
+            return redirect('user')->with('success', '绑定成功');
         }
-        if ($request->isMethod('GET')) { // 通过URL进行绑定
-            return redirect()->back()->with('info', config('global.msg.' . $res));
-        }
-
-//        if ($this->is_mobile) {
-//
-//            return view('mobile.user.binding');
-//        } else {
-//            if ($request->isMethod('POST')) { // 通过原始代码进行绑定
-//                $code = $request->input('code');
-//            }
-//            if ($request->isMethod('GET')) { // 通过URL进行绑定
-//                $code = Input::query('code');
-//            }
-//            $user = new User();
-//            $res = $user->binding($code, Auth::id());
-//            if ($res % 100 == 0) {
-//                return redirect('user')->with('success', config('global.msg.' . $res));
-//            } else {
-//                return redirect()->back()->with('error', config('global.msg.' . $res));
-//            }
-//        }
+        return redirect()->back()->with('error', $res);
     }
 
 }

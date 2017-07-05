@@ -8,7 +8,7 @@ use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\View\View;
 
 class CompanyController extends HomeController
 {
@@ -50,22 +50,28 @@ class CompanyController extends HomeController
     /**
      * 我的公司 - 首页
      *
-     * @return $this
+     * @return View
      */
     public function index()
     {
+        $user = Auth::user();
+        // 判断是否绑定公司
+//        if (!$user->company) {
+//            return view($this->interview . '.company.binding');
+//        }
         // 判断是否绑定员工
-        if (!Auth::user()->employee) {
-            // 返回绑定员工页面
-            return view('mobile.employee.index')->with([
-                'employee' => '',
-                'company' => '',
-            ]);
+        if (!$user->employee) {
+            if ($this->is_mobile) {
+                return view($this->interview . '.employee.index')->with([
+                    'employee' => '',
+                    'company'  => '',
+                ]);
+            }
         }
-        $company = Auth::user()->company ? Auth::user()->company : Auth::user()->employee->company;
+        $company = $user->company;
         return view($this->interview . '.company.index')->with([
             'company' => $company,
-            'common' => new CommonModel(),
+            'common'  => new CommonModel(),
         ]);
 
 
@@ -83,7 +89,6 @@ class CompanyController extends HomeController
      * 更新公司
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
@@ -91,31 +96,31 @@ class CompanyController extends HomeController
         $id = Auth::user()->company->id;
         /* 验证 */
         $this->validate($request, [
-            'Company.name' => 'required|regex:/^[a-zA-Z0-9]+([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
-            'Company.display_name' => 'required|unique:companies,companies.display_name,' . $id,
-            'Company.logo' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.address' => 'max:255',
-            'Company.email' => 'email|unique:companies,companies.email,' . $id,
-            'Company.telephone' => 'unique:companies,companies.telephone,' . $id,
-            'Company.description' => 'max:255',
+            'Company.name'           => 'required|regex:/^([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
+            'Company.display_name'   => 'required|unique:companies,companies.display_name,' . $id,
+            'Company.logo'           => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.address'        => 'max:255',
+            'Company.email'          => 'email|unique:companies,companies.email,' . $id,
+            'Company.telephone'      => 'unique:companies,companies.telephone,' . $id,
+            'Company.description'    => 'max:255',
             'Company.coordinate_lng' => 'max:255',
             'Company.coordinate_lat' => 'max:255',
-            'Company.homepage' => 'url:true',
-            'Company.profilelink' => 'url:true',
+            'Company.homepage'       => 'url:true',
+            'Company.profilelink'    => 'url:true',
             'Company.is_profilelink' => '',
-            'Company.is_person' => '',
+            'Company.is_person'      => '',
         ], [], [
-            'Company.name' => '公司名称',
-            'Company.display_name' => '显示名称',
-            'Company.logo' => '公司LOGO',
-            'Company.address' => '公司地址',
-            'Company.email' => '公司邮箱',
-            'Company.telephone' => '公司电话',
-            'Company.description' => '公司简介',
+            'Company.name'           => '公司名称',
+            'Company.display_name'   => '显示名称',
+            'Company.logo'           => '公司LOGO',
+            'Company.address'        => '公司地址',
+            'Company.email'          => '公司邮箱',
+            'Company.telephone'      => '公司电话',
+            'Company.description'    => '公司简介',
             'Company.coordinate_lng' => '坐标（经度）',
-            'Company.homepage' => '公司网址',
-            'Company.profilelink' => '公司简介外链',
-            'Company.is_person' => '员工名片展示开关',
+            'Company.homepage'       => '公司网址',
+            'Company.profilelink'    => '公司简介外链',
+            'Company.is_person'      => '员工名片展示开关',
 
         ]);
         /* 获取字段类型 */
@@ -143,6 +148,27 @@ class CompanyController extends HomeController
             return redirect()->back();
         }
 
+    }
+
+    /**
+     * 关联员工
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function binding(Request $request)
+    {
+        $code = $request->input('code');
+        $res = $this->bindCompany('name', $code, Auth::id());
+        if ($request->ajax()) {
+//            Config::set('global.ajax.err', $res);
+//            Config::set('global.ajax.msg', config('global.msg.' . $res));
+//            return Config::get('global.ajax');
+        }
+        if ($res === true) {
+            return redirect('company')->with('success', '绑定成功');
+        }
+        return redirect()->back()->with('error', $res);
     }
 
 

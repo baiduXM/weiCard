@@ -183,7 +183,6 @@ class ManagerController extends AdminController
      * 批量删除
      *
      * @param Request $request
-     * @param array $ids
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)

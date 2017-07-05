@@ -2,75 +2,76 @@
 @section('title', '公司')
 @section('content')
     <div id="myCard">
-    @section('breadcrumb')
-        {!! Breadcrumbs::render('company') !!}
-    @show
+        @section('breadcrumb')
+            {!! Breadcrumbs::render('company') !!}
+        @show
         <ul class="nav nav-tabs" id="myTab">
             <li class="active">
                 <a href="">我的公司</a>
             </li>
         </ul><!--tab切换标签-->
         <div class="myCard-content main-cont rt-main" id="company">
-            @if(!Auth::user()->employee){{--没绑定员工--}}
-                <div class="alert alert-info alert-dismissible" role="alert">
-                    未发现您的公司信息
-                </div>
-                <p>
-                    去 <a href="{{ url('user') }}">绑定员工</a> 或 联系客服注册公司
-                </p>
-            @elseif(!Auth::user()->company){{--绑定员工/普通员工--}}
-                @if($company->status == $company::VERIFIED_SUCCEED)
-                    @include('web.company.show'){{--显示公司资料--}}
-                @else
-                    <div class="alert alert-info alert-dismissible" role="alert">
-                        公司未通过审核，暂时无法显示资料
-                    </div>
-                @endif
-            @else{{--绑定员工/创始人--}}
-                @if($company->status == $company::VERIFIED_ING){{--判断公司审核状态--}}
-                    <div class="alert alert-info alert-dismissible" role="alert">
-                        审核中（提交日期:{{ $company->updated_at->format('Y-m-d') }}）我们将在2~3个工作日内审核完成
-                    </div>
-                @elseif($company->status == $company::VERIFIED_SUCCEED)
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        审核通过（{{ $company->updated_at->format('Y-m-d') }}）
-                    </div>
-                @elseif($company->status == $company::VERIFIED_FAILED)
-                    <div class="alert alert-info alert-dismissible" role="alert">
-                        审核失败（原因：{{ $company->reason }}）
-                    </div>
-                @endif
+            @if(Auth::user()->company)
                 @include('web.company.edit'){{--显示公司资料/可编辑--}}
+            @else
+                <p class="add-btn">
+                    <button class="btnBinding" data-toggle="modal" data-target=".bs10" data-url="company/binding">绑定员工
+                    </button>
+                </p>
             @endif
 
         </div><!--主要内容-->
     </div>
 @stop
-
+@section('modal-extend')
+    <!-- 绑定公司/员工modal -->
+    <div class="modal fade bs10" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content modal1">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">绑定公司</h4>
+                </div>
+                <form action="company/binding" method="post">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <p><span>公司账号 : </span><input type="text" name="code"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="保存">
+                        <input type="reset" data-dismiss="modal" value="取消">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@stop
 @section('javascript')
     <script>
-        $('.btnCreate').click(function () { // 注册
-            window.location.href = 'company/create';
-        });
-        $('.btnBinding').click(function () { // 绑定
-            window.location.href = 'company/binding';
-        });
-        $('.btnShow').click(function () { // 查看
-            var company_id = $('#company').data('id');
-            window.location.href = 'company/' + company_id;
-        });
-        $('.btnEdit').click(function () { // 编辑
-            var company_id = $('#company').data('id');
-            window.location.href = 'company/' + company_id + '/edit';
-        });
-        $('.btnQuit').click(function () { // 退出
-            var company_id = $('#company').data('id');
-            window.location.href = 'company/' + company_id + '/quit';
-        });
-        $('.btnDestroy').click(function () { // 注销
-            var company_id = $('#company').data('id');
-            window.location.href = 'company/' + company_id + '/destroy';
-        });
+//        $('.btnCreate').click(function () { // 注册
+//            window.location.href = 'company/create';
+//        });
+//        $('.btnBinding').click(function () { // 绑定
+//            window.location.href = 'company/binding';
+//        });
+//        $('.btnShow').click(function () { // 查看
+//            var company_id       = $('#company').data('id');
+//            window.location.href = 'company/' + company_id;
+//        });
+//        $('.btnEdit').click(function () { // 编辑
+//            var company_id       = $('#company').data('id');
+//            window.location.href = 'company/' + company_id + '/edit';
+//        });
+//        $('.btnQuit').click(function () { // 退出
+//            var company_id       = $('#company').data('id');
+//            window.location.href = 'company/' + company_id + '/quit';
+//        });
+//        $('.btnDestroy').click(function () { // 注销
+//            var company_id       = $('#company').data('id');
+//            window.location.href = 'company/' + company_id + '/destroy';
+//        });
 
     </script>
 @stop
