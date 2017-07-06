@@ -313,6 +313,20 @@ class HomeController extends Controller
         return $groups;
     }
 
+    /**
+     * 将ip地址转换成int型
+     *
+     * @param $ip  ip地址
+     * @return number 返回数值
+     */
+    function get_iplong($ip)
+    {
+        //bindec(decbin(ip2long('这里填ip地址')));
+        //ip2long();的意思是将IP地址转换成整型 ，
+        //之所以要decbin和bindec一下是为了防止IP数值过大int型存储不了出现负数。
+        return bindec(decbin(ip2long($ip)));
+    }
+
 
 }
 
