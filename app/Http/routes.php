@@ -131,8 +131,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::delete('position/{id}', ['as' => 'company.position.destroy', 'uses' => 'Home\PositionController@destroy']);
     });
     /* 我的公司 */
-//    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
-//    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
+    Route::get('company', ['as' => 'company.index', 'uses' => 'Home\CompanyController@index']);
+    Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
     Route::post('company/binding', ['as' => 'company.binding', 'uses' => 'Home\CompanyController@binding']);
     Route::resource('company', 'Home\CompanyController');
 
