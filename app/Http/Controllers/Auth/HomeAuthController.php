@@ -187,14 +187,17 @@ class HomeAuthController extends HomeController
     {
         // 网页扫码没有关注公众号字段
         // 登录/注册
-        $user = User::orWhere('oauth_weixin', $data['unionid'])->orWhere('name', $data['openid'])->first();
+        $user = User::orWhere('oauth_weixin', $data['unionid'])
+            ->orWhere('name', $data['openid'])
+            ->orWhere('name', $data['unionid'])
+            ->first();
 
         if ($user) { // 存在，登录
             return Auth::guard($this->getGuard())->login($user);
         } else { // 不存在，创建，登录
             // openid:当前公众号授权唯一码
             // unionid:同一个开发平台用户唯一码
-            $array['name'] = $data['openid']; // 当前公众号唯一码
+            $array['name'] = $data['unionid']; // 当前公众号唯一码
             $array['sex'] = $data['sex'];
             $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
