@@ -15,7 +15,7 @@
                 @include('web.company.edit'){{--显示公司资料/可编辑--}}
             @else
                 <p class="add-btn">
-                    <button class="btnBinding" data-toggle="modal" data-target=".bs10" data-url="company/binding">绑定员工
+                    <button class="btnBinding" data-toggle="modal" data-target=".bs10" data-url="company/binding">绑定公司
                     </button>
                 </p>
             @endif

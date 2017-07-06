@@ -94,7 +94,7 @@
                         <a href="{{ url('template/type/2') }}">公司模板</a></li>
                 </ul>
             </div><!--模板中心-->
-        @else
+        @elseif(!Auth::user()->employee->company->user_id)
             <div class="tree_box nav">
                 <h3 {{ Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
                     <a href="javascript:"><em class="iconFont">&#xe658;</em>我的公司

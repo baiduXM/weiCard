@@ -160,11 +160,11 @@ class CompanyController extends HomeController
     {
         $code = $request->input('code');
         $res = $this->bindCompany('name', $code, Auth::id());
-        if ($request->ajax()) {
+//        if ($request->ajax()) {
 //            Config::set('global.ajax.err', $res);
 //            Config::set('global.ajax.msg', config('global.msg.' . $res));
 //            return Config::get('global.ajax');
-        }
+//        }
         if ($res === true) {
             return redirect('company')->with('success', '绑定成功');
         }
