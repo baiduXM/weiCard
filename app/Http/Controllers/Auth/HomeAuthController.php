@@ -193,8 +193,8 @@ class HomeAuthController extends HomeController
             ->first();
 
         if ($user) { // 存在，登录
-            if ($user->unionid != $data['unionid']) {
-                $user->unionid = $data['unionid'];
+            if ($user->oauth_weixin != $data['unionid']) {
+                $user->oauth_weixin = $data['unionid'];
                 $user->name = $data['unionid'];
                 $user->save();
             }

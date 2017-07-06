@@ -9,8 +9,8 @@
 
     <div class="input rt">
         <div>
-            <span><i class="" style="color: red;">*</i>公司名称:</span>
-            <input type="text" name="Company[name]" placeholder="公司名称" readonly
+            <span><i class="" style="color: red;">*</i>公司账号:</span>
+            <input type="text" name="Company[name]" placeholder="公司账号" readonly
                    value="{{ old('Company.name') ? old('Company.name') : $company->name }}">
         </div>
         @if ($errors->has('Company.name'))
@@ -18,8 +18,8 @@
         @endif
 
         <div>
-            <span><i class="" style="color: red;">*</i>显示名称:</span>
-            <input type="text" name="Company[display_name]" placeholder="显示名称"
+            <span><i class="" style="color: red;">*</i>公司名称:</span>
+            <input type="text" name="Company[display_name]" placeholder="公司名称"
                    value="{{ old('Company.display_name') ? old('Company.display_name') : $company->display_name }}">
         </div>
         @if ($errors->has('Company.display_name'))

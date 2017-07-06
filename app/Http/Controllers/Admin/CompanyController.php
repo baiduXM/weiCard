@@ -84,8 +84,8 @@ class CompanyController extends AdminController
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name',
             'Company.logo'         => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.homepage'     => 'url',
-            'Company.email'        => 'email|max:255|unique:companies,companies.email',
-            'Company.telephone'    => 'unique:companies,companies.telephone',
+            'Company.email'        => 'email|max:255',
+            'Company.telephone'    => '',
             'Company.address'      => 'max:255',
             'Company.description'  => 'max:255',
 //            'Company.limit' => 'numeric|required',
@@ -182,8 +182,8 @@ class CompanyController extends AdminController
             'Company.display_name' => 'required|max:255|unique:companies,companies.display_name,' . $id,
             'Company.logo'         => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.homepage'     => 'url',
-            'Company.email'        => 'email|max:255|unique:companies,companies.email,' . $id,
-            'Company.telephone'    => 'unique:companies,companies.telephone,' . $id,
+            'Company.email'        => 'email|max:255',
+            'Company.telephone'    => '',
             'Company.address'      => 'max:255',
             'Company.description'  => 'max:255',
 //            'Company.limit' => 'numeric|required',

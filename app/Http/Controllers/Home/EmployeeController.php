@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Breadcrumbs;
 
@@ -57,39 +58,29 @@ class EmployeeController extends HomeController
     /**
      * 显示员工（除自己）
      *
-     * @return $this
+     * @return View
      */
     public function index()
     {
-
         if ($this->is_mobile) {
             $user_id = Auth::user()->id;
-            $employee = Employee::where('user_id',$user_id)->first();
-            $company = Company::where('id',$employee['company_id'])->first();
+            $employee = Employee::where('user_id', $user_id)->first();
+            $company = Company::where('id', $employee['company_id'])->first();
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
                 'company'  => $company,
             ]);
         }
-        if (Auth::user()->company) {
-            $company_id = Auth::user()->company->id;
-            $employees = Employee::with(['followers' => function ($query) {
-                $query->where('user_id', '=', Auth::id());
-            }])->where('company_id', '=', Auth::user()->employee->company_id)
-                ->paginate();
-//            dump($company_id);
-//            $employees = Employee::where('company_id', $company_id)->paginate();
-//            dump($employees);
-            $positions = Position::where('company_id', $company_id)->get();
-            $departments = Department::where('company_id', $company_id)->get();
-            return view('web.employee.index')->with([
-                'employees'   => $employees,
-                'departments' => $departments,
-                'positions'   => $positions,
-            ]);
-        } else {
-            return redirect()->to('user')->with('error', '请先绑定公司');
+        if (!Auth::user()->company) {
+            return redirect()->to('company')->with('error', '请先绑定公司');
         }
+        $company = Auth::user()->company;
+        $employees = Employee::where('company_id', '=', $company->id)->paginate();
+        $departments = Department::where('company_id', $company->id)->get();
+        return view('web.employee.index')->with([
+            'employees'   => $employees,
+            'departments' => $departments,
+        ]);
     }
 
     /**
@@ -100,9 +91,9 @@ class EmployeeController extends HomeController
      */
     public function store(Request $request)
     {
-        if(Auth::user()->company){
+        if (Auth::user()->company) {
             $company = Auth::user()->company;
-        }else{
+        } else {
             return redirect()->to('user')->with('error', '获取公司错误');
         }
         /* 验证 */
@@ -139,24 +130,24 @@ class EmployeeController extends HomeController
             $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
         }
 //        if ($allow) {
-            foreach ($data as $key => $value) {
-                if ($value === '') {
-                    $data[$key] = null; // 未填字段设置为null，否则会保存''
-                }
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
-            }
+        }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+        }
 
-            $data['company_id'] = Auth::user()->company->id;
+        $data['company_id'] = Auth::user()->company->id;
 
-            /* 添加 */
-            if (Employee::create($data)) {
-                $err_code = 300;
-            } else {
-                $err_code = 301;
-            }
+        /* 添加 */
+        if (Employee::create($data)) {
+            $err_code = 300;
+        } else {
+            $err_code = 301;
+        }
 //        } else {
 //            $err_code = 302;
 //        }
@@ -218,21 +209,21 @@ class EmployeeController extends HomeController
 //            $allow = true;//非唯一职位，允许添加
 //        }
 //        if ($allow) {
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-            }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+        }
 
-            foreach ($data as $key => $value) {
-                if ($value !== '') {
-                    $employee->$key = $data[$key];
-                }
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $employee->$key = $data[$key];
             }
-            if ($employee->save()) {
-                $err_code = 500;
-            } else {
-                $err_code = 501;
-            }
+        }
+        if ($employee->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
+        }
 //        } else {
 //            $err_code = 502;
 //        }

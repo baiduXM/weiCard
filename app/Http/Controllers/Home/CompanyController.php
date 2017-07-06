@@ -62,10 +62,7 @@ class CompanyController extends HomeController
         // 判断是否绑定员工
         if (!$user->employee) {
             if ($this->is_mobile) {
-                return view($this->interview . '.employee.index')->with([
-                    'employee' => '',
-                    'company'  => '',
-                ]);
+                return view('mobile.employee.index');
             }
         }
         $company = $user->company;
@@ -100,8 +97,8 @@ class CompanyController extends HomeController
             'Company.display_name'   => 'required|unique:companies,companies.display_name,' . $id,
             'Company.logo'           => 'image|max:' . 2 * 1024, // 最大2MB
             'Company.address'        => 'max:255',
-            'Company.email'          => 'email|unique:companies,companies.email,' . $id,
-            'Company.telephone'      => 'unique:companies,companies.telephone,' . $id,
+            'Company.email'          => 'email',
+            'Company.telephone'      => '',
             'Company.description'    => 'max:255',
             'Company.coordinate_lng' => 'max:255',
             'Company.coordinate_lat' => 'max:255',
@@ -143,7 +140,7 @@ class CompanyController extends HomeController
         }
 
         if ($company->save()) {
-            return redirect('company')->with('success', '修改成功 - ' . $company->id);
+            return redirect('company')->with('success', '修改成功');
         } else {
             return redirect()->back();
         }
