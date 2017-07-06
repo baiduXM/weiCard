@@ -34,7 +34,7 @@
                     {{--<li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">--}}
                             {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
                     {{--</li>--}}
-                    <li class="b-btn-bor b-sort-btn ">
+                    <!-- <li class="b-btn-bor b-sort-btn ">
                         <a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>
                         <ul class="b-sort none">
                             <li><a href="">按名字排序</a></li>
@@ -42,11 +42,23 @@
                             <li><a href="">按部门排序</a></li>
                             <li><a href="">按入职时间排序</a></li>
                         </ul>
+                    </li> -->
+                    <li class="b-btn-bor b-word-btn ">
+                        <a href="javascript:" class="word-select" name="noword">查询字段<i class="iconFont">&#xe618;</i></a>
+                        <ul class="b-word none">
+                            <li><a class="dropdown-word" id="noword">查询字段</a></li>
+                            <li><a class="dropdown-word" id="number">工号</a></li>
+                            <li><a class="dropdown-word" id="nickname">姓名</a></li>
+                            <li><a class="dropdown-word" id="positions">职位</a></li>
+                            <li><a class="dropdown-word" id="mobile">手机</a></li>
+                            <li><a class="dropdown-word" id="telephone">电话</a></li>
+                            <!-- <li><a class="dropdown-word" id="department">部门</a></li> -->
+                        </ul>
                     </li>
-                    <li class="b-btn-bor"><a href="">查询字段<i class="iconFont">&#xe618;</i></a></li>
-                    <li class="b-search  ">
-                        <form action="">
-                            <input class="b-input b-form-bor" type="text" placeholder="请输入关键字">
+                    <li class="b-search  " name='search-form'>
+                        <form action="{{ url('/company/employee') }}">
+                            <input type="hidden" class="word" name="word" value='nickname'>
+                            <input class="b-input b-form-bor" type="text" name="keyword" placeholder="请输入关键字">
                             <input class="b-ser-btn b-form-bg" type="submit" value="查找">
                         </form>
                     </li>

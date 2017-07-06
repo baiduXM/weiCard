@@ -173,7 +173,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 /*个人名片获取*/
 .cards{width:13.5rem;height:7.5rem;position: relative; overflow: hidden;margin:0 auto;/*background: url(../images/bg7.png) center no-repeat;background-size:13.5rem 7.5rem;*/ }
-.cards .cards_tx{width:3.85rem;height: 4rem; padding: 1.75rem 0 0 1rem;top: 0;
+.cards .cards_tx{width:4rem;height: 4rem;top:0.4rem; left:50%; margin-left: -2rem;
     -webkit-animation: biger 1s ease-out;  
     -moz-animation: biger 1s ease-out;  
     animation: biger 1s ease-out;  
@@ -204,7 +204,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 @keyframes advjts{from{right: 3.2rem;top:4.2rem;}to{right:0.5rem;top: 0rem;}}
 
 
-.qy_name{width: 8rem;height:2rem;padding: 0.4rem 0.6rem;border-radius: 0.5rem;background-color:rgba(44,138,237,0.5);color: #fff;line-height: 1.05rem;font-size: 0.6rem;top: 2.5rem;right:-9rem;box-shadow: 2px 0px 10px #197faa;}
+.qy_name{width:12.5rem;height:auto;padding: 0.4rem 1rem;text-align: center; border-radius: 0.5rem;background-color:rgba(44,138,237,0.5);color: #fff;line-height: 1.05rem;font-size: 0.6rem;bottom:0; right:-9rem;}
 .qyimage_zs{width: 100%;height:6.7rem;}
 .qyimage_zs .xx1{width:0.5rem;height: 0.5rem;background: url(../images/xx1.png) center no-repeat;background-size: 0.5rem;top: 0.8rem;left: 2.8rem;animation: rotation 10s linear infinite;}
 .qyimage_zs .xx2{width:0.95rem;height: 0.95rem;background: url(../images/xx2.png) center no-repeat;background-size: 0.95rem;top:1.2rem;left: 8.6rem;animation: rotation 10s linear infinite;}

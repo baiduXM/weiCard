@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
 
 class EmployeeController extends HomeController
@@ -61,7 +62,7 @@ class EmployeeController extends HomeController
      */
     public function index()
     {
-
+        $params = Input::query();        
         if ($this->is_mobile) {
             $user_id = Auth::user()->id;
             $employee = Employee::where('user_id',$user_id)->first();
@@ -73,13 +74,24 @@ class EmployeeController extends HomeController
         }
         if (Auth::user()->company) {
             $company_id = Auth::user()->company->id;
-            $employees = Employee::with(['followers' => function ($query) {
-                $query->where('user_id', '=', Auth::id());
-            }])->where('company_id', '=', Auth::user()->employee->company_id)
-                ->paginate();
-//            dump($company_id);
-//            $employees = Employee::where('company_id', $company_id)->paginate();
-//            dump($employees);
+            //如果有查询参数
+            if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
+                $word = $params['word'];
+                $keyword = $params['keyword'];
+                $employees = Employee::with(['followers' => function ($query) {
+                    $query->where('user_id', '=', Auth::id());
+                }])->where('company_id', '=', Auth::user()->employee->company_id)
+                    ->where($word,'like','%'.$keyword.'%')
+                    ->paginate();
+            }else{
+                $employees = Employee::with(['followers' => function ($query) {
+                    $query->where('user_id', '=', Auth::id());
+                }])->where('company_id', '=', Auth::user()->employee->company_id)
+                    ->paginate();
+    //            dump($company_id);
+    //            $employees = Employee::where('company_id', $company_id)->paginate();
+    //            dump($employees);                
+            }
             $positions = Position::where('company_id', $company_id)->get();
             $departments = Department::where('company_id', $company_id)->get();
             return view('web.employee.index')->with([

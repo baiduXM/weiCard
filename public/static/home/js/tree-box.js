@@ -82,6 +82,16 @@ $(function () {
         $(this).toggleClass("t-sort-icon");
     });
 
+    /******************查询字段下拉列表*******************/
+    $(".b-word-btn").click(function () {
+        $(".b-word").slideToggle();
+        $(this).toggleClass("b-word-icon");
+    });
+    $(".t-word-btn").click(function () {
+        $(".t-word").slideToggle();
+        $(this).toggleClass("t-word-icon");
+    });
+
 
 });
 

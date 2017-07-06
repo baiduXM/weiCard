@@ -2,6 +2,8 @@
  * Created by Hsieh on 2017/4/7.
  */
 $(function () {
+    /* 运行 */
+    init();
     /* 操作 - 添加 */
     $('.operate-create').on('click', function () {
         var _url      = $('.form-create').attr('action');
@@ -162,6 +164,33 @@ $(function () {
         $("[class^='error-']").addClass('hidden');
     });
 
+    /* 查询下拉选择 */
+    $(".dropdown-word").click(function(){
+        var word = $(this).attr('id');
+        var text = $(this).text();
+        $('.word-select').attr('name',word);
+        $('.word-select').html(text);
+        $('.word').val(word);
+    });
+
+    /* 搜索 */
+    $('.b-form-bg').click(function () {
+        var word = $('.word-select').attr('name');
+        var search = $('.b-form-bor').val();
+        if(word == 'noword'){
+            alert('请选择要搜索的字段');
+            return false;
+        }else{
+            if(search){
+                // window.location.href = 'employee/' + word + '/' + search; //方法1
+                $('[name="search-form"]').submit();
+            }else{
+                alert('请输入关键字');
+                return false;
+            }            
+        }
+    });
+
 
     /*2017-6-20*/
     $("#iconId").on("click", function () {
@@ -193,6 +222,30 @@ $(function () {
     })
 
 });
+
+/* 初始化 */
+function init() {
+    // 搜索初始值
+    var word = getQueryString('word');
+    var keyword = getQueryString('keyword');
+    word = (word != null) ? word : 'noword';
+    keyword = (keyword != null) ? decodeURIComponent(keyword) : '';
+    $('.word-select').attr('name',word);
+    var text = $('#'+word).text();
+    $('.word-select').html(text);
+    $('.word').val(word);
+    $('[name="keyword"]').val(keyword);
+}
+
+/* 获取url参数 */
+function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return (r[2]);
+    }
+    return null;
+}
 
 /**
  * 显示错误信息
