@@ -165,7 +165,7 @@ class HomeAuthController extends HomeController
     {
         // TODO：做异常处理
         $oauthUser = Socialite::with($driver)->user();
-        file_put_contents('test.log', json_encode($oauthUser), FILE_APPEND);
+//        file_put_contents('test.log', json_encode($oauthUser), FILE_APPEND);
         $function_name = 'oauth_' . $driver;
         $res = $this->$function_name($oauthUser->user);
         if ($res === 0) {
