@@ -198,6 +198,7 @@ class HomeAuthController extends HomeController
             $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
             $array['oauth_weixin'] = $data['unionid']; // 同一个开发平台用户唯一码
+
             return Auth::guard($this->getGuard())->login($this->create($array));
         }
     }
