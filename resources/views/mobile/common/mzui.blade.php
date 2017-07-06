@@ -21,9 +21,9 @@
     <header class="heading primary affix dock-top">
         <a class="avatar circle" href="{{ url('/') }}"><i class="icon-home"></i></a>
         <div class="title"><strong>@yield('title', '首页')</strong></div>
-        <nav class="nav right">
-            <a href="{{ url('search') }}"><i class="icon-search"></i></a>
-        </nav>
+        {{--<nav class="nav right">--}}
+            {{--<a href="{{ url('search') }}"><i class="icon-search"></i></a>--}}
+        {{--</nav>--}}
     </header>
 
     {{--标签导航--}}
