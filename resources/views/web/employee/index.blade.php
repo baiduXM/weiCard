@@ -32,7 +32,7 @@
                                             data-target="#modal-employee-import"><i
                                     class="iconFont">&#xe67d;</i>导入Excel</a>
                     {{--<li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">--}}
-                            {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
+                    {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
                     {{--</li>--}}
                     <li class="b-btn-bor b-sort-btn ">
                         <a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>
@@ -60,6 +60,7 @@
                     </th>
                     <th class="b-phone-w2"><a href="">工号</a></th>
                     <th class=" "><a href="">姓名</a></th>
+                    <th class="b-phone-w2"><a href="">部门</a></th>
                     <th class="b-phone-w2"><a href="">职位</a></th>
                     <th class=" b-td-hide"><a href="">电话</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
@@ -79,6 +80,7 @@
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
+                            <td class="">{{ $item->department ?$item->department->name:'' }}</td>
                             <td class="">{{ $item->positions or (isset($item->position->name)?$item->position->name:'') }}</td>
                             <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
@@ -280,7 +282,7 @@
                             <p>
                                 <span>工号 : </span>
                                 <input type="text" name="Employee[number]" placeholder="" class="info-number"
-                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}" >
+                                       value="{{ old('Employee.number') ? old('Employee.number') : '' }}">
                                 <span class="error-number" style="color: red;"></span>
                             </p>
                             <p>
