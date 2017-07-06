@@ -110,7 +110,7 @@
                                             <!--公司-->
                                             <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
-                                            <td>{!! ($item->position) ? '<a href="'.url('admin/position/'.$item->position->id).'">'.$item->position->name.'</a>' : '' !!}</td>
+                                            <td>{{ $item->positions or '' }}</td>
                                             <!--头衔-->
                                             <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td>
                                             <!--创建时间-->
@@ -123,13 +123,13 @@
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 @if($item->user)
                                                     {{--<a class="btn btn-primary btn-xs operate-code"--}}
-                                                       {{--data-toggle="modal" data-target="#shareModal"--}}
-                                                       {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
-                                                       {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
-                                                       {{--title="代码">--}}
-                                                        {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
+                                                    {{--data-toggle="modal" data-target="#shareModal"--}}
+                                                    {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
+                                                    {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
+                                                    {{--title="代码">--}}
+                                                    {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
                                                     {{--</a>--}}
-                                                {{--@else--}}
+                                                    {{--@else--}}
                                                     <a href="" class="btn btn-warning btn-xs operate-unbinding"
                                                        data-toggle="modal" data-target=".confirmModal"
                                                        data-url="company_employee/{{ $item->id }}/unbinding"
