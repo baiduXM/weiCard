@@ -61,7 +61,6 @@ class EmployeeController extends HomeController
      */
     public function index()
     {
-        $params = Input::query();        
         if ($this->is_mobile) {
             $user_id = Auth::user()->id;
             $employee = Employee::where('user_id', $user_id)->first();
@@ -71,42 +70,28 @@ class EmployeeController extends HomeController
                 'company'  => $company,
             ]);
         }
-        if (Auth::user()->company) {
-            $company_id = Auth::user()->company->id;
-            //如果有查询参数
-            if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
-                $word = $params['word'];
-                $keyword = $params['keyword'];
-                $employees = Employee::with(['followers' => function ($query) {
-                    $query->where('user_id', '=', Auth::id());
-                }])->where('company_id', '=', Auth::user()->employee->company_id)
-                    ->where($word,'like','%'.$keyword.'%')
-                    ->paginate();
-            }else{
-                $employees = Employee::with(['followers' => function ($query) {
-                    $query->where('user_id', '=', Auth::id());
-                }])->where('company_id', '=', Auth::user()->employee->company_id)
-                    ->paginate();
-    //            dump($company_id);
-    //            $employees = Employee::where('company_id', $company_id)->paginate();
-    //            dump($employees);                
-            }
-            $positions = Position::where('company_id', $company_id)->get();
-            $departments = Department::where('company_id', $company_id)->get();
-            return view('web.employee.index')->with([
-                'employees'   => $employees,
-                'departments' => $departments,
-                'positions'   => $positions,
-            ]);
-        } else {
+
+        if (!Auth::user()->company) {
             return redirect()->to('user')->with('error', '请先绑定公司');
         }
+
         $company = Auth::user()->company;
-        $employees = Employee::where('company_id', '=', $company->id)->paginate();
         $departments = Department::where('company_id', $company->id)->get();
+
+        $query = Employee::query();
+        $params = Input::query();
+
+        if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
+            $word = $params['word'];
+            $keyword = $params['keyword'];
+            $query->where($word, 'like', '%' . $keyword . '%');
+        }
+        $employees = $query->where('company_id', '=', $company->id)->paginate(3);
+
         return view('web.employee.index')->with([
             'employees'   => $employees,
             'departments' => $departments,
+            'params'      => $params,
         ]);
     }
 

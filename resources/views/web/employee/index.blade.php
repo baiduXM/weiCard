@@ -131,7 +131,7 @@
                 </tbody>
             </table>
             <p class="clickMore none"><a href="">点击查看更多 <i class="iconFont">&#xe652;</i></a></p><!--适应手机-->
-            {!! $employees ? $employees->render() : '' !!}
+            {!! $employees ? $employees->appends($params)->render() : '' !!}
         </div>
     </div>
 @stop
