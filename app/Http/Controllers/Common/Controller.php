@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Models\Company;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
+use Illuminate\Support\Facades\Auth;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -79,7 +83,6 @@ class Controller extends BaseController
      * @param string $field 排序字段
      * @param string $order 排序顺序，可选。
      *                      asc|desc => 升序|降序
-     *
      * @return array    排序后的数组
      */
     public function sortArray(array $array, $field, $order = 'asc')
@@ -97,7 +100,6 @@ class Controller extends BaseController
      * 置换数组
      *
      * @param array $data 要置换的数组
-     *
      * @return array
      */
     public function swapArray(array $data)
@@ -120,7 +122,6 @@ class Controller extends BaseController
      *                           permalink|abbr|sentence|convert => 全拼拼接|首字母|全拼带声调|全拼数组
      * @param string $delimiters 分隔符，可选。
      *                           ''|'_'|'-'|'.'
-     *
      * @return mixed string|array
      */
     public function pinyin($string, $type = 'permalink', $delimiters = '')
@@ -165,7 +166,6 @@ class Controller extends BaseController
      * @param string $path_type   保存路径类型
      * @param null   $name        文件夹名
      * @param null   $second_name 二级文件夹名
-     *
      * @return bool|string      返回路径
      */
     public function save($file, $path_type = 'user', $name = null, $second_name = null)
@@ -202,7 +202,6 @@ class Controller extends BaseController
      * @param $file         文件
      * @param $targetPath   目标路径
      * @param $fileName     文件名
-     *
      * @return bool
      */
     public function saveImg($file, $targetPath, $fileName)
@@ -216,7 +215,6 @@ class Controller extends BaseController
      *
      * @param $targetPath   目标路径
      * @param $fileName     文件名
-     *
      * @return bool
      */
     public function unZip($targetPath, $fileName)
@@ -237,7 +235,6 @@ class Controller extends BaseController
      * 导入excel表
      *
      * @param $file
-     *
      * @return int
      */
     public function importExcel($file)
@@ -252,7 +249,6 @@ class Controller extends BaseController
      * @param string $path_type   路径类型
      * @param string $name        文件夹名
      * @param string $second_name 二级文件夹名
-     *
      * @return bool|string      返回文件夹路径
      */
     public function getPath($path_type, $name = null, $second_name = null)
@@ -304,7 +300,6 @@ class Controller extends BaseController
      * 删除文件夹
      *
      * @param $path     文件夹路径
-     *
      * @return boolean  是否删除成功，true/false
      */
     public function deleteFolder($path)
@@ -318,11 +313,111 @@ class Controller extends BaseController
      * 删除文件
      *
      * @param string|array $files 文件名，字符串/数组
-     *
      * @return boolean              是否删除成功，true/false
      */
     public function deleteFiles($files)
     {
         return Storage::disk('public')->delete($files);
     }
+
+    /**
+     * 绑定公司
+     *
+     * @param string $field   绑定字段
+     * @param string $code    绑定代码
+     * @param int    $user_id 绑定用户ID
+     * @return bool|string 成功返回true，失败返回错误信息
+     */
+    protected function bindCompany($field, $code, $user_id)
+    {
+        $user = User::with('company', 'employee')->find($user_id);
+        if ($user->company) {
+            return '您已绑定公司管理员';
+        }
+        $company = Company::where($field, $code)->first();
+        if (!$company) {
+            return '找不到该公司';
+        }
+        if ($company->user_id) {
+            return '该公司已绑定！公司管理员：' . $company->user->nickname;
+        }
+        if ($user->employee && ($user->employee->company_id != $company->id)) {
+            return '您不是该公司员工';
+        }
+        $company->user_id = $user_id;
+        if (!$company->save()) {
+            return '绑定失败';
+        }
+        return true;
+    }
+
+    /**
+     * 绑定员工
+     *
+     * @param string $field   绑定字段
+     * @param string $code    绑定代码
+     * @param int    $user_id 绑定用户ID
+     * @return bool|string 成功返回true，失败返回错误信息
+     */
+    protected function bindEmployee($field, $code, $user_id)
+    {
+        $user = User::with('company', 'employee')->find($user_id);
+        if ($user->employee) {
+            return '您已绑定员工';
+        }
+        $employee = Employee::where($field, $code)->first();
+        if (!$employee) {
+            return '找不到该员工';
+        }
+        if ($employee->user) {
+            return '该员工已绑定';
+        }
+        if ($user->company && $user->company->id != $employee->company_id) {
+            return '您是其他公司管理员，无法绑定该公司员工';
+        }
+        $employee->user_id = $user_id;
+        if (!$employee->save()) {
+            return '绑定失败';
+        }
+        return true;
+    }
+
+    /**
+     * 解绑公司
+     *
+     * @param int $company_id 公司ID
+     * @return bool|string 成功返回true，失败返回错误信息
+     */
+    protected function unbindCompany($company_id)
+    {
+        $company = Company::find($company_id);
+        if (!$company) {
+            return '找不到该公司';
+        }
+        $company->user_id = null;
+        if (!$company->save()) {
+            return '解绑失败';
+        }
+        return true;
+    }
+
+    /**
+     * 解绑员工
+     *
+     * @param int $employee_id 员工ID
+     * @return bool|string 成功返回true，失败返回错误信息
+     */
+    protected function unbindEmployee($employee_id)
+    {
+        $employee = Employee::find($employee_id);
+        if (!$employee) {
+            return '找不到该员工';
+        }
+        $employee->user_id = null;
+        if (!$employee->save()) {
+            return '解绑失败';
+        }
+        return true;
+    }
+
 }

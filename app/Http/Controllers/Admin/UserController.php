@@ -64,9 +64,15 @@ class UserController extends AdminController
             $query->orderBy($sort['column'], $sort['order']);
         }
         $users = $query->with('company', 'employee')->paginate();
+        foreach ($users as $k => $v) {
+            $users[$k]->flag = 0; // 1：绑定公司，2：绑定员工，3：都绑定了
+            if ($v->company)
+                $users[$k]->flag += 1;
+            if ($v->employee)
+                $users[$k]->flag += 2;
+        }
         return view('admin.user.index')->with([
             'users' => $users,
-            'common' => new CommonModel(),
         ]);
     }
 
@@ -86,29 +92,28 @@ class UserController extends AdminController
      * 添加
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         /* 验证 */
         $this->validate($request, [
-            'User.name' => 'required|unique:users,users.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'User.password' => 'required|confirmed',
-            'User.email' => 'email|unique:users,users.email',
-            'User.mobile' => 'digits:11|unique:users,users.mobile',
-            'User.nickname' => 'max:30',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.sex' => '',
+            'User.name'        => 'required|unique:users,users.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'User.password'    => 'required|confirmed',
+            'User.email'       => 'email|unique:users,users.email',
+            'User.mobile'      => 'digits:11|unique:users,users.mobile',
+            'User.nickname'    => 'max:30',
+            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.sex'         => '',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
-            'User.password' => '密码',
-            'User.email' => '邮箱',
-            'User.mobile' => '手机',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.sex' => '性别',
+            'User.name'        => '账号',
+            'User.password'    => '密码',
+            'User.email'       => '邮箱',
+            'User.mobile'      => '手机',
+            'User.nickname'    => '昵称',
+            'User.avatar'      => '头像',
+            'User.sex'         => '性别',
             'User.description' => '个性签名',
         ]);
 
@@ -143,7 +148,6 @@ class UserController extends AdminController
      * 详情
      *
      * @param $id
-     *
      * @return $this
      */
     public function show($id)
@@ -152,7 +156,7 @@ class UserController extends AdminController
             return redirect('admin/user')->with('warning', '用户不存在');
         }
         return view('admin.user.show')->with([
-            'user' => $user,
+            'user'   => $user,
             'common' => new CommonModel(),
         ]);
     }
@@ -161,7 +165,6 @@ class UserController extends AdminController
      * 更新页面
      *
      * @param $id
-     *
      * @return $this
      */
     public function edit($id)
@@ -170,7 +173,7 @@ class UserController extends AdminController
             return redirect('admin/user')->with('warning', '用户不存在');
         }
         return view('admin.user.edit')->with([
-            'user' => $user,
+            'user'   => $user,
             'common' => new CommonModel(),
         ]);
     }
@@ -180,28 +183,27 @@ class UserController extends AdminController
      *
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email' => 'email|unique:users,users.email,' . $id,
-            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
-            'User.nickname' => 'max:30',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.sex' => '',
-            'User.age' => 'max:255',
+            'User.name'        => 'required|alpha_dash|unique:users,users.name,' . $id,
+            'User.email'       => 'email|unique:users,users.email,' . $id,
+            'User.mobile'      => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.nickname'    => 'max:30',
+            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.sex'         => '',
+            'User.age'         => 'max:255',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
-            'User.email' => '邮箱',
-            'User.mobile' => '手机',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.sex' => '性别',
-            'User.age' => '年龄',
+            'User.name'        => '账号',
+            'User.email'       => '邮箱',
+            'User.mobile'      => '手机',
+            'User.nickname'    => '昵称',
+            'User.avatar'      => '头像',
+            'User.sex'         => '性别',
+            'User.age'         => '年龄',
             'User.description' => '说明',
         ]);
         $data = $request->input('User');
@@ -227,7 +229,6 @@ class UserController extends AdminController
      * 删除
      *
      * @param $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
@@ -244,7 +245,6 @@ class UserController extends AdminController
      * 切换状态
      *
      * @param $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function refresh($id)
@@ -267,7 +267,6 @@ class UserController extends AdminController
      *
      * @param Request $request
      * @param array   $ids
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)
@@ -286,26 +285,32 @@ class UserController extends AdminController
      *
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding(Request $request, $id)
     {
+        $type = $request->input('type') or 'company';
         $code = $request->input('code');
-        $user = new User();
-        $res = $user->binding($code, $id);
-        if ($res % 100 == 0) {
-            return redirect('admin/user')->with('success', config('global.msg.' . $res));
-        } else {
-            return redirect()->back()->with('error', config('global.msg.' . $res));
+        if (!$code) {
+            return redirect()->back()->with('error', '绑定代码不能为空');
         }
+        if ($type == 'employee') {
+            $res = $this->bindEmployee('mobile', $code, $id);
+        } elseif ($type == 'company') {
+            $res = $this->bindCompany('name', $code, $id);
+        }
+        if ($res === true) {
+            return redirect('admin/user')->with('success', '绑定成功');
+        } else {
+            return redirect()->back()->with('error', $res);
+        }
+
     }
 
     /**
      * 用户解绑公司-员工
      *
      * @param $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unbinding($id)

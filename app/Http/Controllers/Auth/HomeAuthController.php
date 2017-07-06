@@ -40,20 +40,25 @@ class HomeAuthController extends HomeController
     {
 
         $ip = $request->ip();
+        $ip_start = $this->get_iplong('192.168.1.1'); //起始ip
+        $ip_end = $this->get_iplong('192.168.1.255');//至ip
+        $iplong = $this->get_iplong($ip);//至ip
         $ipArr = array(
-            //     '183.250.161.246', // 公司公网IP
+//            '183.250.161.246', // 公司公网IP
+//            '192.168.1.*',
             '127.0.0.1', // 本地测试ip
         );
         /* 不在IP组里的微信登录，在IP组里的可账号登录 */
-        if (!in_array($ip, $ipArr)) {
-            /* 只允许通过微信登录 */
-            if ($this->isMobile()) { // mobile端，微信授权
-                return $this->redirectToProvider('weixin');
-            } else { // web端，微信扫码
-                return $this->redirectToProvider('weixinweb');
+        if (!($iplong >= $ip_start && $iplong <= $ip_end)) {
+            if (!in_array($ip, $ipArr)) {
+                /* 只允许通过微信登录 */
+                if ($this->isMobile()) { // mobile端，微信授权
+                    return $this->redirectToProvider('weixin');
+                } else { // web端，微信扫码
+                    return $this->redirectToProvider('weixinweb');
+                }
             }
         }
-
 
         $view = property_exists($this, 'loginView')
             ? $this->loginView : 'auth.authenticate';
@@ -160,6 +165,7 @@ class HomeAuthController extends HomeController
     {
         // TODO：做异常处理
         $oauthUser = Socialite::with($driver)->user();
+//        file_put_contents('test.log', json_encode($oauthUser), FILE_APPEND);
         $function_name = 'oauth_' . $driver;
         $res = $this->$function_name($oauthUser->user);
         if ($res === 0) {
@@ -181,17 +187,27 @@ class HomeAuthController extends HomeController
     {
         // 网页扫码没有关注公众号字段
         // 登录/注册
-        $user = User::where('oauth_weixin', '=', $data['unionid'])->first();
+        $user = User::orWhere('oauth_weixin', $data['unionid'])
+            ->orWhere('name', $data['openid'])
+            ->orWhere('name', $data['unionid'])
+            ->first();
+
         if ($user) { // 存在，登录
+            if ($user->oauth_weixin != $data['unionid']) {
+                $user->oauth_weixin = $data['unionid'];
+                $user->name = $data['unionid'];
+                $user->save();
+            }
             return Auth::guard($this->getGuard())->login($user);
         } else { // 不存在，创建，登录
             // openid:当前公众号授权唯一码
             // unionid:同一个开发平台用户唯一码
-            $array['name'] = $data['openid']; // 当前公众号唯一码
+            $array['name'] = $data['unionid']; // 当前公众号唯一码
             $array['sex'] = $data['sex'];
             $array['avatar'] = $data['headimgurl']; // TODO：下载远程图片到本地
             $array['nickname'] = $data['nickname'];
             $array['oauth_weixin'] = $data['unionid']; // 同一个开发平台用户唯一码
+
             return Auth::guard($this->getGuard())->login($this->create($array));
         }
     }
@@ -277,7 +293,6 @@ class HomeAuthController extends HomeController
         $jsoninfo = json_decode($output, true);
         return $jsoninfo;
     }
-
 
 
 }

@@ -46,9 +46,9 @@
                 <li class="{{ Request::path() == 'admin/company' || Request::is('admin/company/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/company') }}"><span class="glyphicon glyphicon-stats"></span>公司管理</a>
                 </li>
-                {{--<li class="{{ Request::path() == 'admin/company_department' || Request::is('admin/company_department/*')  ? 'active' : '' }}">--}}
-                {{--<a href="{{ url('admin/company_department') }}"><span class="glyphicon glyphicon-stats"></span>部门管理</a>--}}
-                {{--</li>--}}
+                <li class="{{ Request::path() == 'admin/company_department' || Request::is('admin/company_department/*')  ? 'active' : '' }}">
+                    <a href="{{ url('admin/company_department') }}"><span class="glyphicon glyphicon-stats"></span>部门管理</a>
+                </li>
                 <li class="{{ Request::path() == 'admin/company_position' || Request::is('admin/company_position/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/company_position') }}"><span
                                 class="glyphicon glyphicon-stats"></span>职位管理</a>

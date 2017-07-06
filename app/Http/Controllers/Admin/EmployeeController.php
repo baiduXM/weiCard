@@ -59,22 +59,22 @@ class EmployeeController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
-            if(isset($params['company_id'])){
+            if (isset($params['company_id'])) {
                 $company_id = $params['company_id'];
-            }else{
+            } else {
                 $company_id = 0;
             }
-        }else{
+        } else {
             $company_id = 0;
         }
         $company = new Company;
         $companies = $company->get();
         $employees = $query->with('company')->paginate();
         return view('admin.employee.index')->with([
-            'employees' => $employees,
-            'common' => new CommonModel(),
-            'params' => $params,
-            'companies' => $companies,
+            'employees'  => $employees,
+            'common'     => new CommonModel(),
+            'params'     => $params,
+            'companies'  => $companies,
             'company_id' => $company_id,
         ]);
     }
@@ -85,7 +85,7 @@ class EmployeeController extends AdminController
         if (count($companies) > 0) {
             return view('admin.employee.create')->with([
                 'companies' => $companies,
-                'common' => new CommonModel(),
+                'common'    => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -105,21 +105,21 @@ class EmployeeController extends AdminController
         $data = $request->input('Employee');
         /* 验证 */
         $this->validate($request, [
-            'Employee.company_id' => 'required',
+            'Employee.company_id'    => 'required',
             'Employee.department_id' => '',
-            'Employee.position_id' => '',
-            'Employee.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.nickname' => 'required',
-            'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Employee.telephone' => '',
+            'Employee.position_id'   => '',
+            'Employee.number'        => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.nickname'      => 'required',
+            'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
+            'Employee.telephone'     => '',
         ], [], [
-            'Employee.company_id' => '公司',
+            'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id' => '职位',
-            'Employee.number' => '工号',
-            'Employee.nickname' => '姓名',
-            'Employee.avatar' => '头像',
-            'Employee.telephone' => '座机',
+            'Employee.position_id'   => '职位',
+            'Employee.number'        => '工号',
+            'Employee.nickname'      => '姓名',
+            'Employee.avatar'        => '头像',
+            'Employee.telephone'     => '座机',
         ]);
 
         $position_only = Position::where('id', '=', $data['position_id'])->first();
@@ -170,7 +170,7 @@ class EmployeeController extends AdminController
         $employee = Employee::find($id);
         return view('admin.employee.show')->with([
             'employee' => $employee,
-            'common' => new CommonModel(),
+            'common'   => new CommonModel(),
         ]);
     }
 
@@ -179,9 +179,9 @@ class EmployeeController extends AdminController
         $employee = Employee::find($id);
         $positions = Position::where('company_id', $employee->company_id)->get();
         return view('admin.employee.edit')->with([
-            'employee' => $employee,
+            'employee'  => $employee,
             'positions' => $positions,
-            'common' => new CommonModel(),
+            'common'    => new CommonModel(),
         ]);
     }
 
@@ -189,21 +189,21 @@ class EmployeeController extends AdminController
     {
         $employee = Employee::find($id);
         $this->validate($request, [
-            'Employee.company_id' => 'required',
+            'Employee.company_id'    => 'required',
             'Employee.department_id' => '',
-            'Employee.position_id' => '',
-            'Employee.number' => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.nickname' => 'required',
-            'Employee.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'Employee.telephone' => '',
+            'Employee.position_id'   => '',
+            'Employee.number'        => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.nickname'      => 'required',
+            'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
+            'Employee.telephone'     => '',
         ], [], [
-            'Employee.company_id' => '公司',
+            'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id' => '职位',
-            'Employee.number' => '工号',
-            'Employee.nickname' => '姓名',
-            'Employee.avatar' => '头像',
-            'Employee.telephone' => '座机',
+            'Employee.position_id'   => '职位',
+            'Employee.number'        => '工号',
+            'Employee.nickname'      => '姓名',
+            'Employee.avatar'        => '头像',
+            'Employee.telephone'     => '座机',
         ]);
         $data = $request->input('Employee');
         // TODO：可以使用关系模型获取数据
@@ -262,7 +262,6 @@ class EmployeeController extends AdminController
      * 批量删除
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)
@@ -282,6 +281,22 @@ class EmployeeController extends AdminController
             return redirect('admin/company_employee')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
+        }
+    }
+
+    /**
+     * 解绑员工
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function unbinding($id)
+    {
+        $res = $this->unbindEmployee($id);
+        if ($res === true) {
+            return redirect('admin/company_employee')->with('success', '解绑成功');
+        } else {
+            return redirect()->back()->with('error', $res);
         }
     }
 

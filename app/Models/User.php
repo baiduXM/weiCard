@@ -22,7 +22,7 @@ class User extends CommonModel implements
      * @var array
      */
     protected $guarded = [
-        'id', 'password_confirmation', 'oauth_weixin',
+        'id', 'password_confirmation',
     ];
 
     /**
@@ -104,7 +104,6 @@ class User extends CommonModel implements
      *
      * @param $code 绑定代码
      * @param $id   用户ID
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)
@@ -123,7 +122,7 @@ class User extends CommonModel implements
 //        if (!$company) {
 //            return 102; // 绑定失败 - 找不到公司信息
 //        }
-        $employee = Employee::where('mobile',  $code)->first();
+        $employee = Employee::where('mobile', $code)->first();
         if (!$employee) {
             return 103; // 绑定失败 - 找不到员工信息
         }
@@ -141,7 +140,6 @@ class User extends CommonModel implements
      * 用户解绑公司-员工
      *
      * @param $id
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function unbinding($id)

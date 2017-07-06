@@ -255,26 +255,4 @@
         </div>
     </div>
 </div>
-<!-- 绑定公司/员工modal -->
-<div class="modal fade bs10" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content modal1">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">绑定员工</h4>
-            </div>
-            <form action="user/binding" method="post">
-                {{ csrf_field() }}
-                <div class="modal-body">
-                    <p><span>绑定代码 : </span><input type="text" name="code"></p>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" value="保存">
-                    <input type="reset" data-dismiss="modal" value="取消">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+

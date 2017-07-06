@@ -16,17 +16,17 @@
                                 <td class="col-md-9">{{ $company->id }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司名称</th>
+                                <th class="text-right">公司账号</th>
                                 <td class="">{{ $company->name }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司显示名称</th>
+                                <th class="text-right">公司名称</th>
                                 <td>{{ $company->display_name }}</td>
                             </tr>
-                            <tr>
-                                <th class="text-right">员工人数上限</th>
-                                <td>{{ $company->limit }}</td>
-                            </tr>
+                            {{--<tr>--}}
+                                {{--<th class="text-right">员工人数上限</th>--}}
+                                {{--<td>{{ $company->limit }}</td>--}}
+                            {{--</tr>--}}
                             <tr>
                                 <th class="text-right">LOGO</th>
                                 <td>
@@ -58,33 +58,33 @@
                                 <th class="text-right">注册人</th>
                                 <td>{!! isset($company->user_id) ? '<a href="'.url('admin/user/'.$company->user->id).'">'.$company->user->name .'</a>' : '' !!}</td>
                             </tr>
-                            <tr>
-                                <th class="text-right">审核人</th>
-                                <td>{!! isset($company->manager_id) ? '<a href="'.url('admin/manager/'.$company->manager->id).'">'.$company->manager->name .'</a>' : '' !!}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核状态</th>
-                                <td>
-                                    @if($company->status == 0)
-                                        <span class="label label-primary">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 1)
-                                        <span class="label label-success">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 2)
-                                        <span class="label label-default">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 3)
-                                        <span class="label label-warning">{{ $company->getStatus($company->status) }}</span>
-                                    @endif
+                            {{--<tr>--}}
+                                {{--<th class="text-right">审核人</th>--}}
+                                {{--<td>{!! isset($company->manager_id) ? '<a href="'.url('admin/manager/'.$company->manager->id).'">'.$company->manager->name .'</a>' : '' !!}</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<th class="text-right">审核状态</th>--}}
+                                {{--<td>--}}
+                                    {{--@if($company->status == 0)--}}
+                                        {{--<span class="label label-primary">{{ $company->getStatus($company->status) }}</span>--}}
+                                    {{--@elseif($company->status == 1)--}}
+                                        {{--<span class="label label-success">{{ $company->getStatus($company->status) }}</span>--}}
+                                    {{--@elseif($company->status == 2)--}}
+                                        {{--<span class="label label-default">{{ $company->getStatus($company->status) }}</span>--}}
+                                    {{--@elseif($company->status == 3)--}}
+                                        {{--<span class="label label-warning">{{ $company->getStatus($company->status) }}</span>--}}
+                                    {{--@endif--}}
                                     {{--                                    {{ $company->getStatus($company->status) }}--}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核失败原因</th>
-                                <td>{{ $company->reason }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核时间</th>
-                                <td>{{ $company->verified_at }}</td>
-                            </tr>
+                                {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<th class="text-right">审核失败原因</th>--}}
+                                {{--<td>{{ $company->reason }}</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                                {{--<th class="text-right">审核时间</th>--}}
+                                {{--<td>{{ $company->verified_at }}</td>--}}
+                            {{--</tr>--}}
                             <tr>
                                 <th class="text-right">创建时间</th>
                                 <td>{{ $company->created_at }}</td>
@@ -100,10 +100,10 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                @if($company->status != $company::VERIFIED_SUCCEED)
-                                    <a href="{{ url('admin/company/' . $company->id . '/verified') }}" type="button"
-                                       class="btn btn-success btn-md">审核</a>
-                                @endif
+                                {{--@if($company->status != $company::VERIFIED_SUCCEED)--}}
+                                    {{--<a href="{{ url('admin/company/' . $company->id . '/verified') }}" type="button"--}}
+                                       {{--class="btn btn-success btn-md">审核</a>--}}
+                                {{--@endif--}}
                                 <a href="{{ url('admin/company/' . $company->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
                                 <a href="{{ url()->previous() == url()->current() ? url('admin/company') : url()->previous() }}"

@@ -73,6 +73,10 @@
     @show
 </div><!--/.main-->
 @include('admin.common.modal')
+@section('modal-extend')
+
+@show
+
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>

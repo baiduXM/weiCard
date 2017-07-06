@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
@@ -21,12 +22,10 @@ class EmployeeController extends HomeController
     protected $path_type = 'employee'; // 文件路径保存分类
     /* 导入字段 */
     protected $importArray = array(
-//        'company_id'    => '公司',
         'department_id' => '部门',
-        'position_id'   => '职位',
+        'positions'     => '职位',
         'number'        => '工号',
         'nickname'      => '姓名',
-//        'avatar'        => '头像',
         'email'         => '邮箱',
         'mobile'        => '手机',
         'telephone'     => '座机',
@@ -58,15 +57,15 @@ class EmployeeController extends HomeController
     /**
      * 显示员工（除自己）
      *
-     * @return $this
+     * @return View
      */
     public function index()
     {
         $params = Input::query();        
         if ($this->is_mobile) {
             $user_id = Auth::user()->id;
-            $employee = Employee::where('user_id',$user_id)->first();
-            $company = Company::where('id',$employee['company_id'])->first();
+            $employee = Employee::where('user_id', $user_id)->first();
+            $company = Company::where('id', $employee['company_id'])->first();
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
                 'company'  => $company,
@@ -102,6 +101,13 @@ class EmployeeController extends HomeController
         } else {
             return redirect()->to('user')->with('error', '请先绑定公司');
         }
+        $company = Auth::user()->company;
+        $employees = Employee::where('company_id', '=', $company->id)->paginate();
+        $departments = Department::where('company_id', $company->id)->get();
+        return view('web.employee.index')->with([
+            'employees'   => $employees,
+            'departments' => $departments,
+        ]);
     }
 
     /**
@@ -112,16 +118,16 @@ class EmployeeController extends HomeController
      */
     public function store(Request $request)
     {
-        if(Auth::user()->company){
+        if (Auth::user()->company) {
             $company = Auth::user()->company;
-        }else{
+        } else {
             return redirect()->to('user')->with('error', '获取公司错误');
         }
         /* 验证 */
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
-            'Employee.mobile'    => 'required|unique:employees,employees.mobile|numeric',
+            'Employee.mobile'    => 'unique:employees,employees.mobile|numeric',
             'Employee.email'     => 'email',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
@@ -151,24 +157,24 @@ class EmployeeController extends HomeController
             $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
         }
 //        if ($allow) {
-            foreach ($data as $key => $value) {
-                if ($value === '') {
-                    $data[$key] = null; // 未填字段设置为null，否则会保存''
-                }
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
-            }
+        }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+        }
 
-            $data['company_id'] = Auth::user()->company->id;
+        $data['company_id'] = Auth::user()->company->id;
 
-            /* 添加 */
-            if (Employee::create($data)) {
-                $err_code = 300;
-            } else {
-                $err_code = 301;
-            }
+        /* 添加 */
+        if (Employee::create($data)) {
+            $err_code = 300;
+        } else {
+            $err_code = 301;
+        }
 //        } else {
 //            $err_code = 302;
 //        }
@@ -206,7 +212,7 @@ class EmployeeController extends HomeController
             'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
             'Employee.email'     => 'email|unique:employees,employees.email,' . $id,
-            'Employee.mobile'    => 'required|unique:employees,employees.mobile,' . $id . '|numeric',
+            'Employee.mobile'    => 'unique:employees,employees.mobile,' . $id . '|numeric',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
         ], [], [
@@ -218,37 +224,21 @@ class EmployeeController extends HomeController
             'Employee.mobile'    => '手机',
         ]);
         $data = $request->input('Employee');
-//        $position_only = Position::where('id', '=', $data['position_id'])->first();
-//        if ($position_only['is_only'] == 1) {
-//            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-//            if (!empty($employee_only)) {
-//                $allow = false;//唯一职位已存在员工时，不允许添加
-//            } else {
-//                $allow = true;
-//            }
-//        } else {
-//            $allow = true;//非唯一职位，允许添加
-//        }
-//        if ($allow) {
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-            }
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+        }
 
-            foreach ($data as $key => $value) {
-                if ($value !== '') {
-                    $employee->$key = $data[$key];
-                }
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $employee->$key = $data[$key];
             }
-            if ($employee->save()) {
-                $err_code = 500;
-            } else {
-                $err_code = 501;
-            }
-//        } else {
-//            $err_code = 502;
-//        }
-
+        }
+        if ($employee->save()) {
+            $err_code = 500;
+        } else {
+            $err_code = 501;
+        }
         Config::set('global.ajax.err', $err_code);
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
         return Config::get('global.ajax');

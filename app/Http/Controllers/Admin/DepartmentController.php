@@ -23,19 +23,19 @@ class DepartmentController extends AdminController
         });
 
         // 首页 > 公司列表 > 添加
-        Breadcrumbs::register('admin.employee.create', function ($breadcrumbs) {
+        Breadcrumbs::register('admin.department.create', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.department');
             $breadcrumbs->push('添加', route('admin.company_department.create'));
         });
 
         // 首页 > 公司列表 > 详情
-        Breadcrumbs::register('admin.employee.show', function ($breadcrumbs, $id) {
+        Breadcrumbs::register('admin.department.show', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.department');
             $breadcrumbs->push('详情', route('admin.company_department.show', $id));
         });
 
         // 首页 > 公司列表 > 编辑
-        Breadcrumbs::register('admin.employee.edit', function ($breadcrumbs, $id) {
+        Breadcrumbs::register('admin.department.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.department');
             $breadcrumbs->push('编辑', route('admin.company_department.edit', $id));
         });
@@ -47,6 +47,8 @@ class DepartmentController extends AdminController
         $model = new Department();
         $query = Department::query();
         $params = Input::query();
+        $companies = Company::get();
+
         if ($params) {
             foreach ($params as $key => $value) {
                 if (array_key_exists($key, $model->query)) {
@@ -57,7 +59,8 @@ class DepartmentController extends AdminController
         $departments = $query->with('company')->paginate();
         return view('admin.department.index')->with([
             'departments' => $departments,
-            'params' => $params,
+            'companies'   => $companies,
+            'params'      => $params,
         ]);
     }
 
@@ -66,7 +69,7 @@ class DepartmentController extends AdminController
         $companies = Company::where('status', '=', '1')->with([
             'departments' => function ($query) {
                 $query->where('pid', '=', 0);
-            }
+            },
         ])->get();
 
         return view('admin.department.create')->with([
