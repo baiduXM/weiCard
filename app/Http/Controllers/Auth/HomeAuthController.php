@@ -193,6 +193,11 @@ class HomeAuthController extends HomeController
             ->first();
 
         if ($user) { // 存在，登录
+            if ($user->unionid != $data['unionid']) {
+                $user->unionid = $data['unionid'];
+                $user->name = $data['unionid'];
+                $user->save();
+            }
             return Auth::guard($this->getGuard())->login($user);
         } else { // 不存在，创建，登录
             // openid:当前公众号授权唯一码
