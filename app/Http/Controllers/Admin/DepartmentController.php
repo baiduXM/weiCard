@@ -48,7 +48,6 @@ class DepartmentController extends AdminController
         $query = Department::query();
         $params = Input::query();
         $companies = Company::get();
-
         if ($params) {
             foreach ($params as $key => $value) {
                 if (array_key_exists($key, $model->query)) {

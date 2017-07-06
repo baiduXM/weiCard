@@ -53,6 +53,7 @@ class EmployeeController extends AdminController
         $model = new Employee();
         $query = Employee::query();
         $params = Input::query();
+        $company_id = 0;
         if ($params) {
             foreach ($params as $key => $value) {
                 if (array_key_exists($key, $model->query)) {
@@ -61,11 +62,7 @@ class EmployeeController extends AdminController
             }
             if (isset($params['company_id'])) {
                 $company_id = $params['company_id'];
-            } else {
-                $company_id = 0;
             }
-        } else {
-            $company_id = 0;
         }
         $company = new Company;
         $companies = $company->get();
@@ -105,13 +102,12 @@ class EmployeeController extends AdminController
         $data = $request->input('Employee');
         /* 验证 */
         $this->validate($request, [
-            'Employee.company_id'    => 'required',
-            'Employee.department_id' => '',
-            'Employee.position_id'   => '',
-            'Employee.number'        => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'Employee.nickname'      => 'required',
-            'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
-            'Employee.telephone'     => '',
+            'Employee.company_id' => 'required',
+            'Employee.number'     => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.nickname'   => 'required',
+            'Employee.avatar'     => 'image|max:' . 2 * 1024, // 最大2MB
+            'Employee.telephone'  => '',
+            'Employee.mobile'     => '',
         ], [], [
             'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
@@ -120,6 +116,8 @@ class EmployeeController extends AdminController
             'Employee.nickname'      => '姓名',
             'Employee.avatar'        => '头像',
             'Employee.telephone'     => '座机',
+            'Employee.mobile'        => '手机',
+
         ]);
 
         $position_only = Position::where('id', '=', $data['position_id'])->first();

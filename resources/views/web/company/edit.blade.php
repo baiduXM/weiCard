@@ -21,10 +21,10 @@
             <span><i class="" style="color: red;">*</i>公司名称:</span>
             <input type="text" name="Company[display_name]" placeholder="公司名称"
                    value="{{ old('Company.display_name') ? old('Company.display_name') : $company->display_name }}">
+            @if ($errors->has('Company.display_name'))
+                <p class="pass-error show">{{ $errors->first('Company.display_name') }}</>
+            @endif
         </div>
-        @if ($errors->has('Company.display_name'))
-            <p class="pass-error show">{{ $errors->first('Company.display_name') }}</p>
-        @endif
 
         <div class="file">
             <span>图标: </span>
@@ -66,25 +66,27 @@
             <span>公司网址: </span>
             <input type="url" name="Company[homepage]" placeholder=""
                    value="{{ old('Company.homepage') ? old('Company.homepage') : $company->homepage }}">
+            @if ($errors->has('Company.homepage'))
+                <span class="pass-error show">{{ $errors->first('Company.homepage') }}</span>
+            @endif
 
         </div>
-        @if ($errors->has('Company.homepage'))
-            <p class="pass-error show">{{ $errors->first('Company.homepage') }}</p>
-        @endif
         <div class="companyLink">
             <span>是否外链:</span>
             <div class="com">
                 @if ($company->is_profilelink=='1')
-                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio" checked="checked"   value="1">开
+                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="1">
+                    开
                 @else
-                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"    value="1">开
+                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="1">开
                 @endif
                 @if ($company->is_profilelink=='1')
-                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"    value="0">关
+                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="0">关
                 @else
-                    <input class="comLinkInput"  name="Company[is_profilelink]" type="radio"  checked="checked"  value="0">关
+                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="0">
+                    关
                 @endif
-                <input type="text" name="Company[profilelink]"class="comLinkInput cardInput"
+                <input type="text" name="Company[profilelink]" class="comLinkInput cardInput"
                        value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">
             </div>
             <h6 class="comTap"><span>备注:</span>公司简介外链</h6>
@@ -96,14 +98,14 @@
             <span>个人名片展示:</span>
             <div class="com">
                 @if ($company->is_person=='0')
-                    <input class="comLinkInput"  name="Company[is_person]" type="radio" checked="checked"   value="0">开
+                    <input class="comLinkInput" name="Company[is_person]" type="radio" checked="checked" value="0">开
                 @else
-                    <input class="comLinkInput"  name="Company[is_person]" type="radio"    value="0">开
+                    <input class="comLinkInput" name="Company[is_person]" type="radio" value="0">开
                 @endif
                 @if ($company->is_person=='0')
-                    <input class="comLinkInput"  name="Company[is_person]" type="radio"    value="1">关
+                    <input class="comLinkInput" name="Company[is_person]" type="radio" value="1">关
                 @else
-                    <input class="comLinkInput"  name="Company[is_person]" type="radio"  checked="checked"  value="1">关
+                    <input class="comLinkInput" name="Company[is_person]" type="radio" checked="checked" value="1">关
                 @endif
             </div>
         </div>
@@ -118,13 +120,17 @@
 
         <div>
             <span>地址：</span>
-            <input id="where" name="Company[address]" type="text" value="{{ old('Company.address') ? old('Company.address') : $company->address }}">
-            <input style="width:70px;height:35px;border:1px solid gray"type="button" value="搜索" onClick="sear(document.getElementById('where').value);" />
-            <p><输入完地址后，点击搜索，用鼠标在地图上点击定位></p>
+            <input id="where" name="Company[address]" type="text"
+                   value="{{ old('Company.address') ? old('Company.address') : $company->address }}">
+            <input style="width:70px;height:35px;border:1px solid gray" type="button" value="搜索"
+                   onClick="sear(document.getElementById('where').value);"/>
+            <p>输入完地址后，点击搜索，用鼠标在地图上点击定位></p>
             {{--经度：--}}
-            <input id="lon" name="Company[coordinate_lng]" type="hidden" value="{{ old('Company.coordinate_lng') ? old('Company.coordinate_lng') : $company->coordinate_lng }}">
+            <input id="lon" name="Company[coordinate_lng]" type="hidden"
+                   value="{{ old('Company.coordinate_lng') ? old('Company.coordinate_lng') : $company->coordinate_lng }}">
             {{--纬度：--}}
-            <input id="lat" name="Company[coordinate_lat]" type="hidden" value="{{ old('Company.coordinate_lat') ? old('Company.coordinate_lat') : $company->coordinate_lat }}" >
+            <input id="lat" name="Company[coordinate_lat]" type="hidden"
+                   value="{{ old('Company.coordinate_lat') ? old('Company.coordinate_lat') : $company->coordinate_lat }}">
             <div style="width:600px;height:400px;border:1px solid gray" id="container"></div>
         </div>
         @if ($errors->has('Company.address'))

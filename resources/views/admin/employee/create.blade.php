@@ -32,42 +32,40 @@
                             @endif
                         </div><!-- company_id公司ID -->
 
-                        {{--<div class="form-group {{ $errors->has('Employee.department_id') ? ' has-error' : '' }}">--}}
-                            {{--<label class="col-md-3 control-label" for="department_id"><span class="text-danger">*</span>--}}
-                                {{--部门</label>--}}
-                            {{--<div class="col-md-6">--}}
-                                {{--<select class="form-control" id="department_id" name="Employee[department_id]">--}}
-                                    {{--<option selected value="">无部门</option>--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
-                            {{--@if ($errors->has('Employee.company_id'))--}}
-                                {{--<span class="help-block col-md-3">--}}
-                                    {{--<strong>{{ $errors->first('Employee.company_id') }}</strong>--}}
-                                {{--</span>--}}
-                            {{--@endif--}}
-                        {{--</div><!-- department_id部门ID -->--}}
-
-                        <div class="form-group {{ $errors->has('Employee.position_id') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="position_id"><span class="text-danger">*</span>
-                                职位</label>
+                        <div class="form-group {{ $errors->has('Employee.department_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="department_id">
+                                部门</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="position_id" name="Employee[position_id]">
-                                    <option selected value="">无职位</option>
+                                <select class="form-control" id="department_id" name="Employee[department_id]">
+                                    <option selected value="">无部门</option>
                                 </select>
                             </div>
-                            @if ($errors->has('Employee.position_id'))
+                            @if ($errors->has('Employee.company_id'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Employee.position_id') }}</strong>
+                                    <strong>{{ $errors->first('Employee.company_id') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- position_id职位ID -->
+                        </div><!-- department_id部门ID -->
 
+                        <div class="form-group {{ $errors->has('Employee.positions') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="positions">
+                                职位</label>
+                            <div class="col-md-6">
+                                <input id="positions" name="Employee[positions]" type="text" placeholder="职位"
+                                       class="form-control" value="{{ old('Employee.positions') }}">
+                            </div>
+                            @if ($errors->has('Employee.positions'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.positions') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- number工号 -->
 
                         <div class="form-group {{ $errors->has('Employee.number') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="number"><span class="text-danger">*</span>
                                 工号</label>
                             <div class="col-md-6">
-                                <input id="number" name="Employee[number]" type="text" placeholder="以字母开头，可包含字母和数字"
+                                <input id="number" name="Employee[number]" type="text" placeholder="字母或数字"
                                        class="form-control" value="{{ old('Employee.number') }}">
                             </div>
                             @if ($errors->has('Employee.number'))
@@ -102,6 +100,20 @@
                                 </span>
                             @endif
                         </div><!-- avatar头像 -->
+
+                        <div class="form-group {{ $errors->has('Employee.mobile') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="mobile">
+                                手机</label>
+                            <div class="col-md-6">
+                                <input id="mobile" name="Employee[mobile]" type="text" placeholder=""
+                                       class="form-control" value="{{ old('Employee.mobile') }}">
+                            </div>
+                            @if ($errors->has('Employee.mobile'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.mobile') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- mobile手机 -->
 
                         <div class="form-group {{ $errors->has('Employee.telephone') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="telephone">

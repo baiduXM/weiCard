@@ -15,7 +15,7 @@
                 <ul>
                     <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
                 </ul>
-            </div>            
+            </div>
         @else
             <div class="card_choose">
                 <ul>
@@ -59,7 +59,7 @@
                    </span>
                     <a href="javascript:;" class="card_c_cj">立即获取</a>
                 </div>
-            @endif            
+            @endif
         </div>
     </div>
     <div class="sea_l pa">
@@ -87,16 +87,11 @@
                     }
                 });
                 $.post("/user/binding", {code: code}, function (json) {
-                    if (json.err % 100 == 0) { // 成功
-                        $(".qy").text(json.msg);
-                        $(".qy").removeClass("hide");
-                        $(".qy").oneTime('1s', function () {
-                            window.location.href = "/company/employee";
-                        });
-                    } else {
-                        $(".qy").text(json.msg);
-                        $(".qy").removeClass("hide");
-                    }
+                    $(".qy").text(json);
+                    $(".qy").removeClass("hide");
+                    $(".qy").oneTime('1s', function () {
+                        window.location.href = "/company/employee";
+                    });
                 });
             });
         });

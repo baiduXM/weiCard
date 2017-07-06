@@ -12,19 +12,21 @@ class CardcaseController extends AdminController
     public function __construct()
     {
 
-        // 首页 > 用户列表 > 名片夹列表
         Breadcrumbs::register('admin.cardcase', function ($breadcrumbs) {
             $breadcrumbs->parent('admin.user');
             $breadcrumbs->push('名片夹列表', route('admin.user_cardcase.index'));
         });
 
-        // 首页 > 公司列表 > 详情
+        Breadcrumbs::register('admin.cardcase.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('admin.cardcase');
+            $breadcrumbs->push('添加', route('admin.user_cardcase.create'));
+        });
+
         Breadcrumbs::register('admin.cardcase.show', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.cardcase');
             $breadcrumbs->push('详情', route('admin.user_cardcase.show', $id));
         });
 
-        // 首页 > 公司列表 > 编辑
         Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.cardcase');
             $breadcrumbs->push('编辑', route('admin.company.edit', $id));
@@ -47,7 +49,7 @@ class CardcaseController extends AdminController
         $cardcases = $query->with('user', 'follower')->paginate();
         return view('admin.cardcase.index')->with([
             'cardcases' => $cardcases,
-            'params' => $params,
+            'params'    => $params,
         ]);
     }
 

@@ -38,17 +38,15 @@
             </h3>
             <ul class="tree_one" {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'style=display:block;' : '' }}>
                 <li {{ Request::path() == 'cardcase' ? 'class=active' : '' }}>
-                    <a href="{{ url('cardcase') }}">我的名片夹</a></li>
+                    <a href="{{ url('cardcase') }}">名片夹管理</a></li>
                 <li {{ Request::path() == 'cardcase/group' ? 'class=active' : '' }}>
-                    <a href="{{ url('cardcase/group') }}">我的名片群</a></li>
-                <li {{ Request::path() == 'cardcase/tag' ? 'class=active' : '' }}>
-                    <a href="{{ url('cardcase/tag') }}">我的分组</a></li>
+                    <a href="{{ url('cardcase/group') }}">分组管理</a></li>
             </ul>
         </div><!--名片夹-->
         @if(Auth::user()->company)
             <div class="tree_box nav">
                 <h3 {{ Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
-                    <a href="javascript:"><em class="iconFont">&#xe658;</em>我的公司
+                    <a href="javascript:"><em class="iconFont">&#xe658;</em>公司管理
                         @if(Request::path() == 'company' || Request::is('company/*'))
                             <i class="nav-j"></i>
                         @else

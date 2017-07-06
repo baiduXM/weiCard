@@ -65,7 +65,7 @@
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="user_name">创始人</div>
+                                            <div class="th-inner" data-name="user_name">管理员</div>
                                             <div class="fht-cell"></div>
                                         </th><!--user_name-->
                                         {{--<th style="">--}}
@@ -143,7 +143,7 @@
                                                                data-toggle="modal" data-target=".confirmModal"
                                                                data-url="company/{{ $item->id }}/unbinding"
                                                                data-info="{{ $item->user->nickname }}"
-                                                               title="解绑用户">
+                                                               title="解绑管理员">
                                                                 <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                         @endif
                                                         <a href="{{ url('admin/company/'. $item->id .'/edit') }}"

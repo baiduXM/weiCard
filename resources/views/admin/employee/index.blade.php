@@ -13,18 +13,21 @@
                 <div class="panel-body">
                     <div class="bootstrap-table">
                         {{--表单功能栏--}}
-                        <div class="fixed-table-toolbar">
-                            <select name="cem-menu" id="cem-menu" class="columns btn-group pull-left">
-                                <option value="0">选择公司</option>
-                                @foreach($companies as $company)
-                                    @if($company_id == $company->id)
-                                        <option value="{{$company->id}}" selected>{{$company->display_name}}</option>
-                                    @else
-                                        <option value="{{$company->id}}">{{$company->display_name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                        <div class=" fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
+                                <div class="pull-left cell-3">
+                                    <select name="cem-menu" id="cem-menu" class="form-control">
+                                        <option value="0">选择公司</option>
+                                        @foreach($companies as $company)
+                                            @if($company_id == $company->id)
+                                                <option value="{{$company->id}}"
+                                                        selected>{{$company->display_name}}</option>
+                                            @else
+                                                <option value="{{$company->id}}">{{$company->display_name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div><!--公司信息-->
                                 <button class="btn btn-default operate-batch-delete" type="button"
                                         name="operate-batch-delete" data-url="company_employee/batch"
                                         data-toggle="modal" data-target=".confirmModal" title="删除">

@@ -35,7 +35,7 @@
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="employee" title="重置刷新">
+                                        data-url="user_cardcase" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/employee') }}" method="get">--}}
@@ -99,13 +99,9 @@
                                             <div class="fht-cell"></div>
                                         </th>
                                         <th style="">
-                                            <div class="th-inner" data-name="remark">备注</div>
+                                            <div class="th-inner">操作</div>
                                             <div class="fht-cell"></div>
-                                        </th>
-                                        {{--<th style="">--}}
-                                        {{--<div class="th-inner">操作</div>--}}
-                                        {{--<div class="fht-cell"></div>--}}
-                                        {{--</th><!--operation-->--}}
+                                        </th><!--operation-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -123,40 +119,38 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <!-- <td>{{ $item->id }}</td> -->
-                                                <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : $item->user->name !!}</td>
+                                                <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
                                                 <td>
                                                     @if($item->getFollowerType($item->follower_type) == 'u')
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '用户不存在' !!}
+                                                        {!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '用户不存在' !!}
                                                     @else
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/company_employee/'.$item->follower_id).'">'.$item->follower->name.'</a>' : '员工不存在' !!}
+                                                        {!! ($item->follower) ? '<a href="'.url('admin/company_employee/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '员工不存在' !!}
                                                     @endif
                                                 </td>
-                                                <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : '公司员工' }}</td>
-                                                <td>{{ $item->remark }}</td>
-                                                {{--<td>--}}
-                                                {{--<a href="{{ url('admin/employee/'.$item->id) }}"--}}
-                                                {{--class="btn btn-white btn-xs" title="详情"><i--}}
-                                                {{--class="glyphicon glyphicon-list-alt"></i>详情</a>--}}
-                                                {{--<a href="{{ url('admin/employee/'. $item->id .'/edit') }}"--}}
-                                                {{--class="btn btn-primary btn-xs" title="编辑"><i--}}
-                                                {{--class="glyphicon glyphicon-pencil"></i>编辑</a>--}}
-                                                {{--@if(!isset($item->user))--}}
-                                                {{--<a class="btn btn-primary btn-xs operate-code"--}}
-                                                {{--data-toggle="modal" data-target="#shareModal"--}}
-                                                {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
-                                                {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
-                                                {{--title="代码">--}}
-                                                {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
-                                                {{--</a>--}}
-                                                {{--@endif--}}
-                                                {{--<a class="btn btn-danger btn-xs operate-delete"--}}
-                                                {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                {{--data-url="employee/{{ $item->id }}"--}}
-                                                {{--data-info="{{ $item->number }} 员工" title="删除">--}}
-                                                {{--<i class="glyphicon glyphicon-trash"></i>删除--}}
-                                                {{--</a>--}}
-                                                {{--</td><!--操作-->--}}
+                                                <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人' : '企业' }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/employee/'.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="详情"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
+                                                    <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    @if(!isset($item->user))
+                                                        <a class="btn btn-primary btn-xs operate-code"
+                                                           data-toggle="modal" data-target="#shareModal"
+                                                           data-code="{{ $item->company->name . '/' . $item->number }}"
+                                                           data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
+                                                           title="代码">
+                                                            <i class="glyphicon glyphicon-copy"></i>代码
+                                                        </a>
+                                                    @endif
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="employee/{{ $item->id }}"
+                                                       data-info="{{ $item->number }} 员工" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
+                                                </td><!--操作-->
                                             </tr>
                                         @endforeach
                                     @endif

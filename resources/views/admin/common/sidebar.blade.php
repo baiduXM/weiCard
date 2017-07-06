@@ -26,10 +26,7 @@
                     <a href="{{ url('admin/user_cardcase') }}"><span class="glyphicon glyphicon-stats"></span>名片夹管理</a>
                 </li>
                 <li class="{{ Request::path() == 'admin/user_group' || Request::is('admin/user_group/*')  ? 'active' : '' }}">
-                    <a href="{{ url('admin/user_group') }}"><span class="glyphicon glyphicon-stats"></span>圈子管理</a>
-                </li>
-                <li class="{{ Request::path() == 'admin/user_tag' || Request::is('admin/user_tag/*')  ? 'active' : '' }}">
-                    <a href="{{ url('admin/user_tag') }}"><span class="glyphicon glyphicon-stats"></span>分组管理</a>
+                    <a href="{{ url('admin/user_group') }}"><span class="glyphicon glyphicon-stats"></span>分组管理</a>
                 </li>
             </ul>
         </li>
@@ -49,10 +46,10 @@
                 <li class="{{ Request::path() == 'admin/company_department' || Request::is('admin/company_department/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/company_department') }}"><span class="glyphicon glyphicon-stats"></span>部门管理</a>
                 </li>
-                <li class="{{ Request::path() == 'admin/company_position' || Request::is('admin/company_position/*')  ? 'active' : '' }}">
-                    <a href="{{ url('admin/company_position') }}"><span
-                                class="glyphicon glyphicon-stats"></span>职位管理</a>
-                </li>
+                {{--<li class="{{ Request::path() == 'admin/company_position' || Request::is('admin/company_position/*')  ? 'active' : '' }}">--}}
+                    {{--<a href="{{ url('admin/company_position') }}"><span--}}
+                                {{--class="glyphicon glyphicon-stats"></span>职位管理</a>--}}
+                {{--</li>--}}
                 <li class="{{ Request::path() == 'admin/company_employee' || Request::is('admin/company_employee/*')  ? 'active' : '' }}">
                     <a href="{{ url('admin/company_employee') }}"><span
                                 class="glyphicon glyphicon-stats"></span>员工管理</a>
