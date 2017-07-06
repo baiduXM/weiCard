@@ -185,8 +185,9 @@ class UserController extends HomeController
         $res = $this->bindEmployee('mobile', $code, Auth::id());
         if ($request->ajax()) {
             if ($res === true) {
-                return response()->json('绑定成功');
+                $res = '绑定成功';
             }
+            return response()->json($res);
         }
         if ($res === true) {
             return redirect('user')->with('success', '绑定成功');
