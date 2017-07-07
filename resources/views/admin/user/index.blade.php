@@ -134,11 +134,14 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                        <!-- <td>{{ $item->id }}</td> -->
-                                            <!--ID-->
                                             <td>{{ $item->nickname }}</td><!--用户名-->
-                                            <td>{!! isset($item->employee) ? '<a href="'.url('admin/company/'.$item->employee->company_id).'">'.$item->employee->company->display_name.'</a>' : '' !!}
-                                                {{ (isset($item->company) && isset($item->employee)) && $item->employee->company_id==$item->company->id?'(管理员)':'' }}</td>
+                                            <td>
+                                                @if($item->company)
+                                                    <a href="{{ url('admin/company/'.$item->company->id) }}">{{ $item->company->display_name }}</a>(管理员)
+                                                @elseif($item->employee)
+                                                    <a href="{{ url('admin/company/'.$item->employee->company_id) }}">{{ $item->employee->company->display_name }}</a>
+                                                @endif
+                                            </td>
                                             <!--公司-->
                                             <td>{!! ($item->employee) ? '<a href="'.url('admin/company_employee/'.$item->employee->id).'">'.$item->employee->nickname.'</a>' : '' !!}</td>
                                             <!--员工-->

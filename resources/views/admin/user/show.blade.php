@@ -48,11 +48,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">绑定公司</th>
-                                <td>{!! isset($user->company) ? '<a href="'.url('admin/company/'.$user->company->id).'">'.$user->company->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($user->company) ? '<a href="'.url('admin/company/'.$user->company->id).'">'.$user->company->display_name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定员工</th>
-                                <td>{!! isset($user->employee) ? '<a href="'.url('admin/company_employee/'.$user->employee->id).'">'.$user->employee->number.'</a>' : '' !!}</td>
+                                <td>{!! isset($user->employee) ? '<a href="'.url('admin/company_employee/'.$user->employee->id).'">'.$user->employee->nickname.'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">状态</th>
