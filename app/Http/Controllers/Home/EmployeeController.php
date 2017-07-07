@@ -349,7 +349,7 @@ class EmployeeController extends HomeController
             $company_id = Auth::user()->company->id;
             // TODO:置换数组
             $data_swap = $this->swapArray($data);
-            if (isset($data_swap['部门'])) {
+            if (!isset($data_swap['部门'])) {
                 return redirect()->back()->with('error', '未检测到[部门]字段');
             }
             // TODO:添加部门
