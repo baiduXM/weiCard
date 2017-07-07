@@ -86,7 +86,7 @@ class EmployeeController extends HomeController
             $keyword = $params['keyword'];
             $query->where($word, 'like', '%' . $keyword . '%');
         }
-        $employees = $query->where('company_id', '=', $company->id)->paginate(3);
+        $employees = $query->where('company_id', '=', $company->id)->paginate();
 
         return view('web.employee.index')->with([
             'employees'   => $employees,
