@@ -52,7 +52,7 @@
                             <li><a class="dropdown-word" id="positions">职位</a></li>
                             <li><a class="dropdown-word" id="mobile">手机</a></li>
                             <li><a class="dropdown-word" id="telephone">电话</a></li>
-                            <!-- <li><a class="dropdown-word" id="department">部门</a></li> -->
+                            <li><a class="dropdown-word" id="department">部门</a></li>
                         </ul>
                     </li>
                     <li class="b-search  " name='search-form'>

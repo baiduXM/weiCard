@@ -84,7 +84,20 @@ class EmployeeController extends HomeController
         if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
             $word = $params['word'];
             $keyword = $params['keyword'];
-            $query->where($word, 'like', '%' . $keyword . '%');
+            if($word == 'department'){
+                foreach ($departments as $k => $v) {
+                    // if($v->name == $keyword){//精确搜索
+                    if(strpos($v->name,$keyword)!==false){//模糊搜索
+                        $department_id[] = $v->id;
+                        // break;
+                    }else{
+                        $department_id[] = '';
+                    }
+                }
+                $query->whereIn('department_id', $department_id)->orderBy('department_id','DESC')->orderBy('positions','DESC');
+            }else{
+                $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id','DESC')->orderBy('positions','DESC');
+            }            
         }
         $employees = $query->where('company_id', '=', $company->id)->paginate();
 
