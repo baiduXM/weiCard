@@ -49,7 +49,6 @@ class EmployeeController extends AdminController
      */
     public function index()
     {
-
         $model = new Employee();
         $query = Employee::query();
         $params = Input::query();
@@ -107,11 +106,10 @@ class EmployeeController extends AdminController
             'Employee.nickname'   => 'required',
             'Employee.avatar'     => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone'  => '',
-            'Employee.mobile'     => '',
+            'Employee.mobile'     => 'unique:employees,employees.mobile',
         ], [], [
             'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id'   => '职位',
             'Employee.number'        => '工号',
             'Employee.nickname'      => '姓名',
             'Employee.avatar'        => '头像',
@@ -120,47 +118,25 @@ class EmployeeController extends AdminController
 
         ]);
 
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;//唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
+        /* 获取字段类型 */
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-        } else {
-            $allow = true;//非唯一职位，允许添加
         }
-        /* 获取该公司现有员工总人数 */
-        $employee_nums = count(Employee::where('company_id', '=', $data['company_id'])->get());
         $company = Company::find($data['company_id']);
-        /* 判断已经添加员工数是否超出设置人数 */
-        if ($employee_nums < $company->limit) {
-            if ($allow) {
-                /* 获取字段类型 */
-                foreach ($data as $key => $value) {
-                    if ($value === '') {
-                        $data[$key] = null; // 未填字段设置为null，否则会保存''
-                    }
-                }
-                $company = Company::find($data['company_id']);
-                /* 获取文件类型 */
-                if ($request->hasFile('Employee.avatar')) {
-                    $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
-                }
-
-                /* 添加 */
-                if (Employee::create($data)) {
-                    return redirect('admin/company_employee')->with('success', '添加成功');
-                } else {
-                    return redirect()->back();
-                }
-            } else {
-                return redirect()->back()->with('error', '该唯一职位已存在员工');
-            }
-        } else {
-            return redirect()->back()->with('error', '员工人数上限，无法添加新员工');
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
         }
+
+        /* 添加 */
+        if (Employee::create($data)) {
+            return redirect('admin/company_employee')->with('success', '添加成功');
+        } else {
+            return redirect()->back();
+        }
+
     }
 
     public function show($id)
@@ -189,7 +165,7 @@ class EmployeeController extends AdminController
         $this->validate($request, [
             'Employee.company_id'    => 'required',
             'Employee.department_id' => '',
-            'Employee.position_id'   => '',
+            'Employee.positions'     => '',
             'Employee.number'        => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Employee.nickname'      => 'required',
             'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
@@ -197,46 +173,28 @@ class EmployeeController extends AdminController
         ], [], [
             'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id'   => '职位',
+            'Employee.positions'     => '职位',
             'Employee.number'        => '工号',
             'Employee.nickname'      => '姓名',
             'Employee.avatar'        => '头像',
             'Employee.telephone'     => '座机',
         ]);
         $data = $request->input('Employee');
-        // TODO：可以使用关系模型获取数据
-        // eg. Employee::with('position')->find($id);
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;//唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
-            }
-        } else {
-            $allow = true;//非唯一职位，允许添加
+
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
         }
 
-        if ($allow) {
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-
+        foreach ($data as $key => $value) {
+            if ($value !== '') {
+                $employee->$key = $data[$key];
             }
-
-            foreach ($data as $key => $value) {
-                if ($value !== '') {
-                    $employee->$key = $data[$key];
-                }
-            }
-            if ($employee->save()) {
-                return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
-            } else {
-                return redirect()->back();
-            }
+        }
+        if ($employee->save()) {
+            return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
         } else {
-            return redirect()->back()->with('error', '该唯一职位已存在员工');
+            return redirect()->back();
         }
 
     }

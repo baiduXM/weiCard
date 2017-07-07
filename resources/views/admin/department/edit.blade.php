@@ -23,7 +23,8 @@
                                     <option {{ old('Department.company_id') == $department->company->id ? 'selected' : '' }}
                                             value="{{ $department->company->id }}">{{ $department->company->display_name }}</option>
                                 </select>
-                                <input name="Department[company_id]" type="hidden" value="{{ $department->company->id }}">
+                                <input name="Department[company_id]" type="hidden"
+                                       value="{{ $department->company->id }}">
                             </div>
                             @if ($errors->has('Department.company_id'))
                                 <span class="help-block col-md-3">
@@ -54,7 +55,8 @@
                                 <select class="form-control" id="employee_id" name="Department[employee_id]">
                                     <option value="0">请选择</option>
                                     @foreach($department->employees as $employee)
-                                        <option {{ old('Department.employee_id') == $employee->id ? 'selected' : '' }}
+                                        <option {{ old('Department.employee_id') == $employee->id ? 'selected' :
+                                        ($department->owner->id == $employee->id ? 'selected' : '') }}
                                                 value="{{ $employee->id }}">{{ $employee->nickname }}</option>
                                     @endforeach
                                 </select>

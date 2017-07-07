@@ -42,6 +42,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="company_employee" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
+                                        data-url="company_employee/trash" title="垃圾箱">
+                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -111,7 +114,7 @@
                                             <!--姓名-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->department) ? '<a href="'.url('admin/company_department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
                                             <td>{{ $item->positions or '' }}</td>
                                             <!--头衔-->

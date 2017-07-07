@@ -215,7 +215,9 @@ $(function () {
 
     /* 查看垃圾箱 */
     $('.operate-dustbin').click(function () {
-        alert('功能待开发');
+        var _url      = $(this).data('url');
+        location.href = _url;
+        // alert('功能待开发');
     });
 
     $('.operate-back').click(function () {

@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class CommonModel extends Model
 {
-//    use SoftDeletes;
 
     const IS_ACTIVE = 1; // 激活
     const IS_ACTIVE_NOT = 0; // 停用

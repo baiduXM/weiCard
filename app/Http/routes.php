@@ -249,16 +249,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('company', 'Admin\CompanyController');
 
     /* 部门管理 */
+    Route::delete('company_department/batch', ['as' => 'admin.department.batchDestroy', 'uses' => 'Admin\DepartmentController@batchDestroy']);
     Route::resource('company_department', 'Admin\DepartmentController');
 
     /* 员工管理 */
-    Route::resource('company_employee', 'Admin\EmployeeController');
     Route::post('company_employee/drop', ['as' => 'admin.employee.drop', 'uses' => 'Admin\EmployeeController@drop']);
-    Route::group(['prefix' => 'company_employee'], function () {
-        Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
-        Route::delete('{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
-
-    });
+    Route::delete('company_employee/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::get('company_employee/trash', ['as' => 'admin.employee.trash', 'uses' => 'Admin\EmployeeController@trash']);
+    Route::delete('company_employee/{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+    Route::resource('company_employee', 'Admin\EmployeeController');
 
     /* 职位管理 */
     Route::group(['prefix' => 'company_position'], function () {
