@@ -20,7 +20,7 @@
             @if($isComplete)
                 <div class="cards pr">
                     <img src="{{ asset('static/mobile/images/bg7.png') }}">
-                    <div class="cards_tx dtc tc vm pa"><img
+                    <div class="cards_tx cards-gr dtc tc vm pa"><img
                                 src="{{ asset($user->avatar) }}"></div>
                     <div class="name pa">• 姓名：{{ $user->nickname }}</div>
                     <div class="tell pa">• 手机：{{ $user->mobile }}</div>
