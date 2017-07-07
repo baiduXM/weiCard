@@ -26,8 +26,44 @@
             @endif
         </div>
 
+        <div>
+            <span>公司备注: </span>
+            <input type="comment" name="Company[comment]" placeholder=""
+                   value="{{ old('Company.comment') ? old('Company.comment') : $company->comment }}">
+        </div>
+        @if ($errors->has('Company.comment'))
+            <p class="pass-error show">{{ $errors->first('Company.comment') }}</p>
+        @endif
+
+        <div>
+            <span>注册资本: </span>
+            <input type="registered_capital" name="Company[registered_capital]" placeholder=""
+                   value="{{ old('Company.registered_capital') ? old('Company.registered_capital') : $company->registered_capital }}">
+        </div>
+        @if ($errors->has('Company.registered_capital'))
+            <p class="pass-error show">{{ $errors->first('Company.registered_capital') }}</p>
+        @endif
+
+        <div>
+            <span>工商注册号: </span>
+            <input type="registered_number" name="Company[registered_number]" placeholder=""
+                   value="{{ old('Company.registered_number') ? old('Company.registered_number') : $company->registered_number }}">
+        </div>
+        @if ($errors->has('Company.registered_number'))
+            <p class="pass-error show">{{ $errors->first('Company.registered_number') }}</p>
+        @endif
+
+        <div class="user-j">
+            <span>服务范围: </span>
+            <textarea name="Company[service_area]"
+                      id="">{{ old('Company.service_area') ? old('Company.service_area') : $company->service_area }}</textarea>
+        </div>
+        @if ($errors->has('Company.service_area'))
+            <p class="pass-error show">{{ $errors->first('Company.service_area') }}</p>
+        @endif
+
         <div class="file">
-            <span>图标: </span>
+            <span>公司图标: </span>
             <input type="file" name="Company[logo]">
         </div>
         @if ($errors->has('Company.logo'))
@@ -45,7 +81,7 @@
         @endif
         --}}
         <div>
-            <span>邮箱: </span>
+            <span>公司邮箱: </span>
             <input type="email" name="Company[email]" placeholder=""
                    value="{{ old('Company.email') ? old('Company.email') : $company->email }}">
         </div>
@@ -119,7 +155,7 @@
         @endif
 
         <div>
-            <span>地址：</span>
+            <span>公司地址：</span>
             <input id="where" name="Company[address]" type="text"
                    value="{{ old('Company.address') ? old('Company.address') : $company->address }}">
             <input style="width:70px;height:35px;border:1px solid gray" type="button" value="搜索"

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Common;
 
 use App\Models\Cardcase;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Template;
@@ -287,6 +288,17 @@ class HomeController extends Controller
             'qrcodeimg'      => $qrcodeimg, // 二维码图片
             'sign_package'   => $sign_package, // 微信签名包
             'count_cardcase' => $count_cardcase, // 是否关注
+        ]);
+    }
+
+
+    public function companyinfo($params){
+
+        $id=$params;
+        $company=Company::find($id);
+        //dd($company);
+        return view('common.companyinfo')->with([
+            'company'  => $company, // 公司数据
         ]);
     }
 

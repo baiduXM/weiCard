@@ -56,6 +56,7 @@ Route::get('admin/logout', 'Auth\AdminAuthController@logout');
 /* 名片预览展示 */
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@errorview']);
+Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\HomeController@companyinfo']);
 
 /* 文件下载 */
 Route::get('download/{name?}', ['as' => 'download', 'uses' => 'Common\Controller@download']);

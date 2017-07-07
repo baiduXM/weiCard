@@ -106,6 +106,11 @@ class CompanyController extends HomeController
             'Company.profilelink'    => 'url:true',
             'Company.is_profilelink' => '',
             'Company.is_person'      => '',
+            'Company.comment'        => 'max:255',
+            'Company.service_area'   => 'max:255',
+            'Company.registered_capital'      => 'max:255',
+            'Company.registered_number'       => 'max:255',
+
         ], [], [
             'Company.name'           => '公司名称',
             'Company.display_name'   => '显示名称',
@@ -118,6 +123,11 @@ class CompanyController extends HomeController
             'Company.homepage'       => '公司网址',
             'Company.profilelink'    => '公司简介外链',
             'Company.is_person'      => '员工名片展示开关',
+            'Company.comment'        => '公司备注',
+            'Company.service_area'   => '服务范围',
+            'Company.registered_capital'      => '注册资本',
+            'Company.registered_number'       => '公司注册号',
+
 
         ]);
         /* 获取字段类型 */
