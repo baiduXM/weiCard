@@ -26,7 +26,8 @@
                             <tr>
                                 <th class="text-right">头像</th>
                                 <td>
-                                    <img src="{{ $employee->avatar ? asset($employee->avatar) : ''}}" class="img-responsive"
+                                    <img src="{{ $employee->avatar ? asset($employee->avatar) : ''}}"
+                                         class="img-responsive"
                                          style="max-height: 200px;max-width: 200px;">
                                 </td>
                             </tr>
@@ -65,6 +66,13 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
+                                @if($employee->user_id)
+                                    <a href="" class="btn btn-warning btn-md operate-unbinding"
+                                       data-toggle="modal" data-target=".confirmModal"
+                                       data-url="{{ url('admin/company_employee/'. $employee->id .'/unbinding') }}"
+                                       data-info="{{ $employee->user->nickname }}"
+                                       title="解绑用户">解绑</a>
+                                @endif
                                 <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
                                 <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"

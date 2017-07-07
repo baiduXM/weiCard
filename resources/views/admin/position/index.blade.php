@@ -14,7 +14,7 @@
                     <div class="bootstrap-table">
                         {{--表单功能栏--}}
                         <div class="fixed-table-toolbar">
-                            <select name="cpo-menu" id="cpo-menu" class="columns btn-group pull-left">
+                            <select name="select-company" class="form-control select-company">
                                 <option value="0">选择公司</option>
                                 @foreach($companies as $company)
                                     @if($company_id == $company->id)

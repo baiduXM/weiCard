@@ -49,12 +49,12 @@ class PositionController extends AdminController
                     $query->where($key, $model->query[$key], $value);
                 }
             }
-            if(isset($params['company_id'])){
+            if (isset($params['company_id'])) {
                 $company_id = $params['company_id'];
-            }else{
+            } else {
                 $company_id = 0;
             }
-        }else{
+        } else {
             $company_id = 0;
         }
         // $positions = $query->with('company')->orderBy('level','ASC')->paginate();
@@ -62,10 +62,10 @@ class PositionController extends AdminController
         $company = new Company;
         $companies = $company->get();
         return view('admin.position.index')->with([
-            'positions' => $positions,
-            'common' => new CommonModel(),
-            'params' => $params,
-            'companies' => $companies,
+            'positions'  => $positions,
+            'common'     => new CommonModel(),
+            'params'     => $params,
+            'companies'  => $companies,
             'company_id' => $company_id,
         ]);
     }
@@ -76,7 +76,7 @@ class PositionController extends AdminController
         if (count($companies) > 0) {
             return view('admin.position.create')->with([
                 'companies' => $companies,
-                'common' => new CommonModel(),
+                'common'    => new CommonModel(),
             ]);
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
@@ -116,7 +116,7 @@ class PositionController extends AdminController
         $position = Position::find($id);
         return view('admin.position.show')->with([
             'position' => $position,
-            'common' => new CommonModel(),
+            'common'   => new CommonModel(),
         ]);
     }
 
@@ -125,7 +125,7 @@ class PositionController extends AdminController
         $position = Position::find($id);
         return view('admin.position.edit')->with([
             'position' => $position,
-            'common' => new CommonModel(),
+            'common'   => new CommonModel(),
         ]);
     }
 
@@ -158,7 +158,7 @@ class PositionController extends AdminController
 
     public function destroy($id)
     {
-        $position = Position::where('id',$id)->first();
+        $position = Position::where('id', $id)->first();
         if ($position->delete()) {
             return redirect('admin/company_position')->with('success', '删除成功 - ' . $position->id);
         } else {
@@ -166,7 +166,7 @@ class PositionController extends AdminController
         }
     }
 
-        /**
+    /**
      * 批量删除
      *
      * @param Request $request

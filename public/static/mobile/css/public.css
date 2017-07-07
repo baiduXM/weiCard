@@ -184,6 +184,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
     0% {transform: scale(0);opacity: 0.0;}  
     100% {transform: scale(1);opacity: 1;}  
  }
+.cards .cards_tx.cards-gr{left: 2.8rem;top: 50%;margin-top: -2rem;}
 .cards .name,.cards .tell{width: 7.5rem;height:1.05rem;padding: 0 0.6rem;border-radius: 0.5rem;background: #fff;color: #f1a521;line-height: 1.05rem;font-size: 0.6rem;}
 .cards .name{top: 2.5rem;right:-9rem;}
 .cards .tell{top: 4rem;right:-9rem;}

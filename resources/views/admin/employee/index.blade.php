@@ -16,7 +16,7 @@
                         <div class=" fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
                                 <div class="pull-left cell-3">
-                                    <select name="cem-menu" id="cem-menu" class="form-control">
+                                    <select name="select-company" class="form-control select-company">
                                         <option value="0">选择公司</option>
                                         @foreach($companies as $company)
                                             @if($company_id == $company->id)

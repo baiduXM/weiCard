@@ -38,37 +38,14 @@ $(function () {
         });
     });
 
-    /* 产品按公司筛选 */
-    $('#cpr-menu').bind('change', function () {
-        var company_id = $("#cpr-menu").val();
+    /* 筛选公司 */
+    $('.select-company').on('change', function () {
+        var company_id = $(this).val();
         if (company_id != 0) {
-            location.href = 'company_product?company_id=' + company_id;
+            location.href = '?company_id=' + company_id;
         } else {
-            location.href = 'company_product';
+            location.href = '?';
         }
-
-    });
-
-    /* 职位按公司筛选 */
-    $('#cpo-menu').bind('change', function () {
-        var company_id = $("#cpo-menu").val();
-        if (company_id != 0) {
-            location.href = 'company_position?company_id=' + company_id;
-        } else {
-            location.href = 'company_position';
-        }
-
-    });
-
-    /* 员工按公司筛选 */
-    $('#cem-menu').bind('change', function () {
-        var company_id = $("#cem-menu").val();
-        if (company_id != 0) {
-            location.href = 'company_employee?company_id=' + company_id;
-        } else {
-            location.href = 'company_employee';
-        }
-
     });
 
     /* 全选checkbox */

@@ -84,20 +84,20 @@ class EmployeeController extends HomeController
         if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
             $word = $params['word'];
             $keyword = $params['keyword'];
-            if($word == 'department'){
+            if ($word == 'department') {
                 foreach ($departments as $k => $v) {
                     // if($v->name == $keyword){//精确搜索
-                    if(strpos($v->name,$keyword)!==false){//模糊搜索
+                    if (strpos($v->name, $keyword) !== false) {//模糊搜索
                         $department_id[] = $v->id;
                         // break;
-                    }else{
+                    } else {
                         $department_id[] = '';
                     }
                 }
-                $query->whereIn('department_id', $department_id)->orderBy('department_id','DESC')->orderBy('positions','DESC');
-            }else{
-                $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id','DESC')->orderBy('positions','DESC');
-            }            
+                $query->whereIn('department_id', $department_id)->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
+            } else {
+                $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
+            }
         }
         $employees = $query->where('company_id', '=', $company->id)->paginate();
 
@@ -349,10 +349,12 @@ class EmployeeController extends HomeController
             $company_id = Auth::user()->company->id;
             // TODO:置换数组
             $data_swap = $this->swapArray($data);
+            if (!isset($data_swap['部门'])) {
+                return redirect()->back()->with('error', '未检测到[部门]字段');
+            }
             // TODO:添加部门
             $department = Department::where('company_id', $company_id)->select('id', 'name')->get()->toArray();
             $department_swap = $department ? $this->swapArray($department) : array('id' => array(), 'name' => array());
-
             $temp = array_unique($data_swap['部门']); // 去重
             foreach ($temp as $k => $v) {
                 if (isset($department_swap['name'])) { // 避免无数据时报错
