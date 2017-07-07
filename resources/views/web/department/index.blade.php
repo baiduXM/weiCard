@@ -23,7 +23,7 @@
                     <th class=""><input type="checkbox" id="box4"><label for="box4"><i
                                     class="iconFont">&#xe7de;</i></label></th>
                     <th class="b-phone-w2"><a href="">部门</a></th>
-                    <th><a href="">主管</a></th>
+                    <th><a href="">部门交接人</a></th>
                     <th class="b-phone-w2"><a href="">人数</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th>
                     <th class=" b-td-hide"><a href="">操作</a></th>
@@ -122,22 +122,8 @@
                                 <span class="error-name" style="color: red;"></span>
                             </p>
                             <p>
-                                <span>部门主管 : </span>
-                                <select name="Department[employee_id]" id="employee_id" class="info-employee_id">
-                                    {{--@foreach($departments as $department)--}}
-                                    {{--<option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}--}}
-                                    {{--value="{{ $department->id }}">{{ $department->name }}</option>--}}
-                                    {{--@endforeach--}}
-                                    {{--@if($department->employees)--}}
-                                    {{--@foreach($department->employees as $employee)--}}
-                                    {{--<option value="{{ $employee->id }}">--}}
-                                    {{--{{ $employee->nickname }}--}}
-                                    {{--</option>--}}
-                                    {{--@endforeach--}}
-                                    {{--@else--}}
-                                    {{--<option value="">该部门下暂无员工</option>--}}
-                                    {{--@endif--}}
-                                </select>
+                                <span>部门交接人 : </span>
+                                <select name="Department[employee_id]" id="employee_id" class="info-employee_id"></select>
                                 <span class="error-employee_id" style="color: red;"></span>
                             </p>
                         </div>

@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -418,6 +419,26 @@ class Controller extends BaseController
             return '解绑失败';
         }
         return true;
+    }
+
+
+    /**
+     * 下载文件
+     *
+     * @param Request $request
+     * @param         $params 参数
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function download(Request $request, $params)
+    {
+        if ($params == 'EmployeeDemo') { // 下载员工导入表格
+            $path = public_path('downloads/EmployeeDemo.xlsx');
+        }
+        if ($path) {
+            return response()->download($path);
+        } else {
+            return redirect()->back()->with('error', '下载出错');
+        }
     }
 
 }

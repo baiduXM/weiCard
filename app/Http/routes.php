@@ -57,6 +57,10 @@ Route::get('admin/logout', 'Auth\AdminAuthController@logout');
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@errorview']);
 
+/* 文件下载 */
+Route::get('download/{name?}', ['as' => 'download', 'uses' => 'Common\Controller@download']);
+
+
 /* =====用户界面===== */
 
 /*

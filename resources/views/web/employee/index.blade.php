@@ -158,6 +158,10 @@
                                 <input type="file" name="file">
                                 <span class="error-file" style="color: red;"></span>
                             </p>
+                            <p>
+                                <span>文件模板规范 : </span>
+                                <a href="{{ url('download/EmployeeDemo') }}" target="_blank">模板下载</a>
+                            </p>
                         </div>
                     </div>
                     <div class="modal-footer">
