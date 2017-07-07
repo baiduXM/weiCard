@@ -52,7 +52,7 @@
                             <li><a class="dropdown-word" id="positions">职位</a></li>
                             <li><a class="dropdown-word" id="mobile">手机</a></li>
                             <li><a class="dropdown-word" id="telephone">电话</a></li>
-                            <!-- <li><a class="dropdown-word" id="department">部门</a></li> -->
+                            <li><a class="dropdown-word" id="department">部门</a></li>
                         </ul>
                     </li>
                     <li class="b-search  " name='search-form'>
@@ -74,7 +74,7 @@
                     <th class=" "><a href="">姓名</a></th>
                     <th class="b-phone-w2"><a href="">部门</a></th>
                     <th class="b-phone-w2"><a href="">职位</a></th>
-                    <th class=" b-td-hide"><a href="">电话</a></th>
+                    <th class=" b-td-hide"><a href="">手机</a></th>
                     <th class=" b-td-show"><a href="javascript:"><i class="iconFont">&#xe652;</i></a></th><!--适应手机-->
                     <th class=" b-td-hide"><a href="">操作</a></th>
                 </tr>
@@ -94,7 +94,7 @@
                             <td class="">{{ $item->nickname }}</td>
                             <td class="">{{ $item->department ?$item->department->name:'' }}</td>
                             <td class="">{{ $item->positions or (isset($item->position->name)?$item->position->name:'') }}</td>
-                            <td class="b-td-width b-td-hide">{{ $item->telephone }}</td>
+                            <td class="b-td-width b-td-hide">{{ $item->mobile }}</td>
                             <td class="b-td-icon b-td-hide w-icon">
                                 <a href="" data-toggle="modal" data-target="#modal-employee-show"
                                    class="operate-show"
