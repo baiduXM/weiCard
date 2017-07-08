@@ -9,6 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     员工管理
+                    <span class="text-danger">{{ request()->is('*/trash') ? '(垃圾箱)' : '' }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
@@ -19,7 +20,7 @@
                                     <select name="select-company" class="form-control select-company">
                                         <option value="0">选择公司</option>
                                         @foreach($companies as $company)
-                                            @if($company_id == $company->id)
+                                            @if(isset($params['company_id']) && $params['company_id']== $company->id)
                                                 <option value="{{$company->id}}"
                                                         selected>{{$company->display_name}}</option>
                                             @else
@@ -39,12 +40,13 @@
                                 </button>
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
-                                <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="company_employee" title="重置刷新">
-                                    <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="company_employee/trash" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
+                                <a class="btn btn-default operate-refresh" type="button" name="refresh"
+                                   data-url="{{ url('admin/company_employee') }}" title="重置刷新">
+                                    <i class="glyphicon glyphicon-refresh icon-refresh"></i></a>
+                                <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
+                                   href="{{ url('admin/company_employee/trash') }}"
+                                   title="垃圾箱">
+                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></a>
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -124,31 +126,39 @@
                                                 <a href="{{ url('admin/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
-                                                   class="btn btn-primary btn-xs" title="编辑"><i
-                                                            class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if($item->user)
-                                                    {{--<a class="btn btn-primary btn-xs operate-code"--}}
-                                                    {{--data-toggle="modal" data-target="#shareModal"--}}
-                                                    {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
-                                                    {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
-                                                    {{--title="代码">--}}
-                                                    {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
-                                                    {{--</a>--}}
-                                                    {{--@else--}}
-                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                @if(request()->is('*/trash'))
+                                                    <a href="" class="btn btn-success btn-xs operate-recover"
                                                        data-toggle="modal" data-target=".confirmModal"
-                                                       data-url="company_employee/{{ $item->id }}/unbinding"
-                                                       data-info="{{ $item->user->nickname }}"
-                                                       title="解绑用户">
-                                                        <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                       data-url="{{ url('admin/company_employee/'.$item->id.'/recover') }}"
+                                                       data-info="{{ $item->nickname }} 员工"
+                                                       title="恢复">
+                                                        <i class="glyphicon glyphicon-transfer"></i>恢复
+                                                    </a>
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="{{ url('admin/company_employee/trash/'.$item->id) }}"
+                                                       data-info="{{ $item->number }} 员工" title="彻底删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>彻底删除
+                                                    </a>
+                                                @else
+                                                    <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    @if($item->user)
+                                                        <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                           data-toggle="modal" data-target=".confirmModal"
+                                                           data-url="company_employee/{{ $item->id }}/unbinding"
+                                                           data-info="{{ $item->user->nickname }}"
+                                                           title="解绑用户">
+                                                            <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                    @endif
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="company_employee/{{ $item->id }}"
+                                                       data-info="{{ $item->number }} 员工" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
                                                 @endif
-                                                <a class="btn btn-danger btn-xs operate-delete"
-                                                   data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="company_employee/{{ $item->id }}"
-                                                   data-info="{{ $item->number }} 员工" title="删除">
-                                                    <i class="glyphicon glyphicon-trash"></i>删除
-                                                </a>
                                             </td><!--操作-->
                                         </tr>
                                     @endforeach

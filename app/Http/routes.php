@@ -253,10 +253,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('company_department', 'Admin\DepartmentController');
 
     /* 员工管理 */
-    Route::post('company_employee/drop', ['as' => 'admin.employee.drop', 'uses' => 'Admin\EmployeeController@drop']);
+    Route::delete('company_employee/trash/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::resource('company_employee/trash', 'Admin\EmployeeController');
+
     Route::delete('company_employee/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
-    Route::get('company_employee/trash', ['as' => 'admin.employee.trash', 'uses' => 'Admin\EmployeeController@trash']);
     Route::delete('company_employee/{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+    Route::post('company_employee/{id}/recover', ['as' => 'admin.employee.recover', 'uses' => 'Admin\EmployeeController@recover']);
     Route::resource('company_employee', 'Admin\EmployeeController');
 
     /* 职位管理 */

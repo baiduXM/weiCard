@@ -47,31 +47,28 @@ class EmployeeController extends AdminController
     /**
      * 首页
      */
-    public function index()
+    public function index(Request $request)
     {
         $model = new Employee();
-        $query = Employee::query();
         $params = Input::query();
-        $company_id = 0;
+        $query = Employee::query();
         if ($params) {
             foreach ($params as $key => $value) {
                 if (array_key_exists($key, $model->query)) {
                     $query->where($key, $model->query[$key], $value);
                 }
             }
-            if (isset($params['company_id'])) {
-                $company_id = $params['company_id'];
-            }
         }
-        $company = new Company;
-        $companies = $company->get();
-        $employees = $query->with('company')->paginate();
+        if ($request->is('*/trash')) {
+            $employees = $query->onlyTrashed()->with('company')->paginate(); // 删除了
+        } else {
+            $employees = $query->with('company')->paginate();
+        }
+        $companies = Company::get();
         return view('admin.employee.index')->with([
-            'employees'  => $employees,
-            'common'     => new CommonModel(),
-            'params'     => $params,
-            'companies'  => $companies,
-            'company_id' => $company_id,
+            'employees' => $employees,
+            'companies' => $companies,
+            'params'    => $params,
         ]);
     }
 
@@ -86,13 +83,6 @@ class EmployeeController extends AdminController
         } else {
             return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
         }
-    }
-
-    public function drop(Request $request)
-    {
-        $company_id = $request->input('company_id');
-        $position = Position::where('company_id', '=', $company_id)->get();
-        return $position;
     }
 
     public function store(Request $request)
@@ -141,7 +131,7 @@ class EmployeeController extends AdminController
 
     public function show($id)
     {
-        $employee = Employee::find($id);
+        $employee = Employee::withTrashed()->find($id);
         return view('admin.employee.show')->with([
             'employee' => $employee,
             'common'   => new CommonModel(),
@@ -202,13 +192,8 @@ class EmployeeController extends AdminController
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-        if ($employee->user_id == $employee->company->user_id) {
-            $employee->company->user_id = null;
-            $employee->company->save();
-        }
-//        }
         if ($employee->delete()) {
-            return redirect('admin/company_employee')->with('success', '删除成功 - ' . $employee->id);
+            return redirect()->back()->with('success', '删除成功 - ' . $employee->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
         }
@@ -253,6 +238,23 @@ class EmployeeController extends AdminController
             return redirect('admin/company_employee')->with('success', '解绑成功');
         } else {
             return redirect()->back()->with('error', $res);
+        }
+    }
+
+    /**
+     * 恢复员工
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function recover($id)
+    {
+        $res = Employee::onlyTrashed()->where('id', $id)->restore();
+        if ($res) {
+            return redirect('admin/company_employee')->with('success', '恢复成功');
+        } else {
+            return redirect()->back()->with('error', '恢复失败');
+
         }
     }
 

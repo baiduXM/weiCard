@@ -83,9 +83,9 @@ $(function () {
     });
 
     /* 恢复 */
-    $('.operate-recover').click(function () {
-        alert('功能待开发');
-    });
+    // $('.operate-recover').click(function () {
+    //     alert('功能待开发');
+    // });
 
     /* 彻底删除 */
     $('.operate-destroy').click(function () {
@@ -116,6 +116,22 @@ $(function () {
         }
     });
 
+    /* 恢复员工 */
+    $(".operate-recover").click(function () {
+        $('.confirmModal').on('show.bs.modal', function (event) {
+            var relatedTarget = $(event.relatedTarget);
+            var _id           = relatedTarget.data('id');
+            var _info         = relatedTarget.data('info');
+            var _url          = relatedTarget.data('url');
+            var modal         = $(this);
+            modal.find('.modal-title').text('恢复确认');
+            modal.find('.modal-body').text('确定恢复 ' + _info);
+            modal.find('form').attr('action', _url);
+            // modal.find('form').attr('method', '');
+            modal.find('[name="_method"]').val('post');
+            modal.find('form').append('<input type="hidden" name="id" value="' + _id + '"/>');
+        });
+    });
 
     /* 用户解绑公司 */
     $(".operate-unbinding").click(function () {
@@ -219,6 +235,7 @@ $(function () {
         location.href = _url;
         // alert('功能待开发');
     });
+
 
     $('.operate-back').click(function () {
         var _url  = $(this).data('url');
