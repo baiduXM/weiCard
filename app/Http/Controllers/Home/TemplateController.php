@@ -119,7 +119,7 @@ class TemplateController extends HomeController
             $model->templates()->attach($data['template_id']);
         }
 
-        return redirect()->route('index');
+        return redirect()->route('cardcase.show')->with('type','u');
     }
 }
 
