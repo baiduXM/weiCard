@@ -10,6 +10,7 @@ use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function MongoDB\BSON\toJSON;
 
 
 class HomeController extends Controller
@@ -187,12 +188,6 @@ class HomeController extends Controller
     {
         /* 获取参数 */
         $param = explode('-', $params);
-//        $type = $param[0] == 'e' ? 'App\Models\Employee' : 'App\Models\User';
-//        $cardcases = Cardcase::where('user_id', Auth::id())
-//            ->where('follower_type', $type)
-//            ->where('follower_id', $param[1])
-//            ->get();
-//        dd(count($cardcases));
         switch ($param[0]) {
             case 'e':
                 $data['type'] = 'App\Models\Employee';
@@ -263,15 +258,6 @@ class HomeController extends Controller
         }
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
-//        $sign_package = array(
-//            "AppID" => "wx80cfbb9a1b347f47",
-//            "timestamp" => time(),
-//            "noncestr" => "Wm3WZYTPz0wzccnW",
-//            "jsapi_ticket" => "kgt8ON7yVITDhtdwci0qeUk5Ue2owadlxSNoqP5FXpiaJXd1Ij1ITsYew5Q_2Rv3TaiKSZqTCEA262Jb4_o3GQ",
-//            "url" => "http://weicard.example.com/cardcase/show/e",
-//            "signature" => "82866806f6df43458e6277c1a5d1b8053e37bf12",
-//        );
-//        dump($sign_package);
         /* 二维码 */
         $url = url('cardview/' . $param[0] . '-' . $person->id);
         $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
@@ -292,13 +278,14 @@ class HomeController extends Controller
     }
 
 
-    public function companyinfo($params){
+    public function companyinfo($params)
+    {
 
-        $id=$params;
-        $company=Company::find($id);
+        $id = $params;
+        $company = Company::find($id);
         //dd($company);
         return view('common.companyinfo')->with([
-            'company'  => $company, // 公司数据
+            'company' => $company, // 公司数据
         ]);
     }
 
@@ -337,6 +324,56 @@ class HomeController extends Controller
         //ip2long();的意思是将IP地址转换成整型 ，
         //之所以要decbin和bindec一下是为了防止IP数值过大int型存储不了出现负数。
         return bindec(decbin(ip2long($ip)));
+    }
+
+
+    /**
+     * 获取交接人信息
+     *
+     * @param int    $id   用户ID|员工ID
+     * @param string $type 用户类型 user_id|id
+     * @return mixed 返回交接人信息
+     */
+    public function getHeirById($id, $type = 'user_id')
+    {
+        $employee = Employee::withTrashed()->with('department')->where($type, $id)->first();
+        if (!$employee) {
+            return array( // 后续跳转个人名片
+                'msg'  => '未绑定员工',
+                'type' => 'user',
+                'data' => null,
+            );
+        }
+        /* 员工未归属部门or所在部门未设置交接人 */
+        if (!$employee->department || !$employee->department->owner) {
+            if (!$employee->company->user) { // 无公司管理员
+                return array( // 后续跳转个人名片
+                    'msg'  => '无公司管理员',
+                    'type' => 'user',
+                    'data' => null,
+                );
+            }
+            $user = $employee->company->user;
+            if (!$user->employee) {
+                return array(
+                    'msg'  => '公司管理员个人名片',
+                    'type' => 'user',
+                    'data' => $user,
+                );
+            } else {
+                return array(
+                    'msg'  => '公司管理员企业名片',
+                    'type' => 'employee',
+                    'data' => $user->employee,
+                );
+            }
+        }
+        return array(
+            'msg'  => '部门交接人企业名片',
+            'type' => 'employee',
+            'data' => $employee->department->owner,
+        );
+
     }
 
 

@@ -34,7 +34,7 @@
                                 部门</label>
                             <div class="col-md-6">
                                 <select class="form-control" id="department_id" name="Employee[department_id]">
-                                    <option selected value="">无部门</option>
+                                    <option selected value="0">无部门</option>
                                     @foreach($employee->company->departments as $department)
                                         <option {{ $employee->department_id == $department->id ? 'selected' : '' }}
                                                 value="{{ $department->id }}">{{ $department->name }}</option>
@@ -114,7 +114,7 @@
 
                         <div class="form-group {{ $errors->has('Employee.mobile') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="mobile">
-                                座机</label>
+                                手机</label>
                             <div class="col-md-6">
                                 <input id="mobile" name="Employee[mobile]" type="text" placeholder=""
                                        class="form-control"

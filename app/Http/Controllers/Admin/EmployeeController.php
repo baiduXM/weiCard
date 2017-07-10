@@ -175,14 +175,15 @@ class EmployeeController extends AdminController
         if ($request->hasFile('Employee.avatar')) {
             $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
         }
-
         foreach ($data as $key => $value) {
-            if ($value !== '') {
-                $employee->$key = $data[$key];
+            if (empty($value)) {
+                $employee->$key = null;
+            } else {
+                $employee->$key = $value;
             }
         }
         if ($employee->save()) {
-            return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
+            return redirect()->back()->with('success', '修改成功 - ' . $employee->id);
         } else {
             return redirect()->back();
         }
@@ -192,6 +193,10 @@ class EmployeeController extends AdminController
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
+        dd($this->handoverCardcase2Company($employee));
+        $employee->mobile = null;
+        $employee->save();
+        dump($employee);
         if ($employee->delete()) {
             return redirect()->back()->with('success', '删除成功 - ' . $employee->id);
         } else {

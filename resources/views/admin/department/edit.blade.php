@@ -54,11 +54,13 @@
                             <div class="col-md-6">
                                 <select class="form-control" id="employee_id" name="Department[employee_id]">
                                     <option value="0">请选择</option>
-                                    @foreach($department->employees as $employee)
-                                        <option {{ old('Department.employee_id') == $employee->id ? 'selected' :
-                                        ($department->owner->id == $employee->id ? 'selected' : '') }}
-                                                value="{{ $employee->id }}">{{ $employee->nickname }}</option>
-                                    @endforeach
+                                    @if(count($department->employees))
+                                        @foreach($department->employees as $employee)
+                                            <option {{ old('Department.employee_id') == $employee->id ? 'selected' :
+                                        ( isset($department->owner) && $department->owner->id == $employee->id ? 'selected' : '') }}
+                                                    value="{{ $employee->id }}">{{ $employee->nickname }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             @if ($errors->has('Department.employee_id'))

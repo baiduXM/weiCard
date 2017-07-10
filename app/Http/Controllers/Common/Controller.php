@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Models\Cardcase;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\User;
@@ -439,6 +440,24 @@ class Controller extends BaseController
         } else {
             return redirect()->back()->with('error', '下载出错');
         }
+    }
+
+
+    /**
+     * 移交个人企业名片到公司
+     *
+     * @param object $employee 员工对象
+     */
+    protected function handoverCardcase2Company($employee)
+    {
+        dump($employee);
+        $cardcases = Cardcase::where('user_id', $employee->user_id)->where('follower_type', 'App\Models\Employee')->get();
+        dump($cardcases);
+        $data = array();
+        foreach ($cardcases as $k => $v) {
+        }
+        dump($employee->followers);
+        exit;
     }
 
 }
