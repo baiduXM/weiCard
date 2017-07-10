@@ -193,10 +193,10 @@ class EmployeeController extends AdminController
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-        dd($this->handoverCardcase2Company($employee));
+//        dd($this->handoverCardcase2Company($employee));
         $employee->mobile = null;
         $employee->save();
-        dump($employee);
+//        dump($employee);
         if ($employee->delete()) {
             return redirect()->back()->with('success', '删除成功 - ' . $employee->id);
         } else {
