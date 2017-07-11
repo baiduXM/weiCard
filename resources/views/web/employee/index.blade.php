@@ -6,8 +6,11 @@
             {!! Breadcrumbs::render('company.employee') !!}
         @show
         <ul class="nav nav-tabs" id="myTab">
-            <li class="active">
-                <a href="">我的同事</a>
+            <li class="{{ Request::path() == 'company/employee' ? 'active' : '' }}">
+                <a href="{{ url('company/employee') }}">我的同事</a>
+            </li>
+            <li class="{{ Request::path() == 'company/employee/trash' ? 'active' : '' }}">
+                <a href="{{ url('company/employee/trash') }}">离职员工</a>
             </li>
         </ul>
 
@@ -18,15 +21,16 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
                     <li class="b-btn-bg">
-                        @if(count($employees) < Auth::user()->company->limit)
-                            <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
-                                <i class="iconFont">&#xe67d;</i>添加
-                            </a>
-                        @else
-                            <a href="javaScript:alert('员工人数上限，无法添加新员工！')">
-                                <i class="iconFont">&#xe67d;</i>添加
-                            </a>
-                        @endif
+                        {{--                        @if(count($employees) < Auth::user()->company->limit)--}}
+                        <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
+                            <i class="iconFont">&#xe67d;</i>添加
+                        </a>
+
+                        {{--@else--}}
+                        {{--<a href="javaScript:alert('员工人数上限，无法添加新员工！')">--}}
+                        {{--<i class="iconFont">&#xe67d;</i>添加--}}
+                        {{--</a>--}}
+                        {{--@endif--}}
                     </li>
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import"><i

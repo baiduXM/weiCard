@@ -47,32 +47,28 @@ class EmployeeController extends AdminController
     /**
      * 首页
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $model = new Employee();
-        $query = Employee::query();
         $params = Input::query();
-        $company_id = 0;
+        $query = Employee::query();
         if ($params) {
             foreach ($params as $key => $value) {
                 if (array_key_exists($key, $model->query)) {
                     $query->where($key, $model->query[$key], $value);
                 }
             }
-            if (isset($params['company_id'])) {
-                $company_id = $params['company_id'];
-            }
         }
-        $company = new Company;
-        $companies = $company->get();
-        $employees = $query->with('company')->paginate();
+        if ($request->is('*/trash')) {
+            $employees = $query->onlyTrashed()->with('company')->paginate(); // 删除了
+        } else {
+            $employees = $query->with('company')->paginate();
+        }
+        $companies = Company::get();
         return view('admin.employee.index')->with([
-            'employees'  => $employees,
-            'common'     => new CommonModel(),
-            'params'     => $params,
-            'companies'  => $companies,
-            'company_id' => $company_id,
+            'employees' => $employees,
+            'companies' => $companies,
+            'params'    => $params,
         ]);
     }
 
@@ -89,13 +85,6 @@ class EmployeeController extends AdminController
         }
     }
 
-    public function drop(Request $request)
-    {
-        $company_id = $request->input('company_id');
-        $position = Position::where('company_id', '=', $company_id)->get();
-        return $position;
-    }
-
     public function store(Request $request)
     {
 
@@ -107,11 +96,10 @@ class EmployeeController extends AdminController
             'Employee.nickname'   => 'required',
             'Employee.avatar'     => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone'  => '',
-            'Employee.mobile'     => '',
+            'Employee.mobile'     => 'unique:employees,employees.mobile',
         ], [], [
             'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id'   => '职位',
             'Employee.number'        => '工号',
             'Employee.nickname'      => '姓名',
             'Employee.avatar'        => '头像',
@@ -120,52 +108,30 @@ class EmployeeController extends AdminController
 
         ]);
 
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;//唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
+        /* 获取字段类型 */
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null; // 未填字段设置为null，否则会保存''
             }
-        } else {
-            $allow = true;//非唯一职位，允许添加
         }
-        /* 获取该公司现有员工总人数 */
-        $employee_nums = count(Employee::where('company_id', '=', $data['company_id'])->get());
         $company = Company::find($data['company_id']);
-        /* 判断已经添加员工数是否超出设置人数 */
-        if ($employee_nums < $company->limit) {
-            if ($allow) {
-                /* 获取字段类型 */
-                foreach ($data as $key => $value) {
-                    if ($value === '') {
-                        $data[$key] = null; // 未填字段设置为null，否则会保存''
-                    }
-                }
-                $company = Company::find($data['company_id']);
-                /* 获取文件类型 */
-                if ($request->hasFile('Employee.avatar')) {
-                    $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
-                }
-
-                /* 添加 */
-                if (Employee::create($data)) {
-                    return redirect('admin/company_employee')->with('success', '添加成功');
-                } else {
-                    return redirect()->back();
-                }
-            } else {
-                return redirect()->back()->with('error', '该唯一职位已存在员工');
-            }
-        } else {
-            return redirect()->back()->with('error', '员工人数上限，无法添加新员工');
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
         }
+
+        /* 添加 */
+        if (Employee::create($data)) {
+            return redirect('admin/company_employee')->with('success', '添加成功');
+        } else {
+            return redirect()->back();
+        }
+
     }
 
     public function show($id)
     {
-        $employee = Employee::find($id);
+        $employee = Employee::withTrashed()->find($id);
         return view('admin.employee.show')->with([
             'employee' => $employee,
             'common'   => new CommonModel(),
@@ -189,7 +155,7 @@ class EmployeeController extends AdminController
         $this->validate($request, [
             'Employee.company_id'    => 'required',
             'Employee.department_id' => '',
-            'Employee.position_id'   => '',
+            'Employee.positions'     => '',
             'Employee.number'        => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Employee.nickname'      => 'required',
             'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
@@ -197,46 +163,29 @@ class EmployeeController extends AdminController
         ], [], [
             'Employee.company_id'    => '公司',
             'Employee.department_id' => '部门',
-            'Employee.position_id'   => '职位',
+            'Employee.positions'     => '职位',
             'Employee.number'        => '工号',
             'Employee.nickname'      => '姓名',
             'Employee.avatar'        => '头像',
             'Employee.telephone'     => '座机',
         ]);
         $data = $request->input('Employee');
-        // TODO：可以使用关系模型获取数据
-        // eg. Employee::with('position')->find($id);
-        $position_only = Position::where('id', '=', $data['position_id'])->first();
-        if ($position_only['is_only'] == 1) {
-            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-            if (!empty($employee_only)) {
-                $allow = false;//唯一职位已存在员工时，不允许添加
-            } else {
-                $allow = true;
-            }
-        } else {
-            $allow = true;//非唯一职位，允许添加
+
+        /* 获取文件类型 */
+        if ($request->hasFile('Employee.avatar')) {
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
         }
-
-        if ($allow) {
-            /* 获取文件类型 */
-            if ($request->hasFile('Employee.avatar')) {
-                $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
-
-            }
-
-            foreach ($data as $key => $value) {
-                if ($value !== '') {
-                    $employee->$key = $data[$key];
-                }
-            }
-            if ($employee->save()) {
-                return redirect('admin/company_employee')->with('success', '修改成功 - ' . $employee->id);
+        foreach ($data as $key => $value) {
+            if (empty($value)) {
+                $employee->$key = null;
             } else {
-                return redirect()->back();
+                $employee->$key = $value;
             }
+        }
+        if ($employee->save()) {
+            return redirect()->back()->with('success', '修改成功 - ' . $employee->id);
         } else {
-            return redirect()->back()->with('error', '该唯一职位已存在员工');
+            return redirect()->back();
         }
 
     }
@@ -244,13 +193,9 @@ class EmployeeController extends AdminController
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-        if ($employee->user_id == $employee->company->user_id) {
-            $employee->company->user_id = null;
-            $employee->company->save();
-        }
-//        }
+        $this->dimission($employee); // 移交员工名片到公司名片库
         if ($employee->delete()) {
-            return redirect('admin/company_employee')->with('success', '删除成功 - ' . $employee->id);
+            return redirect()->back()->with('success', '删除成功 - ' . $employee->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $employee->id);
         }
@@ -269,14 +214,15 @@ class EmployeeController extends AdminController
         /* 员工是公司创始人，设置创始人为空 */
         $employees = Employee::with('user', 'company')->whereIn('id', $ids)->get();
         foreach ($employees as $key => $employee) {
-            if ($employee->user_id == $employee->company->user_id) {
-                $employee->company->user_id = null;
-                $employee->company->save();
-            }
+            $this->dimission($employee); // 移交员工名片到公司名片库
+//            if ($employee->user_id == $employee->company->user_id) {
+//                $employee->company->user_id = null;
+//                $employee->company->save();
+//            }
         }
         $res = Employee::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_employee')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect()->back()->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }
@@ -295,6 +241,23 @@ class EmployeeController extends AdminController
             return redirect('admin/company_employee')->with('success', '解绑成功');
         } else {
             return redirect()->back()->with('error', $res);
+        }
+    }
+
+    /**
+     * 恢复员工
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function recover($id)
+    {
+        $res = Employee::onlyTrashed()->where('id', $id)->restore();
+        if ($res) {
+            return redirect('admin/company_employee')->with('success', '恢复成功');
+        } else {
+            return redirect()->back()->with('error', '恢复失败');
+
         }
     }
 

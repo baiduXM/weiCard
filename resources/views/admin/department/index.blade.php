@@ -73,7 +73,7 @@
                                             <div class="fht-cell"></div>
                                         </th><!--company-->
                                         <th style="">
-                                            <div class="th-inner" data-name="employee">主管</div>
+                                            <div class="th-inner" data-name="employee">交接人</div>
                                             <div class="fht-cell"></div>
                                         </th><!--is_only-->
                                         <th style="">
@@ -100,7 +100,7 @@
                                             <td>{{ $item->name }}</td><!--职位名称-->
                                             <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! $item->employee ? '<a href="'.url('admin/company_employee/'.$item->employee->id).'">'.$item->employee->nickname.'</a>' : '' !!}</td>
+                                            <td>{!! $item->owner ? '<a href="'.url('admin/company_employee/'.$item->owner->id).'">'.$item->owner->nickname.'</a>' : '' !!}</td>
                                             <!--职位级别-->
                                             <td>{{ count($item->employees) }}</td><!--职位名称-->
                                             <!--是否唯一-->

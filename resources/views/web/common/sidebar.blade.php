@@ -58,10 +58,12 @@
                 <ul class="tree_one" {{ Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
                     <li {{ Request::path() == 'company' || Request::is('company/create') ? 'class=active' : '' }}>
                         <a href="{{ url('company') }}">我的公司</a></li>
-                    <li {{ Request::path() == 'company/employee' ? 'class=active' : '' }}>
+                    <li {{ Request::path() == 'company/employee' || Request::path() == 'company/employee/trash' ? 'class=active' : '' }}>
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
+                    <li {{ Request::path() == 'company/cardcase' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/cardcase') }}">公司名片库</a></li>
                     {{--<li {{ Request::path() == 'company/position' ? 'class=active' : '' }}>--}}
                     {{--<a href="{{ url('company/position') }}">公司职位</a></li>--}}
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>

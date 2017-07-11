@@ -94,18 +94,22 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
 
-    /* 我的公司->员工 */
     Route::group(['prefix' => 'company'], function () {
+        /* 我的公司->员工 */
         Route::get('employee', ['as' => 'company.employee.index', 'uses' => 'Home\EmployeeController@index']);
         Route::post('employee', ['as' => 'company.employee.store', 'uses' => 'Home\EmployeeController@store']);
+        Route::get('employee/trash', ['as' => 'company.employee.trash', 'uses' => 'Home\EmployeeController@trash']);
         Route::get('employee/update/{id?}', ['uses' => 'Common\HomeController@updatePositions']);
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
-//        Route::put('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
+        Route::post('employee/{id}/recover', ['as' => 'company.employee.recover', 'uses' => 'Home\EmployeeController@recover']);
+        Route::delete('employee/{id}/forceDelete', ['as' => 'company.employee.forceDelete', 'uses' => 'Home\EmployeeController@forceDelete']);
+
+
         /* 我的公司->部门 */
         Route::resource('department', 'Home\DepartmentController');
 //        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
@@ -249,16 +253,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('company', 'Admin\CompanyController');
 
     /* 部门管理 */
+    Route::delete('company_department/batch', ['as' => 'admin.department.batchDestroy', 'uses' => 'Admin\DepartmentController@batchDestroy']);
     Route::resource('company_department', 'Admin\DepartmentController');
 
     /* 员工管理 */
-    Route::resource('company_employee', 'Admin\EmployeeController');
-    Route::post('company_employee/drop', ['as' => 'admin.employee.drop', 'uses' => 'Admin\EmployeeController@drop']);
-    Route::group(['prefix' => 'company_employee'], function () {
-        Route::delete('batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
-        Route::delete('{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+    Route::delete('company_employee/trash/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::resource('company_employee/trash', 'Admin\EmployeeController');
 
-    });
+    Route::delete('company_employee/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::delete('company_employee/{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+    Route::post('company_employee/{id}/recover', ['as' => 'admin.employee.recover', 'uses' => 'Admin\EmployeeController@recover']);
+    Route::resource('company_employee', 'Admin\EmployeeController');
 
     /* 职位管理 */
     Route::group(['prefix' => 'company_position'], function () {

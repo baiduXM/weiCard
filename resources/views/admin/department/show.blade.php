@@ -21,11 +21,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">部门</th>
-                                <td>{{ isset($department->name) ? $department->name : '' }}</td>
+                                <td>{{ $department->name or '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">交接人</th>
-                                <td>{{ isset($department->user) ? $department->user->nickname : '' }}</td>
+                                <td>{{ isset($department->owner) ? $department->owner->nickname : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>
@@ -38,7 +38,7 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/employee/' . $department->id . '/edit') }}" role="button"
+                                <a href="{{ url('admin/company_department/' . $department->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
                                 <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>

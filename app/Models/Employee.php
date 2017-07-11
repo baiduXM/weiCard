@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends CommonModel
 {
+    use SoftDeletes;
+
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
     ];
@@ -31,17 +34,9 @@ class Employee extends CommonModel
     /**
      * 关系模型(一对一) - 部门 负责人
      */
-    public function ownerDepartment()
+    public function owner()
     {
         return $this->hasOne('App\Models\Department', 'employee_id');
-    }
-
-    /**
-     * 关系模型(一对一) - 公司 负责人
-     */
-    public function ownerCompany()
-    {
-        return $this->hasOne('App\Models\Company', 'employee_id');
     }
 
     /**

@@ -10,30 +10,17 @@ use App\Models\Template;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function MongoDB\BSON\toJSON;
 
 
 class HomeController extends Controller
 {
-    public $is_owner = false; // 是否公司老板
 
     public function __construct()
     {
 
     }
 
-
-    /**
-     * 判断是否是公司管理人员
-     *
-     * @return bool
-     */
-    public function isCompanyOwner()
-    {
-        if (Auth::user()->company) {
-            $this->is_owner = true;
-        }
-        return $this->is_owner ? true : false;
-    }
 
     public function showQrcode()
     {
@@ -187,14 +174,9 @@ class HomeController extends Controller
     {
         /* 获取参数 */
         $param = explode('-', $params);
-//        $type = $param[0] == 'e' ? 'App\Models\Employee' : 'App\Models\User';
-//        $cardcases = Cardcase::where('user_id', Auth::id())
-//            ->where('follower_type', $type)
-//            ->where('follower_id', $param[1])
-//            ->get();
-//        dd(count($cardcases));
         switch ($param[0]) {
             case 'e':
+
                 $data['type'] = 'App\Models\Employee';
                 $cardcases = Cardcase::where('user_id', Auth::id())
                     ->where('follower_type', $data['type'])
@@ -204,6 +186,13 @@ class HomeController extends Controller
                 //dd($count_cardcase);
 
                 $person = Employee::find($param[1]);
+                if (!$person) { // 获取交接人信息
+                    $res = $this->getOwner($param[1]);
+                    if (!$res['data']) { // 无交接人，报404
+                        return abort('404')->with('error', $res['msg']);
+                    }
+                    $person = $res['data'];
+                }
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有员工模板，使用公司模板
                     $templates = Employee::find($param[1])->company->templates;
@@ -263,15 +252,6 @@ class HomeController extends Controller
         }
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
-//        $sign_package = array(
-//            "AppID" => "wx80cfbb9a1b347f47",
-//            "timestamp" => time(),
-//            "noncestr" => "Wm3WZYTPz0wzccnW",
-//            "jsapi_ticket" => "kgt8ON7yVITDhtdwci0qeUk5Ue2owadlxSNoqP5FXpiaJXd1Ij1ITsYew5Q_2Rv3TaiKSZqTCEA262Jb4_o3GQ",
-//            "url" => "http://weicard.example.com/cardcase/show/e",
-//            "signature" => "82866806f6df43458e6277c1a5d1b8053e37bf12",
-//        );
-//        dump($sign_package);
         /* 二维码 */
         $url = url('cardview/' . $param[0] . '-' . $person->id);
         $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
@@ -292,13 +272,14 @@ class HomeController extends Controller
     }
 
 
-    public function companyinfo($params){
+    public function companyinfo($params)
+    {
 
-        $id=$params;
-        $company=Company::find($id);
+        $id = $params;
+        $company = Company::find($id);
         //dd($company);
         return view('common.companyinfo')->with([
-            'company'  => $company, // 公司数据
+            'company' => $company, // 公司数据
         ]);
     }
 
@@ -337,6 +318,37 @@ class HomeController extends Controller
         //ip2long();的意思是将IP地址转换成整型 ，
         //之所以要decbin和bindec一下是为了防止IP数值过大int型存储不了出现负数。
         return bindec(decbin(ip2long($ip)));
+    }
+
+
+    /**
+     * 获取交接人信息
+     *
+     * @param int $id 员工ID
+     * @return mixed 返回交接人信息
+     */
+    public function getOwner($id)
+    {
+        $employee = Employee::withTrashed()->with('department')->where('id', $id)->first();
+        if (!$employee) {
+            return array( // 后续跳转个人名片
+                'msg'  => '员工不存在',
+                'data' => null,
+            );
+        }
+        /* 员工未归属部门or所在部门未设置交接人 */
+        if (!$employee->department || !$employee->department->owner) { // 无公司管理员
+            /* 续跳公司管理员个人名片 */
+            return array(
+                'msg'  => '员工已离职',
+                'data' => null,
+            );
+        }
+        return array(
+            'msg'  => '员工已离职，跳转交接人名片',
+            'data' => $employee->department->owner,
+        );
+
     }
 
 

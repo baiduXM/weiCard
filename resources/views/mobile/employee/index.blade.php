@@ -40,7 +40,8 @@
                                 src="{{ $employee->avatar ? asset($employee->avatar) : asset('static/mobile/images/qy_tx.png') }}">
                     </div>
                     <div class="qy_name pa">{{ $employee->company->display_name }}</br>
-                        {{ $employee->nickname }}{{ $employee->position ? '&nbsp;' . $employee->position->name : '' }}
+                        {{ $employee->nickname }}{{ $employee->positions ? '&nbsp;' . $employee->positions : ($employee->position ? '&nbsp;' . $employee->position->name : '') }}
+                        
                     </div>
                 </div>
                 <a href="{{ url('cardcase/show/e') }}">

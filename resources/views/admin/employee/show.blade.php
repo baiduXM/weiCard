@@ -45,7 +45,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">职位</th>
-                                <td>{!! isset($employee->position) ? '<a href="'.url('admin/company_position/'.$employee->position->id).'">'.$employee->position->name .'</a>' : '' !!}</td>
+                                <td>{{ $employee->positions or '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">手机</th>
+                                <td>{{ $employee->mobile }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">座机</th>
@@ -73,8 +77,18 @@
                                        data-info="{{ $employee->user->nickname }}"
                                        title="解绑用户">解绑</a>
                                 @endif
-                                <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}" role="button"
-                                   class="btn btn-primary btn-md">编辑</a>
+                                @if($employee->deleted_at)
+                                    <a href="" class="btn btn-success btn-md operate-recover"
+                                       data-toggle="modal" data-target=".confirmModal"
+                                       data-url="company_employee/{{ $employee->id }}/recover"
+                                       data-info="{{ $employee->nickname }} 员工"
+                                       title="恢复">恢复
+                                    </a>
+                                @else
+                                    <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}"
+                                       role="button"
+                                       class="btn btn-primary btn-md">编辑</a>
+                                @endif
                                 <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>

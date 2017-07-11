@@ -300,12 +300,19 @@ class CardcaseController extends HomeController
     public function show($type = 'u')
     {
         if ($type == 'e') {
-            $param = $type . '-' . Auth::user()->employee->id;
+            if (Auth::user()->employee) {
+                $type = 'e';
+                $id = Auth::user()->employee->id;
+                $param = $type . '-' . $id;
+            }
         } elseif ($type == 'u') {
             $param = $type . '-' . Auth::id();
         }
+        if (isset($param)) {
+            return $this->cardview($param);
+        }
+        return redirect('company/employee');
 
-        return $this->cardview($param);
     }
 
     /**
