@@ -110,6 +110,12 @@ class CompanyController extends HomeController
             'Company.service_area'   => 'max:255',
             'Company.registered_capital'      => 'max:255',
             'Company.registered_number'       => 'max:255',
+            'Company.des_classifyname'        => 'max:255',
+            'Company.pro_classifyname'        => 'max:255',
+            'Company.share_classifyname'      => 'max:255',
+            'Company.nav_classifyname'        => 'max:255',
+            'Company.per_classifyname'        => 'max:255',
+
 
         ], [], [
             'Company.name'           => '公司名称',
@@ -127,6 +133,11 @@ class CompanyController extends HomeController
             'Company.service_area'   => '服务范围',
             'Company.registered_capital'      => '注册资本',
             'Company.registered_number'       => '公司注册号',
+            'Company.des_classifyname'        => '简介栏目名',
+            'Company.pro_classifyname'        => '产品栏目名',
+            'Company.share_classifyname'      => '分享栏目名',
+            'Company.nav_classifyname'        => '导航栏目名',
+            'Company.per_classifyname'        => '信息栏目名',
 
 
         ]);

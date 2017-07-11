@@ -8,6 +8,13 @@
     {{--@endif--}}
 
     <div class="input rt">
+        <div class="file">
+            <span>公司图标: </span>
+            <input type="file" name="Company[logo]">
+        </div>
+        @if ($errors->has('Company.logo'))
+            <p class="pass-error show">{{ $errors->first('Company.logo') }}</p>
+        @endif
         <div>
             <span><i class="" style="color: red;">*</i>公司账号:</span>
             <input type="text" name="Company[name]" placeholder="公司账号" readonly
@@ -62,13 +69,15 @@
             <p class="pass-error show">{{ $errors->first('Company.service_area') }}</p>
         @endif
 
-        <div class="file">
-            <span>公司图标: </span>
-            <input type="file" name="Company[logo]">
+        <div class="user-j">
+            <span>公司简介: </span>
+            <textarea name="Company[description]"
+                      id="">{{ old('Company.description') ? old('Company.description') : $company->description }}</textarea>
         </div>
-        @if ($errors->has('Company.logo'))
-            <p class="pass-error show">{{ $errors->first('Company.logo') }}</p>
+        @if ($errors->has('Company.description'))
+            <p class="pass-error show">{{ $errors->first('Company.description') }}</p>
         @endif
+
 
         {{--
         <div>
@@ -107,9 +116,57 @@
             @endif
 
         </div>
+
+        <div>
+            <span>简介栏目名: </span>
+            <input type="text" name="Company[des_classifyname]" placeholder=""
+                   value="{{ old('Company.des_classifyname') ? old('Company.des_classifyname') : $company->des_classifyname }}">
+            @if ($errors->has('Company.des_classifyname'))
+                <span class="pass-error show">{{ $errors->first('Company.des_classifyname') }}</span>
+            @endif
+
+        </div>
+        <div>
+            <span>产品栏目名: </span>
+            <input type="text" name="Company[pro_classifyname]" placeholder=""
+                   value="{{ old('Company.pro_classifyname') ? old('Company.pro_classifyname') : $company->pro_classifyname }}">
+            @if ($errors->has('Company.pro_classifyname'))
+                <span class="pass-error show">{{ $errors->first('Company.pro_classifyname') }}</span>
+            @endif
+
+        </div>
+        <div>
+            <span>分享栏目名: </span>
+            <input type="text" name="Company[share_classifyname]" placeholder=""
+                   value="{{ old('Company.share_classifyname') ? old('Company.share_classifyname') : $company->share_classifyname }}">
+            @if ($errors->has('Company.share_classifyname'))
+                <span class="pass-error show">{{ $errors->first('Company.share_classifyname') }}</span>
+            @endif
+
+        </div>
+        <div>
+            <span>导航栏目名: </span>
+            <input type="text" name="Company[nav_classifyname]" placeholder=""
+                   value="{{ old('Company.nav_classifyname') ? old('Company.nav_classifyname') : $company->nav_classifyname }}">
+            @if ($errors->has('Company.nav_classifyname'))
+                <span class="pass-error show">{{ $errors->first('Company.nav_classifyname') }}</span>
+            @endif
+
+        </div>
+        <div>
+            <span>信息栏目名: </span>
+            <input type="text" name="Company[per_classifyname]" placeholder=""
+                   value="{{ old('Company.per_classifyname') ? old('Company.per_classifyname') : $company->per_classifyname }}">
+            @if ($errors->has('Company.per_classifyname'))
+                <span class="pass-error show">{{ $errors->first('Company.per_classifyname') }}</span>
+            @endif
+
+        </div>
         <div class="companyLink">
-            <span>是否外链:</span>
+            <span>简介外链开关:</span>
             <div class="com">
+                <input type="text" name="Company[profilelink]" class="comLinkInput cardInput"
+                       value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">
                 @if ($company->is_profilelink=='1')
                     <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="1">
                     开
@@ -122,10 +179,9 @@
                     <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="0">
                     关
                 @endif
-                <input type="text" name="Company[profilelink]" class="comLinkInput cardInput"
-                       value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">
+
             </div>
-            <h6 class="comTap"><span>备注:</span>公司简介外链</h6>
+            {{--<h6 class="comTap"><span>备注:</span>公司简介外链</h6>--}}
         </div>
         @if ($errors->has('Company.profilelink'))
             <p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>
@@ -145,14 +201,7 @@
                 @endif
             </div>
         </div>
-        <div class="user-j">
-            <span>公司简介: </span>
-            <textarea name="Company[description]"
-                      id="">{{ old('Company.description') ? old('Company.description') : $company->description }}</textarea>
-        </div>
-        @if ($errors->has('Company.description'))
-            <p class="pass-error show">{{ $errors->first('Company.description') }}</p>
-        @endif
+
 
         <div>
             <span>公司地址：</span>
@@ -160,7 +209,7 @@
                    value="{{ old('Company.address') ? old('Company.address') : $company->address }}">
             <input style="width:70px;height:35px;border:1px solid gray" type="button" value="搜索"
                    onClick="sear(document.getElementById('where').value);"/>
-            <p>输入完地址后，点击搜索，用鼠标在地图上点击定位></p>
+            <p><输入完地址后，点击搜索，用鼠标在地图上点击定位></p>
             {{--经度：--}}
             <input id="lon" name="Company[coordinate_lng]" type="hidden"
                    value="{{ old('Company.coordinate_lng') ? old('Company.coordinate_lng') : $company->coordinate_lng }}">

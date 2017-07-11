@@ -613,7 +613,7 @@ input[type=file] {
 
 /*2017-6-26 公司简介外链*/
 .main-cont .companyLink{ line-height: 30px; vertical-align: top;}
-.main-cont .companyLink .com{ width: 276px; margin-bottom: 0;display: inline-block; text-align: left}
+.main-cont .companyLink .com{ width: 280px; margin-bottom: 0;display: inline-block; text-align: left}
 .main-cont .companyLink input.comLinkInput{  width:auto; height:auto; line-height: 30px;}
 .main-cont .companyLink input.cardInput{ width: 213px; }
 .main-cont .companyLink .comTap{ text-align: left; font-size: 16px;}
