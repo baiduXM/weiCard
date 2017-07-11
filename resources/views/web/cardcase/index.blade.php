@@ -33,7 +33,7 @@
             <table class="table b-table">
                 <thead>
                 <tr class="active">
-                    <th class="b-phone-w"><input type="checkbox" id="box8"><label for="box8"><i class="iconFont">&#xe7de;</i></label>
+                    <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll"><i class="iconFont">&#xe7de;</i></label>
                     </th>
                     <th class="b-phone-w2"><a href="">姓名</a></th>
                     <th class="b-phone-w2"><a href="">公司</a></th>
@@ -50,9 +50,9 @@
                 @else
                     @foreach($cardcases as $item)
                         <tr>
-                            {{--<td class="b-phone-w"><input type="checkbox" id="box7"><label for="box7"><i--}}
-                                            {{--class="iconFont">&#xe7de;</i></label>--}}
-                            {{--</td>--}}
+                            <td class="b-phone-w"><input type="checkbox" id="box{{ $item->follower->id }}"><label for="box{{ $item->follower->id }}"><i
+                                            class="iconFont">&#xe7de;</i></label>
+                            </td>
                             <td class="b-phone-w2">{{ $item->follower->nickname }}</td>
                             <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->display_name }}</td>
                             <td class="b-phone-w2">{{ $item->follower->mobile }}</td>

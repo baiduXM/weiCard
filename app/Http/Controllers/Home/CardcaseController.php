@@ -303,25 +303,16 @@ class CardcaseController extends HomeController
             if (Auth::user()->employee) {
                 $type = 'e';
                 $id = Auth::user()->employee->id;
-            } else {
-                $res = $this->getHeirById(Auth::id());
-                if ($res['type'] == 'user') {
-                    $type = 'u';
-                } else {
-                    $type = 'e';
-                }
-                if ($res['data']) {
-                    $id = $res['data']->id;
-                } else {
-                    $id = Auth::id();
-                }
+                $param = $type . '-' . $id;
             }
-            $param = $type . '-' . $id;
         } elseif ($type == 'u') {
             $param = $type . '-' . Auth::id();
         }
+        if (isset($param)) {
+            return $this->cardview($param);
+        }
+        return redirect('company/employee');
 
-        return $this->cardview($param);
     }
 
     /**

@@ -193,10 +193,7 @@ class EmployeeController extends AdminController
     public function destroy($id)
     {
         $employee = Employee::with('user', 'company')->find($id);
-//        dd($this->handoverCardcase2Company($employee));
-        $employee->mobile = null;
-        $employee->save();
-//        dump($employee);
+        $this->dimission($employee); // 移交员工名片到公司名片库
         if ($employee->delete()) {
             return redirect()->back()->with('success', '删除成功 - ' . $employee->id);
         } else {
@@ -217,14 +214,15 @@ class EmployeeController extends AdminController
         /* 员工是公司创始人，设置创始人为空 */
         $employees = Employee::with('user', 'company')->whereIn('id', $ids)->get();
         foreach ($employees as $key => $employee) {
-            if ($employee->user_id == $employee->company->user_id) {
-                $employee->company->user_id = null;
-                $employee->company->save();
-            }
+            $this->dimission($employee); // 移交员工名片到公司名片库
+//            if ($employee->user_id == $employee->company->user_id) {
+//                $employee->company->user_id = null;
+//                $employee->company->save();
+//            }
         }
         $res = Employee::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_employee')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect()->back()->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

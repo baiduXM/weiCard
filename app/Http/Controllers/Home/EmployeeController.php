@@ -109,6 +109,47 @@ class EmployeeController extends HomeController
     }
 
     /**
+     * 离职员工列表
+     */
+    public function trash()
+    {
+        if (!Auth::user()->company) {
+            return redirect()->to('user')->with('error', '请先绑定公司');
+        }
+
+        $company = Auth::user()->company;
+        $departments = Department::where('company_id', $company->id)->get();
+
+        $query = Employee::query();
+        $params = Input::query();
+
+        if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
+            $word = $params['word'];
+            $keyword = $params['keyword'];
+            if ($word == 'department') {
+                foreach ($departments as $k => $v) {
+                    // if($v->name == $keyword){//精确搜索
+                    if (strpos($v->name, $keyword) !== false) {//模糊搜索
+                        $department_id[] = $v->id;
+                        // break;
+                    } else {
+                        $department_id[] = '';
+                    }
+                }
+                $query->whereIn('department_id', $department_id)->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
+            } else {
+                $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
+            }
+        }
+        $employees = $query->where('company_id', '=', $company->id)->onlyTrashed()->paginate();
+        return view('web.employee.trash')->with([
+            'employees'   => $employees,
+            'departments' => $departments,
+            'params'      => $params,
+        ]);
+    }
+
+    /**
      * 添加员工
      *
      * @param Request $request
@@ -183,6 +224,24 @@ class EmployeeController extends HomeController
     }
 
     /**
+     * 恢复员工
+     *
+     * @param Request $request
+     * @param         $id
+     * @return array
+     */
+    public function recover(Request $request, $id)
+    {
+        $res = Employee::withTrashed()->where('id', $id)->restore();
+        if ($res) {
+            return redirect()->back()->with('success', '恢复员工成功');
+        }
+        return redirect()->back()->with('error', '恢复员工失败');
+
+    }
+
+
+    /**
      * 查看
      *
      * @param $id
@@ -252,6 +311,7 @@ class EmployeeController extends HomeController
     public function destroy(Request $request, $id)
     {
         $employee = Employee::with('user', 'company')->find($id);
+        $this->dimission($employee); // 移交员工名片到公司名片库
         if ($employee->user_id) {
             $err_code = 401; // 删除失败 - 员工已绑定用户
         } else {
@@ -263,6 +323,23 @@ class EmployeeController extends HomeController
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }
+    }
+
+    /**
+     * 永久删除
+     *
+     * @param Request $request
+     * @param         $id
+     * @return \Illuminate\Http\RedirectResponse|int
+     */
+    public function forceDelete(Request $request, $id)
+    {
+        $res = Employee::where('id', $id)->forceDelete();
+        if ($res) {
+            return redirect()->back()->with('success', '永久删除成功');
+        }
+        return redirect()->back()->with('error', '永久删除失败');
+
     }
 
 
@@ -435,6 +512,7 @@ class EmployeeController extends HomeController
         });
         return $res;
     }
+
 
 }
 

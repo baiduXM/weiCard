@@ -15,26 +15,12 @@ use function MongoDB\BSON\toJSON;
 
 class HomeController extends Controller
 {
-    public $is_owner = false; // 是否公司老板
 
     public function __construct()
     {
 
     }
 
-
-    /**
-     * 判断是否是公司管理人员
-     *
-     * @return bool
-     */
-    public function isCompanyOwner()
-    {
-        if (Auth::user()->company) {
-            $this->is_owner = true;
-        }
-        return $this->is_owner ? true : false;
-    }
 
     public function showQrcode()
     {
@@ -190,6 +176,7 @@ class HomeController extends Controller
         $param = explode('-', $params);
         switch ($param[0]) {
             case 'e':
+
                 $data['type'] = 'App\Models\Employee';
                 $cardcases = Cardcase::where('user_id', Auth::id())
                     ->where('follower_type', $data['type'])
@@ -199,6 +186,13 @@ class HomeController extends Controller
                 //dd($count_cardcase);
 
                 $person = Employee::find($param[1]);
+                if (!$person) { // 获取交接人信息
+                    $res = $this->getOwner($param[1]);
+                    if (!$res['data']) { // 无交接人，报404
+                        return abort('404')->with('error', $res['msg']);
+                    }
+                    $person = $res['data'];
+                }
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有员工模板，使用公司模板
                     $templates = Employee::find($param[1])->company->templates;
@@ -330,47 +324,28 @@ class HomeController extends Controller
     /**
      * 获取交接人信息
      *
-     * @param int    $id   用户ID|员工ID
-     * @param string $type 用户类型 user_id|id
+     * @param int $id 员工ID
      * @return mixed 返回交接人信息
      */
-    public function getHeirById($id, $type = 'user_id')
+    public function getOwner($id)
     {
-        $employee = Employee::withTrashed()->with('department')->where($type, $id)->first();
+        $employee = Employee::withTrashed()->with('department')->where('id', $id)->first();
         if (!$employee) {
             return array( // 后续跳转个人名片
-                'msg'  => '未绑定员工',
-                'type' => 'user',
+                'msg'  => '员工不存在',
                 'data' => null,
             );
         }
         /* 员工未归属部门or所在部门未设置交接人 */
-        if (!$employee->department || !$employee->department->owner) {
-            if (!$employee->company->user) { // 无公司管理员
-                return array( // 后续跳转个人名片
-                    'msg'  => '无公司管理员',
-                    'type' => 'user',
-                    'data' => null,
-                );
-            }
-            $user = $employee->company->user;
-            if (!$user->employee) {
-                return array(
-                    'msg'  => '公司管理员个人名片',
-                    'type' => 'user',
-                    'data' => $user,
-                );
-            } else {
-                return array(
-                    'msg'  => '公司管理员企业名片',
-                    'type' => 'employee',
-                    'data' => $user->employee,
-                );
-            }
+        if (!$employee->department || !$employee->department->owner) { // 无公司管理员
+            /* 续跳公司管理员个人名片 */
+            return array(
+                'msg'  => '员工已离职',
+                'data' => null,
+            );
         }
         return array(
-            'msg'  => '部门交接人企业名片',
-            'type' => 'employee',
+            'msg'  => '员工已离职，跳转交接人名片',
             'data' => $employee->department->owner,
         );
 

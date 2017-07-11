@@ -13,6 +13,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -442,6 +443,18 @@ class Controller extends BaseController
         }
     }
 
+    /**
+     * 员工离职操作
+     *
+     * @param object $employee 员工对象
+     */
+    protected function dimission($employee)
+    {
+        $this->handoverCardcase2Company($employee);
+        $employee->mobile = null; // 员工手机置为空
+        $employee->user_id = null; // 员工解绑用户
+        $employee->save();
+    }
 
     /**
      * 移交个人企业名片到公司
@@ -450,14 +463,27 @@ class Controller extends BaseController
      */
     protected function handoverCardcase2Company($employee)
     {
-        dump($employee);
+        // 获取员工收藏的企业名片
         $cardcases = Cardcase::where('user_id', $employee->user_id)->where('follower_type', 'App\Models\Employee')->get();
-        dump($cardcases);
-        $data = array();
+        // 员工公司ID
+        $time = date('Y-m-d H:i:s', time());
         foreach ($cardcases as $k => $v) {
+            $res = DB::table('cardcase_company')
+                ->where('company_id', $employee->company_id)
+                ->where('follower_id', $v->follower_id)
+                ->first();
+            if ($res) {
+                continue;
+            }
+            $data = array(
+                'company_id'  => $employee->company_id,
+                'follower_id' => $v->follower_id,
+                'remark'      => $employee->nickname . '->员工离职名片移交',
+                'created_at'  => $time,
+            );
+            DB::table('cardcase_company')->insert($data);
+            // TODO:操作日志
         }
-        dump($employee->followers);
-        exit;
     }
 
 }
