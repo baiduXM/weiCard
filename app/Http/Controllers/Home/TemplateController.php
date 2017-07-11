@@ -48,7 +48,7 @@ class TemplateController extends HomeController
     {
         $query = Template::query();
         $query->where('type', 1);
-        $templates = $query->paginate(4);
+        $templates = $query->get();
         $user = Auth::user();
         return view('mobile.templates.index')->with([
             'templates' => $templates,
