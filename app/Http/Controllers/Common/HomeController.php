@@ -176,7 +176,6 @@ class HomeController extends Controller
         $param = explode('-', $params);
         switch ($param[0]) {
             case 'e':
-
                 $data['type'] = 'App\Models\Employee';
                 $cardcases = Cardcase::where('user_id', Auth::id())
                     ->where('follower_type', $data['type'])
@@ -189,13 +188,14 @@ class HomeController extends Controller
                 if (!$person) { // 获取交接人信息
                     $res = $this->getOwner($param[1]);
                     if (!$res['data']) { // 无交接人，报404
+                        return redirect()->back()->with('error', $res['msg']);
                         return abort('404')->with('error', $res['msg']);
                     }
                     $person = $res['data'];
                 }
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有员工模板，使用公司模板
-                    $templates = Employee::find($param[1])->company->templates;
+                    $templates = Employee::find($person->id)->company->templates;
                 }
                 if (count($templates) <= 0) { // 没有公司模板，使用默认模板
                     $template = Template::whereIn('type', [0, 2])->first();

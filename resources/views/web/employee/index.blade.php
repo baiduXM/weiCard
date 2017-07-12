@@ -21,32 +21,12 @@
                     {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
                     {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
                     <li class="b-btn-bg">
-                        {{--                        @if(count($employees) < Auth::user()->company->limit)--}}
                         <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
-                            <i class="iconFont">&#xe67d;</i>添加
-                        </a>
-
-                        {{--@else--}}
-                        {{--<a href="javaScript:alert('员工人数上限，无法添加新员工！')">--}}
-                        {{--<i class="iconFont">&#xe67d;</i>添加--}}
-                        {{--</a>--}}
-                        {{--@endif--}}
+                            <i class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import"><i
                                     class="iconFont">&#xe67d;</i>导入Excel</a>
-                    {{--<li class="b-btn-bg"><a href="{{ url('/company/employee/export') }}">--}}
-                    {{--<i class="iconFont">&#xe67d;</i>导出员工</a>--}}
-                    {{--</li>--}}
-                    <!-- <li class="b-btn-bor b-sort-btn ">
-                        <a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>
-                        <ul class="b-sort none">
-                            <li><a href="">按名字排序</a></li>
-                            <li><a href="">按职位排序</a></li>
-                            <li><a href="">按部门排序</a></li>
-                            <li><a href="">按入职时间排序</a></li>
-                        </ul>
-                    </li> -->
                     <li class="b-btn-bor b-word-btn ">
                         <a href="javascript:" class="word-select" name="noword">查询字段<i class="iconFont">&#xe618;</i></a>
                         <ul class="b-word none">
