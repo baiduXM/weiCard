@@ -18,7 +18,7 @@
                 {{ method_field('put') }}
                 {{ csrf_field() }}
                 <span>头像：
-                    <input type="file" name="User[avatar]"id="avatar" class="inputt">
+                    <input type="file" name="User[avatar]"id="avatar" class="inputt" style="opacity: 0; position:absolute;"><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0">上传头像</strong>
                     @if ($errors->has('User.avatar'))
                         <p class="show">{{ $errors->first('User.avatar') }}</p>
                     @endif
