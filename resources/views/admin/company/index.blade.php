@@ -132,48 +132,58 @@
                                                     <a href="{{ url('admin/company_position?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看职位"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>职位</a>
-                                                    @if($item->deleted_at == null)
-                                                        {{--@if($item->status == $item::VERIFIED_ING)--}}
-                                                            {{--<a href="{{ url('admin/company/'.$item->id . '/verified') }}"--}}
-                                                               {{--class="btn btn-success btn-xs" title="审核"><i--}}
-                                                                        {{--class="glyphicon glyphicon-bookmark"></i>审核</a>--}}
-                                                        {{--@endif--}}
-                                                        @if($item->user)
-                                                            <a href="" class="btn btn-warning btn-xs operate-unbinding"
-                                                               data-toggle="modal" data-target=".confirmModal"
-                                                               data-url="company/{{ $item->id }}/unbinding"
-                                                               data-info="{{ $item->user->nickname }}"
-                                                               title="解绑管理员">
-                                                                <i class="glyphicon glyphicon-link"></i>解绑</a>
-                                                        @endif
-                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
-                                                           class="btn btn-primary btn-xs" title="编辑"><i
-                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-delete"
+                                                    {{--@if($item->deleted_at == null)--}}
+                                                    {{--@if($item->status == $item::VERIFIED_ING)--}}
+                                                    {{--<a href="{{ url('admin/company/'.$item->id . '/verified') }}"--}}
+                                                    {{--class="btn btn-success btn-xs" title="审核"><i--}}
+                                                    {{--class="glyphicon glyphicon-bookmark"></i>审核</a>--}}
+                                                    {{--@endif--}}
+                                                    @if($item->user)
+                                                        <a href="" class="btn btn-warning btn-xs operate-unbinding"
                                                            data-toggle="modal" data-target=".confirmModal"
-                                                           data-url="company/{{ $item->id }}"
-                                                           data-info="{{ $item->name }} 公司" title="删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>删除
-                                                        </a>
-                                                    @else
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-warning btn-xs operate-recover"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="恢复">
-                                                            <i class="glyphicon glyphicon-repeat"></i>恢复
-                                                        </a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-destroy"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="彻底删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>销毁
+                                                           data-url="company/{{ $item->id }}/unbinding"
+                                                           data-info="{{ $item->user->nickname }}"
+                                                           title="解绑管理员">
+                                                            <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                    @endif
+                                                    <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    <a href="#confirmModel"
+                                                       class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="company/{{ $item->id }}"
+                                                       data-info="{{ $item->name }} 公司" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
+                                                    @if($item->user)
+                                                        <a href="#confirmModal" target="_blank"
+                                                           class="btn btn-darkblue btn-xs operate-login"
+                                                           data-toggle="modal" data-target=".confirmModal"
+                                                           data-url="{{ url('admin/company/'. $item->id .'/login') }}"
+                                                           data-info="{{ $item->name }} 公司账号"
+                                                           title="登录公司前台管理">
+                                                            <i class="glyphicon glyphicon-user"></i>登录
                                                         </a>
                                                     @endif
+                                                    {{--@else--}}
+                                                    {{--<a href="#confirmModel"--}}
+                                                    {{--class="btn btn-warning btn-xs operate-recover"--}}
+                                                    {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                    {{--data-id="{{ $item->id }}"--}}
+                                                    {{--data-url="company/{{ $item->id }}"--}}
+                                                    {{--title="恢复">--}}
+                                                    {{--<i class="glyphicon glyphicon-repeat"></i>恢复--}}
+                                                    {{--</a>--}}
+                                                    {{--<a href="#confirmModel"--}}
+                                                    {{--class="btn btn-danger btn-xs operate-destroy"--}}
+                                                    {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                    {{--data-id="{{ $item->id }}"--}}
+                                                    {{--data-url="company/{{ $item->id }}"--}}
+                                                    {{--title="彻底删除">--}}
+                                                    {{--<i class="glyphicon glyphicon-trash"></i>销毁--}}
+                                                    {{--</a>--}}
+                                                    {{--@endif--}}
 
                                                 </td><!--操作-->
                                             </tr>
@@ -203,7 +213,21 @@
 @section('javascript')
     <script>
         $(function () {
-
+            /* 恢复员工 */
+            $(".operate-login").click(function () {
+                $('#confirmModal').on('show.bs.modal', function (event) {
+                    var relatedTarget = $(event.relatedTarget);
+                    var _id           = relatedTarget.data('id');
+                    var _info         = relatedTarget.data('info');
+                    var _url          = relatedTarget.data('url');
+                    var modal         = $(this);
+                    modal.find('.modal-title').text('登录确认');
+                    modal.find('.modal-body').text('确定登录 ' + _info);
+                    modal.find('form').attr('action', _url);
+                    modal.find('[name="_method"]').val('post');
+                    modal.find('form').append('<input type="hidden" name="id" value="' + _id + '"/>');
+                });
+            });
         });
     </script>
 @stop

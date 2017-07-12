@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
+        Route::delete('employee/batch', ['as' => 'company.employee.batchDelete', 'uses' => 'Home\EmployeeController@batchDelete']);
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         Route::post('employee/{id}/recover', ['as' => 'company.employee.recover', 'uses' => 'Home\EmployeeController@recover']);
         Route::delete('employee/{id}/forceDelete', ['as' => 'company.employee.forceDelete', 'uses' => 'Home\EmployeeController@forceDelete']);
@@ -192,27 +193,6 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
 /* =====后台管理界面===== */
 
-/*
- * admin/user 用户管理
- * admin/user_cardcase/?user_id= 名片夹管理
- * admin/user_group/?user_id= 名片群管理
- * admin/user_tag/?user_id= 用户标签管理
- *
- * admin/company 公司管理
- * admin/company_department/?company_id= 部门管理
- * admin/company_position/?company_id= 职务管理
- * admin/company_employee/?company_id= 员工管理
- *
- * admin/template 模板管理
- * admin/template_tag/?template_id= 模板标签管理
- *
- * admin/manager 客服管理
- *
- * admin/setting 系统设置
- * admin/setting/safety 安全设置
- * admin/setting/person 个人设置
- *
- */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
@@ -249,6 +229,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::get('{id}/verified', ['as' => 'admin.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
         Route::post('{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@postVerified']);
         Route::delete('{id}/unbinding', ['as' => 'admin.company.unbinding', 'uses' => 'Admin\CompanyController@unbinding']);
+        Route::post('{id}/login', ['as' => 'admin.company.login', 'uses' => 'Admin\CompanyController@loginByCompany']);
     });
     Route::resource('company', 'Admin\CompanyController');
 

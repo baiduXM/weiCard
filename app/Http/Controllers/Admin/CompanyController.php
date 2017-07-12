@@ -53,7 +53,6 @@ class CompanyController extends AdminController
         $companies = Company::with('user', 'employees')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
-            'common'    => new CommonModel(),
         ]);
     }
 
@@ -345,6 +344,24 @@ class CompanyController extends AdminController
         } else {
             return redirect()->back();
         }
+    }
+
+    /**
+     * 登录公司管理员账号
+     *
+     * @param $id 公司ID
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function loginByCompany($id)
+    {
+        if (Auth::guard()->check()) {
+            Auth::guard()->logout();
+        }
+        if (!Company::find($id)->user) {
+            return redirect()->back()->with('error', '公司未绑定管理员');
+        }
+        Auth::guard()->login(Company::find($id)->user);
+        return redirect()->to('/');
     }
 
 
