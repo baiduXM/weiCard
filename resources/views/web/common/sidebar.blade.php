@@ -62,8 +62,8 @@
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
-                    <li {{ Request::path() == 'company/cardcase' ? 'class=active' : '' }}>
-                        <a href="{{ url('company/cardcase') }}">公司名片库</a></li>
+                    {{--<li {{ Request::path() == 'company/cardcase' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('company/cardcase') }}">公司名片库</a></li>--}}
                     {{--<li {{ Request::path() == 'company/position' ? 'class=active' : '' }}>--}}
                     {{--<a href="{{ url('company/position') }}">公司职位</a></li>--}}
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
