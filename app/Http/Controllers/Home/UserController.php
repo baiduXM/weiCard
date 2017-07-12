@@ -156,7 +156,7 @@ class UserController extends HomeController
 
         /* 获取文件 */
         if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $id);
         }
         $user = User::find($id);
         foreach ($data as $key => $value) {

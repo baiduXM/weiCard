@@ -14,9 +14,15 @@
     </div>
     <div class="card_main">
         <div class="card_content car_from">
-            <form action="{{ url('user') }}" method="post">
+            <form action="{{ url('user') }}" method="post" enctype="multipart/form-data">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
+                <span>头像：
+                    <input type="file" name="User[avatar]"id="avatar" class="inputt">
+                    @if ($errors->has('User.avatar'))
+                        <p class="show">{{ $errors->first('User.avatar') }}</p>
+                    @endif
+                </span>
                 <span>姓名：
                     <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
                     <em>*</em>
