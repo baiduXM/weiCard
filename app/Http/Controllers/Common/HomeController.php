@@ -189,7 +189,6 @@ class HomeController extends Controller
                     $res = $this->getOwner($param[1]);
                     if (!$res['data']) { // 无交接人，报404
                         return redirect()->back()->with('error', $res['msg']);
-                        return abort('404')->with('error', $res['msg']);
                     }
                     $person = $res['data'];
                 }

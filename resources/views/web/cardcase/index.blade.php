@@ -12,7 +12,7 @@
         </ul>
         <div class="myCard-content rt-main">
             <ul class="b-button">
-                <li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>
+                {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                 {{--<li class="b-btn-bor b-sort-btn ">--}}
                     {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
                     {{--<ul class="b-sort none">--}}
@@ -30,7 +30,7 @@
                     {{--</form>--}}
                 {{--</li>--}}
             </ul>
-            <table class="table b-table">
+            <table class="table b-table" id="tableList">
                 <thead>
                 <tr class="active">
                     <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll"><i class="iconFont">&#xe7de;</i></label>

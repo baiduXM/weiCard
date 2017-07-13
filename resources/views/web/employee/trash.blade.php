@@ -38,10 +38,10 @@
                 </ul>
             @endif
 
-            <table class="table b-table table-hover">
+            <table class="table b-table table-hover" id="tableList">
                 <thead>
                 <tr class="active">
-                    <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
+                    <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll" class="iconFont"><i>&#xe7de;</i></label>
                     </th>
                     <th class="b-phone-w2"><a href="">工号</a></th>
                     <th class=" "><a href="">姓名</a></th>
@@ -59,8 +59,8 @@
                 @else
                     @foreach($employees as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                            <td class="b-phone-w"><input type="checkbox" id="box10">
-                                <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
+                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                                <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
@@ -138,7 +138,8 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal1 modal3">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <form action="" method="post">

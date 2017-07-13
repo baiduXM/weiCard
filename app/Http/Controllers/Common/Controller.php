@@ -466,23 +466,25 @@ class Controller extends BaseController
         // 获取员工收藏的企业名片
         $cardcases = Cardcase::where('user_id', $employee->user_id)->where('follower_type', 'App\Models\Employee')->get();
         // 员工公司ID
-        $time = date('Y-m-d H:i:s', time());
-        foreach ($cardcases as $k => $v) {
-            $res = DB::table('cardcase_company')
-                ->where('company_id', $employee->company_id)
-                ->where('follower_id', $v->follower_id)
-                ->first();
-            if ($res) {
-                continue;
+        if ($cardcases) {
+            $time = date('Y-m-d H:i:s', time());
+            foreach ($cardcases as $k => $v) {
+                $res = DB::table('cardcase_company')
+                    ->where('company_id', $employee->company_id)
+                    ->where('follower_id', $v->follower_id)
+                    ->first();
+                if ($res) {
+                    continue;
+                }
+                $data = array(
+                    'company_id'  => $employee->company_id,
+                    'follower_id' => $v->follower_id,
+                    'remark'      => $employee->nickname . '->员工离职名片移交',
+                    'created_at'  => $time,
+                );
+                DB::table('cardcase_company')->insert($data);
+                // TODO:操作日志
             }
-            $data = array(
-                'company_id'  => $employee->company_id,
-                'follower_id' => $v->follower_id,
-                'remark'      => $employee->nickname . '->员工离职名片移交',
-                'created_at'  => $time,
-            );
-            DB::table('cardcase_company')->insert($data);
-            // TODO:操作日志
         }
     }
 

@@ -35,10 +35,10 @@
                     {{--</li>--}}
                 </ul>
             @endif
-            <table class="table b-table table-hover">
+            <table class="table b-table table-hover" id="tableList">
                 <thead>
                 <tr class="active">
-                    <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
+                    <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll" class="iconFont"><i>&#xe7de;</i></label>
                     </th>
                     <!-- <th class="b-phone-w2"><a href="">#</a></th> -->
                     <th class=" "><a href="">名称</a></th>
@@ -56,8 +56,8 @@
                 @else
                     @foreach($links as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                            <td class="b-phone-w"><input type="checkbox" id="box10">
-                                <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
+                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                                <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <!-- <td class="b-phone-w2">{{ $item->id }}</td> -->
                             <td class="">{{ $item->link_name }}</td>

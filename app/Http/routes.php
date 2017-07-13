@@ -103,9 +103,9 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
         Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
+        Route::delete('employee/batch', ['as' => 'company.employee.batchDestroy', 'uses' => 'Home\EmployeeController@batchDestroy']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);
-        Route::delete('employee/batch', ['as' => 'company.employee.batchDelete', 'uses' => 'Home\EmployeeController@batchDelete']);
         Route::delete('employee/{id}', ['as' => 'company.employee.destroy', 'uses' => 'Home\EmployeeController@destroy']);
         Route::post('employee/{id}/recover', ['as' => 'company.employee.recover', 'uses' => 'Home\EmployeeController@recover']);
         Route::delete('employee/{id}/forceDelete', ['as' => 'company.employee.forceDelete', 'uses' => 'Home\EmployeeController@forceDelete']);

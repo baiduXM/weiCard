@@ -17,11 +17,11 @@
                                 class="iconFont">&#xe67d;</i>添加</a>
                 </li>
             </ul>
-            <table class="table b-table">
+            <table class="table b-table" id="tableList">
                 <thead>
                 <tr class="active">
-                    <th class=""><input type="checkbox" id="box4"><label for="box4"><i
-                                    class="iconFont">&#xe7de;</i></label></th>
+                    <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll" class="iconFont"><i>&#xe7de;</i></label>
+                    </th>
                     <th class="b-phone-w2"><a href="">部门</a></th>
                     <th><a href="">部门交接人</a></th>
                     <th class="b-phone-w2"><a href="">人数</a></th>
@@ -30,12 +30,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if($departments)
+                @if(count($departments))
                     @foreach($departments as $item)
                         <tr>
-                            <td class="b-phone-w">
-                                <input type="checkbox" id="box3"><label for="box3"><i
-                                            class="iconFont">&#xe7de;</i></label>
+                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                                <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->name }}</td>
                             <td>{{ $item->owner->nickname or '' }}</td>
@@ -123,7 +122,8 @@
                             </p>
                             <p>
                                 <span>部门交接人 : </span>
-                                <select name="Department[employee_id]" id="employee_id" class="info-employee_id"></select>
+                                <select name="Department[employee_id]" id="employee_id"
+                                        class="info-employee_id"></select>
                                 <span class="error-employee_id" style="color: red;"></span>
                             </p>
                         </div>

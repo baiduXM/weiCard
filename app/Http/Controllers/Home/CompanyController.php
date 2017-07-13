@@ -8,7 +8,10 @@ use App\Models\Company;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class CompanyController extends HomeController
 {
@@ -93,51 +96,51 @@ class CompanyController extends HomeController
         $id = Auth::user()->company->id;
         /* 验证 */
         $this->validate($request, [
-            'Company.name'           => 'required|regex:/^([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
-            'Company.display_name'   => 'required|unique:companies,companies.display_name,' . $id,
-            'Company.logo'           => 'image|max:' . 2 * 1024, // 最大2MB
-            'Company.address'        => 'max:255',
-            'Company.email'          => 'email',
-            'Company.telephone'      => '',
-            'Company.description'    => 'max:255',
-            'Company.coordinate_lng' => 'max:255',
-            'Company.coordinate_lat' => 'max:255',
-            'Company.homepage'       => 'url:true',
-            'Company.profilelink'    => 'url:true',
-            'Company.is_profilelink' => '',
-            'Company.is_person'      => '',
-            'Company.comment'        => 'max:255',
-            'Company.service_area'   => 'max:255',
-            'Company.registered_capital'      => 'max:255',
-            'Company.registered_number'       => 'max:255',
-            'Company.des_classifyname'        => 'max:255',
-            'Company.pro_classifyname'        => 'max:255',
-            'Company.share_classifyname'      => 'max:255',
-            'Company.nav_classifyname'        => 'max:255',
-            'Company.per_classifyname'        => 'max:255',
+            'Company.name'               => 'required|regex:/^([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
+            'Company.display_name'       => 'required|unique:companies,companies.display_name,' . $id,
+            'Company.logo'               => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.address'            => 'max:255',
+            'Company.email'              => 'email',
+            'Company.telephone'          => '',
+            'Company.description'        => 'max:255',
+            'Company.coordinate_lng'     => 'max:255',
+            'Company.coordinate_lat'     => 'max:255',
+            'Company.homepage'           => 'url:true',
+            'Company.profilelink'        => 'url:true',
+            'Company.is_profilelink'     => '',
+            'Company.is_person'          => '',
+            'Company.comment'            => 'max:255',
+            'Company.service_area'       => 'max:255',
+            'Company.registered_capital' => 'max:255',
+            'Company.registered_number'  => 'max:255',
+            'Company.des_classifyname'   => 'max:255',
+            'Company.pro_classifyname'   => 'max:255',
+            'Company.share_classifyname' => 'max:255',
+            'Company.nav_classifyname'   => 'max:255',
+            'Company.per_classifyname'   => 'max:255',
 
 
         ], [], [
-            'Company.name'           => '公司名称',
-            'Company.display_name'   => '显示名称',
-            'Company.logo'           => '公司LOGO',
-            'Company.address'        => '公司地址',
-            'Company.email'          => '公司邮箱',
-            'Company.telephone'      => '公司电话',
-            'Company.description'    => '公司简介',
-            'Company.coordinate_lng' => '坐标（经度）',
-            'Company.homepage'       => '公司网址',
-            'Company.profilelink'    => '公司简介外链',
-            'Company.is_person'      => '员工名片展示开关',
-            'Company.comment'        => '公司备注',
-            'Company.service_area'   => '服务范围',
-            'Company.registered_capital'      => '注册资本',
-            'Company.registered_number'       => '公司注册号',
-            'Company.des_classifyname'        => '简介栏目名',
-            'Company.pro_classifyname'        => '产品栏目名',
-            'Company.share_classifyname'      => '分享栏目名',
-            'Company.nav_classifyname'        => '导航栏目名',
-            'Company.per_classifyname'        => '信息栏目名',
+            'Company.name'               => '公司名称',
+            'Company.display_name'       => '显示名称',
+            'Company.logo'               => '公司LOGO',
+            'Company.address'            => '公司地址',
+            'Company.email'              => '公司邮箱',
+            'Company.telephone'          => '公司电话',
+            'Company.description'        => '公司简介',
+            'Company.coordinate_lng'     => '坐标（经度）',
+            'Company.homepage'           => '公司网址',
+            'Company.profilelink'        => '公司简介外链',
+            'Company.is_person'          => '员工名片展示开关',
+            'Company.comment'            => '公司备注',
+            'Company.service_area'       => '服务范围',
+            'Company.registered_capital' => '注册资本',
+            'Company.registered_number'  => '公司注册号',
+            'Company.des_classifyname'   => '简介栏目名',
+            'Company.pro_classifyname'   => '产品栏目名',
+            'Company.share_classifyname' => '分享栏目名',
+            'Company.nav_classifyname'   => '导航栏目名',
+            'Company.per_classifyname'   => '信息栏目名',
 
 
         ]);
@@ -188,6 +191,45 @@ class CompanyController extends HomeController
         }
         return redirect()->back()->with('error', $res);
     }
+
+
+    /**
+     * 导入Demo文件
+     */
+    public function importDemo()
+    {
+        $res = 0;
+        $excelPath = 'uploads/20170712.xlsx';
+        Excel::selectSheetsByIndex(0)->load($excelPath, function ($reader) use (&$res) {
+            $data = $reader->all()->toArray();
+            // TODO:置换数组
+            $this->importArray = array(
+                'department' => '部门',
+                'position'   => '职位',
+                'external'   => '对外职位',
+            );
+            dump($this->importArray);
+            $employee = array();
+            foreach ($data as $k => $items) {
+                foreach ($items as $key => $item) {
+                    if (in_array($key, $this->importArray)) {
+                        $employee[$k][array_search($key, $this->importArray)] = $item;
+                    }
+                }
+            }
+            dump($employee);
+//            $count = DB::table('dp2out')->insert($employee);
+            $res = count($employee);
+        });
+        dd($res);
+        exit;
+    }
+
+
+
+
+
+
 
 
 }

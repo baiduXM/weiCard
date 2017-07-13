@@ -10,6 +10,7 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -62,12 +63,27 @@ class EmployeeController extends HomeController
     public function index()
     {
         if ($this->is_mobile) {
-            $user_id = Auth::user()->id;
-            $employee = Employee::where('user_id', $user_id)->first();
-            $company = Company::where('id', $employee['company_id'])->first();
+
+//            $res = Employee::with(['department' => function ($query) {
+//                $query->select('name');
+//            }], 'company')
+//                ->where('company_id', Auth::user()->company->id)
+//                ->select('id', 'number', 'nickname', 'positions', 'mobile')
+//                ->get()->toArray();
+//            dump($res);
+//            foreach ($res as $k => $v) {
+//                dump($v);
+//            }
+////            dump();
+//            exit;
+//            $user_id = Auth::user()->id;
+//            $employee = Employee::where('user_id', $user_id)->first();
+//            $company = Company::where('id', Auth::user()->employee->company_id)->first();
+//            dump($company);
+
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
-                'company'  => $company,
+                'company'  => Auth::user()->company,
             ]);
         }
 
@@ -325,6 +341,22 @@ class EmployeeController extends HomeController
         }
     }
 
+    public function batchDestroy(Request $request)
+    {
+        $ids = explode(',', $request->input('ids'));
+        $employees = Employee::whereIn('id', $ids)->get();
+        foreach ($employees as $key => $employee) {
+            $this->dimission($employee); // 移交员工名片到公司名片库
+        }
+        $res = Employee::whereIn('id', $ids)->delete();
+        if ($res) {
+//            return redirect('company/employee')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+//            return redirect('company/employee')->with('error', '删除失败 - ' . $res . '条记录');
+        }
+
+    }
+
     /**
      * 永久删除
      *
@@ -363,6 +395,7 @@ class EmployeeController extends HomeController
                 return redirect()->to('company/employee')->with('error', '未检测到文件');
             }
         }
+
         return redirect()->to('company/employee');
     }
 

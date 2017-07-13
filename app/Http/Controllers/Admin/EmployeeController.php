@@ -9,6 +9,7 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\CommonModel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
@@ -49,6 +50,7 @@ class EmployeeController extends AdminController
      */
     public function index(Request $request)
     {
+
         $model = new Employee();
         $params = Input::query();
         $query = Employee::query();
@@ -259,6 +261,29 @@ class EmployeeController extends AdminController
             return redirect()->back()->with('error', '恢复失败');
 
         }
+    }
+
+    /**
+     * 临时对外职位替换
+     */
+    public function tempUpdatePosition()
+    {
+        $employees = Employee::withTrashed()->get();
+        foreach ($employees as $k => $employee) {
+            if ($employee->department && $employee->position) {
+
+                $external[$k] = DB::table('dp2out')->where('department', $employee->department->name)
+                    ->where('position', $employee->position->name)->first();
+                if ($external[$k]) {
+                    dump($k . ' | ' . $employee->department->name . ' + ' . $employee->position->name . ' = ' . $external[$k]->external);
+                    $employees[$k]->positions = $external[$k]->external;
+                    $employee->save();
+                }
+            }
+        }
+        dump(count($external));
+//        dump($employees);
+        exit;
     }
 
 

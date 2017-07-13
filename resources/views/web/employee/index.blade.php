@@ -17,9 +17,7 @@
         <div class="myCard-content rt-main">
             @if(Auth::user()->company)
                 <ul class="b-button">
-                    {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
-                    {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe67d;</i>批量添加</a></li>--}}
-                    {{--<li class="b-btn-bg"><a href="javascript:">导入excel</a></li>--}}
+                    {{--<li class="b-btn-bg"><a href="{{ url('company/employee/batch') }}" class="delete"><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                     <li class="b-btn-bg">
                         <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
                             <i class="iconFont">&#xe67d;</i>添加</a>
@@ -49,10 +47,10 @@
                 </ul>
             @endif
 
-            <table class="table b-table table-hover">
+            <table class="table b-table table-hover" id="tableList">
                 <thead>
                 <tr class="active">
-                    <th class="b-phone-w"><input type="checkbox" id="box9"><label for="box9" class="iconFont"><i>&#xe7de;</i></label>
+                    <th class="b-phone-w"><input type="checkbox" id="boxAll"><label for="boxAll" class="iconFont"><i>&#xe7de;</i></label>
                     </th>
                     <th class="b-phone-w2"><a href="">工号</a></th>
                     <th class=" "><a href="">姓名</a></th>
@@ -71,8 +69,8 @@
                 @else
                     @foreach($employees as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                            <td class="b-phone-w"><input type="checkbox" id="box10">
-                                <label for="box10" class="iconFont"><i>&#xe7de;</i></label>
+                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                                <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
                             <td class="">{{ $item->nickname }}</td>
