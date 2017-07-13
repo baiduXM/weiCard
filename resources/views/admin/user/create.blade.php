@@ -25,6 +25,19 @@
                                 </span>
                             @endif
                         </div><!-- name用户名 -->
+                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="nickname">昵称<span
+                                        class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
+                                       class="form-control" value="{{ old('User.nickname') }}">
+                            </div>
+                            @if ($errors->has('User.nickname'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('User.nickname') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- nickname昵称 -->
                         <div class="form-group {{ $errors->has('User.password') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password">密码 <span
                                         class="text-danger">*</span></label>
@@ -75,18 +88,7 @@
                                 </span>
                             @endif
                         </div><!-- mobile手机 -->
-                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="nickname">昵称</label>
-                            <div class="col-md-6">
-                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
-                                       class="form-control" value="{{ old('User.nickname') }}">
-                            </div>
-                            @if ($errors->has('User.nickname'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.nickname') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- nickname昵称 -->
+
                         <div class="form-group {{ $errors->has('User.avatar') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="avatar">头像</label>
                             <div class="col-md-6">

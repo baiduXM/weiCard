@@ -21,7 +21,7 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="company/create" title="添加">
+                                        data-url="{{ url('admin/manager/create') }}" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                             </div><!--添加/删除-->

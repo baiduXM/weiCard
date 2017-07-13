@@ -64,10 +64,10 @@ class LinkController extends HomeController
                 $data[$key] = null;//未填字段设置为null，否则会保存''
             }
         }
-        /*获取文件类型*/
-        if ($request->hasFile('Link.link_img')) {
-            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
-        }
+//        /*获取文件类型*/
+//        if ($request->hasFile('Link.link_img')) {
+//            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
+//        }
         $data['company_id'] = Auth::user()->company->id;
         /*添加*/
         if (Link::create($data)) {
@@ -104,10 +104,10 @@ class LinkController extends HomeController
         ]);
         $data = $request->input('Link');
 
-        /*获取文件类型*/
-        if ($request->hasFile('Link.link_img')) {
-            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
-        }
+//        /*获取文件类型*/
+//        if ($request->hasFile('Link.link_img')) {
+//            $data['link_img'] = $this->save($request->file('Link.link_img'), $this->path_type, Auth::user()->company->name);
+//        }
 
         foreach ($data as $key => $value) {
             if ($value !== '') {

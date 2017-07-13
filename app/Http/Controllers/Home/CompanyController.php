@@ -146,7 +146,7 @@ class CompanyController extends HomeController
         //dd($data);
         /* 获取文件类型 */
         if ($request->hasFile('Company.logo')) {
-            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $id);
         }
 
         $data['status'] = Company::VERIFIED_ING;

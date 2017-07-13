@@ -73,7 +73,7 @@ class ProductController extends HomeController
         }
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->id);
         }
 //        return $data['product_img'];
 
@@ -121,7 +121,7 @@ class ProductController extends HomeController
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, Auth::user()->company->id);
         }
 
         foreach ($data as $key => $value) {

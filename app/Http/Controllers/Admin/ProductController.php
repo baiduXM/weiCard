@@ -76,7 +76,7 @@ class ProductController extends AdminController
 
     public function create()
     {
-        $companies = Company::where('status', '=', '1')->get();
+        $companies = Company::all();
         if (count($companies) > 0) {
             return view('admin.product.create')->with([
                 'companies' => $companies,
@@ -113,7 +113,7 @@ class ProductController extends AdminController
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
             $company = Company::find($data['company_id']);
-            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $company->id);
         }
 
         /* 添加 */
@@ -158,7 +158,7 @@ class ProductController extends AdminController
 
         /* 获取文件类型 */
         if ($request->hasFile('Product.product_img')) {
-            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $product->company->name);
+            $data['product_img'] = $this->save($request->file('Product.product_img'), $this->path_type, $product->company->id);
         }
 
         foreach ($data as $key => $value) {

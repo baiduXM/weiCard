@@ -193,7 +193,7 @@ class EmployeeController extends HomeController
 //        }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->id, $data['number']);
         }
 //        if ($allow) {
         foreach ($data as $key => $value) {
@@ -203,7 +203,7 @@ class EmployeeController extends HomeController
         }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->id, $data['number']);
         }
 
         $data['company_id'] = Auth::user()->company->id;
@@ -283,7 +283,7 @@ class EmployeeController extends HomeController
         $data = $request->input('Employee');
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->id, $data['number']);
         }
 
         foreach ($data as $key => $value) {
@@ -356,7 +356,7 @@ class EmployeeController extends HomeController
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 // TODO:保存excel文件
-                $excelPath = $this->save($file, 'company', Auth::user()->company->name);
+                $excelPath = $this->save($file, 'company', Auth::user()->company->id);
                 $res = $this->dealExcel($excelPath);
                 return redirect()->to('company/employee')->with('success', '成功添加' . $res . '条数据');
             } else {

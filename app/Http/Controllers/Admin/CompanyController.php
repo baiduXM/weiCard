@@ -115,12 +115,13 @@ class CompanyController extends AdminController
 //        $data['verified_at'] = date('Y-m-d H:i:s', time());
 
         /* 获取文件 */
-        if ($request->hasFile('Company.logo')) {
-            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
-        }
 
+        $company=Company::create($data);
         /* 添加 */
-        if (Company::create($data)) {
+        if ($company) {
+            if ($request->hasFile('Company.logo')) {
+                $company->logo = $this->save($request->file('Company.logo'), $this->path_type, $company->id);
+            }
             return redirect('admin/company')->with('success', '添加成功');
         } else {
             return redirect()->back()->with('error', '添加失败');
@@ -201,7 +202,7 @@ class CompanyController extends AdminController
 
         /* 获取文件 */
         if ($request->hasFile('Company.logo')) {
-            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $data['name']);
+            $data['logo'] = $this->save($request->file('Company.logo'), $this->path_type, $id);
         }
 //        $data['status'] = Company::VERIFIED_ING;
 //        $data['manager_id'] = null;

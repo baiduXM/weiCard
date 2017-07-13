@@ -89,10 +89,10 @@ class ManagerController extends AdminController
             }
         }
 
-        /* 获取文件类型 */
-        if ($request->hasFile('Manager.avatar')) {
-            $data['avatar'] = $this->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
-        }
+//        /* 获取文件类型 */
+//        if ($request->hasFile('Manager.avatar')) {
+//            $data['avatar'] = $this->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
+//        }
 
         /* 添加 */
         if (Manager::create($data)) {

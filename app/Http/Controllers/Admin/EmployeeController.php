@@ -117,7 +117,7 @@ class EmployeeController extends AdminController
         $company = Company::find($data['company_id']);
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $company->id, $data['number']);
         }
 
         /* 添加 */
@@ -173,7 +173,7 @@ class EmployeeController extends AdminController
 
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
-            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->name, $data['number']);
+            $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, $employee->company->id, $data['number']);
         }
         foreach ($data as $key => $value) {
             if (empty($value)) {

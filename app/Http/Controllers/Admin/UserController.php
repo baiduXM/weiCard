@@ -98,11 +98,11 @@ class UserController extends AdminController
     {
         /* 验证 */
         $this->validate($request, [
-            'User.name'        => 'required|unique:users,users.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'User.name'        => 'required|unique:users,users.name|regex:/^([A-Za-z0-9])*$/',
             'User.password'    => 'required|confirmed',
             'User.email'       => 'email|unique:users,users.email',
             'User.mobile'      => 'digits:11|unique:users,users.mobile',
-            'User.nickname'    => 'max:30',
+            'User.nickname'    => 'required|max:30',
             'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.sex'         => '',
             'User.description' => 'max:255',
@@ -129,15 +129,20 @@ class UserController extends AdminController
         }
 
         /* 获取文件类型 */
-        if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
-        }
+//        if ($request->hasFile('User.avatar')) {
+//            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['id']);
+//        }
 
         // 默认激活
         $data['is_active'] = 1;
-
+        $user = User::create($data);
+        //dd($user);
         /* 添加 */
-        if (User::create($data)) {
+        if ($user) {
+            if ($request->hasFile('User.avatar')) {
+                $user->avatar = $this->save($request->file('User.avatar'), $this->path_type, $user->id);
+                $user->save();
+            }
             return redirect('admin/user')->with('success', '添加成功');
         } else {
             return redirect()->back();
@@ -191,7 +196,7 @@ class UserController extends AdminController
             'User.name'        => 'required|alpha_dash|unique:users,users.name,' . $id,
             'User.email'       => 'email|unique:users,users.email,' . $id,
             'User.mobile'      => 'digits:11|unique:users,users.mobile,' . $id,
-            'User.nickname'    => 'max:30',
+            'User.nickname'    => 'required|max:30',
             'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.sex'         => '',
             'User.age'         => 'max:255',
@@ -209,10 +214,11 @@ class UserController extends AdminController
         $data = $request->input('User');
 
         /* 获取文件 */
-        if ($request->hasFile('User.avatar')) {
-            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['name']);
-        }
+
         $user = User::find($id);
+        if ($request->hasFile('User.avatar')) {
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $id);
+        }
         foreach ($data as $key => $value) {
             if ($value !== '') {
                 $user->$key = $data[$key];
