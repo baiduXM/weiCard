@@ -481,4 +481,26 @@ class Controller extends BaseController
         }
     }
 
+
+    /**
+     * 创建二维码
+     *
+     * @param $data 数据{id,name,avatar,size,type}
+     * @param $path 保存地址
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     */
+    protected function createQrcode($data, $path)
+    {
+        $this->hasFolder($path); // 判断文件夹是否存在
+
+        $type = $data->type or 'png'; // 图片格式
+        $size = $data->size or 400; // 图片尺寸
+
+        $qrcodeName = $path . '/' . $data->name . '.' . $type;
+        $qrcode = QrCode::format($type);
+        $qrcode->size(400);
+        $qrcode->generate(url('cardview/e-' . $data->id), './' . $qrcodeName);
+        return url($qrcodeName);
+    }
+
 }

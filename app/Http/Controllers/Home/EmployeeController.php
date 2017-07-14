@@ -38,7 +38,8 @@ class EmployeeController extends HomeController
         'department' => '部门',
         'positions'  => '职位',
         'mobile'     => '手机',
-        'qrcode_url' => '二维码地址',
+        'card_url'   => '名片地址',
+//        'qrcode_url' => '二维码地址',
         'has_bind'   => '是否绑定',
     );
 
@@ -420,8 +421,6 @@ class EmployeeController extends HomeController
         }
         $company = Auth::user()->company;
         $cellData[0] = $this->exportArray;
-        $qrcodePath = $this->getPath('company', $company->id) . '/qrcode';
-        $this->hasFolder($qrcodePath); // 判断文件夹是否存在
         if (count($company->employees)) {
             foreach ($company->employees as $k => $employee) {
                 foreach ($this->exportArray as $key => $word) {
@@ -433,23 +432,25 @@ class EmployeeController extends HomeController
                         $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
                         continue;
                     }
-                    if ($key == 'qrcode_url') { // 二维码地址
-                        $format_type = 'png'; // 二维码格式
-                        $qrcode = QrCode::format($format_type)->size(400);
-                        $qrcode->generate(url('cardview/e-' . $employee->id), './' . $qrcodePath . '/' . $employee->id . '.' . $format_type);
-                        $cellData[$k + 1][$key] = url($qrcodePath . '/' . $employee->id . '.' . $format_type);
+                    if ($key == 'card_url') { // 名片地址
+                        $cellData[$k + 1][$key] = url('cardview/e-' . $employee->id);
                         continue;
                     }
                     $cellData[$k + 1][$key] = $employee->$key;
                 }
             }
         }
-        $filename = $company->name . date('Y-m-d H_i_s'); // 公司账号+时间
+        $filename = $company->display_name . '-员工数据'; // 公司账号+时间
         Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
             $excel->sheet('sheet1', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
             });
         })->export('xls');
+
+    }
+
+    public function exportQrcode()
+    {
 
     }
 
