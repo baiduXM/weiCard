@@ -234,17 +234,6 @@ class Controller extends BaseController
         }
     }
 
-    /**
-     * 导入excel表
-     *
-     * @param $file
-     * @return int
-     */
-    public function importExcel($file)
-    {
-        return 1;
-    }
-
 
     /**
      * 获取文件夹路径
@@ -270,7 +259,11 @@ class Controller extends BaseController
                 $targetPath = 'uploads/company/' . $name . '/products';// .公司下的产品
                 break;
             case 'employee':
-                $targetPath = 'uploads/company/' . $name . '/employees/' . $second_name;// .公司员工工号
+                if ($second_name) {
+                    $targetPath = 'uploads/company/' . $name . '/employees/' . $second_name;// .公司员工工号
+                } else {
+                    $targetPath = 'uploads/company/' . $name . '/employees';// .公司员工根目录
+                }
                 break;
             case 'website':
                 $targetPath = 'uploads/website';
@@ -292,7 +285,7 @@ class Controller extends BaseController
      *
      * @param $path
      */
-    private function hasFolder($path)
+    public function hasFolder($path)
     {
         if (!file_exists($path)) {
             mkdir($path, 0777, true);

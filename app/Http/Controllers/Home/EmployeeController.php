@@ -5,17 +5,15 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
 use App\Models\Employee;
-use App\Models\Company;
-use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EmployeeController extends HomeController
 {
@@ -32,12 +30,16 @@ class EmployeeController extends HomeController
         'telephone'     => '座机',
     );
     /* 导出字段 */
+//* 工号，姓名，部门，职位，手机，是否绑定，员工二维码
+
     protected $exportArray = array(
-        'number'   => '工号',
-        'nickname' => '姓名',
-        'bind_key' => '绑定码',
-        'bind_url' => '绑定链接',
-        'bind_has' => '是否绑定',
+        'number'     => '工号',
+        'nickname'   => '姓名',
+        'department' => '部门',
+        'positions'  => '职位',
+        'mobile'     => '手机',
+        'qrcode_url' => '二维码地址',
+        'has_bind'   => '是否绑定',
     );
 
     public function __construct()
@@ -402,43 +404,52 @@ class EmployeeController extends HomeController
 
     /**
      * 导出文件
+     * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
      *
      * @param Request $request
-     * @param string  $format   导出文件格式
-     * @param null    $cellData 导出数据
-     * @param null    $filename 导出文件名
+    //     * @param string  $format   导出文件格式
+     * //     * @param null $cellData 导出数据
+     * //     * @param null $filename 导出文件名
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function export(Request $request, $format = 'xls', $cellData = null, $filename = null)
+    public function export(Request $request)
     {
-        $cellData = $cellData ? $cellData : $request->get('cellData');
-        $filename = $filename ? $filename : $request->get('filename');
 
-        if (!$cellData) {
-            $employees = Auth::user()->company->employees;
-            $cellData[0] = $this->outArray;
-            foreach ($employees as $k => $employee) {
-                foreach ($this->outArray as $key => $word) {
-                    if ($key == 'bind_key') {
-                        $cellData[$k + 1][$key] = Auth::user()->company->name . '/' . $employee->number;
-                    } elseif ($key == 'bind_url') {
-                        $cellData[$k + 1][$key] = url('user/binding?code=' . Auth::user()->company->name . '/' . $employee->number);
-                    } elseif ($key == 'bind_has') {
-                        $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
-                    } else {
-                        $cellData[$k + 1][$key] = $employee->$key;
+        if (!Auth::user()->company) {
+            return redirect()->back()->with('error', '您不是公司管理员');
+        }
+        $company = Auth::user()->company;
+        $cellData[0] = $this->exportArray;
+        $qrcodePath = $this->getPath('company', $company->id) . '/qrcode';
+        $this->hasFolder($qrcodePath); // 判断文件夹是否存在
+        if (count($company->employees)) {
+            foreach ($company->employees as $k => $employee) {
+                foreach ($this->exportArray as $key => $word) {
+                    if ($key == 'department') { // 部门
+                        $cellData[$k + 1][$key] = $employee->department ? $employee->department->name : '';
+                        continue;
                     }
+                    if ($key == 'has_bind') { // 是否绑定
+                        $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
+                        continue;
+                    }
+                    if ($key == 'qrcode_url') { // 二维码地址
+                        $format_type = 'png'; // 二维码格式
+                        $qrcode = QrCode::format($format_type)->size(400);
+                        $qrcode->generate(url('cardview/e-' . $employee->id), './' . $qrcodePath . '/' . $employee->id . '.' . $format_type);
+                        $cellData[$k + 1][$key] = url($qrcodePath . '/' . $employee->id . '.' . $format_type);
+                        continue;
+                    }
+                    $cellData[$k + 1][$key] = $employee->$key;
                 }
             }
         }
-        if (!$filename) {
-            $filename = Auth::user()->company->display_name . date('Y-m-d H_i_s');
-        }
+        $filename = $company->name . date('Y-m-d H_i_s'); // 公司账号+时间
         Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
             $excel->sheet('sheet1', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
             });
-        })->export($format);
-
+        })->export('xls');
 
     }
 

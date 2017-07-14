@@ -49,7 +49,7 @@ $(function () {
     });
 
     /* 全选checkbox */
-    $('#btSelectAll').click(function () {
+    $('#btSelectAll').on('click', function () {
         if (this.checked) {
             $(".selectall-item").prop("checked", true);
         } else {
@@ -58,7 +58,7 @@ $(function () {
     });
 
     /* 单选 */
-    $('.selectall-item').click(function () {
+    $('.selectall-item').on('click', function () {
         var length        = $('.selectall-item').length;
         var select_length = $('.selectall-item:checked').length;
         if (length == select_length) {
@@ -86,11 +86,6 @@ $(function () {
     // $('.operate-recover').click(function () {
     //     alert('功能待开发');
     // });
-
-    /* 彻底删除 */
-    $('.operate-destroy').click(function () {
-        alert('功能待开发');
-    });
 
     /* 批量删除 */
     $(".operate-batch-delete").click(function () {

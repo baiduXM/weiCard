@@ -23,8 +23,15 @@
                             <i class="iconFont">&#xe67d;</i>添加</a>
                     </li>
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
-                                            data-target="#modal-employee-import"><i
-                                    class="iconFont">&#xe67d;</i>导入Excel</a>
+                                            data-target="#modal-employee-import">
+                            <i class="iconFont">&#xe67d;</i>导入Excel</a></li>
+
+                    {{--<li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" class="exportFile"--}}
+                    {{--data-target="#modal-employee-export">--}}
+                    {{--<i class="iconFont">&#xe67d;</i>导出数据</a></li>--}}
+                    <li class="b-btn-bg"><a href="{{ url('company/employee/export') }}" target="_blank"><i class="iconFont">&#xe67d;</i>导出数据</a>
+                    </li>
+
                     <li class="b-btn-bor b-word-btn ">
                         <a href="javascript:" class="word-select" name="noword">查询字段<i class="iconFont">&#xe618;</i></a>
                         <ul class="b-word none">
@@ -156,6 +163,46 @@
             </div>
         </div>
     </div><!-- 员工 - 导入modal -->
+
+    <div class="modal fade" id="modal-employee-export" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal1 ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">导出数据</h4>
+                </div>
+                {{--<form method="post" class="form-import" data-url="{{ url('company/employee/import') }}"--}}
+                <form method="post" class="form-export" action="{{ url('company/employee/export') }}"
+                      enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="modal-address">
+                            <p>
+                                <span>是否导出二维码 : </span>
+                                <input style="display: inline;width: auto; height: auto" type="checkbox"
+                                       name="withQrcode">
+                            </p>
+                            <p>
+                                <span>仅导出选中员工 : </span>
+                                <input style="display: inline;width: auto; height: auto" type="checkbox"
+                                       name="onlySelect"> (默认导出全部员工)
+                            </p>
+                            <input type="hidden" name="ids">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="确认">
+                        <input type="reset" class="btn btn-default" data-dismiss="modal" value="返回">
+                        {{--<button type="button" class="btn btn-primary operate-import">确认</button>--}}
+                        {{--<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>--}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- 员工 - 导出数据modal -->
+
     <!-- 员工 - 添加modal star-->
     <div class="modal fade" id="modal-employee-add" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
