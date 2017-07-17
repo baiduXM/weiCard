@@ -219,7 +219,7 @@ class EmployeeController extends HomeController
 
         /* 添加 */
         if ($res = Employee::create($data)) {
-            $this->createQrcode(url('cardview/e-' . $res->id), 'uploads/company/' . $data['company_id'] . '/qrcode', ['name' => $data['number']]);
+            $this->createQrcode(url('cardview/e-' . $res->id), 'uploads/company/' . $data['company_id'] . '/qrcode', ['name' => $data['nickname']]);
             $err_code = 300;
         } else {
             $err_code = 301;
@@ -302,9 +302,9 @@ class EmployeeController extends HomeController
         }
         if ($employee->save()) {
             $filePath = 'uploads/company/' . $employee->company_id . '/qrcode';
-            $fileName = $employee->number . '.png';
+            $fileName = $employee->nickname . '.png';
             if (!file_exists($filePath . '/' . $fileName)) { // 判断是否创建二维码
-                $this->createQrcode(url('cardview/e-' . $employee->id), $filePath, ['name' => $employee->number]);
+                $this->createQrcode(url('cardview/e-' . $employee->id), $filePath, ['name' => $employee->nickname]);
             }
             $err_code = 500;
         } else {
@@ -453,8 +453,8 @@ class EmployeeController extends HomeController
         $targetPath = 'uploads/company/' . $company->id . '/qrcode';
         // 判断是否存在二维码
         foreach ($company->employees as $k => $employee) {
-            if (!file_exists($targetPath . '/' . $employee->number . '.png')) {
-                $this->createQrcode(url('cardview/e-' . $employee->id), $targetPath, ['name' => $employee->number]);
+            if (!file_exists($targetPath . '/' . $employee->nickname . '.png')) {
+                $this->createQrcode(url('cardview/e-' . $employee->id), $targetPath, ['name' => $employee->nickname]);
             }
         }
         // 打包二维码

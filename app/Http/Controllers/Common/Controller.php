@@ -553,7 +553,7 @@ class Controller extends BaseController
 
         $qrcode = QrCode::format($type);
         $qrcode->size($size);
-        $qrcode->generate($url, './' . $qrcodeName);
+        $qrcode->generate($url, './' . iconv('UTF-8', 'GBK', $qrcodeName));
 
         return $qrcode ? url($qrcodeName) : false;
     }
