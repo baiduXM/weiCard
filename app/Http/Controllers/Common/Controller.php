@@ -14,10 +14,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Controller extends BaseController
 {
@@ -212,6 +214,58 @@ class Controller extends BaseController
         return Image::make($file)->save($targetPath . '/' . $fileName) ? true : false;
     }
 
+    /**
+     * 压缩文件
+     *
+     * @param $zipPath    压缩后的文件路径
+     * @param $targetPath 目标路径
+     * @return mixed
+     */
+    protected function toZip($zipPath, $targetPath)
+    {
+        $zip = new \ZipArchive();
+        if (is_file($zipPath) && file_exists($zipPath)) {
+            $res = $zip->open($zipPath, \ZipArchive::OVERWRITE);
+        } else {
+            $res = $zip->open($zipPath, \ZipArchive::CREATE);
+        }
+        if ($res === true) {
+            if (is_file($targetPath)) { // 判断是否是文件/文件夹
+                $zip->addFile($targetPath);
+            } else {
+                $this->addFileToZip($targetPath . '/', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+            }
+            $zip->close(); //关闭处理的zip文件
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * 循环的读取文件夹下的所有文件和文件夹
+     * 其中$filename = readdir($handler)是每次循环的时候将读取的文件名赋值给$filename，
+     * 为了不陷于死循环，所以还要让$filename !== false。
+     * 一定要用!==，因为如果某个文件名如果叫'0'，或者某些被系统认为是代表false，用!=就会停止循环
+     *
+     * @param $path
+     * @param $zip
+     */
+    function addFileToZip($path, $zip)
+    {
+        $handler = opendir($path); //打开当前文件夹由$path指定。
+        while (($filename = readdir($handler)) !== false) {
+            if ($filename != "." && $filename != "..") {//文件夹文件名字为'.'和‘..’，不要对他们进行操作
+                if (is_dir($path . "/" . $filename)) {// 如果读取的某个对象是文件夹，则递归
+                    addFileToZip($path . "/" . $filename, $zip);
+                } else { //将文件加入zip对象
+                    $zip->addFile($path . $filename);
+                }
+            }
+        }
+        @closedir($path);
+    }
 
     /**
      * 解压Zip文件
@@ -421,15 +475,12 @@ class Controller extends BaseController
      * 下载文件
      *
      * @param Request $request
-     * @param         $params 参数
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function download(Request $request, $params)
+    public function download(Request $request)
     {
-        if ($params == 'EmployeeDemo') { // 下载员工导入表格
-            $path = public_path('downloads/EmployeeDemo.xlsx');
-        }
-        if ($path) {
+        $path = public_path($request->query('path'));
+        if (File::isFile($path)) {
             return response()->download($path);
         } else {
             return redirect()->back()->with('error', '下载出错');
@@ -485,22 +536,27 @@ class Controller extends BaseController
     /**
      * 创建二维码
      *
-     * @param $data 数据{id,name,avatar,size,type}
-     * @param $path 保存地址
-     * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+     * @param        $url  二维码地址
+     * @param string $path 保存路径
+     * @param array  $data 数据{name[,avatar,size,type]}
+     * @return \Illuminate\Contracts\Routing\UrlGenerator|string 图片保存路径+命名
      */
-    protected function createQrcode($data, $path)
+    protected function createQrcode($url, $path = 'uploads/qrcode', $data = array())
     {
         $this->hasFolder($path); // 判断文件夹是否存在
 
-        $type = $data->type or 'png'; // 图片格式
-        $size = $data->size or 400; // 图片尺寸
+        $name = isset($data['name']) ? $data['name'] : 'qrcode' . time(); // 图片命名
+        $type = isset($data['type']) ? $data['type'] : 'png'; // 图片格式
+        $size = isset($data['size']) ? $data['size'] : 400; // 图片尺寸
 
-        $qrcodeName = $path . '/' . $data->name . '.' . $type;
+        $qrcodeName = $path . '/' . $name . '.' . $type;
+
         $qrcode = QrCode::format($type);
-        $qrcode->size(400);
-        $qrcode->generate(url('cardview/e-' . $data->id), './' . $qrcodeName);
-        return url($qrcodeName);
+        $qrcode->size($size);
+        $qrcode->generate($url, './' . $qrcodeName);
+
+        return $qrcode ? url($qrcodeName) : false;
     }
+
 
 }

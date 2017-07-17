@@ -59,7 +59,7 @@ Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@e
 Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\HomeController@companyinfo']);
 
 /* 文件下载 */
-Route::get('download/{name?}', ['as' => 'download', 'uses' => 'Common\Controller@download']);
+Route::get('download', ['as' => 'download', 'uses' => 'Common\Controller@download']);
 
 
 /* =====用户界面===== */
@@ -101,7 +101,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::get('employee/trash', ['as' => 'company.employee.trash', 'uses' => 'Home\EmployeeController@trash']);
         Route::get('employee/update/{id?}', ['uses' => 'Common\HomeController@updatePositions']);
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
-        Route::match(['get', 'post'], 'employee/export', ['as' => 'company.employee.export', 'uses' => 'Home\EmployeeController@export']);
+        Route::get('employee/exportExcel', ['as' => 'company.employee.exportExcel', 'uses' => 'Home\EmployeeController@exportExcel']);
+        Route::get('employee/exportQrcode', ['as' => 'company.employee.exportQrcode', 'uses' => 'Home\EmployeeController@exportQrcode']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
         Route::delete('employee/batch', ['as' => 'company.employee.batchDestroy', 'uses' => 'Home\EmployeeController@batchDestroy']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);

@@ -199,25 +199,15 @@ class EmployeeController extends HomeController
         ]);
         /* 获取字段类型 */
         $data = $request->input('Employee');
-//        $position_only = Position::where('id', '=', $data['position_id'])->first();
-//        if ($position_only['is_only'] == 1) {
-//            $employee_only = Employee::where('position_id', '=', $data['position_id'])->first();
-//            if (!empty($employee_only)) {
-//                $allow = false;       //唯一职位已存在员工时，不允许添加
-//            } else {
-//                $allow = true;
-//            }
-//        } else {
-//            $allow = true;        //非唯一职位，允许添加
-//        }
         /* 获取文件类型 */
         if ($request->hasFile('Employee.avatar')) {
             $data['avatar'] = $this->save($request->file('Employee.avatar'), $this->path_type, Auth::user()->company->id, $data['number']);
         }
-//        if ($allow) {
         foreach ($data as $key => $value) {
-            if ($value === '') {
+            if (trim($value) === '') {
                 $data[$key] = null; // 未填字段设置为null，否则会保存''
+            } else {
+                $data[$key] = trim($value); // 去除空格
             }
         }
         /* 获取文件类型 */
@@ -228,14 +218,12 @@ class EmployeeController extends HomeController
         $data['company_id'] = Auth::user()->company->id;
 
         /* 添加 */
-        if (Employee::create($data)) {
+        if ($res = Employee::create($data)) {
+            $this->createQrcode(url('cardview/e-' . $res->id), 'uploads/company/' . $data['company_id'] . '/qrcode', ['name' => $data['number']]);
             $err_code = 300;
         } else {
             $err_code = 301;
         }
-//        } else {
-//            $err_code = 302;
-//        }
 
         Config::set('global.ajax.err', $err_code);
         Config::set('global.ajax.msg', config('global.msg.' . $err_code));
@@ -306,11 +294,18 @@ class EmployeeController extends HomeController
         }
 
         foreach ($data as $key => $value) {
-            if ($value !== '') {
-                $employee->$key = $data[$key];
+            if (trim($value) === '') {
+                $employee->$key = null; // 未填字段设置为null，否则会保存''
+            } else {
+                $employee->$key = trim($value); // 去除空格
             }
         }
         if ($employee->save()) {
+            $filePath = 'uploads/company/' . $employee->company_id . '/qrcode';
+            $fileName = $employee->number . '.png';
+            if (!file_exists($filePath . '/' . $fileName)) { // 判断是否创建二维码
+                $this->createQrcode(url('cardview/e-' . $employee->id), $filePath, ['name' => $employee->number]);
+            }
             $err_code = 500;
         } else {
             $err_code = 501;
@@ -408,12 +403,9 @@ class EmployeeController extends HomeController
      * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
      *
      * @param Request $request
-    //     * @param string  $format   导出文件格式
-     * //     * @param null $cellData 导出数据
-     * //     * @param null $filename 导出文件名
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function export(Request $request)
+    public function exportExcel(Request $request)
     {
 
         if (!Auth::user()->company) {
@@ -449,9 +441,29 @@ class EmployeeController extends HomeController
 
     }
 
+    /**
+     * 导出二维码文件（压缩包）
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function exportQrcode()
     {
-
+        $company = Auth::user()->company;
+        $zipPath = 'uploads/company/' . $company->id . '/qrcode.zip';
+        $targetPath = 'uploads/company/' . $company->id . '/qrcode';
+        // 判断是否存在二维码
+        foreach ($company->employees as $k => $employee) {
+            if (!file_exists($targetPath . '/' . $employee->number . '.png')) {
+                $this->createQrcode(url('cardview/e-' . $employee->id), $targetPath, ['name' => $employee->number]);
+            }
+        }
+        // 打包二维码
+        $res = $this->toZip($zipPath, $targetPath);
+        if ($res) {
+            return response()->download($zipPath);
+        } else {
+            return redirect()->back()->with('error', '下载失败');
+        }
     }
 
 
@@ -531,6 +543,7 @@ class EmployeeController extends HomeController
                 }
                 $employee[$k]['company_id'] = $company_id;
                 $employee[$k]['created_at'] = $time;
+
             }
             $validator = Validator::make($employee, [
                 '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^([A-Za-z0-9])*$/',

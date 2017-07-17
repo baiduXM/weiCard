@@ -25,12 +25,9 @@
                     <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
                                             data-target="#modal-employee-import">
                             <i class="iconFont">&#xe67d;</i>导入Excel</a></li>
-
-                    {{--<li class="b-btn-bg"><a href="javascript:;" data-toggle="modal" class="exportFile"--}}
-                    {{--data-target="#modal-employee-export">--}}
-                    {{--<i class="iconFont">&#xe67d;</i>导出数据</a></li>--}}
-                    <li class="b-btn-bg"><a href="{{ url('company/employee/export') }}" target="_blank"><i class="iconFont">&#xe67d;</i>导出数据</a>
-                    </li>
+                    <li class="b-btn-bg"><a href="javascript:;" data-toggle="modal"
+                                            data-target="#modal-employee-export">
+                            <i class="iconFont">&#xe67d;</i>导出数据</a></li>
 
                     <li class="b-btn-bor b-word-btn ">
                         <a href="javascript:" class="word-select" name="noword">查询字段<i class="iconFont">&#xe618;</i></a>
@@ -149,7 +146,8 @@
                             </p>
                             <p>
                                 <span>文件模板规范 : </span>
-                                <a href="{{ url('download/EmployeeDemo') }}" target="_blank">模板下载</a>
+                                <a href="{{ url('download?path=downloads/EmployeeDemo.xlsx') }}"
+                                   target="_blank">模板下载</a>
                             </p>
                         </div>
                     </div>
@@ -180,16 +178,25 @@
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
-                                <span>是否导出二维码 : </span>
-                                <input style="display: inline;width: auto; height: auto" type="checkbox"
-                                       name="withQrcode">
+                                <span>员工数据 : </span>
+                                <a href="{{ url('company/employee/exportExcel') }}" target="_blank">导出Excel表</a>
                             </p>
                             <p>
-                                <span>仅导出选中员工 : </span>
-                                <input style="display: inline;width: auto; height: auto" type="checkbox"
-                                       name="onlySelect"> (默认导出全部员工)
+                                <span>员工二维码 : </span>
+                                <a href="{{ url('company/employee/exportQrcode') }}" target="_blank">打包下载</a>
                             </p>
-                            <input type="hidden" name="ids">
+
+                            {{--<p>--}}
+                            {{--<span>是否导出二维码 : </span>--}}
+                            {{--<input style="display: inline;width: auto; height: auto" type="checkbox"--}}
+                            {{--name="withQrcode">--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>仅导出选中员工 : </span>--}}
+                            {{--<input style="display: inline;width: auto; height: auto" type="checkbox"--}}
+                            {{--name="onlySelect"> (默认导出全部员工)--}}
+                            {{--</p>--}}
+                            {{--<input type="hidden" name="ids">--}}
                         </div>
                     </div>
                     <div class="modal-footer">
