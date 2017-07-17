@@ -172,18 +172,18 @@
                     <h4 class="modal-title">导出数据</h4>
                 </div>
                 {{--<form method="post" class="form-import" data-url="{{ url('company/employee/import') }}"--}}
-                <form method="post" class="form-export" action="{{ url('company/employee/export') }}"
-                      enctype="multipart/form-data">
+                {{--<form method="post" class="form-export" action="{{ url('company/employee/export') }}"--}}
+                      {{--enctype="multipart/form-data">--}}
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="modal-address">
                             <p>
                                 <span>员工数据 : </span>
-                                <a href="{{ url('company/employee/exportExcel') }}" target="_blank">导出Excel表</a>
+                                <button class="btn btn-default"><a href="{{ url('company/employee/exportExcel') }}" target="_blank">导出Excel表</a></button>
                             </p>
                             <p>
                                 <span>员工二维码 : </span>
-                                <a href="{{ url('company/employee/exportQrcode') }}" target="_blank">打包下载</a>
+                                <button class="btn btn-default"><a href="{{ url('company/employee/exportQrcode') }}" target="_blank">打包下载</a></button>
                             </p>
 
                             {{--<p>--}}
@@ -200,8 +200,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" value="确认">
-                        <input type="reset" class="btn btn-default" data-dismiss="modal" value="返回">
+                        {{--<input type="submit" class="btn btn-primary" value="确认">--}}
+                        {{--<input type="reset" class="btn btn-default" data-dismiss="modal" value="返回">--}}
                         {{--<button type="button" class="btn btn-primary operate-import">确认</button>--}}
                         {{--<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>--}}
                     </div>
