@@ -47,29 +47,33 @@
     <a href="javascript:void(0);" class="qx"><button id="clipBtn1" class="clipBtn">取消</button></a>
 
 </div>
-
-<script src="{{ asset('static/mobile/js/jquery.min.js') }}" type="text/javascript"></script>
-<script>window.jQuery || document.write('<script src="{{ asset('static/mobile/js/jquery-2.1.1.min.js') }}"><\/script>')</script>
-<script src="{{ asset('static/mobile/js/iscroll-zoom.js') }}"></script>
-<script src="{{ asset('static/mobile/js/hammer.js') }}"></script>
-<script src="{{ asset('static/mobile/js/jquery.photoClip.js') }}"></script>
+<script src="{{ asset('static/mobile/js/avatarjs/jquery.min.js') }}" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="{{ asset('static/mobile/js/avatarjs/jquery-2.1.1.min.js') }}"><\/script>')</script>
+<script src="{{ asset('static/mobile/js/avatarjs/hammer.js') }}"></script>
+<script src="{{ asset('static/mobile/js/avatarjs/jquery.photoClip.js') }}"></script>
+<script src="{{ asset('static/mobile/js/avatarjs/iscroll-zoom.js') }}"></script>
+<script src="{{ asset('static/mobile/js/avatarjs/lrz.all.bundle.js') }}"></script>
+<script src="{{ asset('static/mobile/js/avatarjs/PhotoClip.js') }}"></script>
 <script>
-    var obUrl = ''
-    //document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-    $("#clipArea").photoClip({
-        width: 280,
-        height: 280,
-        file: "#file",
-        view: "#view",
-        ok: "#clipBtn",
+    var obUrl = new PhotoClip('#clipArea', {
+        size: 260,
+        outputSize: 640,
+        //adaptive: ['60%', '80%'],
+        file: '#file',
+        view: '#view',
+        ok: '#clipBtn',
+        //img: 'img/mm.jpg',
         loadStart: function() {
-            console.log("照片读取中");
+            console.log('开始读取照片');
         },
         loadComplete: function() {
-            console.log("照片读取完成");
+            console.log('照片读取完成');
         },
-        clipFinish: function(dataURL) {
+        done: function(dataURL) {
             console.log(dataURL);
+        },
+        fail: function(msg) {
+            alert(msg);
         }
     });
 </script>
