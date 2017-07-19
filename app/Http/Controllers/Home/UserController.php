@@ -210,6 +210,9 @@ class UserController extends HomeController
             $param = explode(',', $data);
             $img = base64_decode($param[1]);
             $path = $this->getPath($this->path_type,$id);
+            if($path){
+               $this->hasFolder($path);
+            }
             if ($img) {
                 $a =file_put_contents($path.'/'.$imgname, $img);
                 $b= $path.'/'.$imgname;
