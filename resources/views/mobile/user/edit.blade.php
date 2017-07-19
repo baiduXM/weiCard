@@ -10,19 +10,22 @@
                     {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
     {{--</div>--}}
     <div class="people pr"><img src="{{ asset('static/mobile/images/bg6.png') }}">
+        <a href="{{ url('user/avatar') }}">
         <div class="people_tx pa dtc tc vm"><img src="{{ $user->avatar ? asset($user->avatar) : asset('static/mobile/images/tx2.png') }}"></div>
+        <p style="text-align: center;margin-top: 0.3rem; font-size: 0.6rem;color:#000; ">更换头像</p>
+        </a>
     </div>
     <div class="card_main">
         <div class="card_content car_from">
             <form action="{{ url('user') }}" method="post" enctype="multipart/form-data">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
-                <span>头像：
-                    <input type="file" name="User[avatar]"id="avatar" class="inputt" style="opacity: 0; position:absolute;"><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0">上传头像</strong>
-                    @if ($errors->has('User.avatar'))
-                        <p class="show">{{ $errors->first('User.avatar') }}</p>
-                    @endif
-                </span>
+                {{--<span>头像：--}}
+                    {{--<input type="file" name="User[avatar]"id="avatar" class="inputt" style="opacity: 0; position:absolute;"><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0">上传头像</strong>--}}
+                    {{--@if ($errors->has('User.avatar'))--}}
+                        {{--<p class="show">{{ $errors->first('User.avatar') }}</p>--}}
+                    {{--@endif--}}
+                {{--</span>--}}
                 <span>姓名：
                     <input name="User[nickname]" id="nickname" type="text" class="inputt" value="{{ old('User.nickname') ? old('User.nickname') : $user->nickname }}" onblur="validateName()">
                     <em>*</em>

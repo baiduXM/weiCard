@@ -90,6 +90,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
     Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
     Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
+    Route::get('user/avatar', ['as' => 'user.avatar', 'uses' => 'Home\UserController@updateavatar']);
+    Route::put('user/avatar', ['as' => 'user.changavatar', 'uses' => 'Home\UserController@changeavatar']);
     Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
