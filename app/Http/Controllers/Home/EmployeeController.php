@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\TemplateGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -96,6 +97,7 @@ class EmployeeController extends HomeController
 
         $company = Auth::user()->company;
         $departments = Department::where('company_id', $company->id)->get();
+        $templategroups = TemplateGroup::where('company_id', $company->id)->get();
 
         $query = Employee::query();
         $params = Input::query();
@@ -123,6 +125,7 @@ class EmployeeController extends HomeController
         return view('web.employee.index')->with([
             'employees'   => $employees,
             'departments' => $departments,
+            'templategroups' => $templategroups,
             'params'      => $params,
         ]);
     }
@@ -257,6 +260,12 @@ class EmployeeController extends HomeController
     public function show($id)
     {
         $employee = Employee::with('company', 'department', 'user', 'position')->find($id);
+        $templategroup_id=$employee->templategroup_id;
+        $templategroup=TemplateGroup::query()->find($templategroup_id);
+        if (count($templategroup) > 0){
+            $templategroup_name=$templategroup->name;
+            $employee['templategroup_name']=$templategroup_name;
+        }
         return $employee;
     }
 

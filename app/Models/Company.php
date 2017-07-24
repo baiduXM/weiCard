@@ -83,6 +83,14 @@ class Company extends CommonModel
     }
 
     /**
+     * 关系模型(一对多) - 模板组
+     */
+    public function templategroups()
+    {
+        return $this->hasMany('App\Models\TemplateGroup');
+    }
+
+    /**
      * 关系模型(多对多,多态) - 模板
      */
     public function templates()
