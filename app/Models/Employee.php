@@ -64,6 +64,14 @@ class Employee extends CommonModel
     }
 
     /**
+     * 关系模型(多对一) - 职位
+     */
+    public function templategroup()
+    {
+        return $this->belongsTo('App\Models\TemplateGroup');
+    }
+
+    /**
      * 关系模型(一对多,多态) - 被谁关注
      */
     public function followers()

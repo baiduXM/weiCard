@@ -70,6 +70,14 @@
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
                         <a href="{{ url('company/link') }}">微链接</a></li>
+
+                    <li {{ Request::path() == 'company/templategroup' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/templategroup') }}">模板组</a></li>
+                    @if(Auth::user()->company)
+                        {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
+                    @endif
+
                 </ul>
             </div><!--我的公司-->
 

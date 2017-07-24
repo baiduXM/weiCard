@@ -90,6 +90,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('user', ['as' => 'user.index', 'uses' => 'Home\UserController@index']);
     Route::get('user/edit', ['as' => 'user.edit', 'uses' => 'Home\UserController@edit']);
     Route::put('user', ['as' => 'user.update', 'uses' => 'Home\UserController@update']);
+    Route::get('user/avatar', ['as' => 'user.avatar', 'uses' => 'Home\UserController@updateavatar']);
+    Route::put('user/avatar', ['as' => 'user.changavatar', 'uses' => 'Home\UserController@changeavatar']);
     Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
 
@@ -126,13 +128,18 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::delete('product/{id}', ['as' => 'company.product.destroy', 'uses' => 'Home\ProductController@destroy']);
         Route::any('productlink', ['as' => 'company.product.productlink', 'uses' => 'Home\ProductController@productlink']);
 
+        /* 我的公司->模板组 */
+        Route::get('templategroup', ['as' => 'company.templategroup.index', 'uses' => 'Home\TemplategroupController@index']);
+        Route::post('templategroup', ['as' => 'company.templategroup.store', 'uses' => 'Home\TemplategroupController@store']);
+        Route::get('templategroup/{id}', ['as' => 'company.templategroup.show', 'uses' => 'Home\TemplategroupController@show']);
+        Route::post('templategroup/{id}', ['as' => 'company.templategroup.update', 'uses' => 'Home\TemplategroupController@update']);
+        Route::delete('templategroup/{id}', ['as' => 'company.templategroup.destroy', 'uses' => 'Home\TemplategroupController@destroy']);
         /* 我的公司->微链接 */
         Route::get('link', ['as' => 'company.link.index', 'uses' => 'Home\LinkController@index']);
         Route::post('link', ['as' => 'company.link.store', 'uses' => 'Home\LinkController@store']);
         Route::get('link/{id}', ['as' => 'company.link.show', 'uses' => 'Home\LinkController@show']);
         Route::post('link/{id}', ['as' => 'company.link.update', 'uses' => 'Home\LinkController@update']);
         Route::delete('link/{id}', ['as' => 'company.link.destroy', 'uses' => 'Home\LinkController@destroy']);
-
         /* 我的公司->公司职位 */
         Route::get('position', ['as' => 'company.position.index', 'uses' => 'Home\PositionController@index']);
         Route::post('position', ['as' => 'company.position.store', 'uses' => 'Home\PositionController@store']);

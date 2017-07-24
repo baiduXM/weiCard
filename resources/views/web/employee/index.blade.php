@@ -228,6 +228,16 @@
                                 </select>
                             </p>
                             <p>
+                                <span>模板组 : </span>
+                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                    <option value="">公司默认模板</option>
+                                    @foreach($templategroups as $templategroup)
+                                        <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
+                                                value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
+                            <p>
                                 <span>职位 : </span>
                                 <input type="text" name="Employee[positions]" placeholder=""
                                        value="{{ old('Employee.positions') ? old('Employee.positions') : '' }}">
@@ -280,6 +290,7 @@
                     <div class="modal-address">
                         <p><span>公司 : </span><input type="text" name="info-company" value="" readonly></p>
                         <p><span>部门 : </span><input type="text" name="info-department" value="" readonly></p>
+                        <p><span>模板组 : </span><input type="text" name="info-templategroup_name" value="" readonly></p>
                         <p><span>职位 : </span><input type="text" name="info-positions" value="" readonly></p>
                         <p><span>工号 : </span><input type="text" name="info-number" value="" readonly></p>
                         <p><span>姓名 : </span><input type="text" name="info-nickname" value="" readonly></p>
@@ -323,6 +334,16 @@
                                     @foreach($departments as $department)
                                         <option {{ old('Employee.department_id') == $department->id ? 'selected' : '' }}
                                                 value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </p>
+                            <p>
+                                <span>模板组 : </span>
+                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                    <option value="">公司默认模板</option>
+                                    @foreach($templategroups as $templategroup)
+                                        <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
+                                                value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>
                                     @endforeach
                                 </select>
                             </p>

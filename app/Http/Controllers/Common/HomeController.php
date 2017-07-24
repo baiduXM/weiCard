@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Template;
+use App\Models\TemplateGroup;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -192,15 +193,26 @@ class HomeController extends Controller
                     }
                     $person = $res['data'];
                 }
-                $templates = $person->templates;
-                if (count($templates) <= 0) { // 没有员工模板，使用公司模板
-                    $templates = Employee::find($person->id)->company->templates;
+                $templategroup = TemplateGroup::where('id',$person->templategroup_id)->first();
+                if (count($templategroup) > 0){
+                    $template_id=$templategroup->template_id;
+                    $templates = Template::where('id',$template_id)->first();
+                }else{
+                    $templates = $person->templates;
                 }
-                if (count($templates) <= 0) { // 没有公司模板，使用默认模板
-                    $template = Template::whereIn('type', [0, 2])->first();
-                } else {
-                    $template = $templates[0];
+                if(count($templates) > 0){
+                    $template = $templates;
+                }else{
+                    if (count($templates) <= 0) { // 没有员工模板，使用公司模板
+                        $templates = Employee::find($person->id)->company->templates;
+                    }
+                    if (count($templates) <= 0) { // 没有公司模板，使用默认模板
+                        $template = Template::whereIn('type', [0, 2])->first();
+                    } else {
+                        $template = $templates[0];
+                    }
                 }
+
                 /* 地图导航地址 */
                 $person['map'] = 'http://api.map.baidu.com/marker?location='
                     . $person->company['coordinate_lat'] . ','
