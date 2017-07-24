@@ -62,8 +62,8 @@
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
-                    <li {{ Request::path() == 'contacts' ? 'class=active' : '' }}>
-                        <a href="{{ url('contacts') }}">员工人脉圈</a></li>
+                    {{--<li {{ Request::path() == 'contacts' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('contacts') }}">员工人脉圈</a></li>--}}
                     <li {{ Request::path() == 'circle' ? 'class=active' : '' }}>
                         <a href="{{ url('circle') }}">名片圈</a></li>
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
@@ -77,7 +77,6 @@
                         {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
                     @endif
-
                 </ul>
             </div><!--我的公司-->
 
