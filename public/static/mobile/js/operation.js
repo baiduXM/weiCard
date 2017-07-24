@@ -3,7 +3,7 @@
  */
 $(function () {
 
-
+    var once = true;
     /* 显示modal时，更新form里的action */
     // $('[class^="opshow-"]').on('touchstart', function () {
     $('[class^="opshow-"]').on('tap', function () {
@@ -23,7 +23,13 @@ $(function () {
     // });
 
     /* 表单ajax提交 */
-    $('.op-submit').on('tap', function () {
+    $('.op-submit').unbind('click', 'touchstart', 'tap').on('tap', function (event) {
+        if (!once) {
+            return false;
+        }
+        once = false;
+        console.log(1);
+        event.stopPropagation();
         var _this     = $(this);
         var _modal    = _this.parents('.modal');
         var _form     = _this.parents('form');
@@ -37,6 +43,7 @@ $(function () {
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
             success: function (data) {
+                once = true;
                 console.log('success');
                 console.log(data);
                 /* 现实成功消息，刷新当前页面 */
@@ -56,6 +63,7 @@ $(function () {
                 setTimeout(window.location.href = _url, 1); // 1s后刷新页面
             },
             error: function (data) {
+                once = true;
                 console.log('error');
                 console.log(data);
                 /* 显示错误 */

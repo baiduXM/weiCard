@@ -106,7 +106,7 @@
                                 <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
                                             class="iconFont">&#xe613;</i></a>
                             </td>
-                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
+                            <td><a href="" ><i class="iconFont">&#xe634;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
                             <td><a href="" data-toggle="modal" data-target=".bs3"><i
@@ -146,16 +146,15 @@
                             </p>
                             <p>
                                 <span>文件模板规范 : </span>
-                                <a href="{{ url('download?path=downloads/EmployeeDemo.xlsx') }}"
-                                   target="_blank">模板下载</a>
+                                <button class="btn btn-default">
+                                    <a href="{{ url('download?path=downloads/EmployeeDemo.xlsx') }}"
+                                       target="_blank">模板下载</a></button>
                             </p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" value="确认">
                         <input type="reset" class="btn btn-default" data-dismiss="modal" value="返回">
-                        {{--<button type="button" class="btn btn-primary operate-import">确认</button>--}}
-                        {{--<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>--}}
                     </div>
                 </form>
             </div>
@@ -171,18 +170,20 @@
                     </button>
                     <h4 class="modal-title">导出数据</h4>
                 </div>
-                    <div class="modal-body">
-                        <div class="modal-address">
-                            <p>
-                                <span>员工数据 : </span>
-                                <button class="btn btn-default"><a href="{{ url('company/employee/exportExcel') }}" target="_blank">导出Excel表</a></button>
-                            </p>
-                            <p>
-                                <span>员工二维码 : </span>
-                                <button class="btn btn-default"><a href="{{ url('company/employee/exportQrcode') }}" target="_blank">打包下载</a></button>
-                            </p>
-                        </div>
+                <div class="modal-body">
+                    <div class="modal-address">
+                        <p>
+                            <span>员工数据 : </span>
+                            <button class="btn btn-default"><a href="{{ url('company/employee/exportExcel') }}"
+                                                               target="_blank">导出Excel表</a></button>
+                        </p>
+                        <p>
+                            <span>员工二维码 : </span>
+                            <button class="btn btn-default"><a href="{{ url('company/employee/exportQrcode') }}"
+                                                               target="_blank">打包下载</a></button>
+                        </p>
                     </div>
+                </div>
                 </form>
             </div>
         </div>

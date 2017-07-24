@@ -27,9 +27,9 @@ class CardcaseController extends AdminController
             $breadcrumbs->push('详情', route('admin.user_cardcase.show', $id));
         });
 
-        Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
+        Breadcrumbs::register('admin.cardcase.edit', function ($breadcrumbs, $id) {
             $breadcrumbs->parent('admin.cardcase');
-            $breadcrumbs->push('编辑', route('admin.company.edit', $id));
+            $breadcrumbs->push('编辑', route('admin.user_cardcase.edit', $id));
         });
 
     }

@@ -66,13 +66,21 @@ class User extends CommonModel implements
         return $this->hasMany('App\Models\Cardcase');
     }
 
-//    /**
-//     * 关系模型(多对多) - 名片群
-//     */
-//    public function circles()
-//    {
-//        return $this->belongsToMany('App\Models\Group', 'group_user');
-//    }
+    /**
+     * 关系模型(一对多) - 名片圈
+     */
+    public function create_circles()
+    {
+        return $this->hasMany('App\Models\Circle');
+    }
+
+    /**
+     * 关系模型(多对多) - 名片圈
+     */
+    public function join_circles()
+    {
+        return $this->belongsToMany('App\Models\Circle', 'circle_user');
+    }
 
 //    /**
 //     * 关系模型(一对多) - 标签

@@ -12,7 +12,6 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Overtrue\LaravelPinyin\Facades\Pinyin;
@@ -225,9 +224,9 @@ class Controller extends BaseController
     {
         $zip = new \ZipArchive();
         if (is_file($zipPath) && file_exists($zipPath)) {
-            $res = $zip->open($zipPath, \ZipArchive::OVERWRITE);
+            $res = $zip->open($zipPath, \ZipArchive::OVERWRITE); // 覆盖
         } else {
-            $res = $zip->open($zipPath, \ZipArchive::CREATE);
+            $res = $zip->open($zipPath, \ZipArchive::CREATE); // 创建
         }
         if ($res === true) {
             if (is_file($targetPath)) { // 判断是否是文件/文件夹
@@ -547,12 +546,14 @@ class Controller extends BaseController
 
         $name = isset($data['name']) ? $data['name'] : 'qrcode' . time(); // 图片命名
         $type = isset($data['type']) ? $data['type'] : 'png'; // 图片格式
-        $size = isset($data['size']) ? $data['size'] : 400; // 图片尺寸
+        $size = isset($data['size']) ? $data['size'] : 300; // 图片尺寸
 
         $qrcodeName = $path . '/' . $name . '.' . $type;
 
         $qrcode = QrCode::format($type);
+        $qrcode->encoding('UTF-8');
         $qrcode->size($size);
+        $qrcode->margin(0);
         $qrcode->generate($url, './' . iconv('UTF-8', 'GBK', $qrcodeName));
 
         return $qrcode ? url($qrcodeName) : false;

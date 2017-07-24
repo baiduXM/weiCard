@@ -84,6 +84,7 @@ $(function () {
         var _url = $(this).data("url");
         $(".form-update").attr("action", _url);
         $.get(_url, function (data) {
+            console.log(data)
             showInformation(data, 'class', 'info-');
         });
     });
@@ -165,29 +166,29 @@ $(function () {
     });
 
     /* 查询下拉选择 */
-    $(".dropdown-word").click(function(){
+    $(".dropdown-word").click(function () {
         var word = $(this).attr('id');
         var text = $(this).text();
-        $('.word-select').attr('name',word);
+        $('.word-select').attr('name', word);
         $('.word-select').html(text);
         $('.word').val(word);
     });
 
     /* 搜索 */
     $('.b-form-bg').click(function () {
-        var word = $('.word-select').attr('name');
+        var word   = $('.word-select').attr('name');
         var search = $('.b-form-bor').val();
-        if(word == 'noword'){
+        if (word == 'noword') {
             alert('请选择要搜索的字段');
             return false;
-        }else{
-            if(search){
+        } else {
+            if (search) {
                 // window.location.href = 'employee/' + word + '/' + search; //方法1
                 $('[name="search-form"]').submit();
-            }else{
+            } else {
                 alert('请输入关键字');
                 return false;
-            }            
+            }
         }
     });
 
@@ -226,12 +227,12 @@ $(function () {
 /* 初始化 */
 function init() {
     // 搜索初始值
-    var word = getQueryString('word');
+    var word    = getQueryString('word');
     var keyword = getQueryString('keyword');
-    word = (word != null) ? word : 'noword';
-    keyword = (keyword != null) ? decodeURIComponent(keyword) : '';
-    $('.word-select').attr('name',word);
-    var text = $('#'+word).text();
+    word        = (word != null) ? word : 'noword';
+    keyword     = (keyword != null) ? decodeURIComponent(keyword) : '';
+    $('.word-select').attr('name', word);
+    var text = $('#' + word).text();
     $('.word-select').html(text);
     $('.word').val(word);
     $('[name="keyword"]').val(keyword);
@@ -240,7 +241,7 @@ function init() {
 /* 获取url参数 */
 function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-    var r = window.location.search.substr(1).match(reg);
+    var r   = window.location.search.substr(1).match(reg);
     if (r != null) {
         return (r[2]);
     }
@@ -289,6 +290,15 @@ function showInformation(data, label, prefix) {
                     $('[' + selector + i + ']').prop("checked", true);
                 } else {
                     $('[' + selector + i + ']').prop("checked", false);
+                }
+
+            } else if ($('[' + selector + i + ']').attr('type') == "radio") {
+                console.log(typeof n);
+                console.log(n);
+                if (n) {
+                    $('[' + selector + i + '][value="' + n + '"]').prop("checked", true);
+                } else {
+                    $('[' + selector + i + '][value="0"]').prop("checked", true);
                 }
             } else {
                 if (typeof n == 'object') { // 判断是否是关系模型对象

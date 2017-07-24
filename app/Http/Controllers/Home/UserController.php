@@ -10,7 +10,6 @@ use App\Models\Template;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 
 class UserController extends HomeController
 {
@@ -62,7 +61,7 @@ class UserController extends HomeController
             $employee = Employee::where('user_id', $user_id)->first();
             $company = Company::where('id', $employee['company_id'])->first();
             $is_person = $company['is_person'];
-            if ($is_person) {//关闭为1跳转到企业名片，否则个人名片可编辑
+            if ($is_person) { // 关闭为1跳转到企业名片，否则个人名片可编辑
                 return redirect('company/employee');
             } else {
                 return view('mobile.user.index')->with([

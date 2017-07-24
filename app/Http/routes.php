@@ -111,7 +111,6 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::post('employee/{id}/recover', ['as' => 'company.employee.recover', 'uses' => 'Home\EmployeeController@recover']);
         Route::delete('employee/{id}/forceDelete', ['as' => 'company.employee.forceDelete', 'uses' => 'Home\EmployeeController@forceDelete']);
 
-
         /* 我的公司->部门 */
         Route::resource('department', 'Home\DepartmentController');
 //        Route::get('department', ['as' => 'company.department.index', 'uses' => 'Home\DepartmentController@index']);
@@ -146,7 +145,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::put('company', ['as' => 'company.update', 'uses' => 'Home\CompanyController@update']);
     Route::post('company/binding', ['as' => 'company.binding', 'uses' => 'Home\CompanyController@binding']);
     Route::resource('company', 'Home\CompanyController');
-
+    /* 我的公司->人脉圈 */
+    Route::resource('contacts', 'Home\ContactsController');
 
     /* 名片夹->分组 */
     Route::get('cardcase/group/{id}', ['as' => 'cardcase.group.show', 'uses' => 'Home\GroupController@show']);
@@ -167,6 +167,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('cardcase/{id}', ['as' => 'cardcase.ajaxshow', 'uses' => 'Home\CardcaseController@ajaxshow']); // 放到cardcase路由组的最后
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
 
+    /* 名片圈 */
+    Route::resource('circle', 'Home\CircleController');
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
@@ -218,11 +220,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::resource('user_cardcase', 'Admin\CardcaseController');
     /* 群管理 */
     Route::resource('user_group', 'Admin\GroupController');
+
     /* 标签管理 */
-    Route::group(['prefix' => 'user_tag'], function () {
-        Route::delete('batch', ['as' => 'admin.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
-    });
+    Route::delete('user_tag/batch', ['as' => 'admin.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
     Route::resource('user_tag', 'Admin\TagController');
+
+    /* 圈子 */
+    Route::delete('user_circle/batch', ['as' => 'admin.circle.batchDestroy', 'uses' => 'Admin\CircleController@batchDestroy']);
+    Route::resource('user_circle', 'Admin\CircleController');
 
     /* 公司管理 */
     Route::group(['prefix' => 'company'], function () {

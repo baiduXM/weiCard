@@ -7,7 +7,7 @@
     {{--内容容器--}}
     <div class="has-margin-sm">
         <section class="section">
-            @if(count($data)>0)
+            @if(isset($data) && count($data)>0)
                 @foreach($data as $item)
                     {{--分组--}}
                     <div class="cardcase-group divider">
@@ -23,10 +23,12 @@
                             @foreach($item['cardcases'] as $subitem)
                                 {{--名片子项目--}}
                                 <div class="item multi-lines with-avatar">
-                                    <a class="avatar circle" href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
+                                    <a class="avatar circle"
+                                       href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
                                     </a>
-                                    <a class="content" href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
+                                    <a class="content"
+                                       href="{{ url('cardview/'.($subitem['follower_type']=='App\Models\User'?'u':'e').'-'.$subitem['follower_id']) }}">
                                         <div class="title">{{ $subitem['follower']['nickname'] or '' }}</div>
                                         <div class="subtitle">
                                             @if($subitem['follower_type']=='App\Models\User')
@@ -59,7 +61,7 @@
                                     <a class="opshow-group"
                                        data-url="{{ url('cardcase/move/'.$subitem['id']) }}"
                                        data-display data-backdrop="true" data-target="#groupListModal">
-                                       {{--data-display data-backdrop="true">--}}
+                                        {{--data-display data-backdrop="true">--}}
                                         <i class="icon icon-exchange has-padding-sm"></i>分组
                                     </a>
                                     <a class="opshow-delete text-danger"
@@ -176,9 +178,9 @@
 
 
         });
-//        function showGroup(group_id) {
-//            document.getElementById('group' + group_id).checked = true;
-//        }
+        //        function showGroup(group_id) {
+        //            document.getElementById('group' + group_id).checked = true;
+        //        }
     </script>
 @stop
 

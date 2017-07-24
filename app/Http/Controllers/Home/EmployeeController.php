@@ -100,9 +100,9 @@ class EmployeeController extends HomeController
         $query = Employee::query();
         $params = Input::query();
 
-        if (!empty($params) && !empty($params['word']) && !empty($params['keyword'])) {
+        if (!empty($params) && !empty($params['word']) && !empty(trim($params['keyword']))) {
             $word = $params['word'];
-            $keyword = $params['keyword'];
+            $keyword = trim($params['keyword']);
             if ($word == 'department') {
                 foreach ($departments as $k => $v) {
                     // if($v->name == $keyword){//精确搜索
