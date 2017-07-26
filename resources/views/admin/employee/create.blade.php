@@ -17,11 +17,11 @@
                             <label class="col-md-3 control-label" for="company_id"><span class="text-danger">*</span>
                                 公司</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="company_id" name="Employee[company_id]">
+                                <select class="form-control " id="company_id" name="Employee[company_id]">
                                     <option value="">选择公司</option>
                                     @foreach($companies as $company)
                                         <option {{ old('Employee.company_id') == $company->id ? 'selected' : '' }}
-                                                value="{{ $company->id }}">{{ $company->name }}</option>
+                                                value="{{ $company->id }}">{{ $company->display_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -36,7 +36,8 @@
                             <label class="col-md-3 control-label" for="department_id">
                                 部门</label>
                             <div class="col-md-6">
-                                <select class="form-control" id="department_id" name="Employee[department_id]">
+                                <select class="form-control " id="department_id"
+                                        name="Employee[department_id]">
                                     <option selected value="">无部门</option>
                                 </select>
                             </div>
@@ -142,4 +143,28 @@
             </div>
         </div><!--/.col-->
     </div><!--/.row-->
+@stop
+@section('javascript')
+    <script>
+        $(function () {
+            $('#company_id').unbind().on('change', function () {
+                var company_id = $(this).val();
+                if (company_id) {
+                    console.log(company_id)
+                    var _url = '{{ url('admin/company/') }}' + '/' + company_id;
+                    console.log(_url)
+                    $.get(_url, function (data) {
+                        var _html = '';
+                        $.each(data.departments, function (i, n) {
+                            _html += '<option selected value="' + n.id + '">' + n.name + '</option>';
+                        });
+                        $('#department_id').html(_html);
+                    });
+                } else {
+                    $('#department_id').html('<option selected value="">无部门</option>');
+
+                }
+            });
+        });
+    </script>
 @stop
