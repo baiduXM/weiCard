@@ -14,20 +14,20 @@
             <ul class="b-button">
                 {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
                 {{--<li class="b-btn-bor b-sort-btn ">--}}
-                    {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
-                    {{--<ul class="b-sort none">--}}
-                        {{--<li><a href="">按名字排序</a></li>--}}
-                        {{--<li><a href="">按职位排序</a></li>--}}
-                        {{--<li><a href="">按部门排序</a></li>--}}
-                        {{--<li><a href="">按入职时间排序</a></li>--}}
-                    {{--</ul>--}}
+                {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
+                {{--<ul class="b-sort none">--}}
+                {{--<li><a href="">按名字排序</a></li>--}}
+                {{--<li><a href="">按职位排序</a></li>--}}
+                {{--<li><a href="">按部门排序</a></li>--}}
+                {{--<li><a href="">按入职时间排序</a></li>--}}
+                {{--</ul>--}}
                 {{--</li>--}}
                 {{--<li class="b-btn-bor"><a href="">查询字段<i class="iconFont">&#xe618;</i></a></li>--}}
                 {{--<li class="b-search  ">--}}
-                    {{--<form action="">--}}
-                        {{--<input class="b-input b-form-bor" type="text" placeholder="请输入关键字">--}}
-                        {{--<input class="b-ser-btn b-form-bg" type="submit" value="查找">--}}
-                    {{--</form>--}}
+                {{--<form action="">--}}
+                {{--<input class="b-input b-form-bor" type="text" placeholder="请输入关键字">--}}
+                {{--<input class="b-ser-btn b-form-bg" type="submit" value="查找">--}}
+                {{--</form>--}}
                 {{--</li>--}}
             </ul>
             <table class="table b-table" id="tableList">
@@ -49,38 +49,42 @@
                     </tr>
                 @else
                     @foreach($cardcases as $item)
-                        <tr>
-                            <td class="b-phone-w"><input type="checkbox" id="box{{ $item->follower->id }}"><label for="box{{ $item->follower->id }}"><i
-                                            class="iconFont">&#xe7de;</i></label>
-                            </td>
-                            <td class="b-phone-w2">{{ $item->follower->nickname }}</td>
-                            <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->display_name }}</td>
-                            <td class="b-phone-w2">{{ $item->follower->mobile }}</td>
-                            {{--<td class="b-td-width">{{ $item->getFollowerType($item->follower_type) == 'user' ? : '' }}</td>--}}
-                            <td class="b-td-icon b-td-hide">
-                                <a href="" data-toggle="modal" data-target="#modal-cardshow-show"
-                                   class="operate-cardshow"
-                                   {{--cardview/' . $param[0] . '-' . $person->id--}}
-                                   data-url="{{ url('cardview/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i
-                                            class="iconFont">&#xe613;</i></a>
-                                {{--<a href=""><i class="iconFont">&#xe632;</i></a>--}}
-                                {{--<a href=""--}}
-                                {{--data-url="{{  url('cardcase/follow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i--}}
-                                {{--class="iconFont">&#xe921;</i></a>--}}
-                                {{--<a href="javascript:" data-toggle="modal" data-target=".bs3"><i--}}
-                                {{--class="iconFont">&#xe6d3;</i></a>--}}
-                            </td>
-                            <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
-                            </td>
-                        </tr>
-                        <tr class="td-icon-hide none">
-                            <td id="look"><a href="address-phone-look.html"><i class="iconFont">&#xe613;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
-                            <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
-                            <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
-                                            class="iconFont">&#xe6d3;</i></a></td>
-                        </tr>
-
+                        @if($item->follower)
+                            <tr>
+                                <td class="b-phone-w"><input type="checkbox" id="box{{ $item->follower->id }}"><label
+                                            for="box{{ $item->follower->id }}"><i
+                                                class="iconFont">&#xe7de;</i></label>
+                                </td>
+                                <td class="b-phone-w2">{{ $item->follower->nickname }}</td>
+                                <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->display_name }}</td>
+                                <td class="b-phone-w2">{{ $item->follower->mobile }}</td>
+                                {{--<td class="b-td-width">{{ $item->getFollowerType($item->follower_type) == 'user' ? : '' }}</td>--}}
+                                <td class="b-td-icon b-td-hide">
+                                    <a href="" data-toggle="modal" data-target="#modal-cardshow-show"
+                                       class="operate-cardshow"
+                                       {{--cardview/' . $param[0] . '-' . $person->id--}}
+                                       data-url="{{ url('cardview/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i
+                                                class="iconFont">&#xe613;</i></a>
+                                    {{--<a href=""><i class="iconFont">&#xe632;</i></a>--}}
+                                    {{--<a href=""--}}
+                                    {{--data-url="{{  url('cardcase/follow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i--}}
+                                    {{--class="iconFont">&#xe921;</i></a>--}}
+                                    {{--<a href="javascript:" data-toggle="modal" data-target=".bs3"><i--}}
+                                    {{--class="iconFont">&#xe6d3;</i></a>--}}
+                                </td>
+                                <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i
+                                                class="iconFont">&#xe621;</i></a>
+                                </td>
+                            </tr>
+                            <tr class="td-icon-hide none">
+                                <td id="look"><a href="address-phone-look.html"><i class="iconFont">&#xe613;</i></a>
+                                </td>
+                                <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
+                                <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
+                                <td><a href="javascript:" data-toggle="modal" data-target=".bs3"><i
+                                                class="iconFont">&#xe6d3;</i></a></td>
+                            </tr>
+                        @endif
                     @endforeach
                 @endif
 
