@@ -28,11 +28,14 @@
                 <a href="{{ url('user/edit') }}">
                     <div class="choose_card1">编辑名片</div>
                 </a>
-                <a href="{{ url('cardcase/show/u') }}">
-                    <div class="choose_card pr">使用这张名片
-                        {{--<div class="choose_box pa">已获取成功！</div>--}}
-                    </div>
+                <a href="{{ url('template/mobile-change') }}">
+                    <div class="choose_card pr">更换模板</div>
                 </a>
+                {{--<a href="{{ url('cardcase/show/u') }}">--}}
+                    {{--<div class="choose_card pr">使用这张名片--}}
+                        {{--<div class="choose_box pa">已获取成功！</div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
             @else
                 <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg2.png') }}">
                     <div class="card_c_wephoto pa dtc tc vm"><img src="{{ asset('static/mobile/images/tx1.png') }}"></div>
