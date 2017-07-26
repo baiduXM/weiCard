@@ -94,7 +94,7 @@ class EmployeeController extends AdminController
         /* 验证 */
         $this->validate($request, [
             'Employee.company_id' => 'required',
-            'Employee.number'     => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.number'     => 'required|unique:employees,employees.number,null,id,company_id,' . $data['company_id'] . '|regex:/^([A-Za-z0-9])*$/',
             'Employee.nickname'   => 'required',
             'Employee.avatar'     => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone'  => '',
@@ -158,7 +158,7 @@ class EmployeeController extends AdminController
             'Employee.company_id'    => 'required',
             'Employee.department_id' => '',
             'Employee.positions'     => '',
-            'Employee.number'        => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
+            'Employee.number'        => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',
             'Employee.nickname'      => 'required',
             'Employee.avatar'        => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone'     => '',
@@ -284,6 +284,11 @@ class EmployeeController extends AdminController
         dump(count($external));
 //        dump($employees);
         exit;
+    }
+
+    public function drop()
+    {
+
     }
 
 

@@ -116,7 +116,7 @@ class CompanyController extends AdminController
 
         /* 获取文件 */
 
-        $company=Company::create($data);
+        $company = Company::create($data);
         /* 添加 */
         if ($company) {
             if ($request->hasFile('Company.logo')) {
@@ -131,13 +131,17 @@ class CompanyController extends AdminController
     /**
      * 详情
      *
-     * @param $id
-     * @return $this
+     * @param Request $request
+     * @param         $id
+     * @return $this|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        if (!$company = Company::find($id)) {
+        if (!$company = Company::with('departments')->find($id)) {
             return redirect('admin/company')->with('warning', '公司不存在');
+        }
+        if ($request->ajax()) {
+            return response()->json($company);
         }
         return view('admin.company.show')->with([
             'company' => $company,
