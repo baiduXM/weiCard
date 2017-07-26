@@ -241,9 +241,9 @@ class UserController extends AdminController
     {
         $user = User::find($id);
         if ($user->delete()) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $user->name);
+            return redirect('admin/user')->with('success', '删除成功 - ' . $user->nickname);
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $user->name);
+            return redirect('admin/user')->with('error', '删除失败 - ' . $user->nickname);
         }
     }
 

@@ -172,7 +172,7 @@
                                                 @endif
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="user/{{ $item->id }}" data-info="{{ $item->name }} 用户"
+                                                   data-url="user/{{ $item->id }}" data-info="{{ $item->nickname }} 用户"
                                                    title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
