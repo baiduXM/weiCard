@@ -45,7 +45,7 @@
         </div><!--名片夹-->
         @if(Auth::user()->company)
             <div class="tree_box nav">
-                <h3 {{ Request::path() == 'circle' || Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
+                <h3 {{ Request::path() == 'circle' || Request::is('circle/*') || Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
                     <a href="javascript:"><em class="iconFont">&#xe658;</em>公司管理
                         @if(Request::path() == 'company' || Request::is('company/*'))
                             <i class="nav-j"></i>
@@ -55,7 +55,7 @@
                     </a>
 
                 </h3>
-                <ul class="tree_one" {{ Request::path() == 'circle' || Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
+                <ul class="tree_one" {{ Request::path() == 'circle' || Request::is('circle/*') || Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
                     <li {{ Request::path() == 'company' || Request::is('company/create') ? 'class=active' : '' }}>
                         <a href="{{ url('company') }}">我的公司</a></li>
                     <li {{ Request::path() == 'company/employee' || Request::path() == 'company/employee/trash' ? 'class=active' : '' }}>
@@ -63,14 +63,13 @@
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
                     {{--<li {{ Request::path() == 'contacts' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('contacts') }}">员工人脉圈</a></li>--}}
-                    <li {{ Request::path() == 'circle' ? 'class=active' : '' }}>
-                        <a href="{{ url('circle') }}">名片圈</a></li>
+                    {{--<a href="{{ url('contacts') }}">员工人脉圈</a></li>--}}
+                    {{--<li {{ Request::path() == 'circle' || Request::is('circle/*') ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('circle') }}">名片圈</a></li>--}}
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
                         <a href="{{ url('company/link') }}">微链接</a></li>
-
                     <li {{ Request::path() == 'company/templategroup' ? 'class=active' : '' }}>
                         <a href="{{ url('company/templategroup') }}">模板组</a></li>
                     @if(Auth::user()->company)
