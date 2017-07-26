@@ -262,9 +262,9 @@ class UserController extends AdminController
             $user->is_active = 1;
         }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', $user->name . ' - 状态切换成功');
+            return redirect('admin/user')->with('success', $user->nickname . ' - 状态切换成功');
         } else {
-            return redirect('admin/user')->with('error', $user->name . ' - 状态切换失败');
+            return redirect('admin/user')->with('error', $user->nickname . ' - 状态切换失败');
         }
     }
 
