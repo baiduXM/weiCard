@@ -247,7 +247,7 @@ $(function () {
         // 搜索初始值
         var column  = getQueryString('column');
         var keyword = getQueryString('keyword');
-        column      = (column != null) ? column : 'name';
+        column      = (column != null) ? column : 'nickname';
         keyword     = (keyword != null) ? decodeURIComponent(keyword) : '';
         var txt     = $('[name="column_' + column + '"]').text() + ' <span class="caret"></span>';
         $('[name="search_column"]').html(txt);

@@ -53,6 +53,8 @@
                                         <ul class="dropdown-menu" id="columnDropdown">
                                             <li><a class="dropdown-item" data-column="nickname" name="column_nickname"
                                                    style="cursor: pointer;">用户名</a></li>
+                                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
+                                                   {{--style="cursor: pointer;">用户名</a></li>--}}
                                             <li><a class="dropdown-item" data-column="mobile" name="column_mobile"
                                                    style="cursor: pointer;">手机</a></li>
                                             <li><a class="dropdown-item" data-column="email" name="column_email"
