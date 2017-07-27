@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
     Route::get('template/mobile-change', ['as' => 'template.mindex', 'uses' => 'Home\TemplateController@mindex']);
+    Route::get('template/com-template', ['as' => 'template.comtemplate', 'uses' => 'Home\TemplateController@comtemplate']);
     Route::match(['get', 'post'], 'template/change-u/{params}', ['as' => 'template.change-u', 'uses' => 'Home\TemplateController@uchange']);
 //    Route::resource('template', 'Home\TemplateController');
 

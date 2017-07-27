@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Template;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class TemplateController extends HomeController
@@ -38,23 +39,54 @@ class TemplateController extends HomeController
     }
 
     /**
-     * 手机端模板列表展示
-     *
-     * @param $type
-     *
-     * @return $this
-     */
+ * 手机端个人模板列表展示
+ *
+ * @param $type
+ *
+ * @return $this
+ */
     public function mindex()
     {
         $query = Template::query();
         $query->where('type', 1);
         $templates = $query->get();
         $user = Auth::user();
+        $t = $user ->templates;
+        if($t){
+            $this_template= $t[0];
+        }
         return view('mobile.templates.index')->with([
+            'templates' => $templates,
+            'this_template' => $this_template,
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * 手机端企业模板列表展示
+     *
+     * @param $type
+     *
+     * @return $this
+     */
+    public function comtemplate()
+    {
+        $query = Template::query();
+        $query->where('type', 2);
+        $templates = $query->get();
+        $user = Auth::user();
+
+        return view('mobile.templates.comtemplate')->with([
             'templates' => $templates,
             'user' => $user,
         ]);
     }
+
+
+
+
+
+
 
     /**
      * 模板更换

@@ -86,32 +86,32 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_content .card_c_bot{width: 100%;height:6.75rem;margin-top: 1.36rem;}
 .card_content .card_c_bot .ej{width:3.45rem;height: 3.45rem;top: 0.4rem;right: 1rem;}
 .card_content .card_c_bot .ej .ej_sy1{width: 0.5rem;height: 0.5rem;top:1rem;right: 2rem;
-   -webkit-animation: warn 1.5s ease-out;  
-    -moz-animation: warn 1.5s ease-out;  
-    animation: warn 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+   -webkit-animation: warn 1.5s ease-out;
+    -moz-animation: warn 1.5s ease-out;
+    animation: warn 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
-@keyframes warn {  
-    0% {transform: scale(0);opacity: 0.0;}  
-    25% {transform: scale(0.2);opacity: 0.4;}  
-    50% {transform: scale(0.4);opacity: 0.6;}  
-    75% {transform: scale(0.8);opacity: 0.9;}  
-    100% {transform: scale(1);opacity: 0;}  
+@keyframes warn {
+    0% {transform: scale(0);opacity: 0.0;}
+    25% {transform: scale(0.2);opacity: 0.4;}
+    50% {transform: scale(0.4);opacity: 0.6;}
+    75% {transform: scale(0.8);opacity: 0.9;}
+    100% {transform: scale(1);opacity: 0;}
   }
 .card_content .card_c_bot .ej .ej_sy2{width: 0.5rem;height: 0.5rem;top:2.5rem;right: 1.4rem;
-    -webkit-animation: warn2 1.5s ease-out;  
-    -moz-animation: warn2 1.5s ease-out;  
-    animation: warn2 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+    -webkit-animation: warn2 1.5s ease-out;
+    -moz-animation: warn2 1.5s ease-out;
+    animation: warn2 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
- @keyframes warn2 {  
-    0% {transform: scale(0);opacity: 0.0;transform: rotate(180deg);}  
-    25% {transform: scale(0.2);opacity: 0.4;transform: rotate(180deg);}  
-    50% {transform: scale(0.4);opacity: 0.6;transform: rotate(180deg);}  
-    75% {transform: scale(0.8);opacity: 0.9;transform: rotate(180deg);}  
-    100% {transform: scale(1);opacity: 0;transform: rotate(180deg);}  
+ @keyframes warn2 {
+    0% {transform: scale(0);opacity: 0.0;transform: rotate(180deg);}
+    25% {transform: scale(0.2);opacity: 0.4;transform: rotate(180deg);}
+    50% {transform: scale(0.4);opacity: 0.6;transform: rotate(180deg);}
+    75% {transform: scale(0.8);opacity: 0.9;transform: rotate(180deg);}
+    100% {transform: scale(1);opacity: 0;transform: rotate(180deg);}
   }
 
 .card_content .card_c_bot .sb{
@@ -122,11 +122,11 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 	100%{transform: rotate(360deg);}
 }
 .card_content .card_c_bot .sy{width: 0.5rem;height: 0.5rem;top:1.5rem;left: 1.4rem;
-    -webkit-animation: warn2 1.5s ease-out;  
-    -moz-animation: warn2 1.5s ease-out;  
-    animation: warn2 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+    -webkit-animation: warn2 1.5s ease-out;
+    -moz-animation: warn2 1.5s ease-out;
+    animation: warn2 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
 
 /*个人名片*/
@@ -138,7 +138,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_content form span em{  color: red; position: absolute; right:0.4rem; top:0.2rem;}
 .card_content form span .inputt{width: 10.3rem;height: 1.35rem;outline: none;}
 .card_content form span.bz{width:12.4rem;height:2.95rem; }
-.card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;} 
+.card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;}
 .card_content form .sub{display:inline-block;width: 8rem;height: 1.65rem;line-height: 1.65rem;margin:0 2.5rem;color: #fff;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 .card_content form span strong{ float: right; margin-right: 0.5rem; cursor: pointer;}
 .card_content form span strong a{ font-size: 0.6rem; color: #333;}
@@ -174,15 +174,15 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 /*个人名片获取*/
 .cards{width:13.5rem;height:7.5rem;position: relative; overflow: hidden;margin:0 auto;/*background: url(../images/bg7.png) center no-repeat;background-size:13.5rem 7.5rem;*/ }
 .cards .cards_tx{width:4rem;height: 4rem;top:0.4rem; left:50%; margin-left: -2rem;
-    -webkit-animation: biger 1s ease-out;  
-    -moz-animation: biger 1s ease-out;  
-    animation: biger 1s ease-out;  
-    -webkit-animation-iteration-count: 1;  
-    -moz-animation-iteration-count: 1;  
+    -webkit-animation: biger 1s ease-out;
+    -moz-animation: biger 1s ease-out;
+    animation: biger 1s ease-out;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-iteration-count: 1;
     animation-iteration-count: 1;}
-@keyframes biger {  
-    0% {transform: scale(0);opacity: 0.0;}  
-    100% {transform: scale(1);opacity: 1;}  
+@keyframes biger {
+    0% {transform: scale(0);opacity: 0.0;}
+    100% {transform: scale(1);opacity: 1;}
  }
 .cards .cards_tx.cards-gr{left: 2.8rem;top: 50%;margin-top: -2rem;}
 .cards .name,.cards .tell{width: 7.5rem;height:1.05rem;padding: 0 0.6rem;border-radius: 0.5rem;background: #fff;color: #f1a521;line-height: 1.05rem;font-size: 0.6rem;}
@@ -267,13 +267,20 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 /*模板start*/
 .muban_wrap{overflow-y: auto; }
-.muban_content{ margin-left: 0.4rem;}
+.muban_content{ margin-left: 0.4rem; padding-top: 0.4rem; overflow: hidden;}
 .muban_content li{ margin: 0.25rem 0.2rem; float: left; background: #fff; width: 4.65rem; box-shadow: 0px 0px 10px rgba(51, 51, 51, 0.15); height: 9.35rem;}
 .muban_content li a{ display: block; padding: 0.1rem 0.1rem 0;}
 .muban_content li a .div_img{ position: relative; width: 4.55rem; height:8.25rem; display: table-cell;text-align: center;vertical-align: middle;}
 .muban_content li a .div_img img{ max-width: 100%; max-height: 100%;}
 .muban_content li a .div_img em{display: none; position: absolute; top: 0.25rem; right: 0.25rem; width: 0.7rem; height: 0.7rem; background: url(../images/choose.png) no-repeat; background-size: 100% 100%;}
 .muban_content li a h2{ width: 100%; height: 1rem; line-height: 1rem; text-align: center; font-size: 0.6rem; color: #333333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+.muban_content li a .div_img .selected{ position: absolute; z-index: 99; right: 0;bottom: 0; top: 0; left: 0;  background:rgba(0,0,0,.8);}
+.muban_content li a .div_img .selected img{ width: 1.8rem; height: 1.8rem; margin-top:43%;}
+.muban_content li a .div_img .selected span{ font-size: 0.5rem;  line-height: 0.8rem; color: #ccc;}
+
+.hide{ display: none; }
+.show{ display: block; }
 
 .muban{ display: none; z-index: 100;position:fixed; width: 100%; height: 100%; top: 0; left: 0;}
 .muban .mask{position: absolute;background-color: #000;opacity: 0.6;z-index: 9;top: 0px; left: 0;width: 100%;height: 100%;display: none;}
@@ -292,3 +299,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 .card_content .samebtn{width:12.5rem;display: block; height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 1.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 /*更换头像end*/
+/*模板选项卡及选中状态*/
+.card_choose1{ height: 2.5rem; }
+.card_choose1 ul{ padding:0.58rem 1rem; height: 1.4rem; }
+.card_choose1 ul li{ height: 1.4rem; line-height: 1.4rem;font-size: 0.7rem; }
