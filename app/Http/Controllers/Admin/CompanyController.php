@@ -50,7 +50,7 @@ class CompanyController extends AdminController
      */
     public function index()
     {
-        $companies = Company::with('user', 'employees')->paginate();
+        $companies = Company::with('user', 'employees')->orderBy('created_at','desc')->paginate();
         return view('admin.company.index')->with([
             'companies' => $companies,
         ]);
