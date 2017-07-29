@@ -63,7 +63,7 @@ class UserController extends AdminController
         if (isset($sort)) {
             $query->orderBy($sort['column'], $sort['order']);
         }
-        $users = $query->with('company', 'employee')->paginate();
+        $users = $query->with('company', 'employee')->orderBy('created_at', 'desc')->paginate();
         foreach ($users as $k => $v) {
             $users[$k]->flag = 0; // 1：绑定公司，2：绑定员工，3：都绑定了
             if ($v->company)
