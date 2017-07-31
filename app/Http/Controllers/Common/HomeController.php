@@ -188,21 +188,24 @@ class HomeController extends Controller
                 $person = Employee::find($param[1]);
                 if (!$person) { // 获取交接人信息
                     $res = $this->getOwner($param[1]);
+                    /* 跳转提示页 */
+                    // TODO:跳转提示页
+
                     if (!$res['data']) { // 无交接人，报404
                         return redirect()->back()->with('error', $res['msg']);
                     }
                     $person = $res['data'];
                 }
-                $templategroup = TemplateGroup::where('id',$person->templategroup_id)->first();
-                if (count($templategroup) > 0){
-                    $template_id=$templategroup->template_id;
-                    $templates = Template::where('id',$template_id)->first();
-                }else{
+                $templategroup = TemplateGroup::where('id', $person->templategroup_id)->first();
+                if (count($templategroup) > 0) {
+                    $template_id = $templategroup->template_id;
+                    $templates = Template::where('id', $template_id)->first();
+                } else {
                     $templates = $person->templates;
                 }
-                if(count($templates) > 0){
+                if (count($templates) > 0) {
                     $template = $templates;
-                }else{
+                } else {
                     if (count($templates) <= 0) { // 没有员工模板，使用公司模板
                         $templates = Employee::find($person->id)->company->templates;
                     }
@@ -271,7 +274,6 @@ class HomeController extends Controller
         }
         $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
 
-        //dd($person->company->links);
         return view($template->name . '.index')->with([
             'template'       => $template, // 模板数据
             'person'         => $person, // 对象，用户/员工

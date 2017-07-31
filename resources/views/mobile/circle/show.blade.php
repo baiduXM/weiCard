@@ -11,7 +11,7 @@
                 <a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
                    data-url="{{ url()->current() }}">
                     <div class="btn primary">
-                        <i class="icon icon-plus has-padding-sm"></i>
+                        <i class="icon icon-pencil has-padding-sm"></i>
                     </div>
                     <div class="title ">编辑</div>
                 </a>
@@ -125,18 +125,22 @@
                 </div>
 
             </div>
-            @if(count($circle->users))
-                @foreach($data as $item)
-                @endforeach
-            @endif
+            {{--@if(count($circle->users))--}}
+                {{--@foreach($data as $item)--}}
+                {{--@endforeach--}}
+            {{--@endif--}}
         </section>
     </div>
     {{--侧边悬浮按钮--}}
     <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
         {{--编辑--}}
-        <a class="btn btn-lg circle primary outline" href="{{ url('circle/'.$circle->id.'/edit') }}" title="编辑">
-            <i class="icon icon-pencil"></i>
+        <a class="btn btn-lg circle primary outline"
+           href="{{ url()->previous() == url()->current() ? url('circle') : url()->previous() }}">
+            <i class="icon icon-chevron-left"></i>
         </a>
+        {{--<a class="btn btn-lg circle primary outline" href="{{ url('circle/'.$circle->id.'/edit') }}" title="编辑">--}}
+            {{--<i class="icon icon-pencil"></i>--}}
+        {{--</a>--}}
     </nav>
 @stop
 @section('modal')

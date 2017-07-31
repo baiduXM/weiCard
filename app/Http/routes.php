@@ -175,7 +175,10 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
 
     /* 名片圈 */
+    Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
+    Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
     Route::resource('circle', 'Home\CircleController');
+
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);

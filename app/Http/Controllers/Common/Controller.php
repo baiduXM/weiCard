@@ -306,16 +306,16 @@ class Controller extends BaseController
                 $targetPath = 'uploads/admin/' . $name;
                 break;
             case 'company':
-                $targetPath = 'uploads/company/' . $name;// .公司名称
+                $targetPath = 'uploads/company/' . $name; // .公司名称
                 break;
             case 'product':
-                $targetPath = 'uploads/company/' . $name . '/products';// .公司下的产品
+                $targetPath = 'uploads/company/' . $name . '/products'; // .公司下的产品
                 break;
             case 'employee':
                 if ($second_name) {
-                    $targetPath = 'uploads/company/' . $name . '/employees/' . $second_name;// .公司员工工号
+                    $targetPath = 'uploads/company/' . $name . '/employees/' . $second_name; // .公司员工工号
                 } else {
-                    $targetPath = 'uploads/company/' . $name . '/employees';// .公司员工根目录
+                    $targetPath = 'uploads/company/' . $name . '/employees'; // .公司员工根目录
                 }
                 break;
             case 'website':
@@ -556,7 +556,8 @@ class Controller extends BaseController
         $qrcode->margin(0);
         $qrcode->generate($url, './' . iconv('UTF-8', 'GBK', $qrcodeName));
 
-        return $qrcode ? url($qrcodeName) : false;
+//        return $qrcode ? url($qrcodeName) : false;
+        return $qrcode ? ($qrcodeName) : false;
     }
 
 

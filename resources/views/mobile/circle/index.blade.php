@@ -40,32 +40,61 @@
         </section>
     </div>
     {{--侧边悬浮按钮--}}
-    <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
-        <a class="btn btn-lg circle primary outline"
-           href="{{ url()->previous() == url()->current() ? url('cardcase') : url()->previous() }}">
-            <i class="icon icon-chevron-left"></i>
-        </a>
-    </nav>
+    {{--<nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">--}}
+        {{--<a class="btn btn-lg circle primary outline"--}}
+           {{--href="{{ url()->previous() == url()->current() ? url('cardcase') : url()->previous() }}">--}}
+            {{--<i class="icon icon-chevron-left"></i>--}}
+        {{--</a>--}}
+    {{--</nav>--}}
 @stop
 @section('modal')
-    {{--添加群成员--}}
-    <div id="editMemberModal" class="modal affix dock enter-from-center fade ">
-        <form action="" method="put" onsubmit="return false;">
+    {{--添加/编辑圈子--}}
+    <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
+        <form action="" method="post" onsubmit="return false;">
             <div class="heading divider">
-                <div class="title">分组成员</div>
+                <div class="title modal-title">创建圈子</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
             </div>
             <div class="content has-padding">
-                {{--<div class="heading">成员 <label >(12)</label></div>--}}
-                {{--<div class="list divider row in-group">--}}
-                {{--已分组成员--}}
-                {{--</div>--}}
-                <div class="heading">未分组</div>
-                <div class="list divider row not-in-group">
-                    {{--未分组成员--}}
+                <div class="control error-name" id="">
+                    <label for="Circle[name]">名称</label>
+                    <input class="input" type="text" id="Circle[name]" name="Circle[name]" value="">
+                    <p class="help-text"></p>
+                </div>
+                <div class="control error-expired_at">
+                    <label>人数</label>
+                    <div class="radio inline-block">
+                        <input id="limit_not" type="radio" name="Circle[limit]" value="0" checked>
+                        <label for="limit_not">无限制</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input id="limit_30" type="radio" name="Circle[limit]" value="30">
+                        <label for="limit_30">30人</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input id="limit_100" type="radio" name="Circle[limit]" value="100">
+                        <label for="limit_100">100人</label>
+                    </div>
+                    <p class="help-text"></p>
+                </div>
+                <div class="control error-expired_time">
+                    <label>有效期</label>
+                    <div class="radio inline-block">
+                        <input type="radio" name="Circle[expired_time]" id="expired_not" value="0" checked>
+                        <label for="expired_not">永久</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input type="radio" name="Circle[expired_time]" id="expired_3" value="3">
+                        <label for="expired_3">3天</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input type="radio" name="Circle[expired_time]" id="expired_7" value="7">
+                        <label for="expired_7">7天</label>
+                    </div>
+                    <p class="help-text"></p>
                 </div>
             </div>
-            <div class="footer has-padding affix dock-bottom">
+            <div class="footer has-padding">
                 <input type="reset" class="btn-lg danger" data-dismiss="display" value="取消">
                 <input type="submit" class="op-submit btn-lg primary pull-right" value="确认">
             </div>
@@ -84,14 +113,6 @@
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('创建圈子');
                 $(_modal).find('.input').val('');
-            });
-
-            /* 编辑 */
-            $('.opshow-edit').unbind('click', 'touchstart', 'tap').bind('tap', function () {
-                var _this  = $(this);
-                var _modal = _this.data('target');
-                $(_modal).find('.modal-title').text('编辑分组名');
-                $(_modal).find('.input').val($.trim(_this.find('.group-title').text()));
             });
 
         });
