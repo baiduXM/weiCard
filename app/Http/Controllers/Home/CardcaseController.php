@@ -268,6 +268,8 @@ class CardcaseController extends HomeController
             } else {
                 $err_code = 751; // 取消收藏失败
             }
+        } else {
+            $err_code = 752;
         }
 //        Config::set('global.ajax.err', $err_code);
 //        Config::set('global.ajax.msg', config('global.msg.' . $err_code));

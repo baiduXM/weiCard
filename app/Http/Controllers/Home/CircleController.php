@@ -41,13 +41,14 @@ class CircleController extends HomeController
      */
     public function index()
     {
+        $circles = Auth::user()->join_circles;
         if ($this->is_mobile) {
-            $circles = Circle::with('user', 'users')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+//            $circles = Circle::with('user', 'users')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
             return view('mobile.circle.index')->with([
                 'circles' => $circles,
             ]);
         }
-        $circles = Auth::user()->create_circles;
+//        $circles = Auth::user()->create_circles;
         return view('web.circle.index')->with([
             'circles' => $circles,
         ]);
@@ -259,7 +260,7 @@ class CircleController extends HomeController
             return '您已在圈子中';
         }
         $this->joinCircle($id);
-        return redirect()->to('circle')->with('success', '加入成功');
+        return redirect()->to('circle/' . $id)->with('success', '加入成功');
     }
 
     /**

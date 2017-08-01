@@ -8,15 +8,18 @@
     {{--内容容器--}}
     <div class="container display ">
         <section class="section">
-            <div class="list divider">
-                <a class="opshow-create item" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
-                   data-url="{{ url()->current() }}">
-                    <div class="btn primary">
-                        <i class="icon icon-plus has-padding-sm"></i>
-                    </div>
-                    <div class="title ">创建圈子</div>
-                </a>
-            </div>
+            @if(Auth::user()->company)
+                <div class="list divider">
+                    <a class="opshow-create item" data-display="modal" data-backdrop="true"
+                       data-target="#editGroupModal"
+                       data-url="{{ url()->current() }}">
+                        <div class="btn primary">
+                            <i class="icon icon-plus has-padding-sm"></i>
+                        </div>
+                        <div class="title ">创建圈子</div>
+                    </a>
+                </div>
+            @endif
             @if(isset($circles))
                 @foreach($circles as $item)
                     <div class="list divider">
