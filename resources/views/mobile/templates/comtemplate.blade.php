@@ -1,5 +1,5 @@
 @extends('mobile.common.layout')
-@section('title', '个人模板选择')
+@section('title', '企业模板展示')
 @section('css')
     @parent
     <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
@@ -7,8 +7,8 @@
 @section('content')
 	<div class="card_choose card_choose1">
 		<ul>
-			<li class="on"><a href="{{ url('template/mobile-change') }}">个人模板</a></li>
-			<li><a href="{{ url('template/com-template') }}">企业模板</a></li>
+			<li ><a href="{{ url('template/mobile-change') }}">个人模板</a></li>
+			<li class="on"><a href="{{ url('template/com-template') }}">企业模板</a></li>
 		</ul>
 	</div>
         <div class="muban_wrap">
@@ -20,16 +20,7 @@
 		              <li>
 		                <a href="javascript:;">
 		                  <div class="div_img"><img src="{{ asset($item->file.'/screenshot.jpg') }}"><em></em>
-							  @if($this_template)
-							  @if($this_template->id==$item->id)
-								  <div class="selected hide show">
-									  <img src="{{ asset('static/mobile/images/selected.png') }}" alt=""> <br>
-									  <span>已选中</span>
-								  </div>
-							  @endif
-							  @endif
 						  </div>
-		                  <input type="hidden" value="{{$item->id}}" />
 		                  <h2>{{$item->display_name}}</h2>
 		                </a>
 		              </li>
@@ -43,7 +34,7 @@
 	    <div class="mubanCon popMiddle titlerer bounceInDown go">
 	        <div class="close_wrap"><div class="close"></div></div>
 	        <div class="pop_img"><img src="images/m3.png"><input type="hidden" value=""></div>	        
-	        <a href="#" id="setTP"><div class="choose_card2">设置为个人模板</div></a>
+	        <div class="choose_card2">更换请联系员工公司管理员！</div>
 	    </div>
 	</div>
 @stop
