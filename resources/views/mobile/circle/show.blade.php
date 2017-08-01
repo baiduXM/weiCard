@@ -54,7 +54,8 @@
                              id="sub2">
                             {{--判断是否关注|该名片是个人名片还是企业名片--}}
                             @if($item->employee)
-                                <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}" class="operation-follow">
+                                <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
+                                   class="operation-follow">
                                     <i class="icon icon-heart has-padding-sm"></i>关注
                                 </a>
                                 <a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}">
@@ -74,14 +75,17 @@
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @endif
-                            <a class="opshow-delete text-danger"
-                               data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                               data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">
-                                <i class="icon icon-signout has-padding-sm"></i>踢出</a>
-                            <a class="opshow-delete text-danger"
-                               data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                               data-url="{{ url('circle/'.$circle->id.'/quit') }}">
-                                <i class="icon icon-signout has-padding-sm"></i>退出</a>
+                            @if($circle->user_id==Auth::id())
+                                <a class="opshow-delete text-danger"
+                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                                   data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">
+                                    <i class="icon icon-signout has-padding-sm"></i>踢出</a>
+                            @else
+                                <a class="opshow-delete text-danger"
+                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                                   data-url="{{ url('circle/'.$circle->id.'/quit') }}">
+                                    <i class="icon icon-signout has-padding-sm"></i>退出</a>
+                            @endif
                         </div>
 
                     </div>

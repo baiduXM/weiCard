@@ -254,10 +254,10 @@ class CircleController extends HomeController
             $query->where('user_id', Auth::id());
         }])->find($id);
         if (!$circle) { // 圈子是否存在
-            return '圈子不存在';
+            return redirect()->to('circle')->with('error', '圈子不存在');
         }
         if (count($circle->users)) { // 是否已加入圈子
-            return '您已在圈子中';
+            return redirect()->to('circle/' . $id)->with('error', '您已在圈子中');
         }
         $this->joinCircle($id);
         return redirect()->to('circle/' . $id)->with('success', '加入成功');
