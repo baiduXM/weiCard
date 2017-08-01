@@ -577,6 +577,7 @@ class EmployeeController extends HomeController
 //            $res['error'] = $error;
             $res = count($employee);
         });
+//        dd($res['error']);
         return $res;
     }
 

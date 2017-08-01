@@ -7,127 +7,92 @@
     {{--内容容器--}}
     <div class="has-margin-sm">
         <div class="heading blue-pale">
-            <div class="headline">名片圈名称
+            <div class="headline">{{ $circle->name }}
                 <a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
                    data-url="{{ url()->current() }}">
-                    <div class="btn primary">
-                        <i class="icon icon-pencil has-padding-sm"></i>
-                    </div>
-                    <div class="title ">编辑</div>
+                    <div class="btn primary"><i class="icon icon-pencil has-padding-sm" title="编辑"></i></div>
                 </a>
-                <span class="small">人数</span>
-                <span class="small">临时</span>
+                <div class="small">人数：{{ count($circle->users) }} / {{ $circle->limit or '∞' }}</div>
+                <div class="small">有效期：{{ $circle->expired_time or '∞' }}</div>
                 {{--<a title="返回"><i class="icon-arrow-left"></i></a>--}}
             </div>
-            <div class="title small muted">人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述</div>
+            {{--<div class="title small muted">人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述人脉圈描述</div>--}}
         </div>
         <section class="section">
-            <div class="list collapse in">
-                <div class="item multi-lines with-avatar">
-                    <div class="avatar circle red">
-                        <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
-                    </div>
-                    <a class="avatar circle red"
-                       href="">
-                        头像
-                    </a>
-                    <a class="content"
-                       href="">
-                        <div class="title">nickname</div>
-                        <div class="subtitle">
-                            {{--                            @if($subitem['follower_type']=='App\Models\User')--}}
-                            <label class="warning has-padding-h rounded">
-                                个人
-                            </label>
-                            {{--@else--}}
-                            <label class="primary has-padding-h m rounded">
-                                企业
-                            </label>
-                            {{--@endif--}}
+            @if(count($circle->users))
+                @foreach($circle->users as $item)
+                    <div class="list collapse in">
+                        <div class="item multi-lines with-avatar">
+                            {{--<div class="control">--}}
+                            {{--<div class="checkbox ">--}}
+                            {{--<input type="checkbox" name="buyMethod">--}}
+                            {{--<label for="buyMethod avatar">--}}
+                            {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>--}}
+                            {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="checkbox">--}}
+                            {{--<input type="checkbox" name="buyMethod">--}}
+                            {{--<label for="buyMethod"></label>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            <div class="avatar circle red">
+                                @if($item->employee)
+                                    <img src="{{ asset($item->avatar) }}" alt="头像"/>
+                                @else
+                                    <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
+                                @endif
+                                {{--{{ $item->employee ? $item->employee->nickname : $item->user->nickname }}--}}
+                                {{--<img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>--}}
+                            </div>
+                            {{--<a class="avatar circle red"--}}
+                            {{--href="">--}}
+                            {{--头像--}}
+                            {{--</a>--}}
+                            <a class="content"
+                               href="">
+                                <div class="title">{{ $item->employee ? $item->employee->nickname : $item->user->nickname }}</div>
+                                <div class="subtitle">
+                                    @if($item->employee)
+                                        <label class="primary has-padding-h m rounded">企业</label>
+                                    @else
+                                        <label class="warning has-padding-h rounded">个人</label>
+                                    @endif
+                                </div>
+                            </a>
+                            <a class="btn" data-display="collapse" data-target="#sub2"
+                               data-group=".item-footer">
+                                <i class="icon icon-ellipsis-h muted"></i>
+                            </a>
                         </div>
-                    </a>
-                    <a class="btn" data-display="collapse" data-target="#sub1"
-                       data-group=".item-footer">
-                        <i class="icon icon-ellipsis-h muted"></i>
-                    </a>
-                </div>
-                <div class="item item-footer justified text-center collapse hidden"
-                     data-subid="1"
-                     id="sub1">
-                    <a href="">
-                        <i class="icon icon-phone has-padding-sm"></i>拨号
-                    </a>
-                    <a href="">
-                        <i class="icon icon-eye-open has-padding-sm"></i>查看
-                    </a>
-                    {{--<a class="opshow-group" onclick="showGroup({{$item['id']}});"--}}
-                    <a class="opshow-group"
-                       data-url=""
-                       data-display data-backdrop="true" data-target="#groupListModal">
-                        {{--data-display data-backdrop="true">--}}
-                        <i class="icon icon-exchange has-padding-sm"></i>分组
-                    </a>
-                    <a class="opshow-delete text-danger"
-                       data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                       data-url="">
-                        <i class="icon icon-trash has-padding-sm"></i>删除</a>
-                </div>
-            </div>
-            <div class="list collapse in">
-                <div class="item multi-lines with-avatar">
-                    <div class="avatar circle red">
-                        <img src="{{ asset('static/home/images/avatar.jpg') }}" alt="头像"/>
-                    </div>
-                    <a class="avatar circle red"
-                       href="">
-                        头像
-                    </a>
-                    <a class="content"
-                       href="">
-                        <div class="title">nickname</div>
-                        <div class="subtitle">
-                            {{--                            @if($subitem['follower_type']=='App\Models\User')--}}
-                            <label class="warning has-padding-h rounded">
-                                个人
-                            </label>
-                            {{--@else--}}
-                            <label class="primary has-padding-h m rounded">
-                                企业
-                            </label>
-                            {{--@endif--}}
+                        <div class="item item-footer justified text-center collapse hidden"
+                             data-subid="2"
+                             id="sub2">
+                            <a href="{{ url('cardcase/follow/'.$item->id) }}">
+                                <i class="icon icon-heart has-padding-sm"></i>关注
+                            </a>
+                            <a href="{{ url('cardcase/unfollow/'.$item->id) }}">
+                                <i class="icon icon-heart-empty has-padding-sm"></i>取消关注
+                            </a>
+                            <a href="{{ url('cardview/'.$item->id) }}">
+                                <i class="icon icon-eye-open has-padding-sm"></i>查看
+                            </a>
+                            <a class="opshow-delete text-danger"
+                               data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                               data-url="{{ url('circle/'.$item->id.'/quit') }}">
+                                <i class="icon icon-signout has-padding-sm"></i>踢出</a>
+                            <a class="opshow-delete text-danger"
+                               data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                               data-url="{{ url('circle/'.$item->id.'/quit') }}">
+                                <i class="icon icon-signout has-padding-sm"></i>退出</a>
                         </div>
-                    </a>
-                    <a class="btn" data-display="collapse" data-target="#sub2"
-                       data-group=".item-footer">
-                        <i class="icon icon-ellipsis-h muted"></i>
-                    </a>
-                </div>
-                <div class="item item-footer justified text-center collapse hidden"
-                     data-subid="2"
-                     id="sub2">
-                    <a href="">
-                        <i class="icon icon-heart has-padding-sm"></i>关注
-                    </a>
-                    <a href="">
-                        <i class="icon icon-heart-empty has-padding-sm"></i>取消关注
-                    </a>
-                    <a href="">
-                        <i class="icon icon-eye-open has-padding-sm"></i>查看
-                    </a>
-                    <a class="opshow-delete text-danger"
-                       data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                       data-url="">
-                        <i class="icon icon-signout has-padding-sm"></i>踢出</a>
-                    <a class="opshow-delete text-danger"
-                       data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                       data-url="">
-                        <i class="icon icon-signout has-padding-sm"></i>退出</a>
-                </div>
 
-            </div>
+                    </div>
+
+                @endforeach
+            @endif
             {{--@if(count($circle->users))--}}
-                {{--@foreach($data as $item)--}}
-                {{--@endforeach--}}
+            {{--@foreach($data as $item)--}}
+            {{--@endforeach--}}
             {{--@endif--}}
         </section>
     </div>
@@ -139,7 +104,7 @@
             <i class="icon icon-chevron-left"></i>
         </a>
         {{--<a class="btn btn-lg circle primary outline" href="{{ url('circle/'.$circle->id.'/edit') }}" title="编辑">--}}
-            {{--<i class="icon icon-pencil"></i>--}}
+        {{--<i class="icon icon-pencil"></i>--}}
         {{--</a>--}}
     </nav>
 @stop
@@ -158,18 +123,34 @@
                     <p class="help-text"></p>
                 </div>
                 <div class="control error-expired_at">
+                    <label>人数</label>
+                    <div class="radio inline-block">
+                        <input id="limit_not" type="radio" name="Circle[limit]" value="0" checked>
+                        <label for="limit_not">无限制</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input id="limit_30" type="radio" name="Circle[limit]" value="30">
+                        <label for="limit_30">30人</label>
+                    </div>
+                    <div class="radio inline-block">
+                        <input id="limit_100" type="radio" name="Circle[limit]" value="100">
+                        <label for="limit_100">100人</label>
+                    </div>
+                    <p class="help-text"></p>
+                </div>
+                <div class="control error-expired_time">
                     <label>有效期</label>
                     <div class="radio inline-block">
-                        <input type="radio" name="Circle[expired_at]" value="0" checked>
-                        <label for="Circle[expired_at]">永久</label>
+                        <input type="radio" name="Circle[expired_time]" id="expired_not" value="0" checked>
+                        <label for="expired_not">永久</label>
                     </div>
                     <div class="radio inline-block">
-                        <input type="radio" name="Circle[expired_at]" value="3">
-                        <label for="Circle[expired]">3天</label>
+                        <input type="radio" name="Circle[expired_time]" id="expired_3" value="3">
+                        <label for="expired_3">3天</label>
                     </div>
                     <div class="radio inline-block">
-                        <input type="radio" name="Circle[expired_at]" value="7">
-                        <label for="Circle[expired]">7天</label>
+                        <input type="radio" name="Circle[expired_time]" id="expired_7" value="7">
+                        <label for="expired_7">7天</label>
                     </div>
                     <p class="help-text"></p>
                 </div>
@@ -184,6 +165,9 @@
 @section('javascript')
     <script>
         $(function () {
+            $('#editGroupModal').on('show', function () {
+                alert(1)
+            });
         });
     </script>
 @stop

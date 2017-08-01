@@ -39,13 +39,6 @@
             @endif
         </section>
     </div>
-    {{--侧边悬浮按钮--}}
-    {{--<nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">--}}
-        {{--<a class="btn btn-lg circle primary outline"--}}
-           {{--href="{{ url()->previous() == url()->current() ? url('cardcase') : url()->previous() }}">--}}
-            {{--<i class="icon icon-chevron-left"></i>--}}
-        {{--</a>--}}
-    {{--</nav>--}}
 @stop
 @section('modal')
     {{--添加/编辑圈子--}}
