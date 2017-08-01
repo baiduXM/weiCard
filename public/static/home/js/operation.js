@@ -16,8 +16,9 @@ $(function () {
             cache: false,
             contentType: false,
             processData: false,
-            data: _formData,
+            data: {'data':_formData},
             dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (json) {
                 console.log('success');
                 console.log(json);
@@ -69,6 +70,8 @@ $(function () {
     $(".operate-show").click(function () {
         var _url = $(this).data("url");
         $.get(_url, function (data) {
+            console.log('operate-show')
+            console.log(data)
             showInformation(data, 'name', 'info-');
         });
     });
@@ -84,6 +87,7 @@ $(function () {
         var _url = $(this).data("url");
         $(".form-update").attr("action", _url);
         $.get(_url, function (data) {
+            console.log('operate-edit')
             console.log(data)
             showInformation(data, 'class', 'info-');
         });
@@ -92,22 +96,28 @@ $(function () {
     /* 操作 - 更新*/
     $(".operate-update").click(function () {
         var _url      = $('.form-update').attr('action');
+        var _method   = $('.form-update').attr('method') ? $('.form-update').attr('method') : 'post';
         var _formData = new FormData($('.form-update')[0]);
         $("[class^='error-']").addClass('hidden');
         $.ajax({
             url: _url,
-            type: "post",
+            type: _method,
             cache: false,
             contentType: false,
             processData: false,
             data: _formData,
             dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (json) {
+                console.log('success-update')
+                console.log(json)
                 $('.hintModal').modal('show');
                 $('.hintModal .modal-body').text(json.msg);
                 $('.hintModal .after-operate').text();
             },
             error: function (json) {
+                console.log('error-update')
+                console.log(json)
                 var errors = json.responseJSON;
                 showError(errors);
                 return false;
@@ -156,6 +166,7 @@ $(function () {
     /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function () {
         var _url        = $('.hintModal .after-operate').text();
+
         window.location = _url; // 为空，刷新当前页
     });
 
@@ -293,8 +304,6 @@ function showInformation(data, label, prefix) {
                 }
 
             } else if ($('[' + selector + i + ']').attr('type') == "radio") {
-                console.log(typeof n);
-                console.log(n);
                 if (n) {
                     $('[' + selector + i + '][value="' + n + '"]').prop("checked", true);
                 } else {
@@ -307,8 +316,11 @@ function showInformation(data, label, prefix) {
                     $('[' + selector + i + ']').val(n);
                 }
             }
-
-        } else if ($('[' + selector + i + ']').is('select')) {
+        }
+        if ($('[' + selector + i + ']').is('span')) {
+            $('[' + selector + i + ']').text(n);
+        }
+        if ($('[' + selector + i + ']').is('select')) {
             $('[' + selector + i + ']').val(n);
         }
     });

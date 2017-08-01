@@ -46,14 +46,13 @@
         @if(Auth::user()->company)
             <div class="tree_box nav">
                 <h3 {{ Request::path() == 'circle' || Request::is('circle/*') || Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
-                    <a href="javascript:"><em class="iconFont">&#xe658;</em>公司管理
+                    <a href="javascript:;"><em class="iconFont">&#xe658;</em>公司管理
                         @if(Request::path() == 'company' || Request::is('company/*'))
                             <i class="nav-j"></i>
                         @else
                             <i></i>
                         @endif
                     </a>
-
                 </h3>
                 <ul class="tree_one" {{ Request::path() == 'circle' || Request::is('circle/*') || Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
                     <li {{ Request::path() == 'company' || Request::is('company/create') ? 'class=active' : '' }}>
@@ -63,19 +62,15 @@
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
                         <a href="{{ url('company/department') }}">公司部门</a></li>
                     {{--<li {{ Request::path() == 'contacts' ? 'class=active' : '' }}>--}}
-                    {{--<a href="{{ url('contacts') }}">员工人脉圈</a></li>--}}
-                    {{--<li {{ Request::path() == 'circle' || Request::is('circle/*') ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('circle') }}">名片圈</a></li>--}}
+                        {{--<a href="{{ url('company/contacts') }}">员工人脉圈</a></li>--}}
+                    <li {{ Request::path() == 'circle' || Request::is('circle/*') ? 'class=active' : '' }}>
+                        <a href="{{ url('circle') }}">名片圈</a></li>
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
                         <a href="{{ url('company/link') }}">微链接</a></li>
                     <li {{ Request::path() == 'company/templategroup' ? 'class=active' : '' }}>
                         <a href="{{ url('company/templategroup') }}">模板组</a></li>
-                    @if(Auth::user()->company)
-                        {{--<li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>--}}
-                        {{--<a href="{{ url('company/department') }}">公司部门</a></li>--}}
-                    @endif
                 </ul>
             </div><!--我的公司-->
 
