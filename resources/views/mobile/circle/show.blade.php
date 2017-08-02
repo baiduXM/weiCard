@@ -58,7 +58,8 @@
                                    class="operation-follow">
                                     <i class="icon icon-heart has-padding-sm"></i>关注
                                 </a>
-                                <a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}">
+                                <a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}"
+                                   class="operation-unfollow">
                                     <i class="icon icon-heart-empty has-padding-sm"></i>取消关注
                                 </a>
                                 <a href="{{ url('cardview/e-'.$item->employee->id) }}">
@@ -115,7 +116,7 @@
     <div id="editGroupModal" class="modal affix dock-bottom enter-from-bottom fade">
         <form action="" method="post" onsubmit="return false;">
             <div class="heading divider">
-                <div class="title modal-title">创建圈子</div>
+                <div class="title modal-title">编辑圈子</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
             </div>
             <div class="content has-padding">
@@ -180,10 +181,76 @@
 @section('javascript')
     <script>
         $(function () {
+            var once = true;
+            /* 关注 */
+            $('.operation-follow').unbind('click', 'tap', 'touchstart').on('tap', function () {
+                if (!once) {
+                    return false;
+                }
+                once      = false;
+                var _this = $(this);
+                var _url  = _this.data('url');
+                console.log('follow');
+                console.log(_url);
+                useAjax('get', _url);
+                $.ajax({
+                    type: 'get',
+                    url: _url,
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                    success: function (data) {
+                        once = true;
+                        /* 现实成功消息，刷新当前页面 */
+                        $.messager.show("<i class='icon-check'>  " + data + "</i>", {
+                            type: 'success', placement: 'center', autoHide: 1000, closeButton: false
+                        });
+                    },
+                });
+
+            });
+            /* 取消关注 */
+            $('.operation-unfollow').unbind('click', 'tap', 'touchstart').on('tap', function () {
+                if (!once) {
+                    console.log(once);
+
+                    return false;
+                }
+                once = false;
+
+                var _this = $(this);
+                console.log('unfollow');
+                console.log(_this);
+            });
+
+
             $('#editGroupModal').on('show', function () {
                 alert(1)
             });
         });
+
+        /**
+         *
+         */
+        function useAjax(type, url) {
+            $.ajax({
+                type: type,
+                url: url,
+//                dataType: 'json',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                success: function (data) {
+                    /* 现实成功消息，刷新当前页面 */
+                    $.messager.show("<i class='icon-info'>  " + data + "</i>", {
+                        type: 'success', placement: 'center', autoHide: 1000, closeButton: false
+                    });
+                    return true;
+                },
+//                error: function (data) {
+//                    console.log('error');
+//                    console.log(data);
+//                    return true;
+//                }
+            });
+        }
     </script>
 @stop
 
