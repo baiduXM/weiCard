@@ -237,8 +237,6 @@ class CardcaseController extends HomeController
      */
     public function unfollow(Request $request, $params)
     {
-
-
         /* 获取参数 */
         $param = explode('-', $params);
         switch ($param[0]) {
@@ -384,8 +382,18 @@ class CardcaseController extends HomeController
             }
         }
         return redirect()->route('cardcase.index');
-
-
     }
+
+    public function fans()
+    {
+        dump(Auth::id());
+        $fans = Auth::user()->followers;
+        $followers = Auth::user()->cardcases;
+        dump($fans);
+        dump($followers);
+        return view('mobile.cardcase.fans');
+    }
+
+
 }
 

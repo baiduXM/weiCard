@@ -162,6 +162,9 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('cardcase/group', ['as' => 'cardcase.group.index', 'uses' => 'Home\GroupController@index']);
     Route::post('cardcase/group', ['as' => 'cardcase.group.store', 'uses' => 'Home\GroupController@store']);
 
+    /* 名片夹->粉丝 */
+    Route::get('cardcase/fans', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
+
     /* 名片夹 */
     Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::put('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
