@@ -8,12 +8,12 @@
     <div class="has-margin-sm">
         <div class="heading blue-pale">
             <div class="headline">{{ $circle->name }}
-                @if(Auth::id() == $circle->user_id)
-                    <a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"
-                       data-url="{{ url()->current() }}">
-                        <div class="btn primary"><i class="icon icon-pencil has-padding-sm" title="编辑"></i></div>
-                    </a>
-                @endif
+                {{--@if(Auth::id() == $circle->user_id)--}}
+                    {{--<a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"--}}
+                       {{--data-url="{{ url()->current() }}">--}}
+                        {{--<div class="btn primary"><i class="icon icon-pencil has-padding-sm" title="编辑"></i></div>--}}
+                    {{--</a>--}}
+                {{--@endif--}}
                 <a class="" data-display="modal" data-backdrop="true" data-target="#showQrcode"
                    data-url="{{ url()->current() }}">
                     <div class="btn primary"><i class="icon icon-qrcode has-padding-sm" title="二维码"></i></div>
@@ -27,7 +27,7 @@
         <section class="section">
             @if(count($circle->users))
                 @foreach($circle->users as $item)
-                    <div class="list collapse in">
+                    <div class="list">
                         <div class="item multi-lines with-avatar">
                             <div class="avatar circle red">
                                 <img src="{{ $item->avatar ? asset($item->avatar) : asset('static/home/images/avatar.jpg') }}"
@@ -54,29 +54,31 @@
                              id="sub2">
                             {{--判断是否关注|该名片是个人名片还是企业名片--}}
                             @if($item->employee)
-                                <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
-                                   class="operation-follow">
-                                    <i class="icon icon-heart has-padding-sm"></i>关注
-                                </a>
-                                <a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}"
-                                   class="operation-unfollow">
-                                    <i class="icon icon-heart-empty has-padding-sm"></i>取消关注
-                                </a>
+                                    <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
+                                       class="operation-follow">
+                                        <i class="icon icon-heart has-padding-sm"></i>关注
+                                    </a>
+                                    {{--<a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}"--}}
+                                       {{--class="operation-unfollow">--}}
+                                        {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
+                                    {{--</a>--}}
                                 <a href="{{ url('cardview/e-'.$item->employee->id) }}">
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @else
-                                <a href="{{ url('cardcase/follow/u-'.$item->id) }}">
-                                    <i class="icon icon-heart has-padding-sm"></i>关注
-                                </a>
-                                <a href="{{ url('cardcase/unfollow/u-'.$item->id) }}">
-                                    <i class="icon icon-heart-empty has-padding-sm"></i>取消关注
-                                </a>
+                                    <a href="{{ url('cardcase/follow/u-'.$item->id) }}"
+                                       class="operation-follow">
+                                        <i class="icon icon-heart has-padding-sm"></i>关注
+                                    </a>
+                                    {{--<a href="{{ url('cardcase/unfollow/u-'.$item->id) }}"--}}
+                                       {{--class="operation-unfollow">--}}
+                                        {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
+                                    {{--</a>--}}
                                 <a href="{{ url('cardview/u-'.$item->id) }}">
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @endif
-                            @if($circle->user_id==Auth::id())
+                            @if($circle->user_id == Auth::id())
                                 <a class="opshow-delete text-danger"
                                    data-display="modal" data-backdrop="true" data-target=".confirmModal"
                                    data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">
@@ -180,8 +182,8 @@
 @stop
 @section('javascript')
     <script>
+        var once = true; // 防止多次触发
         $(function () {
-            var once = true;
             /* 关注 */
             $('.operation-follow').unbind('click', 'tap', 'touchstart').on('tap', function () {
                 if (!once) {
@@ -190,65 +192,41 @@
                 once      = false;
                 var _this = $(this);
                 var _url  = _this.data('url');
-                console.log('follow');
-                console.log(_url);
                 useAjax('get', _url);
-                $.ajax({
-                    type: 'get',
-                    url: _url,
-                    dataType: 'json',
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
-                    success: function (data) {
-                        once = true;
-                        /* 现实成功消息，刷新当前页面 */
-                        $.messager.show("<i class='icon-check'>  " + data + "</i>", {
-                            type: 'success', placement: 'center', autoHide: 1000, closeButton: false
-                        });
-                    },
-                });
-
             });
+
             /* 取消关注 */
             $('.operation-unfollow').unbind('click', 'tap', 'touchstart').on('tap', function () {
                 if (!once) {
-                    console.log(once);
-
                     return false;
                 }
-                once = false;
-
+                once      = false;
                 var _this = $(this);
-                console.log('unfollow');
-                console.log(_this);
+                var _url  = _this.data('url');
+                useAjax('get', _url);
             });
 
-
             $('#editGroupModal').on('show', function () {
-                alert(1)
             });
         });
 
         /**
-         *
+         * 调用ajax
          */
         function useAjax(type, url) {
             $.ajax({
                 type: type,
                 url: url,
+//                async: false,
 //                dataType: 'json',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                 success: function (data) {
                     /* 现实成功消息，刷新当前页面 */
                     $.messager.show("<i class='icon-info'>  " + data + "</i>", {
-                        type: 'success', placement: 'center', autoHide: 1000, closeButton: false
+                        type: 'success', placement: 'center', autoHide: 1000, closeButton: false,
                     });
-                    return true;
+                    once = true;
                 },
-//                error: function (data) {
-//                    console.log('error');
-//                    console.log(data);
-//                    return true;
-//                }
             });
         }
     </script>
