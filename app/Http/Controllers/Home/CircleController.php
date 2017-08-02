@@ -281,7 +281,7 @@ class CircleController extends HomeController
             return response()->json('圈子不存在');
         }
         if (!count($circle->users)) { // 是否已加入圈子
-            return '您不在圈子中';
+            return response()->json('您不在圈子中');
         }
         $this->exitCircle($id, $user_id);
         return redirect()->to('circle')->with('success', '退出成功');

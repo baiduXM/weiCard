@@ -261,22 +261,21 @@ class CardcaseController extends HomeController
         }
         $cardcase = $query->first();
         /* ajax收藏 */
-//        if ($request->ajax()) {
         if ($cardcase) { // 有，删除
             if ($cardcase->delete()) {
-                $err_code = 750; // 取消收藏成功
+                $err_msg = '取消关注成功';
             } else {
-                $err_code = 751; // 取消收藏失败
+                $err_msg = '取消关注失败';
             }
         } else {
-            $err_code = 752;
+            $err_msg = '取消关注失败 - 未关注';
         }
-//        Config::set('global.ajax.err', $err_code);
-//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-//        return Config::get('global.ajax');
-//        }
-        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
+        if ($request->ajax()) {
+            return response()->json($err_msg);
+        } else {
+            return redirect('cardcase')->with('info', $err_msg);
 
+        }
     }
 
 
