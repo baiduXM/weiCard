@@ -49,6 +49,11 @@
                         {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
                     </div>
                 </a>
+                <a href="{{ url('template/com-template') }}">
+                    <div class="choose_card pr">体验企业模板
+                        {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                    </div>
+                </a>
             @else
                 <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg22.png') }}">
                     <div class="card_c_gth pa"><img src="{{ asset('static/mobile/images/gth.png') }}"></div>
@@ -59,6 +64,7 @@
                     <input name="code" id="code" type="text" class="inputt" placeholder="输入名片码">
                    </span>
                     <a href="javascript:;" class="card_c_cj">立即获取</a>
+                    <a href="{{ url('template/com-template') }}" class="card_c_cj">体验企业模板</a>
                 </div>
             @endif
         </div>

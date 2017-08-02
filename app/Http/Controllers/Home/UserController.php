@@ -168,6 +168,10 @@ class UserController extends HomeController
             }
         }
         if ($user->save()) {
+            if ($this->is_mobile)
+            {
+                return redirect()->route('cardcase.show')->with('type','u');
+            }
             return redirect('user')->with('success', '修改成功');
         } else {
             return redirect()->back();
