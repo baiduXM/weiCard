@@ -33,8 +33,8 @@
                                 {{--data-display="modal" data-backdrop="true" data-target="#editGroupModal"--}}
                                 {{--data-url="{{ url()->current().'/'. $item['id']}}">--}}
                                 <span class="group-title">{{ $item->name }}</span>
-                                <label class="info has-padding-h has-margin-sm">{{ count($item->users) }}</label>
-                                {!! $item->expired_at ? '<label class="primary has-padding-h">临时</label>' : '' !!}
+                                <label class="info has-padding-h has-margin-sm">{{ count($item->users) }} / {{ $item->limit>0 ? $item->limit: '∞' }}</label>
+                                {!! $item->expired_time ? '<label class="primary has-padding-h">临时</label>' : '' !!}
                             </a>
                         </div>
                     </div>

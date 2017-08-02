@@ -108,7 +108,7 @@
                                 <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
                                             class="iconFont">&#xe613;</i></a>
                             </td>
-                            <td><a href="" ><i class="iconFont">&#xe634;</i></a></td>
+                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
                             <td><a href="" data-toggle="modal" data-target=".bs3"><i
@@ -231,7 +231,8 @@
                             </p>
                             <p>
                                 <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                <select class="info-templategroup_id" id="templategroup_id"
+                                        name="Employee[templategroup_id]">
                                     <option value="">公司默认模板</option>
                                     @foreach($templategroups as $templategroup)
                                         <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
@@ -245,11 +246,11 @@
                                        value="{{ old('Employee.positions') ? old('Employee.positions') : '' }}">
                                 <span class="error-positions" style="color: red;"></span>
                             </p>
-                            <p>
-                                <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]">
-                                <span class="error-avatar" style="color: red;"></span>
-                            </p>
+                            {{--<p>--}}
+                                {{--<span>照片 : </span>--}}
+                                {{--<input type="file" name="Employee[avatar]">--}}
+                                {{--<span class="error-avatar" style="color: red;"></span>--}}
+                            {{--</p>--}}
                             <p>
                                 <span>座机 : </span>
                                 <input type="text" name="Employee[telephone]" placeholder=""
@@ -341,7 +342,8 @@
                             </p>
                             <p>
                                 <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                <select class="info-templategroup_id" id="templategroup_id"
+                                        name="Employee[templategroup_id]">
                                     <option value="">公司默认模板</option>
                                     @foreach($templategroups as $templategroup)
                                         <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
@@ -397,4 +399,44 @@
             </div>
         </div>
     </div><!-- 员工 - 编辑modal -->
+@stop
+@section('javascript')
+    <script>
+        $(function () {
+            /* 操作 - 更新*/
+            $(".operate-create").unbind('click').on('click', function () {
+                var _url      = $('.form-update').attr('action');
+                var _method   = $('.form-update').attr('method') ? $('.form-update').attr('method') : 'post';
+                var _formData = $(this).parents('form').serializeArray();
+//                var _formData = $('.form-update').serialize();
+//                var _formData = new FormData($('.form-update')[0]);
+                console.log(_formData);
+                $("[class^='error-']").addClass('hidden');
+                $.ajax({
+                    url: _url,
+                    type: _method,
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+                    data: _formData,
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (json) {
+                        console.log('success-create')
+                        console.log(json)
+                        $('.hintModal').modal('show');
+                        $('.hintModal .modal-body').text(json.msg);
+                        $('.hintModal .after-operate').text();
+                    },
+                    error: function (json) {
+                        console.log('error-create')
+                        console.log(json)
+                        var errors = json.responseJSON;
+                        showError(errors);
+                        return false;
+                    }
+                });
+            });
+        });
+    </script>
 @stop

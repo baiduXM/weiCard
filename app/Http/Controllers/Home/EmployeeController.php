@@ -120,13 +120,13 @@ class EmployeeController extends HomeController
                 $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
             }
         }
-        $employees = $query->where('company_id', '=', $company->id)->paginate();
+        $employees = $query->where('company_id', '=', $company->id)->orderBy('created_at', 'desc')->paginate();
 
         return view('web.employee.index')->with([
-            'employees'   => $employees,
-            'departments' => $departments,
+            'employees'      => $employees,
+            'departments'    => $departments,
             'templategroups' => $templategroups,
-            'params'      => $params,
+            'params'         => $params,
         ]);
     }
 
@@ -163,7 +163,7 @@ class EmployeeController extends HomeController
                 $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
             }
         }
-        $employees = $query->where('company_id', '=', $company->id)->onlyTrashed()->paginate();
+        $employees = $query->where('company_id', '=', $company->id)->onlyTrashed()->orderBy('created_at', 'desc')->paginate();
         return view('web.employee.trash')->with([
             'employees'   => $employees,
             'departments' => $departments,
@@ -184,6 +184,8 @@ class EmployeeController extends HomeController
         } else {
             return redirect()->to('user')->with('error', '获取公司错误');
         }
+//        dump($request->all());
+//        exit;
         /* 验证 */
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
@@ -260,11 +262,11 @@ class EmployeeController extends HomeController
     public function show($id)
     {
         $employee = Employee::with('company', 'department', 'user', 'position')->find($id);
-        $templategroup_id=$employee->templategroup_id;
-        $templategroup=TemplateGroup::query()->find($templategroup_id);
-        if (count($templategroup) > 0){
-            $templategroup_name=$templategroup->name;
-            $employee['templategroup_name']=$templategroup_name;
+        $templategroup_id = $employee->templategroup_id;
+        $templategroup = TemplateGroup::query()->find($templategroup_id);
+        if (count($templategroup) > 0) {
+            $templategroup_name = $templategroup->name;
+            $employee['templategroup_name'] = $templategroup_name;
         }
         return $employee;
     }
@@ -284,7 +286,7 @@ class EmployeeController extends HomeController
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
-            'Employee.email'     => 'email|unique:employees,employees.email,' . $id,
+            'Employee.email'     => 'email',
             'Employee.mobile'    => 'unique:employees,employees.mobile,' . $id . '|numeric',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
