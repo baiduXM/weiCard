@@ -49,7 +49,7 @@ class TemplateController extends HomeController
     {
         $query = Template::query();
         $query->where('type', 1);
-        $templates = $query->get();
+        $templates = $query->orderBy('sort', 'asc')->get();
         $user = Auth::user();
         $t = $user ->templates;
         if($t){
@@ -73,7 +73,7 @@ class TemplateController extends HomeController
     {
         $query = Template::query();
         $query->where('type', 2);
-        $templates = $query->get();
+        $templates = $query->orderBy('sort', 'asc')->get();
         $user = Auth::user();
 
         return view('mobile.templates.comtemplate')->with([

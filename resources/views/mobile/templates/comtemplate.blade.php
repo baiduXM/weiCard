@@ -21,6 +21,7 @@
 		                <a href="javascript:;">
 		                  <div class="div_img"><img src="{{ asset($item->file.'/screenshot.jpg') }}"><em></em>
 						  </div>
+							<input type="hidden" value="{{$item->link}}" />
 		                  <h2>{{$item->display_name}}</h2>
 		                </a>
 		              </li>
@@ -35,11 +36,12 @@
 	        <div class="close_wrap"><div class="close"></div></div>
 	        <div class="pop_img"><img src="images/m3.png"><input type="hidden" value=""></div>	        
 	        <div class="choose_card2">更换请联系员工公司管理员！</div>
+			<a href="#" id="setTP"><div class="choose_card2">体验模板</div></a>
 	    </div>
 	</div>
 @stop
 @section('javascript')
     @parent
-    <script src="{{ asset('static/mobile/js/function.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_com.js') }}"></script>
     <script src="{{ asset('static/mobile/js/operation.js') }}"></script>
 @stop
