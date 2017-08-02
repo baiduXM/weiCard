@@ -30,7 +30,7 @@
 							  @endif
 						  </div>
 		                  <input type="hidden" value="{{$item->id}}" />
-		                  <h2>{{$item->display_name}}</h2>
+		                  <h2>{{$item->name}}</h2>
 		                </a>
 		              </li>
 		        	@endforeach
