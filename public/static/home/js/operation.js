@@ -16,7 +16,7 @@ $(function () {
             cache: false,
             contentType: false,
             processData: false,
-            data: {'data':_formData},
+            data: _formData,
             dataType: 'json',
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function (json) {
@@ -165,7 +165,7 @@ $(function () {
 
     /* 提示 - 隐藏后跳转 */
     $('.hintModal').on('hidden.bs.modal', function () {
-        var _url        = $('.hintModal .after-operate').text();
+        var _url = $('.hintModal .after-operate').text();
 
         window.location = _url; // 为空，刷新当前页
     });
