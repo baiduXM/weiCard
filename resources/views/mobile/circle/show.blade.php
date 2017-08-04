@@ -78,17 +78,17 @@
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @endif
-                            @if($circle->user_id == Auth::id())
-                                <a class="opshow-delete text-danger"
-                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                                   data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">
-                                    <i class="icon icon-signout has-padding-sm"></i>踢出</a>
-                            @else
-                                <a class="opshow-delete text-danger"
-                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                                   data-url="{{ url('circle/'.$circle->id.'/quit') }}">
-                                    <i class="icon icon-signout has-padding-sm"></i>退出</a>
-                            @endif
+                            {{--@if($circle->user_id == Auth::id())--}}
+                                {{--<a class="opshow-delete text-danger"--}}
+                                   {{--data-display="modal" data-backdrop="true" data-target=".confirmModal"--}}
+                                   {{--data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">--}}
+                                    {{--<i class="icon icon-signout has-padding-sm"></i>踢出</a>--}}
+                            {{--@else--}}
+                                {{--<a class="opshow-delete text-danger"--}}
+                                   {{--data-display="modal" data-backdrop="true" data-target=".confirmModal"--}}
+                                   {{--data-url="{{ url('circle/'.$circle->id.'/quit') }}">--}}
+                                    {{--<i class="icon icon-signout has-padding-sm"></i>退出</a>--}}
+                            {{--@endif--}}
                         </div>
 
                     </div>
