@@ -92,7 +92,7 @@ class CircleController extends HomeController
         $res = Circle::create($data);
         if (!$res) {
             if ($request->ajax()) {
-                return response()->json(array('err' => 1, 'msg' => '添加失败'));
+                return response()->json('添加失败');
             }
             return redirect()->back()->with('error', '添加失败');
         }
@@ -100,7 +100,7 @@ class CircleController extends HomeController
         $res->qrcode_path = $this->createQrcode(url('circle/' . $res->id . '/join'), 'uploads/circle'); // 创建二维码
         $res->save(); // 保存
         if ($request->ajax()) {
-            return response()->json(array('err' => 0, 'msg' => '添加成功'));
+            return response()->json('添加成功');
         }
         return redirect()->back()->with('success', '添加成功');
     }

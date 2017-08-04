@@ -107,7 +107,7 @@ class User extends CommonModel implements
     }
 
     /* 用户关注 */
-    public function following()
+    public function followings()
     {
         return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
     }
@@ -119,6 +119,15 @@ class User extends CommonModel implements
     }
 
     /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function isFollow($user_id)
+    {
+        return $this->followings()->where('follower_id', $user_id)->count();
+    }
+
+    /**
      * 关注用户/取消关注
      *
      * @param $user 用户
@@ -126,12 +135,10 @@ class User extends CommonModel implements
      */
     public function followThisUser($user)
     {
-
-        return $this->following()->toggle($user);
-        if ($this->following()) {
-            $res = $this->following()->detach($user);
+        if ($this->followings()->where('follower_id', $user)->count()) {
+            $res = $this->followings()->detach($user);
         } else {
-            $res = $this->following()->attach($user);
+            $res = $this->followings()->attach($user);
         }
         return $res;
     }
