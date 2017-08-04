@@ -44,14 +44,14 @@
                                     @endif
                                 </div>
                             </a>
-                            <a class="btn" data-display="collapse" data-target="#sub2"
+                            <a class="btn" data-display="collapse" data-target="#sub{{ $item->id }}"
                                data-group=".item-footer">
                                 <i class="icon icon-ellipsis-h muted"></i>
                             </a>
                         </div>
                         <div class="item item-footer justified text-center collapse hidden"
-                             data-subid="2"
-                             id="sub2">
+                             data-subid="{{ $item->id }}"
+                             id="sub{{ $item->id }}">
                             {{--判断是否关注|该名片是个人名片还是企业名片--}}
                             @if($item->employee)
                                     <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
