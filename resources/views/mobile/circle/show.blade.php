@@ -9,10 +9,10 @@
         <div class="heading blue-pale">
             <div class="headline">{{ $circle->name }}
                 {{--@if(Auth::id() == $circle->user_id)--}}
-                    {{--<a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"--}}
-                       {{--data-url="{{ url()->current() }}">--}}
-                        {{--<div class="btn primary"><i class="icon icon-pencil has-padding-sm" title="编辑"></i></div>--}}
-                    {{--</a>--}}
+                {{--<a class="opshow-create" data-display="modal" data-backdrop="true" data-target="#editGroupModal"--}}
+                {{--data-url="{{ url()->current() }}">--}}
+                {{--<div class="btn primary"><i class="icon icon-pencil has-padding-sm" title="编辑"></i></div>--}}
+                {{--</a>--}}
                 {{--@endif--}}
                 <a class="" data-display="modal" data-backdrop="true" data-target="#showQrcode"
                    data-url="{{ url()->current() }}">
@@ -54,26 +54,26 @@
                              id="sub{{ $item->id }}">
                             {{--判断是否关注|该名片是个人名片还是企业名片--}}
                             @if($item->employee)
-                                    <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
-                                       class="operation-follow">
-                                        <i class="icon icon-heart has-padding-sm"></i>关注
-                                    </a>
-                                    {{--<a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}"--}}
-                                       {{--class="operation-unfollow">--}}
-                                        {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
-                                    {{--</a>--}}
+                                <a data-url="{{ url('cardcase/follow/e-'.$item->employee->id) }}"
+                                   class="operation-follow">
+                                    <i class="icon icon-heart has-padding-sm"></i>关注
+                                </a>
+                                {{--<a data-url="{{ url('cardcase/unfollow/e-'.$item->employee->id) }}"--}}
+                                {{--class="operation-unfollow">--}}
+                                {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
+                                {{--</a>--}}
                                 <a href="{{ url('cardview/e-'.$item->employee->id) }}">
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @else
-                                    <a href="{{ url('cardcase/follow/u-'.$item->id) }}"
-                                       class="operation-follow">
-                                        <i class="icon icon-heart has-padding-sm"></i>关注
-                                    </a>
-                                    {{--<a href="{{ url('cardcase/unfollow/u-'.$item->id) }}"--}}
-                                       {{--class="operation-unfollow">--}}
-                                        {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
-                                    {{--</a>--}}
+                                <a href="{{ url('cardcase/follow/u-'.$item->id) }}"
+                                   class="operation-follow">
+                                    <i class="icon icon-heart has-padding-sm"></i>关注
+                                </a>
+                                {{--<a href="{{ url('cardcase/unfollow/u-'.$item->id) }}"--}}
+                                {{--class="operation-unfollow">--}}
+                                {{--<i class="icon icon-heart-empty has-padding-sm"></i>取消关注--}}
+                                {{--</a>--}}
                                 <a href="{{ url('cardview/u-'.$item->id) }}">
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
@@ -204,6 +204,7 @@
                 var _this = $(this);
                 var _url  = _this.data('url');
                 useAjax('get', _url);
+
             });
 
             $('#editGroupModal').on('show', function () {
@@ -217,9 +218,10 @@
             $.ajax({
                 type: type,
                 url: url,
-//                async: false,
-//                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                async: true,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }, // CSRF验证必填
                 success: function (data) {
                     /* 现实成功消息，刷新当前页面 */
                     $.messager.show("<i class='icon-info'>  " + data + "</i>", {

@@ -60,7 +60,7 @@ $(function () {
                 // if (_method == 'post') {
                 //
                 // }
-                setTimeout(window.location.href = _url, 1); // 1s后刷新页面
+                window.location.href = _url; // 1s后刷新页面
             },
             error: function (data) {
                 once = true;
@@ -87,3 +87,4 @@ function showError(scope, data) {
         obj.find('.help-text').text(n);
     });
 }
+

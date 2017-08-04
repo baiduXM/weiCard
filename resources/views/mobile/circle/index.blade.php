@@ -58,10 +58,12 @@
                 </div>
                 <div class="control error-expired_at">
                     <label>人数</label>
-                    <div class="radio inline-block">
-                        <input id="limit_not" type="radio" name="Circle[limit]" value="0" checked>
-                        <label for="limit_not">无限制</label>
-                    </div>
+                    @if(Auth::user()->company)
+                        <div class="radio inline-block">
+                            <input id="limit_not" type="radio" name="Circle[limit]" value="0" checked>
+                            <label for="limit_not">无限制</label>
+                        </div>
+                    @endif
                     <div class="radio inline-block">
                         <input id="limit_30" type="radio" name="Circle[limit]" value="30">
                         <label for="limit_30">30人</label>
@@ -74,10 +76,12 @@
                 </div>
                 <div class="control error-expired_time">
                     <label>有效期</label>
-                    <div class="radio inline-block">
-                        <input type="radio" name="Circle[expired_time]" id="expired_not" value="0" checked>
-                        <label for="expired_not">永久</label>
-                    </div>
+                    @if(Auth::user()->company)
+                        <div class="radio inline-block">
+                            <input type="radio" name="Circle[expired_time]" id="expired_not" value="0" checked>
+                            <label for="expired_not">永久</label>
+                        </div>
+                    @endif
                     <div class="radio inline-block">
                         <input type="radio" name="Circle[expired_time]" id="expired_3" value="3">
                         <label for="expired_3">3天</label>
@@ -112,7 +116,23 @@
 
         });
 
-
+        /**
+         * 调用ajax
+         */
+        function useAjax(type, url) {
+            $.ajax({
+                type: type,
+                url: url,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+                success: function (data) {
+                    /* 现实成功消息，刷新当前页面 */
+                    $.messager.show("<i class='icon-info'>  " + data + "</i>", {
+                        type: 'success', placement: 'center', autoHide: 1000, closeButton: false,
+                    });
+                    // once = true;
+                },
+            });
+        }
     </script>
 @stop
 
