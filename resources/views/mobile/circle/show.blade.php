@@ -105,7 +105,7 @@
     <nav class="affix dock-bottom dock-left shadow-none has-margin-sm column align-start">
         {{--编辑--}}
         <a class="btn btn-lg circle primary outline"
-           href="{{ url()->previous() == url()->current() ? url('circle') : url()->previous() }}">
+           href="{{ url()->previous() || url()->previous() == url()->current() ? url('circle') : url()->previous() }}">
             <i class="icon icon-chevron-left"></i>
         </a>
         {{--<a class="btn btn-lg circle primary outline" href="{{ url('circle/'.$circle->id.'/edit') }}" title="编辑">--}}
