@@ -47,11 +47,11 @@ Route::group(['prefix' => 'oauth'], function () {
 });
 
 /* 后台登录 */
-Route::get('admin/login', 'Auth\AdminAuthController@getLogin');
-Route::post('admin/login', 'Auth\AdminAuthController@postLogin');
-Route::get('admin/register', 'Auth\AdminAuthController@getRegister');
-Route::post('admin/register', 'Auth\AdminAuthController@postRegister');
-Route::get('admin/logout', 'Auth\AdminAuthController@logout');
+Route::get('mpmanager/login',  ['as' => 'mpmanager.login', 'uses' => 'Auth\AdminAuthController@getLogin']);
+Route::post('mpmanager/login', 'Auth\AdminAuthController@postLogin');
+Route::get('mpmanager/register',  ['as' => 'mpmanager.register', 'uses' => 'Auth\AdminAuthController@getRegister']);
+Route::post('mpmanager/register', 'Auth\AdminAuthController@postRegister');
+Route::get('mpmanager/logout', 'Auth\AdminAuthController@logout');
 
 /* 名片预览展示 */
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
@@ -210,13 +210,13 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
 /* =====后台管理界面===== */
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'mpmanager', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
-    Route::get('/', ['as' => 'admin', function () {
-        return redirect()->route('admin.index');
+    Route::get('/', ['as' => 'mpmanager', function () {
+        return redirect()->route('mpmanager.index');
     }]);
-    Route::get('index', ['as' => 'admin.index', 'uses' => 'Admin\IndexController@index']);
+    Route::get('index', ['as' => 'mpmanager.index', 'uses' => 'Admin\IndexController@index']);
 
     /* 用户管理 */
     Route::group(['prefix' => 'user'], function () {
