@@ -57,6 +57,6 @@
 @stop
 @section('javascript')
     @parent
-    <script src="{{ asset('static/mobile/js/function.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
 @stop
 

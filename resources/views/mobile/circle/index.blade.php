@@ -8,18 +8,16 @@
     {{--内容容器--}}
     <div class="container display ">
         <section class="section">
-            @if(Auth::user()->company)
-                <div class="list divider">
-                    <a class="opshow-create item" data-display="modal" data-backdrop="true"
-                       data-target="#editGroupModal"
-                       data-url="{{ url()->current() }}">
-                        <div class="btn primary">
-                            <i class="icon icon-plus has-padding-sm"></i>
-                        </div>
-                        <div class="title ">创建圈子</div>
-                    </a>
-                </div>
-            @endif
+            <div class="list divider">
+                <a class="opshow-create item" data-display="modal" data-backdrop="true"
+                   data-target="#editGroupModal" data-url="{{ url()->current() }}"
+                        {{ Auth::user()->employee || Auth::user()->company ? '' : 'disabled="disabled"' }}>
+                    <div class="btn primary">
+                        <i class="icon icon-plus has-padding-sm"></i>
+                    </div>
+                    <div class="title ">创建圈子</div>
+                </a>
+            </div>
             @if(isset($circles))
                 @foreach($circles as $item)
                     <div class="list divider">
@@ -33,7 +31,8 @@
                                 {{--data-display="modal" data-backdrop="true" data-target="#editGroupModal"--}}
                                 {{--data-url="{{ url()->current().'/'. $item['id']}}">--}}
                                 <span class="group-title">{{ $item->name }}</span>
-                                <label class="info has-padding-h has-margin-sm">{{ count($item->users) }} / {{ $item->limit>0 ? $item->limit: '∞' }}</label>
+                                <label class="info has-padding-h has-margin-sm">{{ count($item->users) }}
+                                    / {{ $item->limit>0 ? $item->limit: '∞' }}</label>
                                 {!! $item->expired_time ? '<label class="primary has-padding-h">临时</label>' : '' !!}
                             </a>
                         </div>
@@ -104,7 +103,7 @@
         $(function () {
 
             /* 添加 */
-            $('.opshow-create').unbind('click', 'touchstart', 'tap').bind('tap', function () {
+            $('.opshow-create').unbind('click', 'touchstart', 'tap').bind('tap', function (event) {
                 var _this  = $(this);
                 var _modal = _this.data('target');
                 $(_modal).find('.modal-title').text('创建圈子');

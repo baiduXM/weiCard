@@ -210,7 +210,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
 /* =====后台管理界面===== */
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'mpmanager', 'middleware' => 'auth:admin'], function () {
 
     /* 首页 */
     Route::get('/', ['as' => 'admin', function () {

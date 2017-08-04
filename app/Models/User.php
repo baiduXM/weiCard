@@ -106,6 +106,46 @@ class User extends CommonModel implements
         return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
     }
 
+    /* 用户关注 */
+    public function following()
+    {
+        return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /* 用户的粉丝 */
+    public function fans()
+    {
+        return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * 关注用户/取消关注
+     *
+     * @param $user 用户
+     * @return mixed
+     */
+    public function followThisUser($user)
+    {
+
+        return $this->following()->toggle($user);
+        if ($this->following()) {
+            $res = $this->following()->detach($user);
+        } else {
+            $res = $this->following()->attach($user);
+        }
+        return $res;
+    }
+
+    /**
+     * 查询是否关注
+     *
+     * @param $user
+     */
+    public function checkFollow($user)
+    {
+
+    }
+
 
     /**
      * 用户绑定员工
@@ -165,5 +205,6 @@ class User extends CommonModel implements
         }
         return 200;
     }
+
 
 }

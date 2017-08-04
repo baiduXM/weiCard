@@ -6,6 +6,7 @@ use App\Http\Controllers\Common\HomeController;
 use App\Models\Cardcase;
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -386,12 +387,42 @@ class CardcaseController extends HomeController
 
     public function fans()
     {
-        dump(Auth::id());
-        $fans = Auth::user()->followers;
-        $followers = Auth::user()->cardcases;
+        $this->cardcase2follow();
+//        dump(Auth::id());
+        $fans = Auth::user()->fans->toArray(); // 关注我的人（粉丝）
+//        $fans_emp = Auth::user()->employee->followers->toArray(); // 关注我的人
+//        $followers = Auth::user()->cardcases->toArray(); // 我关注的人
         dump($fans);
-        dump($followers);
+//        dump($fans_emp);
+//        $merge_fans = array_merge($fans, $fans_emp);
+//        dump($merge_fans);
+//        dump($fans);
+//        dump($followers);
         return view('mobile.cardcase.fans');
+    }
+
+    /**
+     * (临时) 收藏的名片夹添加到关注列表
+     */
+    protected function cardcase2follow($id = null)
+    {
+        $user = $id ? User::find($id) : Auth::user(); // 用户对象
+        $cardcases = $user->cardcases;
+        foreach ($cardcases as $cardcase) {
+            if ($cardcase->follower_type == 'App\Models\User') {
+                $id = $cardcase->follower->id;
+            } else {
+                $id = $cardcase->follower->user_id;
+            }
+            if ($id) {
+                dump($id);
+                dump($user->followThisUser(User::find($id)));
+//                dump($user->following);
+//                dump($user->following()->toggle($id));
+            }
+            exit;
+        }
+//        dump($cardcases);
     }
 
 

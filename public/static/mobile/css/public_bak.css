@@ -39,9 +39,16 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_choose{width: 100%;height: 3.5rem;background: url(../images/bg1.jpg) center no-repeat;background-size: 16rem 3.5rem;}
 .card_choose ul{height: 1.75rem;width:14rem;padding: 0.875rem 1rem; }
 .card_choose ul li{width:5.9rem;height: 1.74rem;border: 1px solid #fff;font-size: 0.75rem;line-height: 1.74rem;text-align: center;float: left;margin: 0 0.5rem;border-radius: 1rem;}
-.card_choose ul li a{display: block;width:5.9rem;height:100%;color: #fff;}
+.card_choose ul li a{display: block;width:5.9rem;height: 1.74rem;color: #fff;}
 .card_choose ul li.on{background:#fff;}
 .card_choose ul li.on a{color: #20abff;}
+
+.card_choose_b{width: 100%;height: 3.5rem;background: url(../images/bg11.jpg) center no-repeat;background-size: 16rem 3.5rem;}
+.card_choose_b ul{height: 1.75rem;width:14rem;padding: 0.875rem 1rem; }
+.card_choose_b ul li{width:5.9rem;height: 1.74rem;border: 1px solid #fff;font-size: 0.75rem;line-height: 1.74rem;text-align: center;float: left;margin: 0 4rem;border-radius: 1rem;}
+.card_choose_b ul li a{display: block;width:5.9rem;height: 1.74rem;color: #fff;}
+.card_choose_b ul li.on{background:#fff;}
+.card_choose_b ul li.on a{color: #20abff;}
 
 .card_main{ position: relative; overflow-y:auto; }
 .card_content{position: relative;width: 100%;height:auto;overflow: auto;margin: 1.45rem 0 0.7rem 0; z-index: 9;}
@@ -79,32 +86,32 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .card_content .card_c_bot{width: 100%;height:6.75rem;margin-top: 1.36rem;}
 .card_content .card_c_bot .ej{width:3.45rem;height: 3.45rem;top: 0.4rem;right: 1rem;}
 .card_content .card_c_bot .ej .ej_sy1{width: 0.5rem;height: 0.5rem;top:1rem;right: 2rem;
-   -webkit-animation: warn 1.5s ease-out;  
-    -moz-animation: warn 1.5s ease-out;  
-    animation: warn 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+   -webkit-animation: warn 1.5s ease-out;
+    -moz-animation: warn 1.5s ease-out;
+    animation: warn 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
-@keyframes warn {  
-    0% {transform: scale(0);opacity: 0.0;}  
-    25% {transform: scale(0.2);opacity: 0.4;}  
-    50% {transform: scale(0.4);opacity: 0.6;}  
-    75% {transform: scale(0.8);opacity: 0.9;}  
-    100% {transform: scale(1);opacity: 0;}  
+@keyframes warn {
+    0% {transform: scale(0);opacity: 0.0;}
+    25% {transform: scale(0.2);opacity: 0.4;}
+    50% {transform: scale(0.4);opacity: 0.6;}
+    75% {transform: scale(0.8);opacity: 0.9;}
+    100% {transform: scale(1);opacity: 0;}
   }
 .card_content .card_c_bot .ej .ej_sy2{width: 0.5rem;height: 0.5rem;top:2.5rem;right: 1.4rem;
-    -webkit-animation: warn2 1.5s ease-out;  
-    -moz-animation: warn2 1.5s ease-out;  
-    animation: warn2 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+    -webkit-animation: warn2 1.5s ease-out;
+    -moz-animation: warn2 1.5s ease-out;
+    animation: warn2 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
- @keyframes warn2 {  
-    0% {transform: scale(0);opacity: 0.0;transform: rotate(180deg);}  
-    25% {transform: scale(0.2);opacity: 0.4;transform: rotate(180deg);}  
-    50% {transform: scale(0.4);opacity: 0.6;transform: rotate(180deg);}  
-    75% {transform: scale(0.8);opacity: 0.9;transform: rotate(180deg);}  
-    100% {transform: scale(1);opacity: 0;transform: rotate(180deg);}  
+ @keyframes warn2 {
+    0% {transform: scale(0);opacity: 0.0;transform: rotate(180deg);}
+    25% {transform: scale(0.2);opacity: 0.4;transform: rotate(180deg);}
+    50% {transform: scale(0.4);opacity: 0.6;transform: rotate(180deg);}
+    75% {transform: scale(0.8);opacity: 0.9;transform: rotate(180deg);}
+    100% {transform: scale(1);opacity: 0;transform: rotate(180deg);}
   }
 
 .card_content .card_c_bot .sb{
@@ -115,23 +122,23 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 	100%{transform: rotate(360deg);}
 }
 .card_content .card_c_bot .sy{width: 0.5rem;height: 0.5rem;top:1.5rem;left: 1.4rem;
-    -webkit-animation: warn2 1.5s ease-out;  
-    -moz-animation: warn2 1.5s ease-out;  
-    animation: warn2 1.5s ease-out;  
-    -webkit-animation-iteration-count: infinite;  
-    -moz-animation-iteration-count: infinite;  
+    -webkit-animation: warn2 1.5s ease-out;
+    -moz-animation: warn2 1.5s ease-out;
+    animation: warn2 1.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
     animation-iteration-count: infinite;}
 
 /*个人名片*/
 .people{width: 100%;height:5rem;margin-bottom:0.5rem; position: relative;z-index: 9;}
-.people_tx{width: 4.9rem; height: 5.5rem;top: 1.2rem; left: 50%;transform:translateX(-50%);}
+.people_tx{width:4rem; height: 4rem;top: 1.2rem; border-radius: 50%; overflow: hidden; left: 50%;transform:translateX(-50%);}
 .card_content form{width:13.5rem;height: auto;padding: 0 1.25rem;position: relative;z-index: 3;}
 .card_content form span{display: block;width:12.4rem;/*height:1.35rem;*/position: relative; border: 1px solid #e6e6e6;margin-bottom: 0.5rem;border-radius: 0.3rem;line-height: 1.35rem;padding: 0 0.5rem;font-size: 0.6rem;color: #333;}
 .card_content form span p{ color: red; border-top: 1px solid #e6e6e6;}
 .card_content form span em{  color: red; position: absolute; right:0.4rem; top:0.2rem;}
 .card_content form span .inputt{width: 10.3rem;height: 1.35rem;outline: none;}
 .card_content form span.bz{width:12.4rem;height:2.95rem; }
-.card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;} 
+.card_content form span.bz textarea{width: 10.2rem;height:2.75rem;outline: none;border: none;float: right;}
 .card_content form .sub{display:inline-block;width: 8rem;height: 1.65rem;line-height: 1.65rem;margin:0 2.5rem;color: #fff;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 .card_content form span strong{ float: right; margin-right: 0.5rem; cursor: pointer;}
 .card_content form span strong a{ font-size: 0.6rem; color: #333;}
@@ -166,17 +173,18 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 /*个人名片获取*/
 .cards{width:13.5rem;height:7.5rem;position: relative; overflow: hidden;margin:0 auto;/*background: url(../images/bg7.png) center no-repeat;background-size:13.5rem 7.5rem;*/ }
-.cards .cards_tx{width:3.85rem;height: 4rem; padding: 1.75rem 0 0 1rem;top: 0;
-    -webkit-animation: biger 1s ease-out;  
-    -moz-animation: biger 1s ease-out;  
-    animation: biger 1s ease-out;  
-    -webkit-animation-iteration-count: 1;  
-    -moz-animation-iteration-count: 1;  
+.cards .cards_tx{width:4rem;height: 4rem;top:0.4rem; left:50%; margin-left: -2rem;
+    -webkit-animation: biger 1s ease-out;
+    -moz-animation: biger 1s ease-out;
+    animation: biger 1s ease-out;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-iteration-count: 1;
     animation-iteration-count: 1;}
-@keyframes biger {  
-    0% {transform: scale(0);opacity: 0.0;}  
-    100% {transform: scale(1);opacity: 1;}  
+@keyframes biger {
+    0% {transform: scale(0);opacity: 0.0;}
+    100% {transform: scale(1);opacity: 1;}
  }
+.cards .cards_tx.cards-gr{left: 2.8rem;top: 50%;margin-top: -2rem;}
 .cards .name,.cards .tell{width: 7.5rem;height:1.05rem;padding: 0 0.6rem;border-radius: 0.5rem;background: #fff;color: #f1a521;line-height: 1.05rem;font-size: 0.6rem;}
 .cards .name{top: 2.5rem;right:-9rem;}
 .cards .tell{top: 4rem;right:-9rem;}
@@ -197,7 +205,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 @keyframes advjts{from{right: 3.2rem;top:4.2rem;}to{right:0.5rem;top: 0rem;}}
 
 
-.qy_name{width: 7.5rem;height:2rem;padding: 0.4rem 0.6rem;border-radius: 0.5rem;background-color:rgba(44,138,237,0.5);color: #fff;line-height: 1.05rem;font-size: 0.6rem;top: 2.5rem;right:-9rem;box-shadow: 2px 0px 10px #197faa;}
+.qy_name{width:12.5rem;height:auto;padding: 0.4rem 1rem;text-align: center; border-radius: 0.5rem;background-color:rgba(44,138,237,0.5);color: #fff;line-height: 1.05rem;font-size: 0.6rem;bottom:0; right:-9rem;}
 .qyimage_zs{width: 100%;height:6.7rem;}
 .qyimage_zs .xx1{width:0.5rem;height: 0.5rem;background: url(../images/xx1.png) center no-repeat;background-size: 0.5rem;top: 0.8rem;left: 2.8rem;animation: rotation 10s linear infinite;}
 .qyimage_zs .xx2{width:0.95rem;height: 0.95rem;background: url(../images/xx2.png) center no-repeat;background-size: 0.95rem;top:1.2rem;left: 8.6rem;animation: rotation 10s linear infinite;}
@@ -288,47 +296,10 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 /*更换头像start*/
 .pic_set{ width: 16rem; overflow: hidden; height: 10rem;}
 .pic_set img{ width: 16rem; max-width: inherit; max-height: inherit;}
+
 .card_content .samebtn{width:12.5rem;display: block; height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 1.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 /*更换头像end*/
-
 /*模板选项卡及选中状态*/
 .card_choose1{ height: 2.5rem; }
 .card_choose1 ul{ padding:0.58rem 1rem; height: 1.4rem; }
 .card_choose1 ul li{ height: 1.4rem; line-height: 1.4rem;font-size: 0.7rem; }
-/*模板选项卡及选中状态end*/
-
-
-/*关注页面start*/
-.gz_page{ width: 100%; height: 100%; overflow-y: auto;}
-.gz_head{ width: 100%; height: 4.25rem; background: -webkit-linear-gradient(left top, #63afff , #20f2ff);}
-.gz_head h2{ font-size: 0.6rem; color: #ffffff; display: table-cell;text-align: center;vertical-align: middle; width: 16rem; height: 4.25rem; }
-.gz_head img{ width: 2.65rem; height: 0.875rem; position: absolute;top: 0.5rem; right: -3.2rem;}
-.gz_head h2 em{ font-size: 2.25rem; vertical-align: middle; position: relative;}
-.gz_head h2 span{ position: relative; top: 0.8rem;}
-.tabBox{ }
-.tabBox .hd{ height:1.5rem; line-height:1.5rem; padding:0.25rem 0; font-size:0.7rem; position:relative; background: #fff; width: 100%; z-index: 9;}
-.tabBox .hd.fixtop{ position: absolute; top: 0;}
-.tabBox .hd ul{ height:1.5rem; overflow:hidden; margin:0 0.5rem; }
-.tabBox .hd ul li{ float:left; color:#333333; width: 33%; border-radius: 0.7rem; text-align: center;}
-.tabBox .hd ul li a{ color:#333333; }
-.tabBox .hd ul li.on{ background:#20abff; }
-.tabBox .hd ul li.on a{ display:block; color:#fff;  }
-.tabBox .bd ul{ background: #f5f5f5; }
-.tabBox .bd ul .gzdate{ height: 0.9rem; width: 16rem; padding: 0.175rem 0;}
-.tabBox .bd ul .gzdate em{ background: #cccccc; display: block; margin: 0 auto; border-radius: 0.7rem; width: 4rem; height: 0.9rem; line-height: 0.9rem; font-size: 0.6rem; text-align: center;vertical-align: middle;color: #ffffff; }
-.tabBox .bd li{ height: 3rem; background: #ffffff; margin-bottom: 0.15rem; padding: 0.4rem 0.5rem;}
-.tabBox .bd li a{ display: block;width: 100%; height: 100%; color: #333;}
-.tabBox .bd li a .wrap_img{ width: 3rem; height: 3rem; display: table-cell;text-align: center;vertical-align: middle; }
-.tabBox .bd li a .wrap_img img{ max-width: 100%; max-height: 100%; vertical-align: middle; }
-.tabBox .bd li a .gzinfo{ font-size: 0.6rem; margin-left: 0.4rem; width: 8.5rem; line-height: 1rem;}
-.tabBox .bd li a .gzinfo h2{font-size: 0.65rem;  width: 100%; overflow: hidden;text-overflow:ellipsis; white-space: nowrap; }
-.tabBox .bd li a .gzinfo p{font-size: 0.6rem;  color: #808080; width: 100%; overflow: hidden;text-overflow:ellipsis; white-space: nowrap;}
-.tabBox .bd li a .gzinfo span{font-size: 0.6rem;  color: #f75b0f; width: 100%; overflow: hidden;text-overflow:ellipsis; white-space: nowrap;}
-.tabBox .bd li a .wrap_gzzt{width: 3rem; height: 3rem; }
-.tabBox .bd li a .gzzt{font-size: 0.6rem;  vertical-align: middle; width: 3rem; margin-top: 1rem; height: 1rem; line-height: 1rem; text-align: center; color: #ffffff; background: #20abff; border-radius: 0.7rem;}
-.tabBox .bd li a .gzzt1{ color: #20abff; font-size: 0.6rem; width: 3rem; height: 3rem; display: table-cell;vertical-align: middle; text-align: center; }
-.tabBox .bd li a .gzzt1 img{ width: 0.85rem; height:0.7rem; vertical-align: middle;}
-.tabBox .bd li a .hide{ display: none; }
-.gz_more{ text-align: center; font-size: 0.6rem; color: #666;}
-.gz_none{ text-align: center; font-size: 0.6rem; color: #666;}
-/*关注页面end*/

@@ -1,24 +1,25 @@
 $(document).ready(function(){
-   // 字体大小
-   (function(doc,win){
 
-    var docEl = doc.documentElement,
-    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize' ,
-    recalc = function()
-    {
-      var clientWidth = docEl.clientWidth;
-      if(!clientWidth) return;
-      if(clientWidth>640){
-      clientWidth=640;
-    }
-    docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
-  };
-  recalc();
-  if(!doc.addEventListener) return;
-  win.addEventListener(resizeEvt,recalc,false);
-  doc.addEventListener('DOMContentLoaded',recalc,false);
-  })(document,window);
-	/*start--全屏通用代码,body、html高度100%。底部有快捷导航*/
+    // 字体大小
+    (function(doc,win){
+
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize' ,
+            recalc = function()
+            {
+                var clientWidth = docEl.clientWidth;
+                if(!clientWidth) return;
+                if(clientWidth>640){
+                    clientWidth=640;
+                }
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+        recalc();
+        if(!doc.addEventListener) return;
+        win.addEventListener(resizeEvt,recalc,false);
+        doc.addEventListener('DOMContentLoaded',recalc,false);
+    })(document,window);
+  /*start--全屏通用代码,body、html高度100%。底部有快捷导航*/
   function myPublic(eleId,footerId,headId){
     var docHeight = $(window).height();
     var headHeight = $(headId).outerHeight(true);
@@ -30,8 +31,10 @@ $(document).ready(function(){
   myPublic(".card_main",".people",".sea_l");/*.footer底部快捷栏目外围高度;#content滚动内容*/
   myPublic(".pro_wrap","",".card_top");
   myPublic(".muban_wrap","",".card_choose");
-  myPublic("#tabBox1","",".gz_head");
   /*6.3 end 全屏通用代码*/
+  
+
+	
 	 
    $(".name").animate({right:"-1rem"}, 600,function(){
       $(".tell").animate({right:"-1rem"}, 600);
@@ -85,32 +88,16 @@ $(document).ready(function(){
   $('.muban_content li a').each(function(){
       $(this).click(function(index){
 
+        var href = $(this).find('img')[0].src;
+        $('.pop_img').find('img').attr('src',href);
+        var template_id = $(this).find('input').val();
+        $('.pop_img').find('input').val(template_id);
+        $('#setTP').attr('href',"change-u/"+template_id);
+
         popup(".muban");
 
         event.preventDefault();
       });
   });
-  /*模板弹窗 end*/
-
-  /*关注页面选项卡切换 start*/
-  TouchSlide( { slideCell:"#tabBox1",
-        endFun:function(i){ //高度自适应
-          var bd = document.getElementById("tabBox1-bd");
-          bd.parentNode.style.height = bd.children[i].children[0].offsetHeight+"px";
-          if(i>0)bd.parentNode.style.transition="200ms";//添加动画效果
-        }
-      } );
-  /*关注页面选项卡切换 end*/
-
-  /*关注页面滚动 头部选项卡固定start*/
-  $('.gz_page').scroll(function() {
-    if($('.gz_page').scrollTop()>$('.gz_head').height()){
-      $('.tabBox .hd').addClass('fixtop')
-    } else{
-      $('.tabBox .hd').removeClass('fixtop')
-    }
-  });
-  /*关注页面滚动 头部选项卡固定end*/
-
 });
   

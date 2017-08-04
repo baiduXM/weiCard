@@ -169,7 +169,7 @@
     {{--展示二维码--}}
     <div id="showQrcode" class="modal affix dock-bottom enter-from-bottom fade">
         <div class="heading divider">
-            <div class="title modal-title">圈子二维码</div>
+            <div class="title modal-title">圈子二维码(长按图片->发送给朋友)</div>
             <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
         </div>
         <div class="content has-padding">
