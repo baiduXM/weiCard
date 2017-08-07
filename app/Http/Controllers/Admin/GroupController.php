@@ -13,7 +13,7 @@ class GroupController extends AdminController
 
         // 首页 > 用户列表 > 名片夹列表
         Breadcrumbs::register('mpmanager.group', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
+            $breadcrumbs->parent('mpmanager');
             $breadcrumbs->push('群列表', route('mpmanager.user_group.index'));
         });
 

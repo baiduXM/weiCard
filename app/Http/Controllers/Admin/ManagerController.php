@@ -16,7 +16,7 @@ class ManagerController extends AdminController
     {
         // 首页 > 客服管理
         Breadcrumbs::register('mpmanager.manager', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
+            $breadcrumbs->parent('mpmanager');
             $breadcrumbs->push('客服管理', route('mpmanager.manager.index'));
         });
         // 首页 > 客服管理 > 添加
