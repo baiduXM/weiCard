@@ -96,7 +96,7 @@ class ManagerController extends AdminController
 
         /* 添加 */
         if (Manager::create($data)) {
-            return redirect('admin/manager')->with('success', '添加成功');
+            return redirect('mpmanager/manager')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -106,7 +106,7 @@ class ManagerController extends AdminController
     public function show($id)
     {
         if (!$manager = Manager::find($id)) {
-            return redirect('admin/manager')->with('warning', '用户不存在');
+            return redirect('mpmanager/manager')->with('warning', '用户不存在');
         }
         return view('admin.manager.show')->with([
             'manager' => $manager,
@@ -119,7 +119,7 @@ class ManagerController extends AdminController
     public function edit($id)
     {
         if (!$manager = Manager::find($id)) {
-            return redirect('admin/manager')->with('warning', '用户不存在');
+            return redirect('mpmanager/manager')->with('warning', '用户不存在');
         }
         return view('admin.manager.edit')->with([
             'manager' => $manager,
@@ -156,7 +156,7 @@ class ManagerController extends AdminController
             $manager->is_super = 0;
         }
         if ($manager->save()) {
-            return redirect('admin/manager')->with('success', '修改成功' . ' - ' . $manager->id);
+            return redirect('mpmanager/manager')->with('success', '修改成功' . ' - ' . $manager->id);
         } else {
             return redirect()->back();
         }
@@ -173,9 +173,9 @@ class ManagerController extends AdminController
     {
         $manager = Manager::find($id);
         if ($manager->delete()) {
-            return redirect('admin/manager')->with('success', '删除成功 - ' . $manager->name);
+            return redirect('mpmanager/manager')->with('success', '删除成功 - ' . $manager->name);
         } else {
-            return redirect('admin/manager')->with('error', '删除失败 - ' . $manager->name);
+            return redirect('mpmanager/manager')->with('error', '删除失败 - ' . $manager->name);
         }
     }
 
@@ -190,9 +190,9 @@ class ManagerController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Manager::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 

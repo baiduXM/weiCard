@@ -79,7 +79,7 @@ class PositionController extends AdminController
                 'common'    => new CommonModel(),
             ]);
         } else {
-            return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
+            return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
 
     }
@@ -105,7 +105,7 @@ class PositionController extends AdminController
 
         /* 添加 */
         if (Position::create($data)) {
-            return redirect('admin/company_position')->with('success', '添加成功');
+            return redirect('mpmanager/company_position')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -150,7 +150,7 @@ class PositionController extends AdminController
             $position->is_only = 0;
         }
         if ($position->save()) {
-            return redirect('admin/company_position')->with('success', '修改成功 - ' . $position->id);
+            return redirect('mpmanager/company_position')->with('success', '修改成功 - ' . $position->id);
         } else {
             return redirect()->back();
         }
@@ -160,7 +160,7 @@ class PositionController extends AdminController
     {
         $position = Position::where('id', $id)->first();
         if ($position->delete()) {
-            return redirect('admin/company_position')->with('success', '删除成功 - ' . $position->id);
+            return redirect('mpmanager/company_position')->with('success', '删除成功 - ' . $position->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $position->id);
         }
@@ -177,7 +177,7 @@ class PositionController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Position::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_position')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company_position')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

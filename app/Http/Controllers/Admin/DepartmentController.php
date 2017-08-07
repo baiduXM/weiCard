@@ -97,7 +97,7 @@ class DepartmentController extends AdminController
         }
         /* 添加 */
         if (Department::create($data)) {
-            return redirect('admin/company_department')->with('success', '添加成功');
+            return redirect('mpmanager/company_department')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -150,7 +150,7 @@ class DepartmentController extends AdminController
     {
         $department = Department::find($id);
         if ($department->delete()) {
-            return redirect('admin/company_department')->with('success', '删除成功 - ' . $department->id);
+            return redirect('mpmanager/company_department')->with('success', '删除成功 - ' . $department->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $department->id);
         }
@@ -167,7 +167,7 @@ class DepartmentController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Department::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_department')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company_department')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

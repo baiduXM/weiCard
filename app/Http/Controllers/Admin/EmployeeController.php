@@ -83,7 +83,7 @@ class EmployeeController extends AdminController
                 'common'    => new CommonModel(),
             ]);
         } else {
-            return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
+            return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
     }
 
@@ -124,7 +124,7 @@ class EmployeeController extends AdminController
 
         /* 添加 */
         if (Employee::create($data)) {
-            return redirect('admin/company_employee')->with('success', '添加成功');
+            return redirect('mpmanager/company_employee')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -240,7 +240,7 @@ class EmployeeController extends AdminController
     {
         $res = $this->unbindEmployee($id);
         if ($res === true) {
-            return redirect('admin/company_employee')->with('success', '解绑成功');
+            return redirect('mpmanager/company_employee')->with('success', '解绑成功');
         } else {
             return redirect()->back()->with('error', $res);
         }
@@ -256,7 +256,7 @@ class EmployeeController extends AdminController
     {
         $res = Employee::onlyTrashed()->where('id', $id)->restore();
         if ($res) {
-            return redirect('admin/company_employee')->with('success', '恢复成功');
+            return redirect('mpmanager/company_employee')->with('success', '恢复成功');
         } else {
             return redirect()->back()->with('error', '恢复失败');
 

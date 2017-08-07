@@ -130,27 +130,18 @@
                                                 <td>{{ $item->description }}</td>
                                                 <td>{{ count($item->users) }}</td>
                                                 <td>
-                                                    <a href="{{ url('mpmanager/user_group/'.$item->id) }}"
-                                                       class="btn btn-white btn-xs" title="详情"><i
-                                                                class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('mpmanager/user_group/'. $item->id .'/edit') }}"
-                                                       class="btn btn-primary btn-xs" title="编辑"><i
-                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                    {{--@if(!isset($item->user))--}}
-                                                    {{--<a class="btn btn-primary btn-xs operate-code"--}}
-                                                    {{--data-toggle="modal" data-target="#shareModal"--}}
-                                                    {{--data-code="{{ $item->company->name . '/' . $item->number }}"--}}
-                                                    {{--data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"--}}
-                                                    {{--title="代码">--}}
-                                                    {{--<i class="glyphicon glyphicon-copy"></i>代码--}}
+                                                    {{--<a href="{{ url('mpmanager/user_group/'.$item->id) }}"--}}
+                                                       {{--class="btn btn-white btn-xs" title="详情"><i--}}
+                                                                {{--class="glyphicon glyphicon-list-alt"></i>详情</a>--}}
+                                                    {{--<a href="{{ url('mpmanager/user_group/'. $item->id .'/edit') }}"--}}
+                                                       {{--class="btn btn-primary btn-xs" title="编辑"><i--}}
+                                                                {{--class="glyphicon glyphicon-pencil"></i>编辑</a>--}}
+                                                    {{--<a class="btn btn-danger btn-xs operate-delete"--}}
+                                                       {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                       {{--data-url="user_group/{{ $item->id }}"--}}
+                                                       {{--data-info="{{ $item->number }} 员工" title="删除">--}}
+                                                        {{--<i class="glyphicon glyphicon-trash"></i>删除--}}
                                                     {{--</a>--}}
-                                                    {{--@endif--}}
-                                                    <a class="btn btn-danger btn-xs operate-delete"
-                                                       data-toggle="modal" data-target=".confirmModal"
-                                                       data-url="user_group/{{ $item->id }}"
-                                                       data-info="{{ $item->number }} 员工" title="删除">
-                                                        <i class="glyphicon glyphicon-trash"></i>删除
-                                                    </a>
                                                 </td><!--操作-->
                                             </tr>
                                         @endforeach

@@ -143,7 +143,7 @@ class UserController extends AdminController
                 $user->avatar = $this->save($request->file('User.avatar'), $this->path_type, $user->id);
                 $user->save();
             }
-            return redirect('admin/user')->with('success', '添加成功');
+            return redirect('mpmanager/user')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -158,7 +158,7 @@ class UserController extends AdminController
     public function show($id)
     {
         if (!$user = User::find($id)) {
-            return redirect('admin/user')->with('warning', '用户不存在');
+            return redirect('mpmanager/user')->with('warning', '用户不存在');
         }
         return view('admin.user.show')->with([
             'user'   => $user,
@@ -175,7 +175,7 @@ class UserController extends AdminController
     public function edit($id)
     {
         if (!$user = User::find($id)) {
-            return redirect('admin/user')->with('warning', '用户不存在');
+            return redirect('mpmanager/user')->with('warning', '用户不存在');
         }
         return view('admin.user.edit')->with([
             'user'   => $user,
@@ -225,7 +225,7 @@ class UserController extends AdminController
             }
         }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', '修改成功' . ' - ' . $user->id);
+            return redirect('mpmanager/user')->with('success', '修改成功' . ' - ' . $user->id);
         } else {
             return redirect()->back();
         }
@@ -241,9 +241,9 @@ class UserController extends AdminController
     {
         $user = User::find($id);
         if ($user->delete()) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $user->nickname);
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $user->nickname);
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $user->nickname);
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $user->nickname);
         }
     }
 
@@ -262,9 +262,9 @@ class UserController extends AdminController
             $user->is_active = 1;
         }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', $user->nickname . ' - 状态切换成功');
+            return redirect('mpmanager/user')->with('success', $user->nickname . ' - 状态切换成功');
         } else {
-            return redirect('admin/user')->with('error', $user->nickname . ' - 状态切换失败');
+            return redirect('mpmanager/user')->with('error', $user->nickname . ' - 状态切换失败');
         }
     }
 
@@ -280,9 +280,9 @@ class UserController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = User::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
@@ -306,7 +306,7 @@ class UserController extends AdminController
             $res = $this->bindCompany('name', $code, $id);
         }
         if ($res === true) {
-            return redirect('admin/user')->with('success', '绑定成功');
+            return redirect('mpmanager/user')->with('success', '绑定成功');
         } else {
             return redirect()->back()->with('error', $res);
         }
@@ -324,7 +324,7 @@ class UserController extends AdminController
         $user = new User();
         $err_code = $user->unbinding($id);
         if ($err_code % 100 == 0) {
-            return redirect('admin/user')->with('success', config('global.msg.' . $err_code));
+            return redirect('mpmanager/user')->with('success', config('global.msg.' . $err_code));
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }

@@ -70,13 +70,13 @@ class TemplateController extends AdminController
         if (!$template->isEmpty()) {
             $save = Template::where('name', $data['name'])->update($data);
             if ($save) {
-                return redirect('admin/template')->with('success', '模板修改成功 ');
+                return redirect('mpmanager/template')->with('success', '模板修改成功 ');
             } else {
                 return redirect()->back()->with('error', '模板修改失败  ');
             }
         } else {
             if (Template::create($data)) {
-                return redirect('admin/template')->with('success', '添加成功');
+                return redirect('mpmanager/template')->with('success', '添加成功');
             } else {
                 return redirect()->back()->with('error', '添加失败');
             }
@@ -94,9 +94,9 @@ class TemplateController extends AdminController
         $template = Template::find($id);
         if ($template->delete()) {
             $this->deleteFolder($template->file);
-            return redirect('admin/template')->with('success', '删除成功 - ' . $template->name);
+            return redirect('mpmanager/template')->with('success', '删除成功 - ' . $template->name);
         } else {
-            return redirect('admin/template')->with('error', '删除失败 - ' . $template->name);
+            return redirect('mpmanager/template')->with('error', '删除失败 - ' . $template->name);
         }
     }
 
@@ -115,9 +115,9 @@ class TemplateController extends AdminController
             foreach ($files_path as $item) {
                 $this->deleteFolder($item);
             }
-            return redirect('admin/template')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/template')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/template')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('mpmanager/template')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 }

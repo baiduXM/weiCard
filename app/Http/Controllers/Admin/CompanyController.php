@@ -122,7 +122,7 @@ class CompanyController extends AdminController
             if ($request->hasFile('Company.logo')) {
                 $company->logo = $this->save($request->file('Company.logo'), $this->path_type, $company->id);
             }
-            return redirect('admin/company')->with('success', '添加成功');
+            return redirect('mpmanager/company')->with('success', '添加成功');
         } else {
             return redirect()->back()->with('error', '添加失败');
         }
@@ -138,7 +138,7 @@ class CompanyController extends AdminController
     public function show(Request $request, $id)
     {
         if (!$company = Company::with('departments')->find($id)) {
-            return redirect('admin/company')->with('warning', '公司不存在');
+            return redirect('mpmanager/company')->with('warning', '公司不存在');
         }
         if ($request->ajax()) {
             return response()->json($company);
@@ -167,7 +167,7 @@ class CompanyController extends AdminController
                 'common'  => $common,
             ]);
         } else {
-            return redirect('admin/company')->with('error', '您不是超级管理员/审核者，无法修改！');
+            return redirect('mpmanager/company')->with('error', '您不是超级管理员/审核者，无法修改！');
         }
     }
 
@@ -219,7 +219,7 @@ class CompanyController extends AdminController
         }
 
         if ($company->save()) {
-            return redirect('admin/company')->with('success', '修改成功 - ' . $company->id);
+            return redirect('mpmanager/company')->with('success', '修改成功 - ' . $company->id);
         } else {
             return redirect()->back()->with('error', '修改失败 - ' . $company->id);
         }
@@ -236,7 +236,7 @@ class CompanyController extends AdminController
         $company = Company::find($id);
 //        $company->trashed(); // 软删除
         if ($company->delete()) {
-            return redirect('admin/company')->with('success', '删除成功 - ' . $company->id);
+            return redirect('mpmanager/company')->with('success', '删除成功 - ' . $company->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $company->id);
         }
@@ -253,7 +253,7 @@ class CompanyController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Company::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }
@@ -272,7 +272,7 @@ class CompanyController extends AdminController
 //        $company = new Company();
 //        $res = $company->binding($code, $id);
 //        if ($res % 100 == 0) {
-//            return redirect('admin/company')->with('success', config('global.msg.' . $res));
+//            return redirect('mpmanager/company')->with('success', config('global.msg.' . $res));
 //        } else {
 //            return redirect()->back()->with('error', config('global.msg.' . $res));
 //        }
@@ -289,7 +289,7 @@ class CompanyController extends AdminController
     {
         $res = $this->unbindCompany($id);
         if ($res === true) {
-            return redirect('admin/company')->with('success', '解绑成功');
+            return redirect('mpmanager/company')->with('success', '解绑成功');
         } else {
             return redirect()->back()->with('error', $res);
         }
@@ -345,7 +345,7 @@ class CompanyController extends AdminController
             }
         }
         if ($company->save()) {
-            return redirect('admin/company')->with('info', '审核完成 - ' . $company->id);
+            return redirect('mpmanager/company')->with('info', '审核完成 - ' . $company->id);
         } else {
             return redirect()->back();
         }
