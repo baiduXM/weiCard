@@ -140,7 +140,7 @@
 @section('javascript')
     <script>
         $(function () {
-            /* 操作 - 显示 */
+            /* 操作 - 编辑 */
             $(".operate-edit").unbind('click').on('click', function () {
                 var _url  = $(this).data("url");
                 var _form = $(".form-update");

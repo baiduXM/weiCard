@@ -62,9 +62,9 @@ class EmployeeController extends AdminController
             }
         }
         if ($request->is('*/trash')) {
-            $employees = $query->onlyTrashed()->with('company')->paginate(); // 删除了
+            $employees = $query->onlyTrashed()->with('company')->orderBy('created_at')->paginate(); // 删除了
         } else {
-            $employees = $query->with('company')->paginate();
+            $employees = $query->with('company')->orderBy('created_at')->paginate();
         }
         $companies = Company::get();
         return view('admin.employee.index')->with([
