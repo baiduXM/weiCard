@@ -40,7 +40,7 @@
                                         data-url="user" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
-                            <form name="form_search" action="{{ url('/admin/user') }}" method="get">
+                            <form name="form_search" action="{{ url('mpmanager/user') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
                                     {{--{{ csrf_field() }}--}}
                                     <div class="input-group-btn btn-group keep-open">
