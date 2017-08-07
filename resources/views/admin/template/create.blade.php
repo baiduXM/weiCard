@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">模板上传</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/template') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/template') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 

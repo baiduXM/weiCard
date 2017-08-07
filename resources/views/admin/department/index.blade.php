@@ -98,17 +98,17 @@
                                             </td><!--checkbox-->
                                             <!--ID-->
                                             <td>{{ $item->name }}</td><!--职位名称-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('mpmanager/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! $item->owner ? '<a href="'.url('admin/company_employee/'.$item->owner->id).'">'.$item->owner->nickname.'</a>' : '' !!}</td>
+                                            <td>{!! $item->owner ? '<a href="'.url('mpmanager/company_employee/'.$item->owner->id).'">'.$item->owner->nickname.'</a>' : '' !!}</td>
                                             <!--职位级别-->
                                             <td>{{ count($item->employees) }}</td><!--职位名称-->
                                             <!--是否唯一-->
                                             <td>
-                                                <a href="{{ url('admin/company_department/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/company_department/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/company_department/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/company_department/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 <a class="btn btn-danger btn-xs operate-delete"

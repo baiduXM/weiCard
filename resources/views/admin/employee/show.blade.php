@@ -33,15 +33,15 @@
                             </tr>
                             <tr>
                                 <th class="text-right">绑定用户</th>
-                                <td>{!! isset($employee->user) ? '<a href="'.url('admin/user/'.$employee->user->id).'">'.$employee->user->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->user) ? '<a href="'.url('mpmanager/user/'.$employee->user->id).'">'.$employee->user->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司</th>
-                                <td>{!! isset($employee->company) ? '<a href="'.url('admin/company/'.$employee->company->id).'">'.$employee->company->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->company) ? '<a href="'.url('mpmanager/company/'.$employee->company->id).'">'.$employee->company->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">部门</th>
-                                <td>{!! isset($employee->department) ? '<a href="'.url('admin/company_department/'.$employee->department->id).'">'.$employee->department->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->department) ? '<a href="'.url('mpmanager/company_department/'.$employee->department->id).'">'.$employee->department->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">职位</th>
@@ -73,7 +73,7 @@
                                 @if($employee->user_id)
                                     <a href="" class="btn btn-warning btn-md operate-unbinding"
                                        data-toggle="modal" data-target=".confirmModal"
-                                       data-url="{{ url('admin/company_employee/'. $employee->id .'/unbinding') }}"
+                                       data-url="{{ url('mpmanager/company_employee/'. $employee->id .'/unbinding') }}"
                                        data-info="{{ $employee->user->nickname }}"
                                        title="解绑用户">解绑</a>
                                 @endif
@@ -85,11 +85,11 @@
                                        title="恢复">恢复
                                     </a>
                                 @else
-                                    <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}"
+                                    <a href="{{ url('mpmanager/company_employee/' . $employee->id . '/edit') }}"
                                        role="button"
                                        class="btn btn-primary btn-md">编辑</a>
                                 @endif
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

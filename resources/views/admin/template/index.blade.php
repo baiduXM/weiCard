@@ -100,10 +100,10 @@
                                             </td><!--操作-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
                                             <td>
-                                                <a href="{{ url('admin/template/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/template/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/template/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/template/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"

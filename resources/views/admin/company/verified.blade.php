@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">审核资料</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company/' . $company->id . '/verified') }}"
+                    <form class="form-horizontal" action="{{ url('mpmanager/company/' . $company->id . '/verified') }}"
                           method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -46,7 +46,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company') : url()->previous() }}"
                                    role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>

@@ -126,14 +126,14 @@
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 {{--<td>{{ dd($item->user) }}</td>--}}
-                                                <td>{!! ($item->user->nickname) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : $item->user->nickname !!}</td>
+                                                <td>{!! ($item->user->nickname) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : $item->user->nickname !!}</td>
                                                 <td>{{ $item->description }}</td>
                                                 <td>{{ count($item->users) }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/user_group/'.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/user_group/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/user_group/'. $item->id .'/edit') }}"
+                                                    <a href="{{ url('mpmanager/user_group/'. $item->id .'/edit') }}"
                                                        class="btn btn-primary btn-xs" title="编辑"><i
                                                                 class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                     {{--@if(!isset($item->user))--}}

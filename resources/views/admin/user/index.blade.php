@@ -137,16 +137,16 @@
                                             <td>{{ $item->nickname }}</td><!--用户名-->
                                             <td>
                                                 @if($item->company)
-                                                    <a href="{{ url('admin/company/'.$item->company->id) }}">{{ $item->company->display_name }}</a>(管理员)
+                                                    <a href="{{ url('mpmanager/company/'.$item->company->id) }}">{{ $item->company->display_name }}</a>(管理员)
                                                 @elseif($item->employee)
-                                                    <a href="{{ url('admin/company/'.$item->employee->company_id) }}">{{ $item->employee->company->display_name }}</a>
+                                                    <a href="{{ url('mpmanager/company/'.$item->employee->company_id) }}">{{ $item->employee->company->display_name }}</a>
                                                 @endif
                                             </td>
                                             <!--公司-->
-                                            <td>{!! ($item->employee) ? '<a href="'.url('admin/company_employee/'.$item->employee->id).'">'.$item->employee->nickname.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->employee) ? '<a href="'.url('mpmanager/company_employee/'.$item->employee->id).'">'.$item->employee->nickname.'</a>' : '' !!}</td>
                                             <!--员工-->
                                             <td>
-                                                <a href="{{ url('admin/user/'. $item->id .'/refresh') }}"
+                                                <a href="{{ url('mpmanager/user/'. $item->id .'/refresh') }}"
                                                    class="btn btn-xs label {{ $item->is_active == $item::IS_ACTIVE ? 'label-success' : 'label-default' }}"
                                                    title="切换状态">
                                                     <i class="glyphicon glyphicon-repeat"></i>{{ $item->isActive($item->is_active) }}
@@ -154,13 +154,13 @@
                                             </td><!--状态-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
-                                                <a href="{{ url('admin/user/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/user/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/user_cardcase/?user_id='.$item->id) }}"
+                                                <a href="{{ url('mpmanager/user_cardcase/?user_id='.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="名片夹"><i
                                                             class="glyphicon glyphicon-list-alt"></i>名片夹</a>
-                                                <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 @if(!$item->employee || !$item->employee->company->user_id )

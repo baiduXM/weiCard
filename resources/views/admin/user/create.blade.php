@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/user') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/user') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
@@ -146,7 +146,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/user') : url()->previous() }}"
                                    role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>

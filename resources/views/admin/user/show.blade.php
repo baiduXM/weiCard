@@ -48,11 +48,11 @@
                             </tr>
                             <tr>
                                 <th class="text-right">绑定公司</th>
-                                <td>{!! isset($user->company) ? '<a href="'.url('admin/company/'.$user->company->id).'">'.$user->company->display_name .'</a>' : '' !!}</td>
+                                <td>{!! isset($user->company) ? '<a href="'.url('mpmanager/company/'.$user->company->id).'">'.$user->company->display_name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定员工</th>
-                                <td>{!! isset($user->employee) ? '<a href="'.url('admin/company_employee/'.$user->employee->id).'">'.$user->employee->nickname.'</a>' : '' !!}</td>
+                                <td>{!! isset($user->employee) ? '<a href="'.url('mpmanager/company_employee/'.$user->employee->id).'">'.$user->employee->nickname.'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">状态</th>
@@ -79,9 +79,9 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/user/' . $user->id . '/edit') }}" type="button"
+                                <a href="{{ url('mpmanager/user/' . $user->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/user') : url()->previous() }}"
                                    role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>

@@ -21,7 +21,7 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="{{ url('admin/manager/create') }}" title="添加">
+                                        data-url="{{ url('mpmanager/manager/create') }}" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                             </div><!--添加/删除-->
@@ -127,10 +127,10 @@
                                             </td><!--操作-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
                                             <td>
-                                                <a href="{{ url('admin/manager/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/manager/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/manager/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/manager/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 @if(Auth::guard('admin')->user()->is_super == $item::IS_SUPER)
