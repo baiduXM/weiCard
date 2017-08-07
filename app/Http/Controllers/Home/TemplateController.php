@@ -52,8 +52,11 @@ class TemplateController extends HomeController
         $templates = $query->orderBy('sort', 'asc')->get();
         $user = Auth::user();
         $t = $user ->templates;
-        if($t){
+        if(count($t) > 0){
             $this_template= $t[0];
+        }
+        else{
+            $this_template = $query->first();
         }
         return view('mobile.templates.index')->with([
             'templates' => $templates,
