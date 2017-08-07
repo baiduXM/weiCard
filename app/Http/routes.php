@@ -220,67 +220,67 @@ Route::group(['prefix' => 'mpmanager', 'middleware' => 'auth:admin'], function (
 
     /* 用户管理 */
     Route::group(['prefix' => 'user'], function () {
-        Route::delete('batch', ['as' => 'admin.user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
-        Route::post('{id}/binding', ['as' => 'admin.user.binding', 'uses' => 'Admin\UserController@binding']);
-        Route::get('{id}/refresh', ['as' => 'admin.user.refresh', 'uses' => 'Admin\UserController@refresh']);
-//        Route::delete('{id}/binding', ['as' => 'admin.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
+        Route::delete('batch', ['as' => 'mpmanager.user.batchDestroy', 'uses' => 'Admin\UserController@batchDestroy']);
+        Route::post('{id}/binding', ['as' => 'mpmanager.user.binding', 'uses' => 'Admin\UserController@binding']);
+        Route::get('{id}/refresh', ['as' => 'mpmanager.user.refresh', 'uses' => 'Admin\UserController@refresh']);
+//        Route::delete('{id}/binding', ['as' => 'mpmanager.user.unbinding', 'uses' => 'Admin\UserController@unbinding']);
     });
     Route::resource('user', 'Admin\UserController');
 
     /* 名片夹管理 */
     Route::group(['prefix' => 'user_cardcase'], function () {
-        Route::match(['get', 'post'], 'set', ['as' => 'admin.cardcase.set', 'uses' => 'Admin\CardcaseController@setTag']);
+        Route::match(['get', 'post'], 'set', ['as' => 'mpmanager.cardcase.set', 'uses' => 'Admin\CardcaseController@setTag']);
     });
     Route::resource('user_cardcase', 'Admin\CardcaseController');
     /* 群管理 */
     Route::resource('user_group', 'Admin\GroupController');
 
     /* 标签管理 */
-    Route::delete('user_tag/batch', ['as' => 'admin.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
+    Route::delete('user_tag/batch', ['as' => 'mpmanager.tag.batchDestroy', 'uses' => 'Admin\TagController@batchDestroy']);
     Route::resource('user_tag', 'Admin\TagController');
 
     /* 圈子 */
-    Route::delete('user_circle/batch', ['as' => 'admin.circle.batchDestroy', 'uses' => 'Admin\CircleController@batchDestroy']);
+    Route::delete('user_circle/batch', ['as' => 'mpmanager.circle.batchDestroy', 'uses' => 'Admin\CircleController@batchDestroy']);
     Route::resource('user_circle', 'Admin\CircleController');
 
     /* 公司管理 */
     Route::group(['prefix' => 'company'], function () {
-        Route::delete('batch', ['as' => 'admin.company.batchDestroy', 'uses' => 'Admin\CompanyController@batchDestroy']);
-        Route::get('{id}/verified', ['as' => 'admin.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
-        Route::post('{id}/verified', ['as' => 'admin.company.postVerified', 'uses' => 'Admin\CompanyController@postVerified']);
-        Route::delete('{id}/unbinding', ['as' => 'admin.company.unbinding', 'uses' => 'Admin\CompanyController@unbinding']);
-        Route::post('{id}/login', ['as' => 'admin.company.login', 'uses' => 'Admin\CompanyController@loginByCompany']);
+        Route::delete('batch', ['as' => 'mpmanager.company.batchDestroy', 'uses' => 'Admin\CompanyController@batchDestroy']);
+        Route::get('{id}/verified', ['as' => 'mpmanager.company.verified', 'uses' => 'Admin\CompanyController@getVerified']);
+        Route::post('{id}/verified', ['as' => 'mpmanager.company.postVerified', 'uses' => 'Admin\CompanyController@postVerified']);
+        Route::delete('{id}/unbinding', ['as' => 'mpmanager.company.unbinding', 'uses' => 'Admin\CompanyController@unbinding']);
+        Route::post('{id}/login', ['as' => 'mpmanager.company.login', 'uses' => 'Admin\CompanyController@loginByCompany']);
     });
     Route::resource('company', 'Admin\CompanyController');
 
     /* 部门管理 */
-    Route::delete('company_department/batch', ['as' => 'admin.department.batchDestroy', 'uses' => 'Admin\DepartmentController@batchDestroy']);
+    Route::delete('company_department/batch', ['as' => 'mpmanager.department.batchDestroy', 'uses' => 'Admin\DepartmentController@batchDestroy']);
     Route::resource('company_department', 'Admin\DepartmentController');
 
     /* 员工管理 */
-    Route::delete('company_employee/trash/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::delete('company_employee/trash/batch', ['as' => 'mpmanager.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     Route::resource('company_employee/trash', 'Admin\EmployeeController');
 
-    Route::delete('company_employee/batch', ['as' => 'admin.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
-    Route::delete('company_employee/{id}/unbinding', ['as' => 'admin.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
-    Route::post('company_employee/{id}/recover', ['as' => 'admin.employee.recover', 'uses' => 'Admin\EmployeeController@recover']);
+    Route::delete('company_employee/batch', ['as' => 'mpmanager.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
+    Route::delete('company_employee/{id}/unbinding', ['as' => 'mpmanager.employee.unbinding', 'uses' => 'Admin\EmployeeController@unbinding']);
+    Route::post('company_employee/{id}/recover', ['as' => 'mpmanager.employee.recover', 'uses' => 'Admin\EmployeeController@recover']);
     Route::resource('company_employee', 'Admin\EmployeeController');
 
     /* 职位管理 */
     Route::group(['prefix' => 'company_position'], function () {
-        Route::delete('batch', ['as' => 'admin.position.batchDestroy', 'uses' => 'Admin\PositionController@batchDestroy']);
+        Route::delete('batch', ['as' => 'mpmanager.position.batchDestroy', 'uses' => 'Admin\PositionController@batchDestroy']);
     });
     Route::resource('company_position', 'Admin\PositionController');
 
     /* 产品管理 */
     Route::group(['prefix' => 'company_product'], function () {
-        Route::delete('batch', ['as' => 'admin.product.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
+        Route::delete('batch', ['as' => 'mpmanager.product.batchDestroy', 'uses' => 'Admin\ProductController@batchDestroy']);
     });
     Route::resource('company_product', 'Admin\ProductController');
 
     /* 模板管理 */
     Route::group(['prefix' => 'template'], function () {
-        Route::delete('batch', ['as' => 'admin.template.batchDestroy', 'uses' => 'Admin\TemplateController@batchDestroy']);
+        Route::delete('batch', ['as' => 'mpmanager.template.batchDestroy', 'uses' => 'Admin\TemplateController@batchDestroy']);
     });
     Route::resource('template', 'Admin\TemplateController');
 
@@ -290,17 +290,17 @@ Route::group(['prefix' => 'mpmanager', 'middleware' => 'auth:admin'], function (
     /* 客服管理 */
     Route::resource('manager', 'Admin\ManagerController');
     Route::group(['prefix' => 'manager'], function () {
-        Route::get('{id}/role', ['as' => 'admin.manager.role', 'uses' => 'Admin\ManagerController@getRole']);
-        Route::post('{id}/role', ['as' => 'admin.manager.setRole', 'uses' => 'Admin\ManagerController@postRole']);
-        Route::get('{id}/permission', ['as' => 'admin.manager.permission', 'uses' => 'Admin\ManagerController@getPermission']);
-        Route::post('{id}/permission', ['as' => 'admin.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
+        Route::get('{id}/role', ['as' => 'mpmanager.manager.role', 'uses' => 'Admin\ManagerController@getRole']);
+        Route::post('{id}/role', ['as' => 'mpmanager.manager.setRole', 'uses' => 'Admin\ManagerController@postRole']);
+        Route::get('{id}/permission', ['as' => 'mpmanager.manager.permission', 'uses' => 'Admin\ManagerController@getPermission']);
+        Route::post('{id}/permission', ['as' => 'mpmanager.manager.setPermission', 'uses' => 'Admin\ManagerController@postPermission']);
     });
 
     /* 设置 */
     Route::resource('setting', 'Admin\SettingController');
     Route::group(['prefix' => 'setting'], function () {
-        Route::any('/safety', ['as' => 'admin.setting.safety', 'uses' => 'Admin\SettingController@safety']);
-        Route::any('/person', ['as' => 'admin.setting.person', 'uses' => 'Admin\SettingController@person']);
+        Route::any('/safety', ['as' => 'mpmanager.setting.safety', 'uses' => 'Admin\SettingController@safety']);
+        Route::any('/person', ['as' => 'mpmanager.setting.person', 'uses' => 'Admin\SettingController@person']);
     });
 
 });

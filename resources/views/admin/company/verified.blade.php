@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '审核资料')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.verified', $company->id) !!}
+    {!! Breadcrumbs::render('mpmanager.company.verified', $company->id) !!}
 @stop
 @section('content')
     <div class="row">

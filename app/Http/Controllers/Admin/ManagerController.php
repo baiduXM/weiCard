@@ -15,24 +15,24 @@ class ManagerController extends AdminController
     public function __construct()
     {
         // 首页 > 客服管理
-        Breadcrumbs::register('admin.manager', function ($breadcrumbs) {
+        Breadcrumbs::register('mpmanager.manager', function ($breadcrumbs) {
             $breadcrumbs->parent('admin');
-            $breadcrumbs->push('客服管理', route('admin.manager.index'));
+            $breadcrumbs->push('客服管理', route('mpmanager.manager.index'));
         });
         // 首页 > 客服管理 > 添加
-        Breadcrumbs::register('admin.manager.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('添加', route('admin.manager.create'));
+        Breadcrumbs::register('mpmanager.manager.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('添加', route('mpmanager.manager.create'));
         });
         // 首页 > 客服管理 > 详情
-        Breadcrumbs::register('admin.manager.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('详情', route('admin.manager.index', $id));
+        Breadcrumbs::register('mpmanager.manager.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('详情', route('mpmanager.manager.index', $id));
         });
         // 首页 > 客服管理 > 编辑
-        Breadcrumbs::register('admin.manager.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('编辑', route('admin.manager.edit', $id));
+        Breadcrumbs::register('mpmanager.manager.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('编辑', route('mpmanager.manager.edit', $id));
         });
     }
 

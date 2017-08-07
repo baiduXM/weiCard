@@ -19,21 +19,21 @@ class ProductController extends AdminController
     {
 
         // 首页 > 产品列表
-        Breadcrumbs::register('admin.product', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('产品列表', route('admin.company_product.index'));
+        Breadcrumbs::register('mpmanager.product', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('产品列表', route('mpmanager.company_product.index'));
         });
 
         // 首页 > 产品列表 > 添加
-        Breadcrumbs::register('admin.product.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.product');
-            $breadcrumbs->push('添加', route('admin.company_product.create'));
+        Breadcrumbs::register('mpmanager.product.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.product');
+            $breadcrumbs->push('添加', route('mpmanager.company_product.create'));
         });
 
         // 首页 > 产品列表 > 编辑
-        Breadcrumbs::register('admin.product.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.product');
-            $breadcrumbs->push('编辑', route('admin.company_product.edit', $id));
+        Breadcrumbs::register('mpmanager.product.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.product');
+            $breadcrumbs->push('编辑', route('mpmanager.company_product.edit', $id));
         });
 
     }

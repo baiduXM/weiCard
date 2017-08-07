@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '部门详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.department.show', $department->id) !!}
+    {!! Breadcrumbs::render('mpmanager.department.show', $department->id) !!}
 @stop
 @section('content')
     <div class="row">

@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '模板上传')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.template.create') !!}
+    {!! Breadcrumbs::render('mpmanager.template.create') !!}
 @stop
 @section('content')
 

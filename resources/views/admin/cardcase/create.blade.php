@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '创建名片')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.cardcase.create') !!}
+    {!! Breadcrumbs::render('mpmanager.cardcase.create') !!}
 @stop
 @section('content')
     <div class="row">

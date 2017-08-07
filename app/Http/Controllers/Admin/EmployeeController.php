@@ -21,27 +21,27 @@ class EmployeeController extends AdminController
     {
 
         // 首页 > 员工列表
-        Breadcrumbs::register('admin.employee', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('员工列表', route('admin.company_employee.index'));
+        Breadcrumbs::register('mpmanager.employee', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('员工列表', route('mpmanager.company_employee.index'));
         });
 
         // 首页 > 员工列表 > 添加
-        Breadcrumbs::register('admin.employee.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('添加', route('admin.company_employee.create'));
+        Breadcrumbs::register('mpmanager.employee.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('添加', route('mpmanager.company_employee.create'));
         });
 
         // 首页 > 员工列表 > 详情
-        Breadcrumbs::register('admin.employee.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('详情', route('admin.company_employee.show', $id));
+        Breadcrumbs::register('mpmanager.employee.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('详情', route('mpmanager.company_employee.show', $id));
         });
 
         // 首页 > 员工列表 > 编辑
-        Breadcrumbs::register('admin.employee.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('编辑', route('admin.company_employee.edit', $id));
+        Breadcrumbs::register('mpmanager.employee.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('编辑', route('mpmanager.company_employee.edit', $id));
         });
     }
 

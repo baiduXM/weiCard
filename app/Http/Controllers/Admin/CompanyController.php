@@ -19,27 +19,27 @@ class CompanyController extends AdminController
     {
 
         // 首页 > 公司列表 > 添加
-        Breadcrumbs::register('admin.company.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('添加', route('admin.company.create'));
+        Breadcrumbs::register('mpmanager.company.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('添加', route('mpmanager.company.create'));
         });
 
         // 首页 > 公司列表 > 详情
-        Breadcrumbs::register('admin.company.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('详情', route('admin.company.show', $id));
+        Breadcrumbs::register('mpmanager.company.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('详情', route('mpmanager.company.show', $id));
         });
 
         // 首页 > 公司列表 > 编辑
-        Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('编辑', route('admin.company.edit', $id));
+        Breadcrumbs::register('mpmanager.company.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('编辑', route('mpmanager.company.edit', $id));
         });
 
         // 首页 > 公司列表 > 审核
-        Breadcrumbs::register('admin.company.verified', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('审核', route('admin.company.verified', $id));
+        Breadcrumbs::register('mpmanager.company.verified', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('审核', route('mpmanager.company.verified', $id));
         });
     }
 

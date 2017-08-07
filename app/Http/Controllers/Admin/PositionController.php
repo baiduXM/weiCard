@@ -18,21 +18,21 @@ class PositionController extends AdminController
     {
 
         // 首页 > 职位列表
-        Breadcrumbs::register('admin.position', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('职位列表', route('admin.company_position.index'));
+        Breadcrumbs::register('mpmanager.position', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('职位列表', route('mpmanager.company_position.index'));
         });
 
         // 首页 > 职位列表 > 添加
-        Breadcrumbs::register('admin.position.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.position');
-            $breadcrumbs->push('添加', route('admin.company_position.create'));
+        Breadcrumbs::register('mpmanager.position.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.position');
+            $breadcrumbs->push('添加', route('mpmanager.company_position.create'));
         });
 
         // 首页 > 职位列表 > 编辑
-        Breadcrumbs::register('admin.position.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.position');
-            $breadcrumbs->push('编辑', route('admin.company_position.edit', $id));
+        Breadcrumbs::register('mpmanager.position.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.position');
+            $breadcrumbs->push('编辑', route('mpmanager.company_position.edit', $id));
         });
 
 

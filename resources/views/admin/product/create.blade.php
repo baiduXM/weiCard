@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '添加产品')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.product') !!}
+    {!! Breadcrumbs::render('mpmanager.product') !!}
 @stop
 @section('content')
     <div class="row">

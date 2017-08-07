@@ -17,27 +17,27 @@ class DepartmentController extends AdminController
     {
 
         // 首页 > 部门列表
-        Breadcrumbs::register('admin.department', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('部门列表', route('admin.company_department.index'));
+        Breadcrumbs::register('mpmanager.department', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('部门列表', route('mpmanager.company_department.index'));
         });
 
         // 首页 > 公司列表 > 添加
-        Breadcrumbs::register('admin.department.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('添加', route('admin.company_department.create'));
+        Breadcrumbs::register('mpmanager.department.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('添加', route('mpmanager.company_department.create'));
         });
 
         // 首页 > 公司列表 > 详情
-        Breadcrumbs::register('admin.department.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('详情', route('admin.company_department.show', $id));
+        Breadcrumbs::register('mpmanager.department.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('详情', route('mpmanager.company_department.show', $id));
         });
 
         // 首页 > 公司列表 > 编辑
-        Breadcrumbs::register('admin.department.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('编辑', route('admin.company_department.edit', $id));
+        Breadcrumbs::register('mpmanager.department.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('编辑', route('mpmanager.company_department.edit', $id));
         });
 
     }

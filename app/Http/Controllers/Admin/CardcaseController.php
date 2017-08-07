@@ -12,24 +12,24 @@ class CardcaseController extends AdminController
     public function __construct()
     {
 
-        Breadcrumbs::register('admin.cardcase', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('名片夹列表', route('admin.user_cardcase.index'));
+        Breadcrumbs::register('mpmanager.cardcase', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('名片夹列表', route('mpmanager.user_cardcase.index'));
         });
 
-        Breadcrumbs::register('admin.cardcase.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.cardcase');
-            $breadcrumbs->push('添加', route('admin.user_cardcase.create'));
+        Breadcrumbs::register('mpmanager.cardcase.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.cardcase');
+            $breadcrumbs->push('添加', route('mpmanager.user_cardcase.create'));
         });
 
-        Breadcrumbs::register('admin.cardcase.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.cardcase');
-            $breadcrumbs->push('详情', route('admin.user_cardcase.show', $id));
+        Breadcrumbs::register('mpmanager.cardcase.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.cardcase');
+            $breadcrumbs->push('详情', route('mpmanager.user_cardcase.show', $id));
         });
 
-        Breadcrumbs::register('admin.cardcase.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.cardcase');
-            $breadcrumbs->push('编辑', route('admin.user_cardcase.edit', $id));
+        Breadcrumbs::register('mpmanager.cardcase.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.cardcase');
+            $breadcrumbs->push('编辑', route('mpmanager.user_cardcase.edit', $id));
         });
 
     }

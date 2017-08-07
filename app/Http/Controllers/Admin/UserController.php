@@ -18,21 +18,21 @@ class UserController extends AdminController
     {
 
         // 首页 > 用户列表 > 添加用户
-        Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('添加', route('admin.user.create'));
+        Breadcrumbs::register('mpmanager.user.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('添加', route('mpmanager.user.create'));
         });
 
         // 首页 > 用户列表 > 详情
-        Breadcrumbs::register('admin.user.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('详情', route('admin.user.show', $id));
+        Breadcrumbs::register('mpmanager.user.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('详情', route('mpmanager.user.show', $id));
         });
 
         // 首页 > 用户列表 > 编辑
-        Breadcrumbs::register('admin.user.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('编辑', route('admin.user.edit', $id));
+        Breadcrumbs::register('mpmanager.user.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('编辑', route('mpmanager.user.edit', $id));
         });
     }
 

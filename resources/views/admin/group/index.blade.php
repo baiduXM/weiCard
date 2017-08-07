@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '群管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.group') !!}
+    {!! Breadcrumbs::render('mpmanager.group') !!}
 @stop
 @section('content')
     <div class="row">

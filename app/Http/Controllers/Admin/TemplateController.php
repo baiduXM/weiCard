@@ -16,9 +16,9 @@ class TemplateController extends AdminController
     public function __construct()
     {
         //首页>模板管理>模板上传
-        Breadcrumbs::register('admin.template.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.template');
-            $breadcrumbs->push('模板上传', route('admin.template.create'));
+        Breadcrumbs::register('mpmanager.template.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.template');
+            $breadcrumbs->push('模板上传', route('mpmanager.template.create'));
         });
         //首页>模板管理>模板展示
         //TODO

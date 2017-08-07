@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '添加部门')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.department.create') !!}
+    {!! Breadcrumbs::render('mpmanager.department.create') !!}
 @stop
 @section('content')
     <div class="row">

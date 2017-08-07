@@ -13,9 +13,9 @@ class TagController extends AdminController
     public function __construct()
     {
 
-        Breadcrumbs::register('admin.group', function ($breadcrumbs) {
+        Breadcrumbs::register('mpmanager.group', function ($breadcrumbs) {
             $breadcrumbs->parent('admin');
-            $breadcrumbs->push('群列表', route('admin.user_group.index'));
+            $breadcrumbs->push('群列表', route('mpmanager.user_group.index'));
         });
 
     }
