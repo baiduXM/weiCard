@@ -387,9 +387,9 @@ class CardcaseController extends HomeController
 
     public function fans()
     {
-        $this->cardcase2follow();
+//        $this->cardcase2follow();
 //        dump(Auth::id());
-        $fans = Auth::user()->fans->toArray(); // 关注我的人（粉丝）
+        $fans = Auth::user()->fans; // 关注我的人（粉丝）
 //        $fans_emp = Auth::user()->employee->followers->toArray(); // 关注我的人
 //        $followers = Auth::user()->cardcases->toArray(); // 我关注的人
         dump($fans);
@@ -408,6 +408,7 @@ class CardcaseController extends HomeController
     {
         $user = $id ? User::find($id) : Auth::user(); // 用户对象
         $cardcases = $user->cardcases;
+        $count = 0;
         foreach ($cardcases as $cardcase) {
             if ($cardcase->follower_type == 'App\Models\User') {
                 $id = $cardcase->follower->id;
@@ -415,14 +416,15 @@ class CardcaseController extends HomeController
                 $id = $cardcase->follower->user_id;
             }
             if ($id) {
-                dump($id);
-                dump($user->followThisUser(User::find($id)));
+                $res = $user->followThisUser($id);
+                if ($res) {
+                    $count++;
+                }
 //                dump($user->following);
 //                dump($user->following()->toggle($id));
             }
-            exit;
         }
-//        dump($cardcases);
+        dump($count);
     }
 
 

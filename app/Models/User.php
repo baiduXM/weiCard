@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\Auth;
 
 class User extends CommonModel implements
     AuthenticatableContract,
@@ -109,50 +110,51 @@ class User extends CommonModel implements
     /* 用户关注 */
     public function followings()
     {
-        return $this->belongsToMany(self::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'follower_id', 'followed_id')->withTimestamps();
     }
 
     /* 用户的粉丝 */
     public function fans()
     {
-        return $this->belongsToMany(self::class, 'follows', 'followed_id', 'follower_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'follower_id')->withTimestamps();
     }
 
     /**
-     * @param $user_id
+     * 是否关注
+     *
+     * @param $user_id 用户ID
+     * @param $self_id 当前用户ID
      * @return mixed
      */
-    public function isFollow($user_id)
+    public function isFollow($user_id, $self_id = null)
     {
-        return $this->followings()->where('follower_id', $user_id)->count();
+        if (!$self_id) {
+            $self_id = Auth::id();
+        }
+        return $this->followings()->where('followed_id', $user_id)->where('follower_id', $self_id)->count();
     }
 
     /**
      * 关注用户/取消关注
      *
-     * @param $user 用户
+     * @param $user_id 用户ID
+     * @param $self_id 当前用户ID
      * @return mixed
      */
-    public function followThisUser($user)
+    public function followThisUser($user_id, $self_id = null)
     {
-        if ($this->followings()->where('follower_id', $user)->count()) {
-            $res = $this->followings()->detach($user);
-        } else {
-            $res = $this->followings()->attach($user);
+        if (!$self_id) {
+            $self_id = Auth::id();
         }
-        return $res;
+        if ($this->isFollow($user_id)) {
+            $this->followings()->where('follower_id', $self_id)->detach($user_id);
+            return -1;
+        } else {
+            $this->followings()->attach($user_id);
+            return 1;
+        }
+        return 0;
     }
-
-    /**
-     * 查询是否关注
-     *
-     * @param $user
-     */
-    public function checkFollow($user)
-    {
-
-    }
-
 
     /**
      * 用户绑定员工

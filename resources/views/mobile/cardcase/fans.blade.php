@@ -15,9 +15,9 @@
     <div id="tabBox1" class="tabBox">
         <div class="hd">
             <ul>
-                <li class="on"><a href="#">全部</a></li>
-                <li><a href="#">未关注</a></li>
-                <li><a href="#">已互关注</a></li>
+                <li class="on"><a href="{{ url('cardcase/fans') }}">全部</a></li>
+                <li><a href="{{ url('cardcase/fans?type=unfollow') }}">未关注</a></li>
+                <li><a href="{{ url('cardcase/fans?type=together') }}">已互关注</a></li>
             </ul>
         </div>
         <div class="bd" id="tabBox1-bd">
@@ -34,7 +34,8 @@
                             </div>
                             <div class="wrap_gzzt fr">
                                 <div class="gzzt">关注TA</div>
-                                <div class="gzzt1 hide"><img src="{{ asset('static/mobile/images/gz1.png') }}"><br>已互关注</div>
+                                <div class="gzzt1 hide"><img src="{{ asset('static/mobile/images/gz1.png') }}"><br>已互关注
+                                </div>
                             </div>
                         </a>
                     </li>
@@ -52,7 +53,9 @@
                             </div>
                         </a>
                     </li>
-                    <a href=""><div class="gz_more">加载更多...</div></a>
+                    <a href="">
+                        <div class="gz_more">加载更多...</div>
+                    </a>
                     <div class="gz_none">已经到底了</div>
                 </ul>
                 <ul>
