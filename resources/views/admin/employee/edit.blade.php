@@ -19,7 +19,7 @@
                                 公司</label>
                             <div class="col-md-6">
                                 <select class="form-control" id="company_id" name="Employee[company_id]" readonly>
-                                    <option value="{{ $employee->company->id }}">{{ $employee->company->name }}</option>
+                                    <option value="{{ $employee->company->id }}">{{ $employee->company->nickname }}</option>
                                 </select>
                             </div>
                             @if ($errors->has('Employee.company_id'))
