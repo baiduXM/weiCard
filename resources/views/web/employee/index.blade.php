@@ -403,7 +403,6 @@
 @section('javascript')
     <script>
         $(function () {
-            /* 操作 - 更新*/
             $(".operate-create").unbind('click').on('click', function () {
                 var _url      = $('.form-update').attr('action');
                 var _method   = $('.form-update').attr('method') ? $('.form-update').attr('method') : 'post';

@@ -74,6 +74,7 @@ class DepartmentController extends HomeController
     {
         $department = Department::find($id);
         /* 验证 */
+
         $this->validate($request, [
             'Department.name' => 'required',
         ], [], [

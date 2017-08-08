@@ -10,7 +10,7 @@
                 <div class="panel-heading">编辑信息</div>
                 <div class="panel-body">
                     <form class="form-horizontal" action="{{ url('mpmanager/company_department/' . $department->id) }}"
-                          method="post"
+                          method="put"
                           enctype="multipart/form-data">
                         {{ method_field('put') }}
                         {{ csrf_field() }}
