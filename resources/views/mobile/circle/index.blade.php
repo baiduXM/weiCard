@@ -24,7 +24,8 @@
                         <div class="item" id="{{ $item->id }}">
                             <a class="opshow-delete btn danger "
                                data-display="modal" data-backdrop="true" data-target=".confirmModal"
-                               data-url="{{ url()->current().'/'. $item['id']}}">
+                               data-url="{{ url()->current().'/'. $item['id']}}"
+                            {{ Auth::id() == $item->user_id ? '' : 'disabled' }}>
                                 <i class="icon icon-trash has-padding-sm"></i>
                             </a>
                             <a class="title" href="{{ url('circle/'.$item->id) }}">
