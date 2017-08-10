@@ -161,6 +161,40 @@
                     }
                 });
             });
+
+            $(".operate-update").unbind('click').on('click', function () {
+                var _url      = $('.form-update').attr('action');
+                var _method   = $(this).parents('form').attr('method') ? $('.form-update').attr('method') : 'post';
+                var _formData = $(this).parents('form').serializeArray();
+//                var _formData = $('.form-update').serialize();
+//                var _formData = new FormData($('.form-update')[0]);
+                console.log(_formData);
+                $("[class^='error-']").addClass('hidden');
+                $.ajax({
+                    url: _url,
+                    type: _method,
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+                    data: _formData,
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (json) {
+                        console.log('success-update')
+                        console.log(json)
+                        $('.hintModal').modal('show');
+                        $('.hintModal .modal-body').text(json.msg);
+                        $('.hintModal .after-operate').text();
+                    },
+                    error: function (json) {
+                        console.log('error-update')
+                        console.log(json)
+                        var errors = json.responseJSON;
+                        showError(errors);
+                        return false;
+                    }
+                });
+            });
         });
     </script>
 @stop

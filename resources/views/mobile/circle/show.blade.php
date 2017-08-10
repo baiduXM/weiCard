@@ -35,9 +35,9 @@
                             </div>
                             <a class="content"
                                href="">
-                                <div class="title">{{ $item->employee ? $item->employee->nickname : $item->user->nickname }}</div>
+                                <div class="title">{{ isset($item->employee) ? $item->employee->nickname : $item->nickname }}</div>
                                 <div class="subtitle">
-                                    @if($item->employee)
+                                    @if(isset($item->employee))
                                         <label class="primary has-padding-h m rounded">企业</label>
                                     @else
                                         <label class="warning has-padding-h rounded">个人</label>
