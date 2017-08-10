@@ -58,6 +58,10 @@
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
                                         <th style="">
+                                            <div class="th-inner" data-name="sort">序号</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!---->
+                                        <th style="">
                                             <div class="th-inner" data-name="type">类型</div>
                                             <div class="fht-cell"></div>
                                         </th><!--type-->
@@ -89,6 +93,7 @@
                                             <!--ID-->
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>{{ $item->display_name }}</td><!--display_name-->
+                                            <td>{{ $item->sort }}</td><!--sort-->
                                             <td>
                                                 @if($item->type == $item::TYPE_ALL)
                                                     <span class="label label-default">{{ $item->getType($item->type) }}</span>
@@ -98,6 +103,7 @@
                                                     <span class="label label-primary">{{ $item->getType($item->type) }}</span>
                                                 @endif
                                             </td><!--操作-->
+
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
                                             <td>
                                                 <a href="{{ url('mpmanager/template/'.$item->id) }}"

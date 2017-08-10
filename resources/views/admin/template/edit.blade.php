@@ -1,17 +1,18 @@
 @extends('admin.common.layout')
-@section('title', '模板上传')
+@section('title', '模板编辑')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('mpmanager.template.create') !!}
+    {!! Breadcrumbs::render('mpmanager.template.edit', $template->id) !!}
 @stop
 @section('content')
 
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading">模板上传</div>
+                <div class="panel-heading">模板编辑</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('mpmanager/template') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/template/'. $template->id) }}" method="post"
                           enctype="multipart/form-data">
+                        {{ method_field('put') }}
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('Template.name') ? ' has-error' : '' }}">
@@ -19,7 +20,7 @@
                                 模板名称</label>
                             <div class="col-md-6">
                                 <input id="name" name="Template[name]" type="text" placeholder="模板名称"
-                                       class="form-control" value="{{ old('Template.name') }}">
+                                       class="form-control" value="{{ $template->name}}">
                             </div>
                             @if ($errors->has('Template.name'))
                                 <span class="help-block col-md-3">
@@ -32,7 +33,7 @@
                                 模板显示名称</label>
                             <div class="col-md-6">
                                 <input id="name" name="Template[display_name]" type="text" placeholder="模板显示名称"
-                                       class="form-control" value="{{ old('Template.display_name') }}">
+                                       class="form-control" value="{{ $template->display_name }}">
                             </div>
                             @if ($errors->has('Template.display_name'))
                                 <span class="help-block col-md-3">
@@ -41,15 +42,15 @@
                             @endif
                         </div>
                         <div class="form-group {{ $errors->has('Template.sort') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="sort"><span class="text-danger">*</span>
+                            <label class="col-md-3 control-label" for="sort">
                                 排列序号</label>
                             <div class="col-md-6">
                                 <input id="name" name="Template[sort]" type="text" placeholder="排列序号"
-                                       class="form-control" value="{{ old('Template.display_name') }}">
+                                       class="form-control" value="{{ $template->sort }}">
                             </div>
-                            @if ($errors->has('Template.display_name'))
+                            @if ($errors->has('Template.sort'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Template.display_name') }}</strong>
+                                    <strong>{{ $errors->first('Template.sort') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -71,7 +72,7 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="Template[type]"
-                                                   value="{{ $item }}" {{ old('Template.type') == $item ? 'checked' : '' }}>{{ $value }}
+                                                   value="{{ $item }}" {{ $template->type == $item ? 'checked' : '' }}>{{ $value }}
                                         </label>
                                     </div>
                                 @endforeach
