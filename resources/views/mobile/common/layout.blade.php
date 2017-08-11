@@ -42,7 +42,10 @@
 @section('content')
     {{--内容--}}
 @show
-
+@section('modal-extend')
+    @include('mobile.common.modal')
+    {{--modal扩展--}}
+@show
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/mobile/js/TouchSlide.1.1.js') }}"></script>
 <script src="{{ asset('static/common/js/jquery.timers-1.2.js') }}"></script><!--jquery定时器-->
@@ -59,7 +62,7 @@
 @section('javascript')
     <script src="{{ asset('static/mobile/js/index.js') }}"></script>
     <script src="{{ asset('static/mobile/js/fontsize.js') }}"></script>
-    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function.js') }}"></script>
 @show
 </body>
 </html>

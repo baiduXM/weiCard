@@ -385,30 +385,46 @@ class CardcaseController extends HomeController
         return redirect()->route('cardcase.index');
     }
 
-    public function fans()
+    public function fans(Request $request)
     {
-//        $this->cardcase2follow();
-//        dump(Auth::id());
-        $fans = Auth::user()->fans; // 关注我的人（粉丝）
-//        $fans_emp = Auth::user()->employee->followers->toArray(); // 关注我的人
-//        $followers = Auth::user()->cardcases->toArray(); // 我关注的人
-        dump($fans);
-//        dump($fans_emp);
-//        $merge_fans = array_merge($fans, $fans_emp);
-//        dump($merge_fans);
-//        dump($fans);
-//        dump($followers);
-        return view('mobile.cardcase.fans');
+        $this->cardcase2follow();
+        $params = Input::query();
+//        dump($params);
+        $followIds = Auth::user()->followings()->pluck('id')->toArray(); // 我关注的用户ID数组
+        $fans = Auth::user()->fans();
+        if (isset($params['type']) && $params['type'] == 'unfollow') { // 未关注，我没关注别人，别人关注了我
+            $fans->whereNotIn('follower_id', $followIds);
+        }
+        if (isset($params['type']) && $params['type'] == 'together') { // 相互关注
+            $fans->whereIn('follower_id', $followIds);
+        }
+        $count = $fans->count();
+        $fans = $fans->with('employee', 'company')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
+        foreach ($fans as $item) {
+            $item->isFollow = Auth::user()->isFollow($item->id);
+        }
+        if ($request->ajax()) {
+            $jsonArray = array('err' => 0, 'msg' => '请求成功', 'data' => $fans);
+            return response()->json($jsonArray);
+        }
+        return view('mobile.cardcase.fans')->with([
+            'fans'   => $fans,
+            'params' => $params,
+            'count'  => $count,
+        ]);
     }
 
     /**
      * (临时) 收藏的名片夹添加到关注列表
+     * 遍历名片夹中收藏的名片，加到关注列表
      */
     protected function cardcase2follow($id = null)
     {
         $user = $id ? User::find($id) : Auth::user(); // 用户对象
         $cardcases = $user->cardcases;
-        $count = 0;
+        $stat['count'] = 0;
+        $stat['attach'] = 0;
+        $stat['detach'] = 0;
         foreach ($cardcases as $cardcase) {
             if ($cardcase->follower_type == 'App\Models\User') {
                 $id = $cardcase->follower->id;
@@ -418,13 +434,18 @@ class CardcaseController extends HomeController
             if ($id) {
                 $res = $user->followThisUser($id);
                 if ($res) {
-                    $count++;
+                    if ($res > 0) {
+                        $stat['attach']++;
+                    } else {
+                        $stat['detach']++;
+                    }
+                    $stat['count']++;
                 }
 //                dump($user->following);
 //                dump($user->following()->toggle($id));
             }
         }
-        dump($count);
+//        dump($stat);
     }
 
 

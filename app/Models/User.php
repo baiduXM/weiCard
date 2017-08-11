@@ -10,10 +10,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Auth;
 
-class User extends CommonModel implements
-    AuthenticatableContract,
-    AuthorizableContract,
-    CanResetPasswordContract
+class User extends CommonModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -123,32 +120,24 @@ class User extends CommonModel implements
      * 是否关注
      *
      * @param $user_id 用户ID
-     * @param $self_id 当前用户ID
      * @return mixed
      */
-    public function isFollow($user_id, $self_id = null)
+    public function isFollow($user_id)
     {
-        if (!$self_id) {
-            $self_id = Auth::id();
-        }
-        return $this->followings()->where('followed_id', $user_id)->where('follower_id', $self_id)->count();
+        return $this->followings()->where('followed_id', $user_id)->count();
     }
 
     /**
      * 关注用户/取消关注
      *
      * @param $user_id 用户ID
-     * @param $self_id 当前用户ID
      * @return mixed
      */
-    public function followThisUser($user_id, $self_id = null)
+    public function followThisUser($user_id)
     {
-        if (!$self_id) {
-            $self_id = Auth::id();
-        }
         if ($this->isFollow($user_id)) {
-            $this->followings()->where('follower_id', $self_id)->detach($user_id);
-            return -1;
+//            $this->followings()->detach($user_id);
+//            return -1;
         } else {
             $this->followings()->attach($user_id);
             return 1;

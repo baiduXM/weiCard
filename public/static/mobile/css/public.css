@@ -303,7 +303,7 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .gz_head{ width: 100%; height: 4.25rem; background: -webkit-linear-gradient(left top, #63afff , #20f2ff);}
 .gz_head h2{ font-size: 0.6rem; color: #ffffff; display: table-cell;text-align: center;vertical-align: middle; width: 16rem; height: 4.25rem; }
 .gz_head img{ width: 2.65rem; height: 0.875rem; position: absolute;top: 0.5rem; right: -3.2rem;}
-.gz_head h2 em{ font-size: 2.25rem; vertical-align: middle; position: relative;}
+.gz_head h2 em{ font-size: 2.25rem;padding:0 0.8rem; vertical-align: middle; position: relative;}
 .gz_head h2 span{ position: relative; top: 0.8rem;}
 .tabBox{ }
 .tabBox .hd{ height:1.5rem; line-height:1.5rem; padding:0.25rem 0; font-size:0.7rem; position:relative; background: #fff; width: 100%; z-index: 9;}

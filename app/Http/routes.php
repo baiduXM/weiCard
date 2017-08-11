@@ -47,9 +47,9 @@ Route::group(['prefix' => 'oauth'], function () {
 });
 
 /* 后台登录 */
-Route::get('mpmanager/login',  ['as' => 'mpmanager.login', 'uses' => 'Auth\AdminAuthController@getLogin']);
+Route::get('mpmanager/login', ['as' => 'mpmanager.login', 'uses' => 'Auth\AdminAuthController@getLogin']);
 Route::post('mpmanager/login', 'Auth\AdminAuthController@postLogin');
-Route::get('mpmanager/register',  ['as' => 'mpmanager.register', 'uses' => 'Auth\AdminAuthController@getRegister']);
+Route::get('mpmanager/register', ['as' => 'mpmanager.register', 'uses' => 'Auth\AdminAuthController@getRegister']);
 Route::post('mpmanager/register', 'Auth\AdminAuthController@postRegister');
 Route::get('mpmanager/logout', 'Auth\AdminAuthController@logout');
 
@@ -94,6 +94,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::put('user/avatar', ['as' => 'user.changavatar', 'uses' => 'Home\UserController@changeavatar']);
     Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
+    Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
+    Route::post('user/unfollow/{id}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
 
 
     Route::group(['prefix' => 'company'], function () {

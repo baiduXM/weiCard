@@ -279,7 +279,7 @@
                         console.log('success');
                         console.log(json);
                         $('.hintModal').modal('show');
-                        $('.hintModal .modal-body').text(json.msg);
+                        $('.hintModal .modal-body').text(json);
                         $('.hintModal .after-operate').text(_url);
                         return false;
                     },
