@@ -428,7 +428,8 @@ class CardcaseController extends HomeController
         foreach ($cardcases as $cardcase) {
             if ($cardcase->follower_type == 'App\Models\User') {
                 $id = $cardcase->follower->id;
-            } else {
+            }
+            if ($cardcase->follower_type == 'App\Models\Employee') {
                 $id = $cardcase->follower->user_id;
             }
             if ($id) {
