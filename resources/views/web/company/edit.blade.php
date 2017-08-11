@@ -60,6 +60,15 @@
             <p class="pass-error show">{{ $errors->first('Company.registered_number') }}</p>
         @endif
 
+        <div>
+            <span>纳税人识别号: </span>
+            <input type="taxpayer_number" name="Company[taxpayer_number]" placeholder=""
+                   value="{{ old('Company.taxpayer_number') ? old('Company.taxpayer_number') : $company->taxpayer_number }}">
+        </div>
+        @if ($errors->has('Company.taxpayer_number'))
+            <p class="pass-error show">{{ $errors->first('Company.taxpayer_number') }}</p>
+        @endif
+
         <div class="user-j">
             <span>服务范围: </span>
             <textarea name="Company[service_area]"
