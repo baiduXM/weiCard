@@ -387,7 +387,7 @@ class CardcaseController extends HomeController
 
     public function fans(Request $request)
     {
-        $this->cardcase2follow();
+//        $this->cardcase2follow();
         $params = Input::query();
 //        dump($params);
         $followIds = Auth::user()->followings()->pluck('id')->toArray(); // 我关注的用户ID数组
