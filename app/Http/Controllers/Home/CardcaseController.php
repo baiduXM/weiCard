@@ -427,10 +427,10 @@ class CardcaseController extends HomeController
         $stat['detach'] = 0;
         foreach ($cardcases as $cardcase) {
             if ($cardcase->follower_type == 'App\Models\User') {
-                $id = $cardcase->follower->id;
+                $id = $cardcase->follower ? $cardcase->follower->id : null;
             }
             if ($cardcase->follower_type == 'App\Models\Employee') {
-                $id = $cardcase->follower->user_id;
+                $id = $cardcase->follower ? $cardcase->follower->user_id : null;
             }
             if ($id) {
                 $res = $user->followThisUser($id);
