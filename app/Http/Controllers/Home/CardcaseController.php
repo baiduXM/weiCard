@@ -420,8 +420,9 @@ class CardcaseController extends HomeController
      */
     protected function cardcase2follow($id = null)
     {
-        $user = $id ? User::find($id) : Auth::user(); // 用户对象
-        $cardcases = $user->cardcases;
+//        $user = $id ? User::find($id) : Auth::user(); // 用户对象
+//        $cardcases = $user->cardcases;
+        $cardcases = Cardcase::get();
         $stat['count'] = 0;
         $stat['attach'] = 0;
         $stat['detach'] = 0;
@@ -433,6 +434,7 @@ class CardcaseController extends HomeController
                 $id = $cardcase->follower ? $cardcase->follower->user_id : null;
             }
             if ($id) {
+                $user = $cardcase->user;
                 $res = $user->followThisUser($id);
                 if ($res) {
                     if ($res > 0) {
