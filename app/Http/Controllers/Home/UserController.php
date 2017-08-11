@@ -266,6 +266,8 @@ class UserController extends HomeController
         if (Auth::user()->followThisUser($user_id)) {
             return response()->json(array('err' => 0, 'msg' => '关注成功'));
         }
+        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
+
     }
 
     /**
@@ -282,6 +284,8 @@ class UserController extends HomeController
         if (Auth::user()->followThisUser($user_id)) {
             return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
         }
+        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
+
     }
 
 

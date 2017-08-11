@@ -65,13 +65,14 @@
                 showHtml(_data, 'more');
             });
             $('.gzzt').on('touchstart', function () {
+                _json     = '';
                 var _html = '';
                 var _id   = $(this).data('id');
-                {{--                useAjax('{{ url('user/follow') }}/' + _id, 'post');--}}
+                useAjax('{{ url('user/follow') }}/' + _id, 'post');
                 if (_json.err) {
                     alert(_json.msg);
                 } else {
-                    hint('123');
+                    alert(_json.msg);
                     _html += '<div class="gzzt1">';
                     _html += '<img src="' + '{{ asset('static/mobile/images/gz1.png') }}' + '"><br>相互关注';
                     _html += '</div>';
