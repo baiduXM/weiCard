@@ -61,7 +61,8 @@ Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\Hom
 /* 文件下载 */
 Route::get('download', ['as' => 'download', 'uses' => 'Common\Controller@download']);
 
-
+/* 案例展示 */
+Route::get('demo', ['as' => 'demo', 'uses' => 'Common\Controller@demo']);
 /* =====用户界面===== */
 
 /*

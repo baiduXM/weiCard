@@ -559,6 +559,12 @@ class Controller extends BaseController
 //        return $qrcode ? url($qrcodeName) : false;
         return $qrcode ? ($qrcodeName) : false;
     }
-
+    /**
+     * 案例展示
+     */
+    public function demo()
+    {
+        return view('mobile.common.demo');
+    }
 
 }
