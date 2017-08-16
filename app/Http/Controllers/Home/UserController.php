@@ -135,6 +135,7 @@ class UserController extends HomeController
             'User.fax'         => 'max:30',
             'User.nickname'    => 'max:30|required',
             'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.qrcode'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address'     => 'max:255',
             'User.homepage'    => 'url:true',
 //            'User.sex' => '',
@@ -147,6 +148,7 @@ class UserController extends HomeController
             'User.fax'         => '传真',
             'User.nickname'    => '昵称',
             'User.avatar'      => '头像',
+            'User.qrcode'      => '微信二维码',
             'User.address'     => '地址',
             'User.homepage'    => '个人网址',
 //            'User.sex' => '性别',
@@ -159,6 +161,11 @@ class UserController extends HomeController
         if ($request->hasFile('User.avatar')) {
             $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $id);
         }
+        /* 获取文件 */
+        if ($request->hasFile('User.qrcode')) {
+            $data['qrcode'] = $this->save($request->file('User.qrcode'), $this->path_type, $id);
+        }
+
         $user = User::find($id);
         foreach ($data as $key => $value) {
             if ($value !== '') { // TODO:[BUG]如果有个字段原来有字段，后面更新为空，更新不了
@@ -175,6 +182,25 @@ class UserController extends HomeController
         } else {
             return redirect()->back();
         }
+    }
+
+    /**
+     * 删除个人微信二维码图片
+     **/
+    public function delqrcode()
+    {
+        $user = Auth::user();
+        if ($user->qrcode){
+            $this->deleteFiles($user->qrcode);
+            $user->qrcode = null;
+            if($user->save()){
+                return redirect('user/edit')->with('success', '删除微信二维码成功');
+            }
+            else{
+                return redirect()->back()->with('error', '删除微信二维码失败');
+            }
+        }
+
     }
 
     /**

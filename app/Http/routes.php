@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
     Route::post('user/unfollow/{id}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
+    Route::get('user/delqrcode', ['as' => 'user.delqrcode', 'uses' => 'Home\UserController@delqrcode']);
 
 
     Route::group(['prefix' => 'company'], function () {
