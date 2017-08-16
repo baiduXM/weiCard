@@ -68,11 +68,11 @@
             </form>        
         </div>
     </div>
-    <div class="sea_l pa">
-        <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
-        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
-        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
-    </div>
+    {{--<div class="sea_l pa">--}}
+        {{--<div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>--}}
+        {{--<div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>--}}
+        {{--<div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>--}}
+    {{--</div>--}}
 @stop
 @section('javascript')
     {{--@parent--}}
