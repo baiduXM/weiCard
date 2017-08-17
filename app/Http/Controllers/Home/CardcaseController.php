@@ -407,6 +407,7 @@ class CardcaseController extends HomeController
             $fans = $fans->with('employee')->orderBy('created_at', 'desc')->paginate(3); // 关注我的人（粉丝）
         }
         foreach ($fans as $item) {
+            $item->avatar = asset($item->avatar);
             $item->company = $item->employee ? $item->employee->company : null;
             $item->isFollow = Auth::user()->isFollow($item->id); // 我是否关注
             $item->isFollowMe = $item->isFollow(Auth::id()); // 是否关注我
