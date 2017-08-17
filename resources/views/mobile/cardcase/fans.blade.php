@@ -157,7 +157,6 @@
          * @param _div  显示区域
          */
         function showHtml(_data, _type, _div) {
-            console.log(_data)
             $(_div).data('num', _data.total);
             var _html = '';
             $.each(_data.data, function (i, v) {
