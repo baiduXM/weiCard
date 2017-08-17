@@ -17,7 +17,7 @@
     </div>
     <div class="card_main">
         <div class="card_content car_from">
-            <form action="{{ url('user/avatar') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ url('user') }}" method="post" enctype="multipart/form-data">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
                 <span>微信二维码：
