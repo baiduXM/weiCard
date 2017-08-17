@@ -36,10 +36,10 @@
         <div class="card_content">
             @if($employee)
                 <div class="cards pr"><img src="{{ asset('static/mobile/images/bg9.png') }}">
-                    <div class="cards_tx dtc tc vm pa"><img
+                    <div class="cards_tx1 dtc tc vm pa"><img
                                 src="{{ $employee->avatar ? asset($employee->avatar) : asset('static/mobile/images/qy_tx.png') }}">
                     </div>
-                    <div class="qy_name pa">{{ $employee->company->display_name }}</br>
+                    <div class="qy_name1 pa">{{ $employee->company->display_name }}</br>
                         {{ $employee->nickname }}{{ $employee->positions ? '&nbsp;' . $employee->positions : ($employee->position ? '&nbsp;' . $employee->position->name : '') }}
                         
                     </div>
