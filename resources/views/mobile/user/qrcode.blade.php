@@ -28,6 +28,7 @@
     <div class="btn-1">
         <a id="s_dpage" href="javascript:void(0);">更换二维码</a>
         <input type="submit"  value="确认提交" id="s_dpage1">
+        <a id="s_dpage1" href="{{ url('user/delqrcode') }}">删除</a>
 
         {{--<button>确认更换</button>--}}
         @if ($errors->has('qrcode'))

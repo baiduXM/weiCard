@@ -247,7 +247,7 @@ class UserController extends HomeController
             $this->deleteFiles($user->qrcode);
             $user->qrcode = null;
             if($user->save()){
-                return redirect('user/edit')->with('success', '删除微信二维码成功');
+                return redirect('user/qrcode')->with('success', '删除微信二维码成功');
             }
             else{
                 return redirect()->back()->with('error', '删除微信二维码失败');
