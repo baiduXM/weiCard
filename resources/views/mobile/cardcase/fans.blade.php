@@ -73,24 +73,6 @@
 
 
         $(function () {
-//            init();
-
-//            /* 切换选项卡 */
-//            $('#tabBox1 .hd li').unbind('click', 'tap', 'touchstart').on('touchstart', function () {
-//                console.log('#tabBox1 .hd li')
-//                var _div = '.' + $(this).find('a').attr('id');
-//                // TODO:人数变化
-//
-//                var content = $.trim($(_div).html());
-////                console.log(content);
-//                // 判断是否有内容
-//                if (content == null || content == '') {
-//                    var _url = $(this).data('url');
-//                    console.log(_url)
-//                    useAjax(_url, 'get');
-//                    showHtml(_json.data, 'init', _div);
-//                }
-//            });
 
             /* 加载更多 */
             $('.gz_more').on('touchstart', function () {
@@ -103,7 +85,7 @@
             /* 点击关注 */
             $('.gzzt').on('touchstart', function () {
                 var _html = '';
-                var _id   = $(this).attr('data-id');
+                var _id   = $(this).parents('li').attr('data-id');
                 useAjax('{{ url('user/follow') }}/' + _id, 'post');
                 if (_json.err) {
                     alert(_json.msg);
@@ -178,7 +160,7 @@
             $(_div).data('num', _data.total);
             var _html = '';
             $.each(_data.data, function (i, v) {
-                _html += '<li>';
+                _html += '<li data-id="' + v.id + '">';
                 _html += '<a href="#" class="clearfix">';
                 _html += '<div class="wrap_img fl">';
                 if (v['employee']) {
@@ -204,7 +186,7 @@
                 } else if (v['isFollow']) {
                     _html += '<div class="gzzt1">已关注</div>';
                 } else if (v['isFollowMe']) {
-                    _html += '<div class="gzzt" data-id="' + v.id + '">关注TA</div>';
+                    _html += '<div class="gzzt" >关注TA</div>';
                 }
                 _html += '</div>';
                 _html += '</a>';
