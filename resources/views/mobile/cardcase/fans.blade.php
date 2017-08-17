@@ -97,14 +97,13 @@
                 var _url = $(this).attr('data-url');
                 var _div = '.' + $(this).siblings('ul').attr('class');
                 useAjax(_url, 'get');
-                showHtml(_data, 'more', _div);
+                showHtml(_json.data.fans, 'more', _div);
             });
 
             /* 点击关注 */
             $('.gzzt').on('touchstart', function () {
-                _json     = '';
                 var _html = '';
-                var _id   = $(this).data('id');
+                var _id   = $(this).attr('data-id');
                 useAjax('{{ url('user/follow') }}/' + _id, 'post');
                 if (_json.err) {
                     alert(_json.msg);
@@ -129,7 +128,7 @@
                 if (content == null || content == '') {
                     var _url = $('#show-content' + i).attr('data-url');
                     useAjax(_url, 'get');
-                    showHtml(_data, 'init', '.show-content' + i);
+                    showHtml(_json.data.fans, 'init', '.show-content' + i);
                 }
                 // 人数、标题 改变，一定要在showHtml()之后
                 var count = $('.show-content' + i).data('num');
@@ -164,7 +163,7 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                 success: function (json) {
                     _json = json;
-                    _data = json.data.fans;
+//                    _data = json.data.fans;
                 }
             });
         }
@@ -195,7 +194,7 @@
                 } else {
                     _html += '<h2>' + v['nickname'] + '</h2>';
                 }
-                _html += '<span>TA关注了你的名片</span>';
+//                _html += '<span>TA关注了你的名片</span>';
                 _html += '</div>';
                 _html += '<div class="wrap_gzzt fr">';
                 if (v['isFollow'] && v['isFollowMe']) {
@@ -203,7 +202,7 @@
                     _html += '<img src="' + '{{ asset('static/mobile/images/gz1.png') }}' + '"><br>相互关注';
                     _html += '</div>';
                 } else if (v['isFollow']) {
-                    _html += '<div class="gzzt1" data-id="' + v.id + '">已关注</div>';
+                    _html += '<div class="gzzt1">已关注</div>';
                 } else if (v['isFollowMe']) {
                     _html += '<div class="gzzt" data-id="' + v.id + '">关注TA</div>';
                 }
