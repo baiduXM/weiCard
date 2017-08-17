@@ -392,7 +392,7 @@ class CardcaseController extends HomeController
         $fanIds = Auth::user()->fans()->pluck('id')->toArray(); // 我关注的用户ID数组
         if (!$type) {
             $ids = array_unique(array_merge($followIds, $fanIds));
-            $fans = User::with('employee')->whereIn('id', $ids)->paginate(3);
+            $fans = User::with('employee')->whereIn('id', $ids)->paginate();
 
         } else {
             if ($type == 'followed') { // 被关注，粉丝
@@ -404,7 +404,7 @@ class CardcaseController extends HomeController
             if ($type == 'together') { // 相互关注
                 $fans = Auth::user()->fans()->whereIn('follower_id', $followIds);
             }
-            $fans = $fans->with('employee')->orderBy('created_at', 'desc')->paginate(3); // 关注我的人（粉丝）
+            $fans = $fans->with('employee')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
         }
         foreach ($fans as $item) {
             $item->avatar = asset($item->avatar);
