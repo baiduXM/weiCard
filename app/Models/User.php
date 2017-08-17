@@ -65,7 +65,7 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     }
 
     /**
-     * 关系模型(一对多) - 名片圈
+     * 关系模型(一对多) - 名片圈（我创建的名片圈）
      */
     public function create_circles()
     {
@@ -73,11 +73,11 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     }
 
     /**
-     * 关系模型(多对多) - 名片圈
+     * 关系模型(多对多) - 名片圈(我加入的名片圈)
      */
     public function join_circles()
     {
-        return $this->belongsToMany('App\Models\Circle', 'circle_user');
+        return $this->belongsToMany('App\Models\Circle', 'circle_user')->withTimestamps();
     }
 
 //    /**

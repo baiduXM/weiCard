@@ -7,67 +7,85 @@
 @section('content')
     {{--内容--}}
     <div class="gz_page">
-        <div class="gz_head">
-            <h2>
-                <em><b id="count_num">{{ $count }}</b><img src="{{ asset('static/mobile/images/gzpic.png') }}"></em>
-                <span>人</span>
-            </h2>
-        </div>
+        {{--<div class="gz_head">--}}
+        {{--<h2>--}}
+        {{--<em><b id="count_num">{{ $count }}</b></em>--}}
+        {{--<div class="img">关注注我的</div>--}}
+        {{--<span>人</span>--}}
+        {{--</h2>--}}
+        {{--</div>--}}
         <div id="tabBox1" class="tabBox">
+
             <div class="hd">
                 <ul>
-                    <li {{ isset($params['type']) ? '' : 'class=on' }}>
-                        <a href="{{ url('cardcase/fans') }}">全部</a></li>
-                    <li {{ isset($params['type']) && $params['type'] == 'unfollow' ? 'class=on' : ''}}>
-                        <a href="{{ url('cardcase/fans?type=unfollow') }}">未关注</a></li>
-                    <li {{ isset($params['type']) && $params['type'] == 'together' ? 'class=on' : ''}}>
-                        <a href="{{ url('cardcase/fans?type=together') }}">已互关注</a></li>
+                    <li {{ isset($params['type']) ? '' : 'class=on' }}
+                        data-url="{{ url('cardcase/fans') }}" id="show-content0">
+                        <a>全部</a></li>
+                    <li {{ isset($params['type']) && $params['type'] == 'following' ? 'class=on' : ''}}
+                        data-url="{{ url('cardcase/fans/following') }}" id="show-content1">
+                        <a>我关注的</a></li>
+                    <li {{ isset($params['type']) && $params['type'] == 'followed' ? 'class=on' : ''}}
+                        data-url="{{ url('cardcase/fans/followed') }}" id="show-content2">
+                        <a>粉丝</a></li>
+                    <li {{ isset($params['type']) && $params['type'] == 'together' ? 'class=on' : ''}}
+                        data-url="{{ url('cardcase/fans/together') }}" id="show-content3">
+                        <a>相互关注</a></li>
                 </ul>
+            </div>
+            <div class="gz_head">
+                <h2>
+                    <em><b id="count_num">0</b></em>
+                    <div class="img" id="count_title">关注注我的</div>
+                    <span>人</span>
+                </h2>
             </div>
             <div class="bd" id="tabBox1-bd">
                 <div class="con">
-                    <ul class="zone-content">
-                        {{--<h2 class="gzdate"><em>2017-07-28</em></h2>--}}
-                        {{--@foreach($fans as $item)--}}
-                        {{--@endforeach--}}
-                        <div class="gz_none">加载中...</div>
+                    <ul class="show-content0" data-num="1">
                     </ul>
+                    <div class="gz_more" data-url="">加载中...</div>
                 </div>
+                <div class="con">
+                    <ul class="show-content1" data-num="2">
+                    </ul>
+                    <div class="gz_more" data-url="">加载中...</div>
+                </div>
+                <div class="con">
+                    <ul class="show-content2" data-num="3">
+                    </ul>
+                    <div class="gz_more" data-url="">加载中...</div>
+                </div>
+                <div class="con">
+                    <ul class="show-content3" data-num="4">
+                    </ul>
+                    <div class="gz_more" data-url="">加载中...</div>
+                </div>
+
             </div>
         </div>
     </div>
 @stop
-@section('modal-extend')
-    <div class="modal fade hintModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-         aria-describedby="myModalContent" style="z-index:2000">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    提示内容
-                </div>
-                <div class="hidden after-operate"></div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- 提示模态框.hintModal -->
-@stop
 @section('javascript')
     @parent
     <script>
-        var _data, _json;
+
+        var _json, _data;
+
+
         $(function () {
-            init();
+
             /* 加载更多 */
-            $('.a-more').on('touchstart', function () {
-                var _url = $(this).data('url');
-                console.log(_url);
+            $('.gz_more').on('touchstart', function () {
+                var _url = $(this).attr('data-url');
+                var _div = '.' + $(this).siblings('ul').attr('class');
                 useAjax(_url, 'get');
-                $(this).remove();
-                showHtml(_data, 'more');
+                showHtml(_json.data.fans, 'more', _div);
             });
+
+            /* 点击关注 */
             $('.gzzt').on('touchstart', function () {
-                _json     = '';
                 var _html = '';
-                var _id   = $(this).data('id');
+                var _id   = $(this).parents('li').attr('data-id');
                 useAjax('{{ url('user/follow') }}/' + _id, 'post');
                 if (_json.err) {
                     alert(_json.msg);
@@ -81,28 +99,45 @@
 
             });
         });
-        /* 初始化 */
-        function init() {
-            var _url = document.URL; // 当前url
-            useAjax(_url, 'get');
-            showHtml(_data, 'init');
-        }
 
-        /* 提示 */
-        function hint(str) {
-            /* 提示 - 自动隐藏 */
-            $('.hintModal').on('show.bs.modal', function () {
-                var _modal = $(this);
-                _modal.find('.modal-body').text(str);
-                _modal.oneTime('2s', function () {
-                    _modal.modal('hide');
-                });
-            });
-        }
+        /* 关注页面选项卡切换 start */
+        TouchSlide({
+            slideCell: "#tabBox1",
+            delayTime: 200,
+            startFun: function (i) {
+                // 判断是否有内容
+                var content = $.trim($('.show-content' + i).html());
+                if (content == null || content == '') {
+                    var _url = $('#show-content' + i).attr('data-url');
+                    useAjax(_url, 'get');
+                    showHtml(_json.data.fans, 'init', '.show-content' + i);
+                }
+                // 人数、标题 改变，一定要在showHtml()之后
+                var count = $('.show-content' + i).data('num');
+                var title = $('#show-content' + i).find('a').text();
+                $('#count_num').text(count);
+                $('#count_title').text(title);
+            },
+            endFun: function (i) { // 高度自适应
+//                var bd                     = document.getElementById("tabBox1-bd");
+//                bd.parentNode.style.height = bd.children[i].children[0].offsetHeight + "px";
+//                if (i > 0) bd.parentNode.style.transition = "0ms";//添加动画效果
+            }
+        });
+        /*关注页面选项卡切换 end*/
+
+        /* 初始化 */
+        //        function init() {
+        //            // 给每个ul中添加DIV，加载中的提示状态
+        //            $('[class^="show-content"]').html('<div class="gz_none">加载中...</div>');
+        //            // 默认加载全部
+        //            var _url = document.URL; // 当前url
+        //            useAjax(_url, 'get');
+        //            showHtml(_data, 'init', '.show-content0');
+        //        }
 
         /* 使用ajax请求 */
         function useAjax(_url, _method) {
-            console.log(_url)
             $.ajax({
                 url: _url,
                 type: _method,
@@ -110,20 +145,22 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                 success: function (json) {
                     _json = json;
-                    _data = json.data;
+//                    _data = json.data.fans;
                 }
             });
         }
 
         /**
-         * 展示html
+         * 展示数据，更新人数banner
          * @param _data
          * @param _type 显示方式
+         * @param _div  显示区域
          */
-        function showHtml(_data, _type) {
+        function showHtml(_data, _type, _div) {
+            $(_div).data('num', _data.total);
             var _html = '';
             $.each(_data.data, function (i, v) {
-                _html += '<li>';
+                _html += '<li data-id="' + v.id + '">';
                 _html += '<a href="#" class="clearfix">';
                 _html += '<div class="wrap_img fl">';
                 if (v['employee']) {
@@ -139,38 +176,42 @@
                 } else {
                     _html += '<h2>' + v['nickname'] + '</h2>';
                 }
-                _html += '<span>TA关注了你的名片</span>';
+//                _html += '<span>TA关注了你的名片</span>';
                 _html += '</div>';
                 _html += '<div class="wrap_gzzt fr">';
-                if (v['isFollow']) {
+                if (v['isFollow'] && v['isFollowMe']) {
                     _html += '<div class="gzzt1">';
                     _html += '<img src="' + '{{ asset('static/mobile/images/gz1.png') }}' + '"><br>相互关注';
                     _html += '</div>';
-                } else {
-                    _html += '<div class="gzzt" data-id="' + v.id + '">关注TA</div>';
+                } else if (v['isFollow']) {
+                    _html += '<div class="gzzt1">已关注</div>';
+                } else if (v['isFollowMe']) {
+                    _html += '<div class="gzzt" >关注TA</div>';
                 }
                 _html += '</div>';
                 _html += '</a>';
                 _html += '</li>';
             });
+            if (_type == 'init' || _type == 'refresh') {
+                $(_div).html(_html);
+            } else if (_type == 'more') {
+                $(_div).append(_html);
+            } else if (_type == 'before') {
+                $(_div).prepend(_html);
+            }
+
+            //_div:show-content0
+            var aMore = $(_div).siblings('.gz_more');
             if (_data.data.length == _data.per_page && _type != 'before') { // 可能还有
-                _html += '<a class="a-more" data-url="' + _data.next_page_url + '">';
-                _html += '<div class="gz_more">加载更多...</div>';
-                _html += '</a>';
+                var url = _data.next_page_url;
+                aMore.attr('data-url', url).text('加载更多...');
             }
             if (_data.data.length < _data.per_page && _type != 'before') { // 没有下一页
-                _html += '<div class="gz_none">已经到底了</div>';
+                aMore.removeClass();
+                aMore.addClass('gz_none').text('已经到底了').removeAttr('data-url');
             }
-            if (_type == 'init' || _type == 'refresh') {
-                $('.zone-content').html(_html);
-            } else if (_type == 'more') {
-                $('.zone-content').append(_html);
-            } else if (_type == 'before') {
-                $('.zone-content').prepend(_html);
-            }
+
         }
-
-
     </script>
 @stop
 

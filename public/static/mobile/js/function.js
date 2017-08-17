@@ -93,18 +93,9 @@ $(document).ready(function () {
     });
     /*模板弹窗 end*/
 
-    /*关注页面选项卡切换 start*/
-    // TouchSlide({
-    //     slideCell: "#tabBox1",
-    //     endFun: function (i) { //高度自适应
-    //         var bd                     = document.getElementById("tabBox1-bd");
-    //         bd.parentNode.style.height = bd.children[i].children[0].offsetHeight + "px";
-    //         if (i > 0) bd.parentNode.style.transition = "200ms";//添加动画效果
-    //     }
-    // });
-    // /*关注页面选项卡切换 end*/
-    //
-    // /*关注页面滚动 头部选项卡固定start*/
+
+
+    /*关注页面滚动 头部选项卡固定start*/
     // $('.gz_page').scroll(function () {
     //     if ($('.gz_page').scrollTop() > $('.gz_head').height()) {
     //         $('.tabBox .hd').addClass('fixtop')

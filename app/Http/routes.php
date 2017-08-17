@@ -169,7 +169,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::post('cardcase/group', ['as' => 'cardcase.group.store', 'uses' => 'Home\GroupController@store']);
 
     /* 名片夹->粉丝 */
-    Route::get('cardcase/fans', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
+    Route::get('cardcase/fans/{type?}', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
 
     /* 名片夹 */
     Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);

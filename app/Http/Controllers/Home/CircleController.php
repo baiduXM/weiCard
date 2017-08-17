@@ -266,11 +266,12 @@ class CircleController extends HomeController
     /**
      * 退出圈子
      *
-     * @param int $id      圈子ID
-     * @param int $user_id 用户ID
-     * @return \Illuminate\Http\RedirectResponse|string
+     * @param Request $request
+     * @param int     $id      圈子ID
+     * @param int     $user_id 用户ID
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function quit($id, $user_id = null)
+    public function quit(Request $request, $id, $user_id = null)
     {
         $user_id = $user_id ? $user_id : Auth::id();
         $circle = Circle::with(['users' => function ($query) use ($user_id) {
@@ -284,6 +285,16 @@ class CircleController extends HomeController
             return response()->json('您不在圈子中');
         }
         $this->exitCircle($id, $user_id);
+        if ($request->ajax()) {
+            return response()->json('退出成功');
+//            return response()->json([
+//                'err'  => 0,
+//                'msg'  => '成功退出',
+//                'data' => [
+//                    'url' => url('circle'),
+//                ],
+//            ]);
+        }
         return redirect()->to('circle')->with('success', '退出成功');
 //        return '';
     }

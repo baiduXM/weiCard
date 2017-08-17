@@ -27,7 +27,7 @@ class Circle extends CommonModel
      */
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'circle_user');
+        return $this->belongsToMany('App\Models\User', 'circle_user')->withTimestamps();
     }
 
 }
