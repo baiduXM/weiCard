@@ -1,5 +1,5 @@
 @extends('mobile.common.layout')
-@section('title', '粉丝列表')
+@section('title', '关注列表')
 @section('css')
     @parent
     <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
@@ -35,7 +35,7 @@
             <div class="gz_head">
                 <h2>
                     <em><b id="count_num">0</b></em>
-                    <div class="img" id="count_title">关注注我的</div>
+                    <div class="img" id="count_title">关注我的</div>
                     <span>人</span>
                 </h2>
             </div>
@@ -157,6 +157,7 @@
          * @param _div  显示区域
          */
         function showHtml(_data, _type, _div) {
+            console.log(_data)
             $(_div).data('num', _data.total);
             var _html = '';
             $.each(_data.data, function (i, v) {
