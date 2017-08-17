@@ -184,6 +184,59 @@ class UserController extends HomeController
         }
     }
 
+
+    /**
+     * 个人微信二维码
+     **/
+    public function qrcode(Request $request)
+    {
+        $id = Auth::id();
+        $user = Auth::user();
+        if ($this->is_mobile) {
+            return view('mobile.user.qrcode')->with([
+                'user' => $user,
+            ]);
+        }
+
+    }
+    /**
+     * 更换微信二维码
+     **/
+    public function changeqrcode(Request $request)
+    {
+        $id = Auth::id();
+        $this->validate($request, [
+            'qrcode' => 'required',
+        ], [], [
+            'qrcode' => '微信二维码图片',
+        ]);
+        /* 组装图片文件名 */
+        $time = time();
+        $imgname = 'img' . $time . '.jpg';
+        /* 获取图片base64格式数据 */
+        $data = $request->input('qrcode');
+        if ($data) {
+            /* 将base64格式数据转化生成图片放置user个人目录 */
+            $param = explode(',', $data);
+            $img = base64_decode($param[1]);
+            $path = $this->getPath($this->path_type, $id);
+            if ($path) {
+                $this->hasFolder($path);
+            }
+            if ($img) {
+                $a = file_put_contents($path . '/' . $imgname, $img);
+                $b = $path . '/' . $imgname;
+                /* 数据库更新头像数据*/
+                DB::table('users')->where('id', $id)->update(['qrcode' => $b]);
+            }
+            return redirect('user/edit')->with('success', '修改微信二维码成功');
+        } else {
+            return redirect()->back()->with('error', '修改微信二维码失败');
+        }
+
+
+    }
+
     /**
      * 删除个人微信二维码图片
      **/

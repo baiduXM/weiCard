@@ -97,6 +97,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
     Route::post('user/unfollow/{id}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
+    Route::get('user/qrcode', ['as' => 'user.qrcode', 'uses' => 'Home\UserController@qrcode']);
+    Route::put('user/qrcode', ['as' => 'user.changqrcode', 'uses' => 'Home\UserController@changeqrcode']);
     Route::get('user/delqrcode', ['as' => 'user.delqrcode', 'uses' => 'Home\UserController@delqrcode']);
 
 

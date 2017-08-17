@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>更换头像-{{ config('global.website.product_name') }}</title>
+    <title>更换微信二维码-{{ config('global.website.product_name') }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -15,20 +15,24 @@
     <div id="clipArea"></div>
     <div id="view"></div>
 </div>
-<form action="{{ url('user/avatar') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('user/qrcode') }}" method="post" enctype="multipart/form-data">
     {{ method_field('put') }}
     {{ csrf_field() }}
     <a href="javascript:void(0);" class="logoBox" id="logoBox">
-        <img id="bgl" src="{{ asset($user->avatar) }}" width="100%" type="file">
+        @if(count($user->qrcode)>0)
+        <img id="bgl" src="{{ asset($user->qrcode) }}" width="100%" type="file">
+        @else
+            <img id="bgl" src="{{ asset('static/home/images/unqrcode.jpg') }}" width="100%" type="file">
+        @endif
     </a>
     <div class="btn-1">
-        <a id="s_dpage" href="javascript:void(0);">更换头像</a>
+        <a id="s_dpage" href="javascript:void(0);">更换二维码</a>
         <input type="submit"  value="确认提交" id="s_dpage1">
 
         {{--<button>确认更换</button>--}}
-        @if ($errors->has('avatar'))
-            <button>{{ $errors->first('avatar') }}</button>
-            <p class="show">{{ $errors->first('avatar') }}</p>
+        @if ($errors->has('qrcode'))
+            <button>{{ $errors->first('qrcode') }}</button>
+            <p class="show">{{ $errors->first('qrcode') }}</p>
         @endif
 
     </div>
@@ -41,7 +45,7 @@
     <!-- <input id="file" type="file" onchange="javascript:setImagePreview();" accept="image/*" multiple  /> -->
     <!-- </a> -->
     <a href="javascript:void(0);">
-        <input type="button" name="file"  value="1.选取照片"class="clipBtn">
+        <input type="button" name="file"  value="1.选取二维码图片"class="clipBtn">
         <input id="file" type="file" onchange="javascript:setImagePreview();" accept="image/*" multiple  />
     </a>
     <a href="javascript:void(0);" class="qx"><button id="clipBtn" class="clipBtn">2.截取图片</button></a>
@@ -91,7 +95,7 @@
         $("#clipBtn").click(function(){
             $("#logoBox").empty();
             $('#logoBox').append('<img src="' + imgsource + '" align="absmiddle" style=" width:100%;"type="file">');
-            $('#logoBox').append('<input name="avatar" id="avatar" type="hidden"  value="' + imgsource + '">');
+            $('#logoBox').append('<input name="qrcode" id="qrcode" type="hidden"  value="' + imgsource + '">');
             $(".htmleaf-container").hide();
             $("#dpage").removeClass("show");
         })
