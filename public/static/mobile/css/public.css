@@ -300,20 +300,21 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 
 /*关注页面start*/
 .gz_page{ width: 100%; height: 100%; overflow-y: auto;}
-.gz_head{ width: 100%; height: 4.25rem; background: -webkit-linear-gradient(left top, #63afff , #20f2ff);}
-.gz_head h2{ font-size: 0.6rem; color: #ffffff; display: table-cell;text-align: center;vertical-align: middle; width: 16rem; height: 4.25rem; }
-.gz_head img{ width: 2.65rem; height: 0.875rem; position: absolute;top: 0.5rem; right: -3.2rem;}
-.gz_head h2 em{ font-size: 2.25rem;padding:0 0.8rem; vertical-align: middle; position: relative;}
+.gz_head{ width: 100%; height: 4.25rem;padding-top: 1.5rem; background: -webkit-linear-gradient(left top, #63afff , #20f2ff);}
+.gz_head h2{ font-size: 0.6rem;position: relative; color: #ffffff; display: table-cell;text-align: center;vertical-align: middle; width: 16rem; height: 4.25rem; }
+.gz_head .img{font-size: 0.5rem;padding:0 0.3rem; border-radius: 0.2rem; background: #f75b0f; position: absolute;top: 1.2rem; left:8.5rem;}
+.gz_head h2 em{ font-size: 2.25rem;vertical-align: middle; position: relative; display: inline-block;}
 .gz_head h2 span{ position: relative; top: 0.8rem;}
 .tabBox{ }
-.tabBox .hd{ height:1.5rem; line-height:1.5rem; padding:0.25rem 0; font-size:0.7rem; position:relative; background: #fff; width: 100%; z-index: 9;}
+.tabBox .hd{ height:1.5rem; line-height:1.5rem;top:0; padding:0.25rem 0; font-size:0.7rem; position:fixed; background: #fff; width: 100%; z-index: 9;}
 .tabBox .hd.fixtop{ position: absolute; top: 0;}
 .tabBox .hd ul{ height:1.5rem; overflow:hidden; margin:0 0.5rem; }
-.tabBox .hd ul li{ float:left; color:#333333; width: 33%; border-radius: 0.7rem; text-align: center;}
+.tabBox .hd ul li{ float:left; color:#333333; width: 25%; border-radius: 0.7rem; text-align: center;}
 .tabBox .hd ul li a{ color:#333333; }
 .tabBox .hd ul li.on{ background:#20abff; }
 .tabBox .hd ul li.on a{ display:block; color:#fff;  }
 .tabBox .bd ul{ background: #f5f5f5; }
+.tabBox .bd .com{ display: none;}
 .tabBox .bd ul .gzdate{ height: 0.9rem; width: 16rem; padding: 0.175rem 0;}
 .tabBox .bd ul .gzdate em{ background: #cccccc; display: block; margin: 0 auto; border-radius: 0.7rem; width: 4rem; height: 0.9rem; line-height: 0.9rem; font-size: 0.6rem; text-align: center;vertical-align: middle;color: #ffffff; }
 .tabBox .bd li{ height: 3rem; background: #ffffff; margin-bottom: 0.15rem; padding: 0.4rem 0.5rem;}

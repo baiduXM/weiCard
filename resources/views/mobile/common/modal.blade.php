@@ -8,5 +8,6 @@
             <button type="cancel" class="btn-lg danger" data-dismiss="display">取消</button>
             <button type="submit" class="btn-lg primary pull-right op-submit">确认</button>
         </div>
+        <input type="hidden" name="after-url" value="">
     </form>
 </div>

@@ -11,6 +11,7 @@ use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
@@ -385,32 +386,39 @@ class CardcaseController extends HomeController
         return redirect()->route('cardcase.index');
     }
 
-    public function fans(Request $request)
+    public function fans(Request $request, $type = null)
     {
-//        $this->cardcase2follow();
-        $params = Input::query();
-//        dump($params);
         $followIds = Auth::user()->followings()->pluck('id')->toArray(); // 我关注的用户ID数组
-        $fans = Auth::user()->fans();
-        if (isset($params['type']) && $params['type'] == 'unfollow') { // 未关注，我没关注别人，别人关注了我
-            $fans->whereNotIn('follower_id', $followIds);
+        $fanIds = Auth::user()->fans()->pluck('id')->toArray(); // 我关注的用户ID数组
+        if (!$type) {
+            $ids = array_unique(array_merge($followIds, $fanIds));
+            $fans = User::with('employee', 'company')->whereIn('id', $ids)->paginate();
+
+        } else {
+            if ($type == 'followed') { // 被关注，粉丝
+                $fans = Auth::user()->fans();
+            }
+            if ($type == 'following') { // 关注的人
+                $fans = Auth::user()->followings();
+            }
+            if ($type == 'together') { // 相互关注
+                $fans = Auth::user()->fans()->whereIn('follower_id', $followIds);
+            }
+            $fans = $fans->with('employee', 'company')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
         }
-        if (isset($params['type']) && $params['type'] == 'together') { // 相互关注
-            $fans->whereIn('follower_id', $followIds);
-        }
-        $count = $fans->count();
-        $fans = $fans->with('employee', 'company')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
         foreach ($fans as $item) {
-            $item->isFollow = Auth::user()->isFollow($item->id);
+            $item->isFollow = Auth::user()->isFollow($item->id); // 我是否关注
+            $item->isFollowMe = $item->isFollow(Auth::id()); // 是否关注我
         }
+
         if ($request->ajax()) {
-            $jsonArray = array('err' => 0, 'msg' => '请求成功', 'data' => $fans);
+            $jsonArray = array('err' => 0, 'msg' => '粉丝列表', 'data' => array(
+                'fans' => $fans,
+            ));
             return response()->json($jsonArray);
         }
         return view('mobile.cardcase.fans')->with([
-            'fans'   => $fans,
-            'params' => $params,
-            'count'  => $count,
+            'fans' => $fans,
         ]);
     }
 

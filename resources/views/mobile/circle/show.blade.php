@@ -78,17 +78,18 @@
                                     <i class="icon icon-eye-open has-padding-sm"></i>查看
                                 </a>
                             @endif
-                            {{--@if($circle->user_id == Auth::id())--}}
-                                {{--<a class="opshow-delete text-danger"--}}
-                                   {{--data-display="modal" data-backdrop="true" data-target=".confirmModal"--}}
-                                   {{--data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">--}}
-                                    {{--<i class="icon icon-signout has-padding-sm"></i>踢出</a>--}}
-                            {{--@else--}}
-                                {{--<a class="opshow-delete text-danger"--}}
-                                   {{--data-display="modal" data-backdrop="true" data-target=".confirmModal"--}}
-                                   {{--data-url="{{ url('circle/'.$circle->id.'/quit') }}">--}}
-                                    {{--<i class="icon icon-signout has-padding-sm"></i>退出</a>--}}
-                            {{--@endif--}}
+                            @if($circle->user_id == Auth::id() && $item->id != Auth::id())
+                                <a class="opshow-delete text-danger"
+                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                                   data-url="{{ url('circle/'.$circle->id.'/quit/'.$item->id) }}">
+                                    <i class="icon icon-signout has-padding-sm"></i>踢出</a>
+                            @else
+                                <a class="opshow-delete text-danger"
+                                   data-display="modal" data-backdrop="true" data-target=".confirmModal"
+                                   data-url="{{ url('circle/'.$circle->id.'/quit') }}"
+                                   data-after_url="{{ url('circle') }}">
+                                    <i class="icon icon-signout has-padding-sm"></i>退出</a>
+                            @endif
                         </div>
 
                     </div>
@@ -204,11 +205,19 @@
                 var _this = $(this);
                 var _url  = _this.data('url');
                 useAjax('get', _url);
-
             });
 
-            $('#editGroupModal').on('show', function () {
+//            /* 删除确认 */
+            $('.op-submit').unbind('click', 'tap', 'touchstart').on('tap', function () {
+                alert(1);
+                if (!once) {
+                    return false;
+                }
+                once      = false;
+                var _this = $(this);
+                var _url  = _this.data('url');
             });
+
         });
 
         /**
