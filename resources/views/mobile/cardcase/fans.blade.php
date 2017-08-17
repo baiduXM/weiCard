@@ -69,7 +69,7 @@
     @parent
     <script>
 
-        var _json, _data;
+        var _json;
 
 
         $(function () {
@@ -78,8 +78,10 @@
             $('.gz_more').on('touchstart', function () {
                 var _url = $(this).attr('data-url');
                 var _div = '.' + $(this).siblings('ul').attr('class');
-                useAjax(_url, 'get');
-                showHtml(_json.data.fans, 'more', _div);
+                useAjax(_url, 'get', _div);
+                if (_json) {
+
+                }
             });
 
             /* 点击关注 */
@@ -120,7 +122,7 @@
             },
             endFun: function (i) { // 高度自适应
 //                var bd                     = document.getElementById("tabBox1-bd");
-//                bd.parentNode.style.height = bd.children[i].children[0].offsetHeight + "px";
+//                bd.parentNode.style.height = bd.children[i].children[0].offsetHeight + 32 + "px";
 //                if (i > 0) bd.parentNode.style.transition = "0ms";//添加动画效果
             }
         });
@@ -137,7 +139,12 @@
         //        }
 
         /* 使用ajax请求 */
-        function useAjax(_url, _method) {
+        function useAjax(_url, _method, _div) {
+            if (!_url) {
+                _json = null;
+                return false;
+            }
+
             $.ajax({
                 url: _url,
                 type: _method,
@@ -145,7 +152,9 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
                 success: function (json) {
                     _json = json;
-//                    _data = json.data.fans;
+                    if (_div) {
+                        showHtml(_json.data.fans, 'more', _div);
+                    }
                 }
             });
         }
@@ -163,11 +172,11 @@
                 _html += '<li data-id="' + v.id + '">';
                 _html += '<a href="#" class="clearfix">';
                 _html += '<div class="wrap_img fl">';
-                if (v['employee']) {
-                    _html += '<img src="' + v['employee']['avatar'] + '">';
-                } else {
+//                if (v['employee']) {
+//                    _html += '<img src="' + v['employee']['avatar'] + '">';
+//                } else {
                     _html += '<img src="' + v['avatar'] + '">';
-                }
+//                }
                 _html += '</div>';
                 _html += '<div class="gzinfo fl">';
                 if (v['employee']) {
@@ -201,12 +210,12 @@
             }
 
             //_div:show-content0
-            var aMore = $(_div).siblings('.gz_more');
-            if (_data.data.length == _data.per_page && _type != 'before') { // 可能还有
+            var aMore = $(_div).siblings('div');
+            if ($(_div).children('li').length < _data.total && _type != 'before') { // 可能还有
                 var url = _data.next_page_url;
                 aMore.attr('data-url', url).text('加载更多...');
             }
-            if (_data.data.length < _data.per_page && _type != 'before') { // 没有下一页
+            if ($(_div).children('li').length == _data.total && _type != 'before') { // 没有下一页
                 aMore.removeClass();
                 aMore.addClass('gz_none').text('已经到底了').removeAttr('data-url');
             }
