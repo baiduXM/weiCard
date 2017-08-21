@@ -34,6 +34,7 @@ class EmployeeController extends HomeController
 //* 工号，姓名，部门，职位，手机，是否绑定，员工二维码
 
     protected $exportArray = array(
+        'company'    => '公司',
         'number'     => '工号',
         'nickname'   => '姓名',
         'department' => '部门',
@@ -414,8 +415,8 @@ class EmployeeController extends HomeController
      * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
      *
      * @param Request $request
-     * @param null    $type    null|unbinding|demission
-     *                         数据类型，空|未绑定员工|离职员工
+     * @param null    $type    null|unbinding|demission|all-unbinding
+     *                         数据类型，空|未绑定员工|离职员工|全库未绑定员工
      * @return \Illuminate\Http\RedirectResponse
      */
     public function exportExcel(Request $request, $type = null)
@@ -433,6 +434,11 @@ class EmployeeController extends HomeController
                 $filename = '已离职员工数据';
                 $employees = Employee::onlyTrashed()->where('company_id', Auth::user()->company->id)->get();
                 break;
+            case 'all-unbinding': // 已离职员工
+                $filename = '全库未绑定员工数据';
+                $employees = Employee::where('user_id', null)->get();
+                break;
+
             default:
                 $filename = '全体员工数据';
                 $employees = Auth::user()->company->employees;
@@ -441,6 +447,10 @@ class EmployeeController extends HomeController
         if (count($employees)) {
             foreach ($employees as $k => $employee) {
                 foreach ($this->exportArray as $key => $word) {
+                    if ($key == 'company') { // 部门
+                        $cellData[$k + 1][$key] = $employee->company ? $employee->company->display_name : '';
+                        continue;
+                    }
                     if ($key == 'department') { // 部门
                         $cellData[$k + 1][$key] = $employee->department ? $employee->department->name : '';
                         continue;
