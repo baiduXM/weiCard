@@ -177,7 +177,13 @@
                         <p>
                             <span>员工数据 : </span>
                             <button class="btn btn-default"><a href="{{ url('company/employee/exportExcel') }}"
-                                                               target="_blank">导出Excel表</a></button>
+                                                               target="_blank">全体员工</a></button>
+                            <button class="btn btn-default"><a
+                                        href="{{ url('company/employee/exportExcel/unbinding') }}"
+                                        target="_blank">未绑定员工</a></button>
+                            <button class="btn btn-default"><a
+                                        href="{{ url('company/employee/exportExcel/demission') }}"
+                                        target="_blank">离职员工</a></button>
                         </p>
                         <p>
                             <span>员工二维码 : </span>
@@ -247,9 +253,9 @@
                                 <span class="error-positions" style="color: red;"></span>
                             </p>
                             {{--<p>--}}
-                                {{--<span>照片 : </span>--}}
-                                {{--<input type="file" name="Employee[avatar]">--}}
-                                {{--<span class="error-avatar" style="color: red;"></span>--}}
+                            {{--<span>照片 : </span>--}}
+                            {{--<input type="file" name="Employee[avatar]">--}}
+                            {{--<span class="error-avatar" style="color: red;"></span>--}}
                             {{--</p>--}}
                             <p>
                                 <span>座机 : </span>

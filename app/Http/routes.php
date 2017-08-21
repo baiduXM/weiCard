@@ -109,9 +109,9 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::get('employee/trash', ['as' => 'company.employee.trash', 'uses' => 'Home\EmployeeController@trash']);
         Route::get('employee/update/{id?}', ['uses' => 'Common\HomeController@updatePositions']);
         Route::match(['get', 'post'], 'employee/import', ['as' => 'company.employee.import', 'uses' => 'Home\EmployeeController@import']);
-        Route::get('employee/exportExcel', ['as' => 'company.employee.exportExcel', 'uses' => 'Home\EmployeeController@exportExcel']);
-        Route::get('employee/exportQrcode', ['as' => 'company.employee.exportQrcode', 'uses' => 'Home\EmployeeController@exportQrcode']);
         Route::match(['get', 'post'], 'employee/download', ['as' => 'company.employee.download', 'uses' => 'Home\EmployeeController@download']);
+        Route::get('employee/exportExcel/{type?}', ['as' => 'company.employee.exportExcel', 'uses' => 'Home\EmployeeController@exportExcel']);
+        Route::get('employee/exportQrcode', ['as' => 'company.employee.exportQrcode', 'uses' => 'Home\EmployeeController@exportQrcode']);
         Route::delete('employee/batch', ['as' => 'company.employee.batchDestroy', 'uses' => 'Home\EmployeeController@batchDestroy']);
         Route::get('employee/{id}', ['as' => 'company.employee.show', 'uses' => 'Home\EmployeeController@show']);
         Route::post('employee/{id}', ['as' => 'company.employee.update', 'uses' => 'Home\EmployeeController@update']);

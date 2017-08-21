@@ -414,18 +414,32 @@ class EmployeeController extends HomeController
      * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
      *
      * @param Request $request
+     * @param null    $type    null|unbinding|demission
+     *                         数据类型，空|未绑定员工|离职员工
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function exportExcel(Request $request)
+    public function exportExcel(Request $request, $type = null)
     {
-
         if (!Auth::user()->company) {
             return redirect()->back()->with('error', '您不是公司管理员');
         }
-        $company = Auth::user()->company;
         $cellData[0] = $this->exportArray;
-        if (count($company->employees)) {
-            foreach ($company->employees as $k => $employee) {
+        switch ($type) {
+            case 'unbinding': // 未绑定员工
+                $filename = '未绑定员工数据';
+                $employees = Auth::user()->company->employees->where('user_id', null);
+                break;
+            case 'demission': // 已离职员工
+                $filename = '已离职员工数据';
+                $employees = Employee::onlyTrashed()->where('company_id', Auth::user()->company->id)->get();
+                break;
+            default:
+                $filename = '全体员工数据';
+                $employees = Auth::user()->company->employees;
+                break;
+        }
+        if (count($employees)) {
+            foreach ($employees as $k => $employee) {
                 foreach ($this->exportArray as $key => $word) {
                     if ($key == 'department') { // 部门
                         $cellData[$k + 1][$key] = $employee->department ? $employee->department->name : '';
@@ -443,7 +457,6 @@ class EmployeeController extends HomeController
                 }
             }
         }
-        $filename = $company->display_name . '-员工数据'; // 公司账号+时间
         Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
             $excel->sheet('sheet1', function ($sheet) use ($cellData) {
                 $sheet->rows($cellData);
