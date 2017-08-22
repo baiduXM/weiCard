@@ -68,24 +68,6 @@ class EmployeeController extends HomeController
     public function index()
     {
         if ($this->is_mobile) {
-
-//            $res = Employee::with(['department' => function ($query) {
-//                $query->select('name');
-//            }], 'company')
-//                ->where('company_id', Auth::user()->company->id)
-//                ->select('id', 'number', 'nickname', 'positions', 'mobile')
-//                ->get()->toArray();
-//            dump($res);
-//            foreach ($res as $k => $v) {
-//                dump($v);
-//            }
-////            dump();
-//            exit;
-//            $user_id = Auth::user()->id;
-//            $employee = Employee::where('user_id', $user_id)->first();
-//            $company = Company::where('id', Auth::user()->employee->company_id)->first();
-//            dump($company);
-
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
                 'company'  => Auth::user()->company,
@@ -438,7 +420,6 @@ class EmployeeController extends HomeController
                 $filename = '全库未绑定员工数据';
                 $employees = Employee::where('user_id', null)->get();
                 break;
-
             default:
                 $filename = '全体员工数据';
                 $employees = Auth::user()->company->employees;
