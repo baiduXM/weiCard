@@ -24,7 +24,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
-
     public $is_mobile = false; // 是否是手机模式
     public $interview = 'web'; // 访问页面，web|mobile
 
@@ -559,6 +558,7 @@ class Controller extends BaseController
 //        return $qrcode ? url($qrcodeName) : false;
         return $qrcode ? ($qrcodeName) : false;
     }
+
     /**
      * 案例展示
      */
