@@ -21,7 +21,7 @@
                 {{ method_field('put') }}
                 {{ csrf_field() }}
                 <span>微信二维码：
-                    <a href="{{ url('user/qrcode') }}"id="qrcode" class="inputt" ><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;margin-right: 7px;">更换</strong>
+                    <a href="{{ url('user/qrcode') }}"id="qrcode" class="inputt" ></a><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;margin-right: 7px;">更换</strong>
                     {{--<a href="{{ url('user/delqrcode') }}" class="del" style="background: #23deff;padding: 0 10px; border-radius: 0.3rem;position: absolute;right: 0; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;">删除</a>--}}
                     @if ($errors->has('User.qrcode'))
                         <p class="show">{{ $errors->first('User.qrcode') }}</p>
