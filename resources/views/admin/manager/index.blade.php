@@ -112,11 +112,9 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <!-- <td>{{ $item->id }}</td> -->
-                                            <!--ID-->
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>
-                                                @if($item->is_super == $item::IS_SUPER || $item->name == 'admin')
+                                                @if($item->is_super == $item::IS_SUPER)
                                                     <span class="label label-primary">{{ $item->isSuper($item->is_super) }}</span>
                                                 @endif
                                                 @if($item->is_active == $common::IS_ACTIVE)
