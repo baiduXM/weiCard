@@ -48,7 +48,7 @@
                                    title="垃圾箱">
                                     <i class="glyphicon glyphicon-retweet icon-retweet"></i></a>
                                 <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                   href="{{ route('company.employee.exportExcel',['type'=>'all-unbinding']) }}"
+                                   href="{{ route('mpmanager.employee.exportExcel',['type'=>'all-unbinding']) }}"
                                    title="全库未绑定员工信息导出">
                                     <i class="glyphicon glyphicon-export icon-export"></i></a>
                             </div><!--显示-->

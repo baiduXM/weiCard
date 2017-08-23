@@ -9,6 +9,7 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\CommonModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -85,6 +86,22 @@ class EmployeeController extends AdminController
         } else {
             return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
+    }
+
+    /**
+     * 导出文件
+     * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
+     *
+     * @param null $type       null|unbinding|demission|all-unbinding
+     *                         数据类型，空|未绑定员工|离职员工|全库未绑定员工
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel($type = null)
+    {
+        if (!Auth::guard('admin')->user()->is_super) {
+            return redirect()->back()->with('error', '您不是超级管理员');
+        }
+        $this->export($type);
     }
 
     public function store(Request $request)

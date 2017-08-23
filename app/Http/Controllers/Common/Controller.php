@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class Controller extends BaseController
 {
@@ -26,6 +28,19 @@ class Controller extends BaseController
 
     public $is_mobile = false; // 是否是手机模式
     public $interview = 'web'; // 访问页面，web|mobile
+
+
+    protected $exportArray = array(
+        'company'    => '公司',
+        'number'     => '工号',
+        'nickname'   => '姓名',
+        'department' => '部门',
+        'positions'  => '职位',
+        'mobile'     => '手机',
+        'card_url'   => '名片地址',
+//        'qrcode_url' => '二维码地址',
+        'has_bind'   => '是否绑定',
+    );
 
     public function __construct()
     {
@@ -483,6 +498,65 @@ class Controller extends BaseController
         } else {
             return redirect()->back()->with('error', '下载出错');
         }
+    }
+
+    /**
+     * 导出文件
+     * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
+     *
+     * @param null $type       null|unbinding|demission|all-unbinding
+     *                         数据类型，空|未绑定员工|离职员工|全库未绑定员工
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function export($type = null)
+    {
+        $cellData[0] = $this->exportArray;
+        switch ($type) {
+            case 'unbinding': // 未绑定员工
+                $filename = '未绑定员工数据';
+                $employees = Auth::user()->company->employees->where('user_id', null);
+                break;
+            case 'demission': // 已离职员工
+                $filename = '已离职员工数据';
+                $employees = Employee::onlyTrashed()->where('company_id', Auth::user()->company->id)->get();
+                break;
+            case 'all-unbinding': // 已离职员工
+                $filename = '全库未绑定员工数据';
+                $employees = Employee::where('user_id', null)->get();
+                break;
+            default:
+                $filename = '全体员工数据';
+                $employees = Auth::user()->company->employees;
+                break;
+        }
+        if (count($employees)) {
+            foreach ($employees as $k => $employee) {
+                foreach ($this->exportArray as $key => $word) {
+                    if ($key == 'company') { // 部门
+                        $cellData[$k + 1][$key] = $employee->company ? $employee->company->display_name : '';
+                        continue;
+                    }
+                    if ($key == 'department') { // 部门
+                        $cellData[$k + 1][$key] = $employee->department ? $employee->department->name : '';
+                        continue;
+                    }
+                    if ($key == 'has_bind') { // 是否绑定
+                        $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
+                        continue;
+                    }
+                    if ($key == 'card_url') { // 名片地址
+                        $cellData[$k + 1][$key] = url('cardview/e-' . $employee->id);
+                        continue;
+                    }
+                    $cellData[$k + 1][$key] = $employee->$key;
+                }
+            }
+        }
+        Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
+            $excel->sheet('sheet1', function ($sheet) use ($cellData) {
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
     }
 
     /**
