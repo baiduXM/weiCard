@@ -403,7 +403,7 @@ class EmployeeController extends HomeController
      */
     public function exportExcel(Request $request, $type = null)
     {
-        if (!Auth::user()->company) {
+        if (!Auth::user()->company || Auth::guard('admin')->user()->is_super) {
             return redirect()->back()->with('error', '您不是公司管理员');
         }
         $cellData[0] = $this->exportArray;
