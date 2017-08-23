@@ -29,11 +29,11 @@ Route::get('login', 'Auth\HomeAuthController@getLogin');
 Route::post('login', 'Auth\HomeAuthController@postLogin');
 Route::get('logout', 'Auth\HomeAuthController@logout');
 
-// Registration Routes...
+// 用户注册
 Route::get('register', 'Auth\HomeAuthController@showRegistrationForm');
 Route::post('register', 'Auth\HomeAuthController@register');
 
-// Password Reset Routes...
+// 用户修改密码
 Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
 Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 Route::post('password/reset', 'Auth\PasswordController@reset');
@@ -52,6 +52,11 @@ Route::post('mpmanager/login', 'Auth\AdminAuthController@postLogin');
 Route::get('mpmanager/register', ['as' => 'mpmanager.register', 'uses' => 'Auth\AdminAuthController@getRegister']);
 Route::post('mpmanager/register', 'Auth\AdminAuthController@postRegister');
 Route::get('mpmanager/logout', 'Auth\AdminAuthController@logout');
+
+// 管理员修改密码
+Route::get('mpmanager/password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+Route::post('mpmanager/password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::post('mpmanager/password/reset', 'Auth\PasswordController@reset');
 
 /* 名片预览展示 */
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
@@ -264,6 +269,7 @@ Route::group(['prefix' => 'mpmanager', 'middleware' => 'auth:admin'], function (
     Route::resource('company_department', 'Admin\DepartmentController');
 
     /* 员工管理 */
+    Route::get('company_employee/exportExcel/{type?}', ['as' => 'mpmanager.employee.exportExcel', 'uses' => 'Admin\EmployeeController@exportExcel']);
     Route::delete('company_employee/trash/batch', ['as' => 'mpmanager.employee.batchDestroy', 'uses' => 'Admin\EmployeeController@batchDestroy']);
     Route::resource('company_employee/trash', 'Admin\EmployeeController');
 
