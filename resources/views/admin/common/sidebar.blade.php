@@ -25,9 +25,9 @@
                 {{--<li class="{{ Request::path() == 'mpmanager/user_cardcase' || Request::is('mpmanager/user_cardcase/*')  ? 'active' : '' }}">--}}
                     {{--<a href="{{ url('mpmanager/user_cardcase') }}"><span class="glyphicon glyphicon-stats"></span>名片夹管理</a>--}}
                 {{--</li>--}}
-                <li class="{{ Request::path() == 'mpmanager/user_group' || Request::is('mpmanager/user_group/*')  ? 'active' : '' }}">
-                    <a href="{{ url('mpmanager/user_group') }}"><span class="glyphicon glyphicon-stats"></span>分组管理</a>
-                </li>
+                {{--<li class="{{ Request::path() == 'mpmanager/user_group' || Request::is('mpmanager/user_group/*')  ? 'active' : '' }}">--}}
+                    {{--<a href="{{ url('mpmanager/user_group') }}"><span class="glyphicon glyphicon-stats"></span>分组管理</a>--}}
+                {{--</li>--}}
             </ul>
         </li>
 
