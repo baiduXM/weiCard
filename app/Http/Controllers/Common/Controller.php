@@ -401,7 +401,7 @@ class Controller extends BaseController
         if (!$company) {
             return '找不到该公司';
         }
-        if ($company->user_id) {
+        if ($company->user) {
             return '该公司已绑定！公司管理员：' . $company->user->nickname;
         }
         if ($user->employee && ($user->employee->company_id != $company->id)) {

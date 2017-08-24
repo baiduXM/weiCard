@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="manager" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="manager" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-dustbin" type="button" name="dustbin"--}}
+                                        {{--data-url="manager" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet"></i></button>--}}
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/manager') }}" method="get">--}}
                                 {{--<div class="input-group pull-right col-md-6">--}}
