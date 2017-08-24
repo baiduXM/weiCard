@@ -140,7 +140,7 @@ class DepartmentController extends AdminController
             }
         }
         if ($department->save()) {
-            return redirect()->back()->with('success', '修改成功 - ' . $department->id);
+            return redirect()->to(route('mpmanager.company_department.index'))->with('success', '修改成功 - ' . $department->id);
         } else {
             return redirect()->back();
         }

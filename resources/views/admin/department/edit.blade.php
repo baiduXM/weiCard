@@ -10,9 +10,10 @@
                 <div class="panel-heading">编辑信息</div>
                 <div class="panel-body">
                     <form class="form-horizontal"
-                          action="{{ route('mpmanager.company_department.update' ,$department->id ) }}"
-                          method="put">
-                        {{--enctype="multipart/form-data">--}}
+                          action="{{ route('mpmanager.company_department.update', ['id'=>$department->id] ) }}"
+                          method="post"
+                          enctype="multipart/form-data">
+                        {{ method_field('put') }}
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('Department.company_id') ? ' has-error' : '' }}">
@@ -72,8 +73,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <input type="submit" class="btn btn-primary btn-md" value="确认">
-                                {{--<button type="submit" class="btn btn-primary btn-md">确认</button>--}}
+                                <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
                                 <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_department') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
@@ -85,7 +85,7 @@
         </div><!--/.col-->
     </div><!--/.row-->
 @stop
-@section('javascript')
-    <script>
-    </script>
-@stop
+{{--@section('javascript')--}}
+{{--<script>--}}
+{{--</script>--}}
+{{--@stop--}}
