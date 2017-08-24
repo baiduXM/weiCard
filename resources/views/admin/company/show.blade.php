@@ -56,7 +56,7 @@
                             </tr>
                             <tr>
                                 <th class="text-right">管理员</th>
-                                <td>{!! isset($company->user_id) ? '<a href="'.url('mpmanager/user/'.$company->user->id).'">'.$company->user->nickname .'</a>' : '' !!}</td>
+                                <td>{!! isset($company->user) ? '<a href="'.url('mpmanager/user/'.$company->user->id).'">'.$company->user->nickname .'</a>' : '' !!}</td>
                             </tr>
                             {{--<tr>--}}
                             {{--<th class="text-right">审核人</th>--}}
@@ -104,7 +104,7 @@
                                 {{--<a href="{{ url('mpmanager/company/' . $company->id . '/verified') }}" type="button"--}}
                                 {{--class="btn btn-success btn-md">审核</a>--}}
                                 {{--@endif--}}
-                                @if($company->user_id)
+                                @if($company->user)
                                     <a href="" class="btn btn-warning btn-md operate-unbinding"
                                        data-toggle="modal" data-target=".confirmModal"
                                        data-url="{{ url('mpmanager/company/'. $company->id .'/unbinding') }}"
@@ -125,8 +125,8 @@
 @stop
 @section('javascript')
     <script>
-        $(".verify-failed").click(function () {
-            alert({{ $company->id }});
-        });
+        {{--$(".verify-failed").click(function () {--}}
+            {{--alert({{ $company->id }});--}}
+        {{--});--}}
     </script>
 @stop

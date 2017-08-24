@@ -137,7 +137,7 @@ class CompanyController extends AdminController
      */
     public function show(Request $request, $id)
     {
-        if (!$company = Company::with('departments')->find($id)) {
+        if (!$company = Company::with('departments', 'user')->find($id)) {
             return redirect('mpmanager/company')->with('warning', '公司不存在');
         }
         if ($request->ajax()) {
