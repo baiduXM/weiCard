@@ -63,8 +63,8 @@
                         <a href="{{ url('company/department') }}">公司部门</a></li>
                     {{--<li {{ Request::path() == 'contacts' ? 'class=active' : '' }}>--}}
                         {{--<a href="{{ url('company/contacts') }}">员工人脉圈</a></li>--}}
-                    <li {{ Request::path() == 'circle' || Request::is('circle/*') ? 'class=active' : '' }}>
-                        <a href="{{ url('circle') }}">名片圈</a></li>
+                    {{--<li {{ Request::path() == 'circle' || Request::is('circle/*') ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('circle') }}">名片圈</a></li>--}}
                     <li {{ Request::path() == 'company/product' ? 'class=active' : '' }}>
                         <a href="{{ url('company/product') }}">公司产品</a></li>
                     <li {{ Request::path() == 'company/link' ? 'class=active' : '' }}>
