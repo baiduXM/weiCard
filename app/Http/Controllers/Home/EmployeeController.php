@@ -330,11 +330,10 @@ class EmployeeController extends HomeController
         }
         $res = Employee::whereIn('id', $ids)->delete();
         if ($res) {
-//            return redirect('company/employee')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect()->route('company.employee.index')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-//            return redirect('company/employee')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect()->route('company.employee.index')->with('error', '删除失败 - ' . $res . '条记录');
         }
-
     }
 
     /**

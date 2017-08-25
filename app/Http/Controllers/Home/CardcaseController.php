@@ -351,11 +351,35 @@ class CardcaseController extends HomeController
      */
     public function destroy(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $cardcase = Cardcase::find($id);
+        $cardcase = Cardcase::find($id);
+        if ($cardcase) {
             if ($cardcase->delete()) {
+                if ($request->ajax()) {
+                    return response()->json('删除成功');
+                }
+                return redirect()->route('cardcase.index')->with('success', '删除成功');
+            }
+        }
+        if ($request->ajax()) {
+            return response()->json('删除失败');
+        }
+        return redirect()->route('cardcase.index')->with('error', '删除失败，无数据');
+    }
+
+    public function batchDestroy(Request $request)
+    {
+        $ids = explode(',', $request->input('ids'));
+        $res = Cardcase::whereIn('id', $ids)->delete();
+        if ($res) {
+            if ($request->ajax()) {
                 return response()->json('删除成功');
             }
+            return redirect()->route('cardcase.index')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+            if ($request->ajax()) {
+                return response()->json('删除失败');
+            }
+            return redirect()->route('cardcase.index')->with('error', '删除失败');
         }
     }
 

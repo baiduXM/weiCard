@@ -87,8 +87,8 @@ $(function () {
         var _url = $(this).data("url");
         $(".form-update").attr("action", _url);
         $.get(_url, function (data) {
-            console.log('operate-edit')
-            console.log(data)
+            console.log('operate-edit');
+            console.log(data);
             showInformation(data, 'class', 'info-');
         });
     });
@@ -132,8 +132,31 @@ $(function () {
             var _url          = relatedTarget.data('url');
             var _modal        = $(this);
             _modal.find('form').attr('action', _url);
+            _modal.find('.modal-body').html('<p><i class="iconFont">&#xe604;</i>确认删除所选？</p>');
         });
     });
+
+    $('.operate-batch-delete').click(function () {
+        var length = $('.select-item:checked').length;
+        var _url   = $(this).data('url');
+        if (length == 0) {
+            alert('未选择');
+            return false;
+        } else {
+            var ids_arr = new Array; // 定义一个空数组，用来存放选中的值
+            $('.select-item:checked').each(function () {
+                ids_arr.push($(this).val()); // 遍历checkbox，有checked的加到ids_arr数组中
+            });
+            var ids_str = ids_arr.join(','); // 将数组用','连接成字符串
+            $('.bs3').on('show.bs.modal', function () {
+                var _modal = $(this);
+                _modal.find('form').attr('action', _url);
+                _modal.find('.modal-body').html('<p><i class="iconFont">&#xe604;</i>确认删除所选 ' + length + ' 条数据？</p>');
+                _modal.find('form').append('<input type="hidden" name="ids" value="' + ids_str + '"/>');
+            });
+        }
+    });
+
 
     /* 操作 - 收藏/关注 */
     $(".operate-follow").click(function () {
