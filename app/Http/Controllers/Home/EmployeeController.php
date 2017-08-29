@@ -14,7 +14,6 @@ use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Breadcrumbs;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class EmployeeController extends HomeController
 {
@@ -33,16 +32,6 @@ class EmployeeController extends HomeController
     /* 导出字段 */
 //* 工号，姓名，部门，职位，手机，是否绑定，员工二维码
 
-    protected $exportArray = array(
-        'number'     => '工号',
-        'nickname'   => '姓名',
-        'department' => '部门',
-        'positions'  => '职位',
-        'mobile'     => '手机',
-        'card_url'   => '名片地址',
-//        'qrcode_url' => '二维码地址',
-        'has_bind'   => '是否绑定',
-    );
 
     public function __construct()
     {
@@ -67,24 +56,6 @@ class EmployeeController extends HomeController
     public function index()
     {
         if ($this->is_mobile) {
-
-//            $res = Employee::with(['department' => function ($query) {
-//                $query->select('name');
-//            }], 'company')
-//                ->where('company_id', Auth::user()->company->id)
-//                ->select('id', 'number', 'nickname', 'positions', 'mobile')
-//                ->get()->toArray();
-//            dump($res);
-//            foreach ($res as $k => $v) {
-//                dump($v);
-//            }
-////            dump();
-//            exit;
-//            $user_id = Auth::user()->id;
-//            $employee = Employee::where('user_id', $user_id)->first();
-//            $company = Company::where('id', Auth::user()->employee->company_id)->first();
-//            dump($company);
-
             return view('mobile.employee.index')->with([
                 'employee' => Auth::user()->employee,
                 'company'  => Auth::user()->company,
@@ -120,13 +91,13 @@ class EmployeeController extends HomeController
                 $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
             }
         }
-        $employees = $query->where('company_id', '=', $company->id)->paginate();
+        $employees = $query->where('company_id', '=', $company->id)->orderBy('created_at', 'desc')->paginate();
 
         return view('web.employee.index')->with([
-            'employees'   => $employees,
-            'departments' => $departments,
+            'employees'      => $employees,
+            'departments'    => $departments,
             'templategroups' => $templategroups,
-            'params'      => $params,
+            'params'         => $params,
         ]);
     }
 
@@ -163,7 +134,7 @@ class EmployeeController extends HomeController
                 $query->where($word, 'like', '%' . $keyword . '%')->orderBy('department_id', 'DESC')->orderBy('positions', 'DESC');
             }
         }
-        $employees = $query->where('company_id', '=', $company->id)->onlyTrashed()->paginate();
+        $employees = $query->where('company_id', '=', $company->id)->onlyTrashed()->orderBy('created_at', 'desc')->paginate();
         return view('web.employee.trash')->with([
             'employees'   => $employees,
             'departments' => $departments,
@@ -184,6 +155,8 @@ class EmployeeController extends HomeController
         } else {
             return redirect()->to('user')->with('error', '获取公司错误');
         }
+//        dump($request->all());
+//        exit;
         /* 验证 */
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,null,id,company_id,' . $company->id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
@@ -260,11 +233,11 @@ class EmployeeController extends HomeController
     public function show($id)
     {
         $employee = Employee::with('company', 'department', 'user', 'position')->find($id);
-        $templategroup_id=$employee->templategroup_id;
-        $templategroup=TemplateGroup::query()->find($templategroup_id);
-        if (count($templategroup) > 0){
-            $templategroup_name=$templategroup->name;
-            $employee['templategroup_name']=$templategroup_name;
+        $templategroup_id = $employee->templategroup_id;
+        $templategroup = TemplateGroup::query()->find($templategroup_id);
+        if (count($templategroup) > 0) {
+            $templategroup_name = $templategroup->name;
+            $employee['templategroup_name'] = $templategroup_name;
         }
         return $employee;
     }
@@ -284,7 +257,7 @@ class EmployeeController extends HomeController
         $this->validate($request, [
             'Employee.number'    => 'required|unique:employees,employees.number,' . $id . ',id,company_id,' . $employee->company_id . '|regex:/^([A-Za-z0-9])*$/',// TODO:BUG
             'Employee.nickname'  => 'required',
-            'Employee.email'     => 'email|unique:employees,employees.email,' . $id,
+            'Employee.email'     => 'email',
             'Employee.mobile'    => 'unique:employees,employees.mobile,' . $id . '|numeric',
             'Employee.avatar'    => 'image|max:' . 2 * 1024, // 最大2MB
             'Employee.telephone' => '',
@@ -357,11 +330,10 @@ class EmployeeController extends HomeController
         }
         $res = Employee::whereIn('id', $ids)->delete();
         if ($res) {
-//            return redirect('company/employee')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect()->route('company.employee.index')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-//            return redirect('company/employee')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect()->route('company.employee.index')->with('error', '删除失败 - ' . $res . '条记录');
         }
-
     }
 
     /**
@@ -411,43 +383,16 @@ class EmployeeController extends HomeController
      * 导出文件
      * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
      *
-     * @param Request $request
+     * @param null $type       null|unbinding|demission|all-unbinding
+     *                         数据类型，空|未绑定员工|离职员工|全库未绑定员工
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function exportExcel(Request $request)
+    public function exportExcel($type = null)
     {
-
         if (!Auth::user()->company) {
             return redirect()->back()->with('error', '您不是公司管理员');
         }
-        $company = Auth::user()->company;
-        $cellData[0] = $this->exportArray;
-        if (count($company->employees)) {
-            foreach ($company->employees as $k => $employee) {
-                foreach ($this->exportArray as $key => $word) {
-                    if ($key == 'department') { // 部门
-                        $cellData[$k + 1][$key] = $employee->department ? $employee->department->name : '';
-                        continue;
-                    }
-                    if ($key == 'has_bind') { // 是否绑定
-                        $cellData[$k + 1][$key] = $employee->user_id ? '已绑定' : '';
-                        continue;
-                    }
-                    if ($key == 'card_url') { // 名片地址
-                        $cellData[$k + 1][$key] = url('cardview/e-' . $employee->id);
-                        continue;
-                    }
-                    $cellData[$k + 1][$key] = $employee->$key;
-                }
-            }
-        }
-        $filename = $company->display_name . '-员工数据'; // 公司账号+时间
-        Excel::create(iconv('UTF-8', 'GBK', $filename), function ($excel) use ($cellData) {
-            $excel->sheet('sheet1', function ($sheet) use ($cellData) {
-                $sheet->rows($cellData);
-            });
-        })->export('xls');
-
+        $this->export($type);
     }
 
     /**

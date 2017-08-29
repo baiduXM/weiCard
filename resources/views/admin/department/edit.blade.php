@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '修改资料')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.department.edit', $department->id) !!}
+    {!! Breadcrumbs::render('mpmanager.department.edit', $department->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">编辑信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company_department/' . $department->id) }}"
+                    <form class="form-horizontal"
+                          action="{{ route('mpmanager.company_department.update', ['id'=>$department->id] ) }}"
                           method="post"
                           enctype="multipart/form-data">
                         {{ method_field('put') }}
@@ -74,7 +75,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_department') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_department') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
@@ -84,7 +85,7 @@
         </div><!--/.col-->
     </div><!--/.row-->
 @stop
-@section('javascript')
-    <script>
-    </script>
-@stop
+{{--@section('javascript')--}}
+{{--<script>--}}
+{{--</script>--}}
+{{--@stop--}}

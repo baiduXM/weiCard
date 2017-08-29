@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '名片夹管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.cardcase') !!}
+    {!! Breadcrumbs::render('mpmanager.cardcase') !!}
 @stop
 @section('content')
     <div class="row">
@@ -119,20 +119,20 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
+                                                <td>{!! ($item->user) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
                                                 <td>
                                                     @if($item->getFollowerType($item->follower_type) == 'u')
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/user/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '用户不存在' !!}
+                                                        {!! ($item->follower) ? '<a href="'.url('mpmanager/user/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '用户不存在' !!}
                                                     @else
-                                                        {!! ($item->follower) ? '<a href="'.url('admin/company_employee/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '员工不存在' !!}
+                                                        {!! ($item->follower) ? '<a href="'.url('mpmanager/company_employee/'.$item->follower_id).'">'.$item->follower->nickname.'</a>' : '员工不存在' !!}
                                                     @endif
                                                 </td>
                                                 <td>{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人' : '企业' }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/employee/'.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/employee/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/employee/'. $item->id .'/edit') }}"
+                                                    <a href="{{ url('mpmanager/employee/'. $item->id .'/edit') }}"
                                                        class="btn btn-primary btn-xs" title="编辑"><i
                                                                 class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                     @if(!isset($item->user))

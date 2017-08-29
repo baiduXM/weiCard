@@ -44,12 +44,12 @@
                                     class="glyphicon glyphicon-user"></span> {{ Auth::guard('admin')->user()->name }}
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('admin/setting/person') }}"><span
+                            <li><a href="{{ url('mpmanager/setting/person') }}"><span
                                             class="glyphicon glyphicon-user"></span>
                                     Profile</a></li>
-                            <li><a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-cog"></span>
+                            <li><a href="{{ url('mpmanager/setting') }}"><span class="glyphicon glyphicon-cog"></span>
                                     Settings</a></li>
-                            <li><a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                            <li><a href="{{ url('mpmanager/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
                                     Logout</a></li>
                         </ul>
                     </li>

@@ -90,9 +90,11 @@
                                 {{--<a href="javascript:void(0);" class="operate-share" title="二维码"--}}
                                 {{--data-url="{{ url('cardcase/follow/e-'.$item->id) }}">--}}
                                 {{--<i class="iconFont">&#xe921;</i></a>--}}
-                                <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
-                                   class="operate-delete" title="删除" data-url="{{ url('circle/'.$item->id) }}">
-                                    <i class="iconFont">&#xe6d3;</i></a>
+                                @if($item->user_id == Auth::id())
+                                    <a href="javascript:void(0);" data-toggle="modal" data-target=".bs3"
+                                       class="operate-delete" title="删除" data-url="{{ url('circle/'.$item->id) }}">
+                                        <i class="iconFont">&#xe6d3;</i></a>
+                                @endif
                             </td>
                             <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i class="iconFont">&#xe621;</i></a>
                             </td>
@@ -279,7 +281,7 @@
                         console.log('success');
                         console.log(json);
                         $('.hintModal').modal('show');
-                        $('.hintModal .modal-body').text(json.msg);
+                        $('.hintModal .modal-body').text(json);
                         $('.hintModal .after-operate').text(_url);
                         return false;
                     },

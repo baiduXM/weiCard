@@ -20,10 +20,20 @@
             <form action="{{ url('user') }}" method="post" enctype="multipart/form-data">
                 {{ method_field('put') }}
                 {{ csrf_field() }}
-                {{--<span>头像：--}}
-                    {{--<input type="file" name="User[avatar]"id="avatar" class="inputt" style="opacity: 0; position:absolute;"><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0">上传头像</strong>--}}
-                    {{--@if ($errors->has('User.avatar'))--}}
-                        {{--<p class="show">{{ $errors->first('User.avatar') }}</p>--}}
+                <span>微信二维码：
+                    <a href="{{ url('user/qrcode') }}"id="qrcode" class="inputt" ><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;margin-right: 7px;">更换</strong></a>
+                    {{--<a href="{{ url('user/delqrcode') }}" class="del" style="background: #23deff;padding: 0 10px; border-radius: 0.3rem;position: absolute;right: 0; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;">删除</a>--}}
+                    @if ($errors->has('User.qrcode'))
+                        <p class="show">{{ $errors->first('User.qrcode') }}</p>
+                    @endif
+                </span>
+
+
+                {{--<span>微信二维码：--}}
+                    {{--<input type="file" name="User[qrcode]"id="qrcode" class="inputt" style="opacity: 0; position:absolute;"><strong style="background: #23deff;padding: 0 10px; border-radius: 0.3rem; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;margin-right: 50px;">上传图片</strong>--}}
+                    {{--<a href="{{ url('user/delqrcode') }}" class="del" style="background: #23deff;padding: 0 10px; border-radius: 0.3rem;position: absolute;right: 0; color: #ffffff; line-height: 1.2rem; height: 1.2rem; margin:0.1rem 0;">删除</a>--}}
+                    {{--@if ($errors->has('User.qrcode'))--}}
+                        {{--<p class="show">{{ $errors->first('User.qrcode') }}</p>--}}
                     {{--@endif--}}
                 {{--</span>--}}
                 <span>姓名：
@@ -67,15 +77,15 @@
             </form>        
         </div>
     </div>
-    <div class="sea_l pa">
-        <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
-        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
-        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
-    </div>
+    {{--<div class="sea_l pa">--}}
+        {{--<div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>--}}
+        {{--<div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>--}}
+        {{--<div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>--}}
+    {{--</div>--}}
 @stop
 @section('javascript')
     {{--@parent--}}
-    <script src="{{ asset('static/mobile/js/function.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
     <script>
         //验证姓名，必填
         function validateName(){

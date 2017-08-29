@@ -18,21 +18,21 @@ class PositionController extends AdminController
     {
 
         // 首页 > 职位列表
-        Breadcrumbs::register('admin.position', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('职位列表', route('admin.company_position.index'));
+        Breadcrumbs::register('mpmanager.position', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('职位列表', route('mpmanager.company_position.index'));
         });
 
         // 首页 > 职位列表 > 添加
-        Breadcrumbs::register('admin.position.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.position');
-            $breadcrumbs->push('添加', route('admin.company_position.create'));
+        Breadcrumbs::register('mpmanager.position.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.position');
+            $breadcrumbs->push('添加', route('mpmanager.company_position.create'));
         });
 
         // 首页 > 职位列表 > 编辑
-        Breadcrumbs::register('admin.position.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.position');
-            $breadcrumbs->push('编辑', route('admin.company_position.edit', $id));
+        Breadcrumbs::register('mpmanager.position.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.position');
+            $breadcrumbs->push('编辑', route('mpmanager.company_position.edit', $id));
         });
 
 
@@ -79,7 +79,7 @@ class PositionController extends AdminController
                 'common'    => new CommonModel(),
             ]);
         } else {
-            return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
+            return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
 
     }
@@ -105,7 +105,7 @@ class PositionController extends AdminController
 
         /* 添加 */
         if (Position::create($data)) {
-            return redirect('admin/company_position')->with('success', '添加成功');
+            return redirect('mpmanager/company_position')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -150,7 +150,7 @@ class PositionController extends AdminController
             $position->is_only = 0;
         }
         if ($position->save()) {
-            return redirect('admin/company_position')->with('success', '修改成功 - ' . $position->id);
+            return redirect('mpmanager/company_position')->with('success', '修改成功 - ' . $position->id);
         } else {
             return redirect()->back();
         }
@@ -160,7 +160,7 @@ class PositionController extends AdminController
     {
         $position = Position::where('id', $id)->first();
         if ($position->delete()) {
-            return redirect('admin/company_position')->with('success', '删除成功 - ' . $position->id);
+            return redirect('mpmanager/company_position')->with('success', '删除成功 - ' . $position->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $position->id);
         }
@@ -177,7 +177,7 @@ class PositionController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Position::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_position')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company_position')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

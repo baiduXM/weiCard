@@ -6,10 +6,12 @@ use App\Http\Controllers\Common\HomeController;
 use App\Models\Cardcase;
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
@@ -237,8 +239,6 @@ class CardcaseController extends HomeController
      */
     public function unfollow(Request $request, $params)
     {
-
-
         /* 获取参数 */
         $param = explode('-', $params);
         switch ($param[0]) {
@@ -261,20 +261,21 @@ class CardcaseController extends HomeController
         }
         $cardcase = $query->first();
         /* ajax收藏 */
-//        if ($request->ajax()) {
         if ($cardcase) { // 有，删除
             if ($cardcase->delete()) {
-                $err_code = 750; // 取消收藏成功
+                $err_msg = '取消关注成功';
             } else {
-                $err_code = 751; // 取消收藏失败
+                $err_msg = '取消关注失败';
             }
+        } else {
+            $err_msg = '取消关注失败 - 未关注';
         }
-//        Config::set('global.ajax.err', $err_code);
-//        Config::set('global.ajax.msg', config('global.msg.' . $err_code));
-//        return Config::get('global.ajax');
-//        }
-        return redirect('cardcase')->with('info', config('global.msg.' . $err_code));
+        if ($request->ajax()) {
+            return response()->json($err_msg);
+        } else {
+            return redirect('cardcase')->with('info', $err_msg);
 
+        }
     }
 
 
@@ -350,11 +351,35 @@ class CardcaseController extends HomeController
      */
     public function destroy(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $cardcase = Cardcase::find($id);
+        $cardcase = Cardcase::find($id);
+        if ($cardcase) {
             if ($cardcase->delete()) {
+                if ($request->ajax()) {
+                    return response()->json('删除成功');
+                }
+                return redirect()->route('cardcase.index')->with('success', '删除成功');
+            }
+        }
+        if ($request->ajax()) {
+            return response()->json('删除失败');
+        }
+        return redirect()->route('cardcase.index')->with('error', '删除失败，无数据');
+    }
+
+    public function batchDestroy(Request $request)
+    {
+        $ids = explode(',', $request->input('ids'));
+        $res = Cardcase::whereIn('id', $ids)->delete();
+        if ($res) {
+            if ($request->ajax()) {
                 return response()->json('删除成功');
             }
+            return redirect()->route('cardcase.index')->with('success', '删除成功 - ' . $res . '条记录');
+        } else {
+            if ($request->ajax()) {
+                return response()->json('删除失败');
+            }
+            return redirect()->route('cardcase.index')->with('error', '删除失败');
         }
     }
 
@@ -383,8 +408,83 @@ class CardcaseController extends HomeController
             }
         }
         return redirect()->route('cardcase.index');
-
-
     }
+
+    public function fans(Request $request, $type = null)
+    {
+        $followIds = Auth::user()->followings()->pluck('id')->toArray(); // 我关注的用户ID数组
+        $fanIds = Auth::user()->fans()->pluck('id')->toArray(); // 我关注的用户ID数组
+        if (!$type) {
+            $ids = array_unique(array_merge($followIds, $fanIds));
+            $fans = User::with('employee')->whereIn('id', $ids)->paginate();
+
+        } else {
+            if ($type == 'followed') { // 被关注，粉丝
+                $fans = Auth::user()->fans();
+            }
+            if ($type == 'following') { // 关注的人
+                $fans = Auth::user()->followings();
+            }
+            if ($type == 'together') { // 相互关注
+                $fans = Auth::user()->fans()->whereIn('follower_id', $followIds);
+            }
+            $fans = $fans->with('employee')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
+        }
+        foreach ($fans as $item) {
+            $item->avatar = asset($item->avatar);
+            $item->company = $item->employee ? $item->employee->company : null;
+            $item->isFollow = Auth::user()->isFollow($item->id); // 我是否关注
+            $item->isFollowMe = $item->isFollow(Auth::id()); // 是否关注我
+        }
+
+        if ($request->ajax()) {
+            $jsonArray = array('err' => 0, 'msg' => '粉丝列表', 'data' => array(
+                'fans' => $fans,
+            ));
+            return response()->json($jsonArray);
+        }
+        return view('mobile.cardcase.fans')->with([
+            'fans' => $fans,
+        ]);
+    }
+
+    /**
+     * (临时) 收藏的名片夹添加到关注列表
+     * 遍历名片夹中收藏的名片，加到关注列表
+     */
+    protected function cardcase2follow($id = null)
+    {
+//        $user = $id ? User::find($id) : Auth::user(); // 用户对象
+//        $cardcases = $user->cardcases;
+        $cardcases = Cardcase::get();
+        $stat['count'] = 0;
+        $stat['attach'] = 0;
+        $stat['detach'] = 0;
+        foreach ($cardcases as $cardcase) {
+            if ($cardcase->follower_type == 'App\Models\User') {
+                $id = $cardcase->follower ? $cardcase->follower->id : null;
+            }
+            if ($cardcase->follower_type == 'App\Models\Employee') {
+                $id = $cardcase->follower ? $cardcase->follower->user_id : null;
+            }
+            if ($id) {
+                $user = $cardcase->user;
+                $res = $user->followThisUser($id);
+                if ($res) {
+                    if ($res > 0) {
+                        $stat['attach']++;
+                    } else {
+                        $stat['detach']++;
+                    }
+                    $stat['count']++;
+                }
+//                dump($user->following);
+//                dump($user->following()->toggle($id));
+            }
+        }
+//        dump($stat);
+    }
+
+
 }
 

@@ -17,7 +17,12 @@
         <div class="myCard-content rt-main">
             @if(Auth::user()->company)
                 <ul class="b-button">
-                    {{--<li class="b-btn-bg"><a href="{{ url('company/employee/batch') }}" class="delete"><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
+                    <li class="b-btn-bg">
+                        <a class="operate-batch-delete" data-url="{{ route('company.employee.batchDestroy') }}"
+                           data-toggle="modal" data-target=".bs3">
+                            <i class="iconFont">&#xe6d3;</i>批量删除
+                        </a>
+                    </li>
                     <li class="b-btn-bg">
                         <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
                             <i class="iconFont">&#xe67d;</i>添加</a>
@@ -74,7 +79,8 @@
                 @else
                     @foreach($employees as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                            <td class="b-phone-w">
+                                <input class="select-item" type="checkbox" id="{{ $item->id }}" value="{{ $item->id }}">
                                 <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
@@ -108,7 +114,7 @@
                                 <a href="javascript:" data-toggle="modal" data-target=".bs2"><i
                                             class="iconFont">&#xe613;</i></a>
                             </td>
-                            <td><a href="" ><i class="iconFont">&#xe634;</i></a></td>
+                            <td><a href=""><i class="iconFont">&#xe634;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe632;</i></a></td>
                             <td><a href=""><i class="iconFont">&#xe921;</i></a></td>
                             <td><a href="" data-toggle="modal" data-target=".bs3"><i
@@ -177,7 +183,13 @@
                         <p>
                             <span>员工数据 : </span>
                             <button class="btn btn-default"><a href="{{ url('company/employee/exportExcel') }}"
-                                                               target="_blank">导出Excel表</a></button>
+                                                               target="_blank">全体员工</a></button>
+                            <button class="btn btn-default"><a
+                                        href="{{ url('company/employee/exportExcel/unbinding') }}"
+                                        target="_blank">未绑定员工</a></button>
+                            <button class="btn btn-default"><a
+                                        href="{{ url('company/employee/exportExcel/demission') }}"
+                                        target="_blank">离职员工</a></button>
                         </p>
                         <p>
                             <span>员工二维码 : </span>
@@ -231,7 +243,8 @@
                             </p>
                             <p>
                                 <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                <select class="info-templategroup_id" id="templategroup_id"
+                                        name="Employee[templategroup_id]">
                                     <option value="">公司默认模板</option>
                                     @foreach($templategroups as $templategroup)
                                         <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
@@ -245,11 +258,11 @@
                                        value="{{ old('Employee.positions') ? old('Employee.positions') : '' }}">
                                 <span class="error-positions" style="color: red;"></span>
                             </p>
-                            <p>
-                                <span>照片 : </span>
-                                <input type="file" name="Employee[avatar]">
-                                <span class="error-avatar" style="color: red;"></span>
-                            </p>
+                            {{--<p>--}}
+                            {{--<span>照片 : </span>--}}
+                            {{--<input type="file" name="Employee[avatar]">--}}
+                            {{--<span class="error-avatar" style="color: red;"></span>--}}
+                            {{--</p>--}}
                             <p>
                                 <span>座机 : </span>
                                 <input type="text" name="Employee[telephone]" placeholder=""
@@ -281,7 +294,7 @@
 
     <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2">
+            <div class="modal-content modal1 modal2 modal8">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
@@ -341,7 +354,8 @@
                             </p>
                             <p>
                                 <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id" name="Employee[templategroup_id]">
+                                <select class="info-templategroup_id" id="templategroup_id"
+                                        name="Employee[templategroup_id]">
                                     <option value="">公司默认模板</option>
                                     @foreach($templategroups as $templategroup)
                                         <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
@@ -397,4 +411,43 @@
             </div>
         </div>
     </div><!-- 员工 - 编辑modal -->
+@stop
+@section('javascript')
+    <script>
+        $(function () {
+            $(".operate-create").unbind('click').on('click', function () {
+                var _url      = $('.form-update').attr('action');
+                var _method   = $('.form-update').attr('method') ? $('.form-update').attr('method') : 'post';
+                var _formData = $(this).parents('form').serializeArray();
+//                var _formData = $('.form-update').serialize();
+//                var _formData = new FormData($('.form-update')[0]);
+                console.log(_formData);
+                $("[class^='error-']").addClass('hidden');
+                $.ajax({
+                    url: _url,
+                    type: _method,
+//                    cache: false,
+//                    contentType: false,
+//                    processData: false,
+                    data: _formData,
+                    dataType: 'json',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function (json) {
+                        console.log('success-create')
+                        console.log(json)
+                        $('.hintModal').modal('show');
+                        $('.hintModal .modal-body').text(json.msg);
+                        $('.hintModal .after-operate').text();
+                    },
+                    error: function (json) {
+                        console.log('error-create')
+                        console.log(json)
+                        var errors = json.responseJSON;
+                        showError(errors);
+                        return false;
+                    }
+                });
+            });
+        });
+    </script>
 @stop

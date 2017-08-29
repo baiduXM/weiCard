@@ -24,6 +24,7 @@
     <div class="btn-1">
         <a id="s_dpage" href="javascript:void(0);">更换头像</a>
         <input type="submit"  value="确认提交" id="s_dpage1">
+
         {{--<button>确认更换</button>--}}
         @if ($errors->has('avatar'))
             <button>{{ $errors->first('avatar') }}</button>
@@ -40,10 +41,10 @@
     <!-- <input id="file" type="file" onchange="javascript:setImagePreview();" accept="image/*" multiple  /> -->
     <!-- </a> -->
     <a href="javascript:void(0);">
-        <input type="button" name="file"  value="选取照片"class="clipBtn">
+        <input type="button" name="file"  value="1.选取照片"class="clipBtn">
         <input id="file" type="file" onchange="javascript:setImagePreview();" accept="image/*" multiple  />
     </a>
-    <a href="javascript:void(0);" class="qx"><button id="clipBtn" class="clipBtn">截取图片</button></a>
+    <a href="javascript:void(0);" class="qx"><button id="clipBtn" class="clipBtn">2.截取图片</button></a>
     <a href="javascript:void(0);" class="qx"><button id="clipBtn1" class="clipBtn">取消</button></a>
 
 </div>

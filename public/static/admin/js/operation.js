@@ -103,7 +103,7 @@ $(function () {
             $('#confirmModal').on('show.bs.modal', function (event) {
                 var modal = $(this);
                 modal.find('.modal-title').text('删除确认');
-                modal.find('.modal-body').text('确定删除 ' + ids_str);
+                modal.find('.modal-body').text('确定删除所选的 ' + length + ' 条数据？');
                 modal.find('form').attr('action', _url);
                 modal.find('[name="_method"]').val('DELETE');
                 modal.find('form').append('<input type="hidden" name="ids" value="' + ids_str + '"/>');

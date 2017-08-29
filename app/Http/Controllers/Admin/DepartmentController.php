@@ -17,27 +17,27 @@ class DepartmentController extends AdminController
     {
 
         // 首页 > 部门列表
-        Breadcrumbs::register('admin.department', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('部门列表', route('admin.company_department.index'));
+        Breadcrumbs::register('mpmanager.department', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('部门列表', route('mpmanager.company_department.index'));
         });
 
         // 首页 > 公司列表 > 添加
-        Breadcrumbs::register('admin.department.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('添加', route('admin.company_department.create'));
+        Breadcrumbs::register('mpmanager.department.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('添加', route('mpmanager.company_department.create'));
         });
 
         // 首页 > 公司列表 > 详情
-        Breadcrumbs::register('admin.department.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('详情', route('admin.company_department.show', $id));
+        Breadcrumbs::register('mpmanager.department.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('详情', route('mpmanager.company_department.show', $id));
         });
 
         // 首页 > 公司列表 > 编辑
-        Breadcrumbs::register('admin.department.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.department');
-            $breadcrumbs->push('编辑', route('admin.company_department.edit', $id));
+        Breadcrumbs::register('mpmanager.department.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.department');
+            $breadcrumbs->push('编辑', route('mpmanager.company_department.edit', $id));
         });
 
     }
@@ -97,7 +97,7 @@ class DepartmentController extends AdminController
         }
         /* 添加 */
         if (Department::create($data)) {
-            return redirect('admin/company_department')->with('success', '添加成功');
+            return redirect('mpmanager/company_department')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -140,7 +140,7 @@ class DepartmentController extends AdminController
             }
         }
         if ($department->save()) {
-            return redirect()->back()->with('success', '修改成功 - ' . $department->id);
+            return redirect()->to(route('mpmanager.company_department.index'))->with('success', '修改成功 - ' . $department->id);
         } else {
             return redirect()->back();
         }
@@ -150,7 +150,7 @@ class DepartmentController extends AdminController
     {
         $department = Department::find($id);
         if ($department->delete()) {
-            return redirect('admin/company_department')->with('success', '删除成功 - ' . $department->id);
+            return redirect('mpmanager/company_department')->with('success', '删除成功 - ' . $department->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $department->id);
         }
@@ -167,7 +167,7 @@ class DepartmentController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Department::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/company_department')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company_department')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

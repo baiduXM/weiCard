@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '客服管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.manager') !!}
+    {!! Breadcrumbs::render('mpmanager.manager') !!}
 @stop
 @section('content')
     <div class="row">
@@ -21,7 +21,7 @@
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                                 <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="{{ url('admin/manager/create') }}" title="添加">
+                                        data-url="{{ url('mpmanager/manager/create') }}" title="添加">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </button>
                             </div><!--添加/删除-->
@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="manager" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="manager" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-dustbin" type="button" name="dustbin"--}}
+                                        {{--data-url="manager" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet"></i></button>--}}
                             </div><!--显示-->
                             {{--<form name="form_search" action="{{ url('/admin/manager') }}" method="get">--}}
                                 {{--<div class="input-group pull-right col-md-6">--}}
@@ -112,11 +112,9 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <!-- <td>{{ $item->id }}</td> -->
-                                            <!--ID-->
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>
-                                                @if($item->is_super == $item::IS_SUPER || $item->name == 'admin')
+                                                @if($item->is_super == $item::IS_SUPER)
                                                     <span class="label label-primary">{{ $item->isSuper($item->is_super) }}</span>
                                                 @endif
                                                 @if($item->is_active == $common::IS_ACTIVE)
@@ -127,10 +125,10 @@
                                             </td><!--操作-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
                                             <td>
-                                                <a href="{{ url('admin/manager/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/manager/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/manager/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/manager/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 @if(Auth::guard('admin')->user()->is_super == $item::IS_SUPER)

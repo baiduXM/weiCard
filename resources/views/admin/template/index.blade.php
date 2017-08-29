@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '模板管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.template') !!}
+    {!! Breadcrumbs::render('mpmanager.template') !!}
 @stop
 @section('content')
     <div class="row">
@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="template" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="template" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-dustbin" type="button" name="dustbin"--}}
+                                        {{--data-url="template" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet"></i></button>--}}
                             </div><!--显示-->
                         </div>
                         <div class="fixed-table-container">
@@ -57,6 +57,10 @@
                                             <div class="th-inner" data-name="display_name">名称</div>
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
+                                        <th style="">
+                                            <div class="th-inner" data-name="sort">序号</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!---->
                                         <th style="">
                                             <div class="th-inner" data-name="type">类型</div>
                                             <div class="fht-cell"></div>
@@ -89,6 +93,7 @@
                                             <!--ID-->
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>{{ $item->display_name }}</td><!--display_name-->
+                                            <td>{{ $item->sort }}</td><!--sort-->
                                             <td>
                                                 @if($item->type == $item::TYPE_ALL)
                                                     <span class="label label-default">{{ $item->getType($item->type) }}</span>
@@ -98,12 +103,13 @@
                                                     <span class="label label-primary">{{ $item->getType($item->type) }}</span>
                                                 @endif
                                             </td><!--操作-->
+
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--created_at-->
                                             <td>
-                                                <a href="{{ url('admin/template/'.$item->id) }}"
-                                                   class="btn btn-white btn-xs" title="详情"><i
-                                                            class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/template/'. $item->id .'/edit') }}"
+                                                {{--<a href="{{ url('mpmanager/template/'.$item->id) }}"--}}
+                                                   {{--class="btn btn-white btn-xs" title="详情"><i--}}
+                                                            {{--class="glyphicon glyphicon-list-alt"></i>详情</a>--}}
+                                                <a href="{{ url('mpmanager/template/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"

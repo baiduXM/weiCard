@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '公司管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company') !!}
+    {!! Breadcrumbs::render('mpmanager.company') !!}
 @stop
 @section('content')
     <div class="row">
@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="company" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                        data-url="company" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-dustbin" type="button" name="dustbin"--}}
+                                        {{--data-url="company" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet icon-retweet"></i></button>--}}
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -104,7 +104,7 @@
                                             <!-- <td>{{ $item->id }}</td> -->
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
-                                                <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
+                                                <td>{!! isset($item->user) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
                                                 {{--<td>--}}
                                                 {{--@if($item->deleted_at != null)--}}
                                                 {{--<span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>--}}
@@ -120,21 +120,21 @@
                                                 {{--</td>--}}
                                                 <td>{{ $item->created_at }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/company/'.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/company_employee?company_id='.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company_employee?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看员工"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>员工</a>
-                                                    <a href="{{ url('admin/company_product?company_id='.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company_product?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看产品"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>产品</a>
-                                                    <a href="{{ url('admin/company_position?company_id='.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company_position?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看职位"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>职位</a>
                                                     {{--@if($item->deleted_at == null)--}}
                                                     {{--@if($item->status == $item::VERIFIED_ING)--}}
-                                                    {{--<a href="{{ url('admin/company/'.$item->id . '/verified') }}"--}}
+                                                    {{--<a href="{{ url('mpmanager/company/'.$item->id . '/verified') }}"--}}
                                                     {{--class="btn btn-success btn-xs" title="审核"><i--}}
                                                     {{--class="glyphicon glyphicon-bookmark"></i>审核</a>--}}
                                                     {{--@endif--}}
@@ -146,7 +146,7 @@
                                                            title="解绑管理员">
                                                             <i class="glyphicon glyphicon-link"></i>解绑</a>
                                                     @endif
-                                                    <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
+                                                    <a href="{{ url('mpmanager/company/'. $item->id .'/edit') }}"
                                                        class="btn btn-primary btn-xs" title="编辑"><i
                                                                 class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                     <a href="#confirmModel"
@@ -160,7 +160,7 @@
                                                         <a href="#confirmModal" target="_blank"
                                                            class="btn btn-darkblue btn-xs operate-login"
                                                            data-toggle="modal" data-target=".confirmModal"
-                                                           data-url="{{ url('admin/company/'. $item->id .'/login') }}"
+                                                           data-url="{{ url('mpmanager/company/'. $item->id .'/login') }}"
                                                            data-info="{{ $item->name }} 公司账号"
                                                            title="登录公司前台管理">
                                                             <i class="glyphicon glyphicon-user"></i>登录

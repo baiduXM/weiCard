@@ -7,12 +7,14 @@ $(function () {
     /* 显示modal时，更新form里的action */
     // $('[class^="opshow-"]').on('touchstart', function () {
     $('[class^="opshow-"]').on('tap', function () {
-        var _this  = $(this);
-        var _url   = _this.data('url');
-        var _modal = _this.data('target');
+        var _this      = $(this);
+        var _url       = _this.data('url');
+        var _after_url = _this.data('after_url');
+        var _modal     = _this.data('target');
         // console.log('opshow-');
         // console.log(_url);
         $(_modal).find('form').attr('action', _url);
+        $(_modal).find('[name="after-url"]').val(_after_url);
     });
     // /* 删除 */
     // $('.op-delete').click(function () {
@@ -28,14 +30,14 @@ $(function () {
             return false;
         }
         once = false;
-        console.log(1);
         event.stopPropagation();
-        var _this     = $(this);
-        var _modal    = _this.parents('.modal');
-        var _form     = _this.parents('form');
-        var _url      = _form.attr('action');
-        var _method   = _form.attr('method');
-        var _formData = _form.serializeArray();
+        var _this      = $(this);
+        var _modal     = _this.parents('.modal');
+        var _form      = _this.parents('form');
+        var _url       = _form.attr('action');
+        var _after_url = _form.find('[name="after-url"]');
+        var _method    = _form.attr('method');
+        var _formData  = _form.serializeArray();
         $.ajax({
             type: _method,
             url: _url,
@@ -60,7 +62,7 @@ $(function () {
                 // if (_method == 'post') {
                 //
                 // }
-                setTimeout(window.location.href = _url, 1); // 1s后刷新页面
+                window.location.href = _after_url ? _after_url : _url; // 1s后刷新页面
             },
             error: function (data) {
                 once = true;
@@ -87,3 +89,4 @@ function showError(scope, data) {
         obj.find('.help-text').text(n);
     });
 }
+

@@ -41,13 +41,14 @@ class CircleController extends HomeController
      */
     public function index()
     {
+        $circles = Auth::user()->join_circles;
         if ($this->is_mobile) {
-            $circles = Circle::with('user', 'users')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+//            $circles = Circle::with('user', 'users')->where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
             return view('mobile.circle.index')->with([
                 'circles' => $circles,
             ]);
         }
-        $circles = Auth::user()->create_circles;
+//        $circles = Auth::user()->create_circles;
         return view('web.circle.index')->with([
             'circles' => $circles,
         ]);
@@ -91,7 +92,7 @@ class CircleController extends HomeController
         $res = Circle::create($data);
         if (!$res) {
             if ($request->ajax()) {
-                return response()->json(array('err' => 1, 'msg' => '添加失败'));
+                return response()->json('添加失败');
             }
             return redirect()->back()->with('error', '添加失败');
         }
@@ -99,7 +100,7 @@ class CircleController extends HomeController
         $res->qrcode_path = $this->createQrcode(url('circle/' . $res->id . '/join'), 'uploads/circle'); // 创建二维码
         $res->save(); // 保存
         if ($request->ajax()) {
-            return response()->json(array('err' => 0, 'msg' => '添加成功'));
+            return response()->json('添加成功');
         }
         return redirect()->back()->with('success', '添加成功');
     }
@@ -253,23 +254,24 @@ class CircleController extends HomeController
             $query->where('user_id', Auth::id());
         }])->find($id);
         if (!$circle) { // 圈子是否存在
-            return '圈子不存在';
+            return redirect()->to('circle')->with('error', '圈子不存在');
         }
         if (count($circle->users)) { // 是否已加入圈子
-            return '您已在圈子中';
+            return redirect()->to('circle/' . $id)->with('error', '您已在圈子中');
         }
         $this->joinCircle($id);
-        return redirect()->to('circle')->with('success', '加入成功');
+        return redirect()->to('circle/' . $id)->with('success', '加入成功');
     }
 
     /**
      * 退出圈子
      *
-     * @param int $id      圈子ID
-     * @param int $user_id 用户ID
-     * @return \Illuminate\Http\RedirectResponse|string
+     * @param Request $request
+     * @param int     $id      圈子ID
+     * @param int     $user_id 用户ID
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function quit($id, $user_id = null)
+    public function quit(Request $request, $id, $user_id = null)
     {
         $user_id = $user_id ? $user_id : Auth::id();
         $circle = Circle::with(['users' => function ($query) use ($user_id) {
@@ -280,9 +282,19 @@ class CircleController extends HomeController
             return response()->json('圈子不存在');
         }
         if (!count($circle->users)) { // 是否已加入圈子
-            return '您不在圈子中';
+            return response()->json('您不在圈子中');
         }
         $this->exitCircle($id, $user_id);
+        if ($request->ajax()) {
+            return response()->json('退出成功');
+//            return response()->json([
+//                'err'  => 0,
+//                'msg'  => '成功退出',
+//                'data' => [
+//                    'url' => url('circle'),
+//                ],
+//            ]);
+        }
         return redirect()->to('circle')->with('success', '退出成功');
 //        return '';
     }

@@ -15,11 +15,11 @@ class AdminAuthController extends AdminController
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    protected $redirectTo = '/admin'; // 登录成功后跳转页面
+    protected $redirectTo = '/mpmanager'; // 登录成功后跳转页面
     protected $guard = 'admin'; // 用户守卫
     protected $loginView = 'admin.auth.login'; // 登录页面
     protected $registerView = 'admin.auth.register'; // 注册页面
-    protected $redirectAfterLogout = '/admin'; // 退出登录后跳转页面
+    protected $redirectAfterLogout = '/mpmanager'; // 退出登录后跳转页面
     protected $username = 'username'; // 登录账号
 
     public function __construct()

@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '员工管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee') !!}
+    {!! Breadcrumbs::render('mpmanager.employee') !!}
 @stop
 @section('content')
     <div class="row">
@@ -41,12 +41,16 @@
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
                                 <a class="btn btn-default operate-refresh" type="button" name="refresh"
-                                   data-url="{{ url('admin/company_employee') }}" title="重置刷新">
+                                   data-url="{{ url('mpmanager/company_employee') }}" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></a>
                                 <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
-                                   href="{{ url('admin/company_employee/trash') }}"
+                                   href="{{ url('mpmanager/company_employee/trash') }}"
                                    title="垃圾箱">
                                     <i class="glyphicon glyphicon-retweet icon-retweet"></i></a>
+                                <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
+                                   href="{{ route('mpmanager.employee.exportExcel',['type'=>'all-unbinding']) }}"
+                                   title="全库未绑定员工信息导出">
+                                    <i class="glyphicon glyphicon-export icon-export"></i></a>
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -112,36 +116,36 @@
                                         <!-- <td>{{ $item->id }}</td> -->
                                             <!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->nickname.'</a>' : $item->nickname !!}</td>
+                                            <td>{!! ($item->user) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->nickname.'</a>' : $item->nickname !!}</td>
                                             <!--姓名-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('mpmanager/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! ($item->department) ? '<a href="'.url('admin/company_department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->department) ? '<a href="'.url('mpmanager/company_department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
                                             <td>{{ $item->positions or '' }}</td>
                                             <!--头衔-->
                                             <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td>
                                             <!--创建时间-->
                                             <td>
-                                                <a href="{{ url('admin/company_employee/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
                                                 @if(request()->is('*/trash'))
                                                     <a href="" class="btn btn-success btn-xs operate-recover"
                                                        data-toggle="modal" data-target=".confirmModal"
-                                                       data-url="{{ url('admin/company_employee/'.$item->id.'/recover') }}"
+                                                       data-url="{{ url('mpmanager/company_employee/'.$item->id.'/recover') }}"
                                                        data-info="{{ $item->nickname }} 员工"
                                                        title="恢复">
                                                         <i class="glyphicon glyphicon-transfer"></i>恢复
                                                     </a>
                                                     <a class="btn btn-danger btn-xs operate-delete"
                                                        data-toggle="modal" data-target=".confirmModal"
-                                                       data-url="{{ url('admin/company_employee/trash/'.$item->id) }}"
+                                                       data-url="{{ url('mpmanager/company_employee/trash/'.$item->id) }}"
                                                        data-info="{{ $item->number }} 员工" title="彻底删除">
                                                         <i class="glyphicon glyphicon-trash"></i>彻底删除
                                                     </a>
                                                 @else
-                                                    <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
+                                                    <a href="{{ url('mpmanager/company_employee/'. $item->id .'/edit') }}"
                                                        class="btn btn-primary btn-xs" title="编辑"><i
                                                                 class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                     @if($item->user)

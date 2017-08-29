@@ -135,6 +135,7 @@ class UserController extends HomeController
             'User.fax'         => 'max:30',
             'User.nickname'    => 'max:30|required',
             'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.qrcode'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address'     => 'max:255',
             'User.homepage'    => 'url:true',
 //            'User.sex' => '',
@@ -147,6 +148,7 @@ class UserController extends HomeController
             'User.fax'         => '传真',
             'User.nickname'    => '昵称',
             'User.avatar'      => '头像',
+            'User.qrcode'      => '微信二维码',
             'User.address'     => '地址',
             'User.homepage'    => '个人网址',
 //            'User.sex' => '性别',
@@ -159,6 +161,11 @@ class UserController extends HomeController
         if ($request->hasFile('User.avatar')) {
             $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $id);
         }
+        /* 获取文件 */
+        if ($request->hasFile('User.qrcode')) {
+            $data['qrcode'] = $this->save($request->file('User.qrcode'), $this->path_type, $id);
+        }
+
         $user = User::find($id);
         foreach ($data as $key => $value) {
             if ($value !== '') { // TODO:[BUG]如果有个字段原来有字段，后面更新为空，更新不了
@@ -168,14 +175,89 @@ class UserController extends HomeController
             }
         }
         if ($user->save()) {
+            if ($this->is_mobile) {
+                return redirect()->route('cardcase.show')->with('type', 'u');
+            }
             return redirect('user')->with('success', '修改成功');
         } else {
             return redirect()->back();
         }
     }
 
+
     /**
-    更换个人头像界面
+     * 个人微信二维码
+     **/
+    public function qrcode(Request $request)
+    {
+        $id = Auth::id();
+        $user = Auth::user();
+        if ($this->is_mobile) {
+            return view('mobile.user.qrcode')->with([
+                'user' => $user,
+            ]);
+        }
+
+    }
+    /**
+     * 更换微信二维码
+     **/
+    public function changeqrcode(Request $request)
+    {
+        $id = Auth::id();
+        $this->validate($request, [
+            'qrcode' => 'required',
+        ], [], [
+            'qrcode' => '微信二维码图片',
+        ]);
+        /* 组装图片文件名 */
+        $time = time();
+        $imgname = 'img' . $time . '.jpg';
+        /* 获取图片base64格式数据 */
+        $data = $request->input('qrcode');
+        if ($data) {
+            /* 将base64格式数据转化生成图片放置user个人目录 */
+            $param = explode(',', $data);
+            $img = base64_decode($param[1]);
+            $path = $this->getPath($this->path_type, $id);
+            if ($path) {
+                $this->hasFolder($path);
+            }
+            if ($img) {
+                $a = file_put_contents($path . '/' . $imgname, $img);
+                $b = $path . '/' . $imgname;
+                /* 数据库更新头像数据*/
+                DB::table('users')->where('id', $id)->update(['qrcode' => $b]);
+            }
+            return redirect('user/edit')->with('success', '修改微信二维码成功');
+        } else {
+            return redirect()->back()->with('error', '修改微信二维码失败');
+        }
+
+
+    }
+
+    /**
+     * 删除个人微信二维码图片
+     **/
+    public function delqrcode()
+    {
+        $user = Auth::user();
+        if ($user->qrcode){
+            $this->deleteFiles($user->qrcode);
+            $user->qrcode = null;
+            if($user->save()){
+                return redirect('user/qrcode')->with('success', '删除微信二维码成功');
+            }
+            else{
+                return redirect()->back()->with('error', '删除微信二维码失败');
+            }
+        }
+
+    }
+
+    /**
+     * 更换个人头像界面
      **/
     public function updateavatar(Request $request)
     {
@@ -183,50 +265,50 @@ class UserController extends HomeController
         $user = Auth::user();
         if ($this->is_mobile) {
             return view('mobile.user.ava')->with([
-                'user'     => $user,
+                'user' => $user,
             ]);
         }
 
     }
+
     /**
-    更换个人头像
+     * 更换个人头像
      **/
     public function changeavatar(Request $request)
     {
         $id = Auth::id();
         $this->validate($request, [
-            'avatar'    => 'required',
+            'avatar' => 'required',
         ], [], [
-            'avatar'      => '所选的图片',
+            'avatar' => '所选的图片',
         ]);
         /* 组装图片文件名 */
         $time = time();
-        $imgname ='img'.$time.'.jpg';
+        $imgname = 'img' . $time . '.jpg';
         /* 获取图片base64格式数据 */
         $data = $request->input('avatar');
-        if($data)
-        {
+        if ($data) {
             /* 将base64格式数据转化生成图片放置user个人目录 */
             $param = explode(',', $data);
             $img = base64_decode($param[1]);
-            $path = $this->getPath($this->path_type,$id);
-            if($path){
-               $this->hasFolder($path);
+            $path = $this->getPath($this->path_type, $id);
+            if ($path) {
+                $this->hasFolder($path);
             }
             if ($img) {
-                $a =file_put_contents($path.'/'.$imgname, $img);
-                $b= $path.'/'.$imgname;
+                $a = file_put_contents($path . '/' . $imgname, $img);
+                $b = $path . '/' . $imgname;
                 /* 数据库更新头像数据*/
-                DB::table('users')->where('id',$id)->update(['avatar'=> $b]);
+                DB::table('users')->where('id', $id)->update(['avatar' => $b]);
             }
             return redirect('user/edit')->with('success', '修改头像成功');
-        }else
-            {
-                return redirect()->back()->with('error','修改头像失败' );
-            }
+        } else {
+            return redirect()->back()->with('error', '修改头像失败');
+        }
 
 
     }
+
     /**
      * 关联员工
      *
@@ -248,5 +330,42 @@ class UserController extends HomeController
         }
         return redirect()->back()->with('error', $res);
     }
+
+    /**
+     * 关注用户
+     *
+     * @param $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function follow($user_id)
+    {
+        if (Auth::user()->isFollow($user_id)) {
+            return response()->json(array('err' => 1, 'msg' => '已关注'));
+        }
+        if (Auth::user()->followThisUser($user_id)) {
+            return response()->json(array('err' => 0, 'msg' => '关注成功'));
+        }
+        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
+
+    }
+
+    /**
+     * 取消关注
+     *
+     * @param $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unfollow($user_id)
+    {
+        if (!Auth::user()->isFollow($user_id)) {
+            return response()->json(array('err' => 1, 'msg' => '未关注'));
+        }
+        if (Auth::user()->followThisUser($user_id)) {
+            return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
+        }
+        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
+
+    }
+
 
 }

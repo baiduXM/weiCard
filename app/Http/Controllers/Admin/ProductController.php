@@ -19,21 +19,21 @@ class ProductController extends AdminController
     {
 
         // 首页 > 产品列表
-        Breadcrumbs::register('admin.product', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('产品列表', route('admin.company_product.index'));
+        Breadcrumbs::register('mpmanager.product', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('产品列表', route('mpmanager.company_product.index'));
         });
 
         // 首页 > 产品列表 > 添加
-        Breadcrumbs::register('admin.product.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.product');
-            $breadcrumbs->push('添加', route('admin.company_product.create'));
+        Breadcrumbs::register('mpmanager.product.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.product');
+            $breadcrumbs->push('添加', route('mpmanager.company_product.create'));
         });
 
         // 首页 > 产品列表 > 编辑
-        Breadcrumbs::register('admin.product.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.product');
-            $breadcrumbs->push('编辑', route('admin.company_product.edit', $id));
+        Breadcrumbs::register('mpmanager.product.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.product');
+            $breadcrumbs->push('编辑', route('mpmanager.company_product.edit', $id));
         });
 
     }
@@ -83,7 +83,7 @@ class ProductController extends AdminController
                 'common' => new CommonModel(),
             ]);
         } else {
-            return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
+            return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
     }
 
@@ -118,7 +118,7 @@ class ProductController extends AdminController
 
         /* 添加 */
         if (Product::create($data)) {
-            return redirect('admin/company_product')->with('success', '添加成功');
+            return redirect('mpmanager/company_product')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -167,7 +167,7 @@ class ProductController extends AdminController
             }
         }
         if ($product->save()) {
-            return redirect('admin/company_product')->with('success', '修改成功 - ' . $product->id);
+            return redirect('mpmanager/company_product')->with('success', '修改成功 - ' . $product->id);
         } else {
             return redirect()->back();
         }
@@ -180,7 +180,7 @@ class ProductController extends AdminController
             if ($product->product_img) {
                 $this->deleteFiles($product->product_img);
             }
-            return redirect('admin/company_product')->with('success', '删除成功 - ' . $product->id);
+            return redirect('mpmanager/company_product')->with('success', '删除成功 - ' . $product->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $product->id);
         }
@@ -199,7 +199,7 @@ class ProductController extends AdminController
         $res = Product::whereIn('id', $ids)->delete();
         if ($res) {
             $this->deleteFiles($files_path);
-            return redirect('admin/company_product')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/company_product')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

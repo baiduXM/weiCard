@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '模板上传')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.template.create') !!}
+    {!! Breadcrumbs::render('mpmanager.template.create') !!}
 @stop
 @section('content')
 
@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">模板上传</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/template') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/template') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 
@@ -32,6 +32,19 @@
                                 模板显示名称</label>
                             <div class="col-md-6">
                                 <input id="name" name="Template[display_name]" type="text" placeholder="模板显示名称"
+                                       class="form-control" value="{{ old('Template.display_name') }}">
+                            </div>
+                            @if ($errors->has('Template.display_name'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Template.display_name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div class="form-group {{ $errors->has('Template.sort') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="sort"><span class="text-danger">*</span>
+                                排列序号</label>
+                            <div class="col-md-6">
+                                <input id="name" name="Template[sort]" type="text" placeholder="排列序号"
                                        class="form-control" value="{{ old('Template.display_name') }}">
                             </div>
                             @if ($errors->has('Template.display_name'))

@@ -12,21 +12,21 @@ class GroupController extends AdminController
     {
 
         // 首页 > 用户列表 > 名片夹列表
-        Breadcrumbs::register('admin.group', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('群列表', route('admin.user_group.index'));
+        Breadcrumbs::register('mpmanager.group', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager');
+            $breadcrumbs->push('群列表', route('mpmanager.user_group.index'));
         });
 
         // 首页 > 公司列表 > 详情
-//        Breadcrumbs::register('admin.cardcase.show', function ($breadcrumbs, $id) {
-//            $breadcrumbs->parent('admin.cardcase');
-//            $breadcrumbs->push('详情', route('admin.user_cardcase.show', $id));
+//        Breadcrumbs::register('mpmanager.cardcase.show', function ($breadcrumbs, $id) {
+//            $breadcrumbs->parent('mpmanager.cardcase');
+//            $breadcrumbs->push('详情', route('mpmanager.user_cardcase.show', $id));
 //        });
 //
 //        // 首页 > 公司列表 > 编辑
-//        Breadcrumbs::register('admin.company.edit', function ($breadcrumbs, $id) {
-//            $breadcrumbs->parent('admin.cardcase');
-//            $breadcrumbs->push('编辑', route('admin.company.edit', $id));
+//        Breadcrumbs::register('mpmanager.company.edit', function ($breadcrumbs, $id) {
+//            $breadcrumbs->parent('mpmanager.cardcase');
+//            $breadcrumbs->push('编辑', route('mpmanager.company.edit', $id));
 //        });
 
     }

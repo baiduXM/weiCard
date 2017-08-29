@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '部门详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.department.show', $department->id) !!}
+    {!! Breadcrumbs::render('mpmanager.department.show', $department->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -38,9 +38,9 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/company_department/' . $department->id . '/edit') }}" role="button"
+                                <a href="{{ url('mpmanager/company_department/' . $department->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

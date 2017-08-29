@@ -13,9 +13,9 @@ class TagController extends AdminController
     public function __construct()
     {
 
-        Breadcrumbs::register('admin.group', function ($breadcrumbs) {
+        Breadcrumbs::register('mpmanager.group', function ($breadcrumbs) {
             $breadcrumbs->parent('admin');
-            $breadcrumbs->push('群列表', route('admin.user_group.index'));
+            $breadcrumbs->push('群列表', route('mpmanager.user_group.index'));
         });
 
     }
@@ -79,7 +79,7 @@ class TagController extends AdminController
 
         /* 添加 */
         if (Tag::create($data)) {
-            return redirect('admin/user_tag')->with('success', '添加成功');
+            return redirect('mpmanager/user_tag')->with('success', '添加成功');
         } else {
             return redirect()->back()->with('error', '添加失败');
         }
@@ -145,7 +145,7 @@ class TagController extends AdminController
         }
 
         if ($tag->save()) {
-            return redirect('admin/user_tag')->with('success', '修改成功 - ' . $tag->id);
+            return redirect('mpmanager/user_tag')->with('success', '修改成功 - ' . $tag->id);
         } else {
             return redirect()->back()->with('error', '修改失败 - ' . $tag->id);
         }
@@ -163,7 +163,7 @@ class TagController extends AdminController
     {
         $tag = Tag::find($id);
         if ($tag->delete()) {
-            return redirect('admin/user_tag')->with('success', '删除成功 - ' . $tag->id);
+            return redirect('mpmanager/user_tag')->with('success', '删除成功 - ' . $tag->id);
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $tag->id);
         }
@@ -182,7 +182,7 @@ class TagController extends AdminController
         $ids = explode(',', $request->input('ids'));
         $res = Tag::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user_tag')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/user_tag')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
             return redirect()->back()->with('error', '删除失败 - ' . $res . '条记录');
         }

@@ -8,13 +8,13 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends CommonModel implements
-    AuthenticatableContract,
-    AuthorizableContract,
-    CanResetPasswordContract
+
+class User extends CommonModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+    use SoftDeletes;
 
 //    const IS_ADMIN = 1; // 管理员
 
@@ -67,7 +67,7 @@ class User extends CommonModel implements
     }
 
     /**
-     * 关系模型(一对多) - 名片圈
+     * 关系模型(一对多) - 名片圈（我创建的名片圈）
      */
     public function create_circles()
     {
@@ -75,11 +75,11 @@ class User extends CommonModel implements
     }
 
     /**
-     * 关系模型(多对多) - 名片圈
+     * 关系模型(多对多) - 名片圈(我加入的名片圈)
      */
     public function join_circles()
     {
-        return $this->belongsToMany('App\Models\Circle', 'circle_user');
+        return $this->belongsToMany('App\Models\Circle', 'circle_user')->withTimestamps();
     }
 
 //    /**
@@ -106,6 +106,46 @@ class User extends CommonModel implements
         return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
     }
 
+    /* 用户关注 */
+    public function followings()
+    {
+        return $this->belongsToMany(self::class, 'user_followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /* 用户的粉丝 */
+    public function fans()
+    {
+        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * 是否关注
+     *
+     * @param $user_id 用户ID
+     * @return mixed
+     */
+    public function isFollow($user_id)
+    {
+        return $this->followings()->where('followed_id', $user_id)->count();
+    }
+
+    /**
+     * 关注用户/取消关注
+     *
+     * @param $user_id 用户ID
+     * @return mixed
+     */
+    public function followThisUser($user_id)
+    {
+        if ($this->isFollow($user_id)) {
+//            $this->followings()->detach($user_id);
+//            return -1;
+        } else {
+            $this->followings()->attach($user_id);
+            return 1;
+        }
+        return 0;
+    }
 
     /**
      * 用户绑定员工
@@ -165,5 +205,6 @@ class User extends CommonModel implements
         }
         return 200;
     }
+
 
 }

@@ -9,6 +9,7 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use App\Models\CommonModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -21,27 +22,27 @@ class EmployeeController extends AdminController
     {
 
         // 首页 > 员工列表
-        Breadcrumbs::register('admin.employee', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.company');
-            $breadcrumbs->push('员工列表', route('admin.company_employee.index'));
+        Breadcrumbs::register('mpmanager.employee', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.company');
+            $breadcrumbs->push('员工列表', route('mpmanager.company_employee.index'));
         });
 
         // 首页 > 员工列表 > 添加
-        Breadcrumbs::register('admin.employee.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('添加', route('admin.company_employee.create'));
+        Breadcrumbs::register('mpmanager.employee.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('添加', route('mpmanager.company_employee.create'));
         });
 
         // 首页 > 员工列表 > 详情
-        Breadcrumbs::register('admin.employee.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('详情', route('admin.company_employee.show', $id));
+        Breadcrumbs::register('mpmanager.employee.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('详情', route('mpmanager.company_employee.show', $id));
         });
 
         // 首页 > 员工列表 > 编辑
-        Breadcrumbs::register('admin.employee.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.employee');
-            $breadcrumbs->push('编辑', route('admin.company_employee.edit', $id));
+        Breadcrumbs::register('mpmanager.employee.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.employee');
+            $breadcrumbs->push('编辑', route('mpmanager.company_employee.edit', $id));
         });
     }
 
@@ -62,9 +63,9 @@ class EmployeeController extends AdminController
             }
         }
         if ($request->is('*/trash')) {
-            $employees = $query->onlyTrashed()->with('company')->paginate(); // 删除了
+            $employees = $query->onlyTrashed()->with('company')->orderBy('created_at', 'desc')->paginate(); // 删除了
         } else {
-            $employees = $query->with('company')->paginate();
+            $employees = $query->with('company')->orderBy('created_at', 'desc')->paginate();
         }
         $companies = Company::get();
         return view('admin.employee.index')->with([
@@ -83,8 +84,24 @@ class EmployeeController extends AdminController
                 'common'    => new CommonModel(),
             ]);
         } else {
-            return redirect('admin/company')->with('error', '没有审核通过的公司可选择');
+            return redirect('mpmanager/company')->with('error', '没有审核通过的公司可选择');
         }
+    }
+
+    /**
+     * 导出文件
+     * 工号，姓名，部门，职位，手机，是否绑定，员工二维码
+     *
+     * @param null $type       null|unbinding|demission|all-unbinding
+     *                         数据类型，空|未绑定员工|离职员工|全库未绑定员工
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel($type = null)
+    {
+        if (!Auth::guard('admin')->user()->is_super) {
+            return redirect()->back()->with('error', '您不是超级管理员');
+        }
+        $this->export($type);
     }
 
     public function store(Request $request)
@@ -124,7 +141,7 @@ class EmployeeController extends AdminController
 
         /* 添加 */
         if (Employee::create($data)) {
-            return redirect('admin/company_employee')->with('success', '添加成功');
+            return redirect('mpmanager/company_employee')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -240,7 +257,7 @@ class EmployeeController extends AdminController
     {
         $res = $this->unbindEmployee($id);
         if ($res === true) {
-            return redirect('admin/company_employee')->with('success', '解绑成功');
+            return redirect('mpmanager/company_employee')->with('success', '解绑成功');
         } else {
             return redirect()->back()->with('error', $res);
         }
@@ -256,7 +273,7 @@ class EmployeeController extends AdminController
     {
         $res = Employee::onlyTrashed()->where('id', $id)->restore();
         if ($res) {
-            return redirect('admin/company_employee')->with('success', '恢复成功');
+            return redirect('mpmanager/company_employee')->with('success', '恢复成功');
         } else {
             return redirect()->back()->with('error', '恢复失败');
 

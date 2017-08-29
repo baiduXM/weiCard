@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '修改用户')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.user.edit', $user->id) !!}
+    {!! Breadcrumbs::render('mpmanager.user.edit', $user->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">修改用户</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/user/' . $user->id) }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/user/' . $user->id) }}" method="post"
                           enctype="multipart/form-data">
                         {{ method_field('put') }}
                         {{ csrf_field() }}
@@ -150,7 +150,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}" role="button"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/user') : url()->previous() }}" role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

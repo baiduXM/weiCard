@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '职位管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.position') !!}
+    {!! Breadcrumbs::render('mpmanager.position') !!}
 @stop
 @section('content')
     <div class="row">
@@ -94,7 +94,7 @@
                                             <td>{{ $item->name }}</td><!--职位名称-->
                                             <!-- <td>{{ $item->level }}</td> -->
                                             <!--职位级别-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('mpmanager/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
                                             <!--公司-->
                                             <!-- <td>
                                                 @if($item->is_only == 1)
@@ -105,7 +105,7 @@
                                             </td> -->
                                             <!--是否唯一-->
                                             <td>
-                                                <a href="{{ url('admin/company_position/'. $item->id .'/edit') }}"
+                                                <a href="{{ url('mpmanager/company_position/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
                                                 <a class="btn btn-danger btn-xs operate-delete"

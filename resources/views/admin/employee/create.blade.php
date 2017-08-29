@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '注册员工')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee.create') !!}
+    {!! Breadcrumbs::render('mpmanager.employee.create') !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company_employee') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/company_employee') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 
@@ -134,7 +134,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                 var company_id = $(this).val();
                 if (company_id) {
                     console.log(company_id)
-                    var _url = '{{ url('admin/company/') }}' + '/' + company_id;
+                    var _url = '{{ url('mpmanager/company/') }}' + '/' + company_id;
                     console.log(_url)
                     $.get(_url, function (data) {
                         var _html = '';
