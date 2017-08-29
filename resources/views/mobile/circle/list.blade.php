@@ -33,7 +33,7 @@
             <div class="list i-join-content"><!--我加入的数据-->
             </div>
         </div>
-        <a href="" class="gz-more">查看更多</a>
+        {{--<a href="" class="gz-more">查看更多</a>--}}
     </div>
 @stop
 @section('modal')
