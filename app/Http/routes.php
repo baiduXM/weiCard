@@ -192,6 +192,9 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     /* 名片圈 */
     Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
     Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
+    Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
+    Route::get('circleAjax/{id}', ['as' => 'circle.ajaxShow', 'uses' => 'Home\CircleController@ajaxShow']);
+    Route::post('circleAjax', ['as' => 'circle.ajaxStore', 'uses' => 'Home\CircleController@ajaxStore']);
     Route::resource('circle', 'Home\CircleController');
 
     /* 模板中心 */

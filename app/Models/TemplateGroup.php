@@ -6,12 +6,16 @@ namespace App\Models;
 class TemplateGroup extends CommonModel
 {
     public $timestamps = false;
+
     protected $guarded = [
         'id',
     ];
+
     protected $hidden = [
     ];
-    protected $table =  'template_group' ;
+
+    protected $table = 'template_group';
+
     /**
      * 关系模型(多对一) - 公司
      */
