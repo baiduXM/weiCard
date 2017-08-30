@@ -185,6 +185,7 @@
                 // 回调函数
                 useAjax('post', _url, _formData);
                 // 改变DOM
+                console.log(_json);
                 if (_error) {
                     showError(_form, _error);
                 }
@@ -192,10 +193,10 @@
                     if (_json.err) { // 错误
                         showError(_form, _json.msg);
                     } else {
-                        // 清空表单字段
-                        clearAll();
                         // 跳转页面
                         location.href = '{{ url('circle') }}' + '/' + _json.data.id;
+                        // 清空表单字段
+                        clearAll();
                     }
                     // 关闭模态框
 //                    $('.am-modal-actions').modal('close');
