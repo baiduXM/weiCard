@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::put('user/avatar', ['as' => 'user.changavatar', 'uses' => 'Home\UserController@changeavatar']);
     Route::match(['get', 'post'], 'user/binding', ['as' => 'user.binding', 'uses' => 'Home\UserController@binding']);
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
+    Route::post('userAjax/follow', ['as' => 'user.ajaxFollow', 'uses' => 'Home\UserController@ajaxFollow']);
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
     Route::post('user/unfollow/{id}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
     Route::get('user/qrcode', ['as' => 'user.qrcode', 'uses' => 'Home\UserController@qrcode']);
@@ -193,6 +194,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
     Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
     Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
+    Route::post('circleAjax/join', ['as' => 'circle.ajaxJoin', 'uses' => 'Home\CircleController@ajaxJoin']);
     Route::get('circleAjax/{id}', ['as' => 'circle.ajaxShow', 'uses' => 'Home\CircleController@ajaxShow']);
     Route::post('circleAjax', ['as' => 'circle.ajaxStore', 'uses' => 'Home\CircleController@ajaxStore']);
     Route::resource('circle', 'Home\CircleController');

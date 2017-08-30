@@ -1,25 +1,26 @@
-@extends('mobile.common.circle')
+@extends('mobile.common.amaze')
 @section('title', '人脉圈 列表')
 @section('content')
 
-    <div class="had">
-        <a href="{{ route('circle.index') }}">
-            <i class="close"><img src="{{ asset('static/mobile/images/circle/1_03.png') }}" alt=""></i>
-        </a>
-        <span class="had-name">{{ $circle->name }}</span>
-        <b class="share rt"><img src="{{ asset('static/mobile/images/circle/1_05.png') }}" alt=""></b>
-    </div>
+    {{--<div class="had">--}}
+    {{--<a href="{{ route('circle.index') }}">--}}
+    {{--<i class="close"><img src="{{ asset('static/mobile/images/circle/1_03.png') }}" alt=""></i>--}}
+    {{--</a>--}}
+    {{--<span class="had-name">{{ $circle->name }}</span>--}}
+    {{--<b class="share rt"><img src="{{ asset('static/mobile/images/circle/1_05.png') }}" alt=""></b>--}}
+    {{--</div>--}}
     <div class="X-box">
         <div class="x-title">
             <h2>{{ $circle->name }}</h2>
-            <span>圈号 : 3231F</span>
-            <a href="{{ route('circle.destroy',$circle->id) }}">解散该圈子</a>
+            <span>圈号 : {{ $circle->code or '-' }}</span>
+            <a data-url="{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}"
+               class="i-quit">{{ Auth::id()==$circle->user_id ? '解散该圈子' : '退出圈子'}}</a>
             <p><i>人数{{ count($circle->users) }}
                     / {{ $circle->limit ? $circle->limit : '∞' }}</i>
                 <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
-        <div class="x-share rt" data-am-modal="{target: '#T-share'}">
+        <div class="x-share rt">
             <span><img src="{{ asset($circle->qrcode_path) }}" alt=""></span>
             <p><img src="{{ asset('static/mobile/images/circle/11_033_03.png') }}" alt=""><i>分享圈子</i></p>
         </div>
@@ -31,7 +32,7 @@
     <div class="X-content">
         <form action="" method="">
             <div class="x-cont-had">{{--标题--}}
-                <a href=""><input type="checkbox"></a>
+                <a><input type="checkbox" id="boxAll"></a>
                 <span>未关注的</span>
                 <div class="bianji rt">
                     <a href="javascript:">
@@ -42,69 +43,27 @@
             </div>
             <div class="myCont">{{--创建人信息--}}
                 <dl>
-                    <dt><img src=" " alt=""></dt>
+                    <dt><img src="{{ asset($circle->user->avatar) }}" alt=""></dt>
                     <dd>
-                        <span><b>{{ $circle->user->nickname }}</b><i>发起人</i></span>
+                        <span><b>{{ $circle->user->employee ? $circle->user->employee->nickname : $circle->user->nickname }}</b><i>发起人</i></span>
                         <p>{{ $circle->user->employee ? $circle->user->employee->company->display_name : '暂无未加入公司' }}</p>
                         <p>{{ $circle->user->employee ? $circle->user->employee->positions : '无职务信息' }}</p>
                     </dd>
                 </dl>
                 <span class="myBtn rt">
-            <i>自己</i>
-            <a href="{{ route('cardcase.show') }}">查看</a>
+                   @if($circle->user_id == Auth::id())
+                        <i>自己</i>
+                    @else
+                        {!! Auth::user()->isFollow($circle->user_id)?'<i class="on">已关注</i>': '<i>未关注</i>' !!}
+                    @endif
+                    <a href="{{ route('cardview',$circle->user->employee?'e-'.$circle->user->employee->id:'u-'.$circle->user_id) }}">查看</a>
                 </span>
             </div>
             <div class="x-cont-list">{{--成员信息--}}
 
-                <div class="G-list myCont">
-                    <input type="checkbox">
-                    <dl>
-                        <dt><img src=" " alt=""></dt>
-                        <dd>
-                            <span><b>陈杰</b> </span>
-                            <p>13066239918</p>
-                        </dd>
-                    </dl>
-                    <a class="G-close rt" href="javascript:" data-am-modal=""> × </a>
-                    <span class="myBtn rt">
-                        <i class="on">已关注</i>
-                        <a href="">查看</a>
-                    </span>
-                </div>
-                <div class="G-list myCont">
-                    <input type="checkbox">
-                    <dl>
-                        <dt><img src=" " alt=""></dt>
-                        <dd>
-                            <span><b>陈杰</b> </span>
-                            <p>厦门易尔通网络科技有限公司</p>
-                            <p>技术运营中心-产品</p>
-                        </dd>
-                    </dl>
-                    <a class="G-close rt" href="javascript:" data-am-modal=""> × </a>
-                    <span class="myBtn rt">
-                        <i>未关注</i>
-                        <a href="">查看</a>
-                    </span>
-                </div>
-                <div class="G-list myCont">
-                    <input type="checkbox">
-                    <dl>
-                        <dt><img src=" " alt=""></dt>
-                        <dd>
-                            <span><b>陈杰</b> </span>
-                            <p>13066239918</p>
-                        </dd>
-                    </dl>
-                    <a class="G-close rt" href="javascript:" data-am-modal=""> × </a>
-                    <span class="myBtn rt">
-                        <i class="on">已关注</i>
-                        <a href="">查看</a>
-                    </span>
-                </div>
             </div>
             {{--<p class="G-total">合计 : 12人</p>--}}
-            <button type="submit" class="G-btn">
+            <button type="submit" class="G-btn" data-url="{{ route('user.ajaxFollow') }}">
                 <img src="{{ asset('static/mobile/images/circle/11xx_03.png') }}" alt="">
                 <span>加关注</span>
             </button>
@@ -159,7 +118,66 @@
         var once = true, _json; // 防止多次触发
         $(function () {
             init();
+
+            $('.i-quit').on('touchstart', function () {
+                var _url = $(this).attr('data-url');
+                console.log(_url)
+                useAjax('delete', _url);
+                alert(_json.msg)
+                location.href = '{{ route('circle.index') }}';
+
+
+            });
+
+            /* 加关注 */
+            $('.G-btn').click(function () {
+                var length = $('.select-item:checked').length;
+                var _url   = $(this).data('url');
+                if (length == 0) {
+                    alert('未选择');
+                } else {
+                    var ids_arr = new Array; // 定义一个空数组，用来存放选中的值
+                    $('.select-item:checked').each(function () {
+                        ids_arr.push($(this).val()); // 遍历checkbox，有checked的加到ids_arr数组中
+                    });
+                    var ids_str = ids_arr.join(','); // 将数组用','连接成字符串
+                    useAjax('post', _url, {'ids': ids_str});
+                    alert(_json.msg)
+                    location.href = '{{ route('circle.show',$circle->id) }}';
+                }
+                return false;
+
+            });
+
+            /* 删除 */
+            $('.G-close ').on('touchstart', function () {
+
+            });
+
+
+            /* 全选checkbox */
+            $('#boxAll').on('click', function () {
+                if (this.checked) {
+                    $(".select-item").prop("checked", true);
+                } else {
+                    $(".select-item").prop("checked", false);
+                }
+            });
+
+            /* 单选 */
+            $('.select-item').on('click', function () {
+                var length        = $('.select-item').length;
+                var select_length = $('.select-item:checked').length;
+                if (length == select_length) {
+                    $('#boxAll').prop('checked', true);
+                } else {
+                    $('#boxAll').prop('checked', false);
+                }
+            });
+
         });
+
+
         function init() {
             // 加载数据
             useAjax('get', '{{ route('circle.ajaxShow',$circle->id) }}');
@@ -174,9 +192,11 @@
             var _html = '';
             $.each(data, function (k, v) {
                 _html += '<div class="G-list myCont">';
-                _html += '<input type="checkbox">';
+                if (!v.isFollow) {
+                    _html += '<input type="checkbox" class="select-item" id="' + v.id + '" value="' + v.id + '">';
+                }
                 _html += '<dl>';
-                _html += '<dt><img src=" " alt=""></dt>';
+                _html += '<dt><img src="' + v.avatar + '" alt=""></dt>';
                 _html += '<dd>';
                 if (v.employee) { // 企业员工
                     _html += '<span><b>' + v.employee.nickname + '</b> </span>';
@@ -185,17 +205,20 @@
                 } else {
                     _html += '<span><b>' + v.nickname + '</b> </span>';
                     _html += '<p>' + v.mobile + '</p>';
-                    _html += '<p>技术运营中心-产品</p>';
                 }
                 _html += '</dd></dl>';
-                _html += '<a class="G-close rt" href="javascript:" data-am-modal=""> × </a>';
+                _html += '<a class="G-close rt" href="javascript:"> × </a>';
                 _html += '<span class="myBtn rt">';
                 if (v.isFollow) {
                     _html += '<i class="on">已关注</i>';
                 } else {
                     _html += '<i>未关注</i>';
                 }
-                _html += '<a href="">查看</a>';
+                if (v.employee) { // 企业员工
+                    _html += '<a href="' + '{{ url('cardview') }}' + '/e-' + v.employee.id + '">查看</a>';
+                } else {
+                    _html += '<a href="' + '{{ url('cardview') }}' + '/u-' + v.id + '">查看</a>';
+                }
                 _html += '</span>';
                 _html += '</div>';
             });
@@ -216,18 +239,23 @@
         /**
          * 调用ajax
          */
-        function useAjax(type, url) {
+        function useAjax(type, url, data) {
             $.ajax({
                 type: type,
                 url: url,
-                async: false,
+                data: data,
+                async: false, // 非异步(同步)加载
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }, // CSRF验证必填
                 success: function (data) {
-                    _json = data;
-                    once  = true;
+                    _json  = data;
+                    _error = '';
                 },
+                error: function (data) {
+                    _json  = '';
+                    _error = data.responseJSON;
+                }
             });
         }
     </script>

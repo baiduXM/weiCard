@@ -48,12 +48,6 @@ $(function () {
         }
     }
 
-
-    /*加入成功弹出框*/
-    $(".confirm").click('touchstart', function () {
-        $(this).parents('#add2').hide();
-    });
-
     /*编辑*/
     $(".x-cont-had .bianji a").click('touchstart', function () {
         $(this).toggleClass("complete");
@@ -107,6 +101,20 @@ $(function () {
     //     Wtab('.myTab');
     // }
     // common(lead);
+
+    $(".add1").click('touchstart', function () {
+        $('#add1').modal('toggle');
+    });
+    $(".add2").click('touchstart', function () {
+        $('#add2').modal('toggle');
+    });
+    $(".x-share").click('touchstart', function () {
+        $('#T-share').modal('toggle');
+    });
+    $(".add_suc").click('touchstart', function () {
+        $('#add_suc').modal('toggle');
+    });
+
 
     lead();
     Wtab('.myTab');

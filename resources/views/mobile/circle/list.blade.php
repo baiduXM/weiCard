@@ -1,14 +1,14 @@
-﻿@extends('mobile.common.circle')
+﻿@extends('mobile.common.amaze')
 @section('title', '人脉圈 列表')
 @section('content')
     <div class="add-btn">
-        <div class="add1" data-am-modal="{target: '#add1'}">
+        <div class="add1">
             {{--<i> <img src="images/1_04.png" alt=""></i>--}}
             <i> <img src="{{ asset('static/mobile/images/circle/1_04.png') }}" alt=""></i>
 
             <span>新建人脉圈</span>
         </div>
-        <div class="add2 rt" data-am-modal="{target: '#add2'}">
+        <div class="add2 rt">
             <i><img src="{{ asset('static/mobile/images/circle/1_06.png') }}" alt=""></i>
             <span>快速加入圈子</span>
         </div>
@@ -114,18 +114,18 @@
     <!--快速加入弹出框-->
     <div class="am-modal-actions" id="add2">
         <div class="modal-content">
-            <form action="">
+            <form action="{{ route('circle.ajaxJoin') }}">
                 <h1 class="modal-header"><span>快速加入</span></h1>
                 <div class="modal-body">
                     <div class="name tele">
                         <span>请输入圈号</span>
-                        <input type="text">
+                        <input type="text" name="Circle[code]">
                     </div>
-                    <p class="txtRed on">该圈子不存在</p><!--添加 class='on' 该字段显示-->
+                    <p class="txtRed"></p><!--添加 class='on' 该字段显示-->
                 </div>
                 <div class="modal-footer">
-                    <span class=" " data-am-modal-close>取消</span>
-                    <span class="confirm rt" data-am-modal="{target: '#add_suc' }">确定</span>
+                    <span class="" data-am-modal-close>取消</span>
+                    <span class="confirm rt" data-am-modal-confirm>确定</span>
                 </div>
             </form>
         </div>
@@ -135,7 +135,7 @@
     <div class="am-modal am-modal-no-btn add_suc" tabindex="-1" id="add_suc">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">
-                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                <a class="am-close am-close-spin" data-am-modal-close>&times;</a>
             </div>
             <div class="am-modal-bd">
                 <img src="{{ asset('static/mobile/images/circle/3_03d_03.png') }}" alt="">
@@ -160,20 +160,19 @@
 {{--</div>--}}
 
 <!--快速加入圈子引导-->
-<div class="quick  lead  hide">
-    <div class="new-title rt">
-        <i> <img src="{{ asset('static/mobile/images/circle/1_06.png') }}" alt=""></i>
-        <span>快速加入圈子</span>
-    </div>
-    <img class="quick-txt" src="{{ asset('static/mobile/images/circle/6_03.png') }}" alt="">
-    <div class="new-btn">
-        <a class="onShow on" href="javascript:">完成引导</a>
-    </div>
-</div>
+{{--<div class="quick  lead  hide">--}}
+{{--<div class="new-title rt">--}}
+{{--<i> <img src="{{ asset('static/mobile/images/circle/1_06.png') }}" alt=""></i>--}}
+{{--<span>快速加入圈子</span>--}}
+{{--</div>--}}
+{{--<img class="quick-txt" src="{{ asset('static/mobile/images/circle/6_03.png') }}" alt="">--}}
+{{--<div class="new-btn">--}}
+{{--<a class="onShow on" href="javascript:">完成引导</a>--}}
+{{--</div>--}}
+{{--</div>--}}
 @section('javascript')
     @parent
     <script>
-
         var once = true, _json, _error; // 防止多次触发
         $(function () {
             init();
@@ -186,16 +185,22 @@
                 // 回调函数
                 useAjax('post', _url, _formData);
                 // 改变DOM
-                if (_error) { // 失败
+                if (_error) {
                     showError(_form, _error);
                 }
-                if (_json) { // 成功
-                    $('.am-modal-actions').modal('close'); // 关闭模态框
+                if (_json) { // 回调成功
+                    if (_json.err) { // 错误
+                        showError(_form, _json.msg);
+                    } else {
+                        // 清空表单字段
+                        clearAll();
+                        // 跳转页面
+                        location.href = '{{ url('circle') }}' + '/' + _json.data.id;
+                    }
+                    // 关闭模态框
+//                    $('.am-modal-actions').modal('close');
                     // 添加新数据
-                    showHtml(jointDiv(_json.data), '.i-create-content', 'before');
-                    // 清空表单字段
-                    clearAll();
-
+//                    showHtml(jointDiv(_json.data), '.i-create-content', 'before');
                 }
 
 
@@ -208,7 +213,6 @@
         });
         /* 初始化数据 */
         function init() {
-//
             // 加载数据
             useAjax('get', '{{ route('circle.ajaxIndex') }}');
             // 显示数据
@@ -218,14 +222,12 @@
             if (!createData) { // 有数据的时候隐藏，没有数据的时候显示
                 createData += '<div class="indexImg">';
                 createData += '<img src="' + '{{ asset('static/mobile/images/circle/4_03.png') }}' + '" alt="">';
-                createData += '<a data-am-modal="{target: \'#add1\'}"><span>来创建第一个名片人脉圈 </span> <i>+</i></a>';
+                createData += '<a class="add1"><span>来创建第一个名片人脉圈 </span> <i>+</i></a>';
                 createData += '</div>';
             }
             showHtml(createData, '.i-create-content', 'init');
             var joinData = jointDiv(_json.data.join.data);
             showHtml(joinData, '.i-join-content', 'init');
-
-
         }
 
         /* 显示数据 */
@@ -306,18 +308,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }, // CSRF验证必填
                 success: function (data) {
-                    _json = data;
-                    if (data.err) {
-                        _error = data.msg;
-                    } else {
-                        _error = '';
-                    }
-                    once = true;
+                    _json  = data;
+                    _error = '';
                 },
                 error: function (data) {
                     _json  = '';
                     _error = data.responseJSON;
-                    once   = true;
                 }
             });
         }
@@ -329,16 +325,17 @@
          * @param data      错误信息
          */
         function showError(scope, data) {
-            if (1) {
-
-            } else {
-
-            }
-            $.each(data, function (i, n) {
-                var obj = scope.find('.error-' + i.split('.')[1]);
+            if (typeof data == 'string') {
+                var obj = scope.find('.txtRed');
                 obj.addClass('on');
-                obj.text(n);
-            });
+                obj.text(data);
+            } else {
+                $.each(data, function (i, n) {
+                    var obj = scope.find('.error-' + i.split('.')[1]);
+                    obj.addClass('on');
+                    obj.text(n);
+                });
+            }
         }
     </script>
 @stop
