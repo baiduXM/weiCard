@@ -23,7 +23,10 @@
     </div>
     <div class="w-content">
         <div class="w-list current">
-
+            <div class="indexImg"><!--有数据的时候隐藏，没有数据的时候显示-->
+                <img src="{{ asset('static/mobile/images/circle/4_03.png') }}" alt="">
+                <a class="add1"><span>来创建第一个名片人脉圈 </span> <i>+</i></a>
+            </div>
             <div class="list i-create-content"><!--我创建的数据-->
 
             </div>
@@ -220,11 +223,8 @@
             $('.i-create').text('(' + _json.data.create.total + ')');
             $('.i-join').text('(' + _json.data.join.total + ')');
             var createData = jointDiv(_json.data.create.data);
-            if (!createData) { // 有数据的时候隐藏，没有数据的时候显示
-                createData += '<div class="indexImg">';
-                createData += '<img src="' + '{{ asset('static/mobile/images/circle/4_03.png') }}' + '" alt="">';
-                createData += '<a class="add1"><span>来创建第一个名片人脉圈 </span> <i>+</i></a>';
-                createData += '</div>';
+            if (createData) { // 有数据的时候隐藏，没有数据的时候显示
+                $('.indexImg').addClass('hide');
             }
             showHtml(createData, '.i-create-content', 'init');
             var joinData = jointDiv(_json.data.join.data);
