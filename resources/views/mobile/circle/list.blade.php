@@ -1,4 +1,4 @@
-﻿@extends('mobile.common.amaze')
+@extends('mobile.common.amaze')
 @section('title', '人脉圈 列表')
 @section('content')
     <div class="add-btn">
@@ -182,6 +182,7 @@
 
             $('.confirm').on('touchstart', function () { // 表单确认按钮
                 // 提交表单内容
+                console.log("$")
                 var _form     = $(this).parents('form');
                 var _formData = _form.serializeArray();
                 var _url      = _form.attr('action');
