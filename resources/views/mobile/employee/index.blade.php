@@ -45,12 +45,12 @@
                     </div>
                 </div>
                 <a href="{{ url('cardcase/show/e') }}">
-                    <div class="choose_card pr">使用这张名片
+                    <div class="choose_card pr">查看企业名片
                         {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
                     </div>
                 </a>
                 <a href="{{ url('template/com-template') }}">
-                    <div class="choose_card pr">体验企业模板
+                    <div class="choose_card pr">更换企业模板
                         {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
                     </div>
                 </a>
@@ -63,12 +63,12 @@
                     <span>
                     <input name="code" id="code" type="text" class="inputt" placeholder="输入名片码">
                    </span>
-                    <a href="javascript:;" class="card_c_cj">立即获取</a>
-                    <a href="{{ url('template/com-template') }}">
-                        <div class="choose_card pr">体验企业模板
+                    <a href="javascript:;" class="card_c_cj">立即获取企业名片</a>
+                    {{--<a href="{{ url('template/com-template') }}">--}}
+                        {{--<div class="choose_card pr">体验企业模板--}}
                             {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
-                        </div>
-                    </a>
+                        {{--</div>--}}
+                    {{--</a>--}}
                     {{--<a href="{{ url('template/com-template') }}" class="card_c_cj">体验企业模板</a>--}}
                 </div>
             @endif

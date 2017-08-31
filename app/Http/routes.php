@@ -199,6 +199,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('template/mobile-change', ['as' => 'template.mindex', 'uses' => 'Home\TemplateController@mindex']);
     Route::get('template/com-template', ['as' => 'template.comtemplate', 'uses' => 'Home\TemplateController@comtemplate']);
     Route::match(['get', 'post'], 'template/change-u/{params}', ['as' => 'template.change-u', 'uses' => 'Home\TemplateController@uchange']);
+    Route::match(['get', 'post'], 'template/change-e/{params}', ['as' => 'template.change-e', 'uses' => 'Home\TemplateController@echange']);
 //    Route::resource('template', 'Home\TemplateController');
 
     /* 安全中心 */

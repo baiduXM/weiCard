@@ -183,8 +183,6 @@ class HomeController extends Controller
                     ->where('follower_id', $param[1])
                     ->get();
                 $count_cardcase = count($cardcases);
-                //dd($count_cardcase);
-
                 $person = Employee::find($param[1]);
                 if (!$person) { // 获取交接人信息
                     $res = $this->getOwner($param[1]);
@@ -197,25 +195,42 @@ class HomeController extends Controller
                     $person = $res['data'];
                 }
                 $templategroup = TemplateGroup::where('id', $person->templategroup_id)->first();
-                if (count($templategroup) > 0) {
-                    $template_id = $templategroup->template_id;
-                    $templates = Template::where('id', $template_id)->first();
-                } else {
-                    $templates = $person->templates;
+                /* 企业模板使用优先级：员工自主选择>模板组选择>公司选择 */
+                /* 查询员工是否自主选择企业模板 */
+                if(count($person->templates) > 0){
+                    $templates = $person->templates;//员工自主选择模板的信息
+                }else{
+                    /* 员工没有自主选择企业模板则查询员工是否使用模板组 */
+                    if (count($templategroup) > 0) {
+                        $template_id = $templategroup->template_id;
+                        $templates = Template::where('id', $template_id)->first();//员工使用模板组的模板信息
+                    } else {
+                        $templates = $person->templates;
+                    }
                 }
                 if (count($templates) > 0) {
-                    $template = $templates;
+                    if(count($person->templates) > 0){
+                        $template = $templates[0];
+                    }else{
+                        if(count($templategroup) > 0){
+                            /* 模板组所选模板 */
+                            $template = $templates;
+                        }else{
+                            $template = null;
+                        }
+                    }
                 } else {
+                    /* 若员工没有自主选择以及模板组无选择，则使用公司选择模板 */
                     if (count($templates) <= 0) { // 没有员工模板，使用公司模板
                         $templates = Employee::find($person->id)->company->templates;
                     }
+                    /* 若公司没有选择模板，则默认企业模板第一套 */
                     if (count($templates) <= 0) { // 没有公司模板，使用默认模板
                         $template = Template::whereIn('type', [0, 2])->first();
                     } else {
                         $template = $templates[0];
                     }
                 }
-
                 /* 地图导航地址 */
                 $person['map'] = 'http://api.map.baidu.com/marker?location='
                     . $person->company['coordinate_lat'] . ','

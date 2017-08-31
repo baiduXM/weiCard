@@ -26,10 +26,10 @@
                     <div class="tell pa">• 手机：{{ $user->mobile }}</div>
                 </div>
                 <a href="{{ url('user/edit') }}">
-                    <div class="choose_card1">编辑名片</div>
+                    <div class="choose_card1">编辑个人信息</div>
                 </a>
                 <a href="{{ url('template/mobile-change') }}">
-                    <div class="choose_card pr">更换模板</div>
+                    <div class="choose_card pr">更换个人模板</div>
                 </a>
                 {{--<a href="{{ url('cardcase/show/u') }}">--}}
                     {{--<div class="choose_card pr">使用这张名片--}}

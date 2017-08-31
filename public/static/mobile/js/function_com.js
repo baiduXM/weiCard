@@ -32,16 +32,16 @@ $(document).ready(function(){
   myPublic(".pro_wrap","",".card_top");
   myPublic(".muban_wrap","",".card_choose");
   /*6.3 end 全屏通用代码*/
-  
 
-	
-	 
+
+
+
    $(".name").animate({right:"-1rem"}, 600,function(){
       $(".tell").animate({right:"-1rem"}, 600);
-   }); 
-   
+   });
+
    $(".qy_name").animate({right:"-0.6rem"}, 600);
-   
+
    $(".choose_card").click(function(){
         $(".choose_box").show(100);
     });
@@ -52,16 +52,16 @@ $(document).ready(function(){
             $(".up3").animate({bottom:"5.8rem"}, 600,function(){
                 $(".up4").animate({bottom:"2.6rem"}, 600,function(){
                    $(".up5").animate({bottom:"2rem"}, 600,function(){
-     
+
                    });
                 });
             });
          });
       });
-   }); 
+   });
    $('.muban_content li a').click(function(){
       $(this).find('em').toggle()
-   }); 
+   });
   /*弹窗效果*/
   function popup(eleId){
     if ($(eleId).length == 0) return;
@@ -84,20 +84,30 @@ $(document).ready(function(){
     });
   }
 
-  /*模板弹窗 start*/
-  $('.muban_content li a').each(function(){
-      $(this).click(function(index){
+    /*模板弹窗 start*/
+    $('.muban_content li a').each(function(){
+        $(this).click(function(index){
+            popup(".muban");
+            event.preventDefault();
+        });
+    });
 
-        var href = $(this).find('img')[0].src;
-        $('.pop_img').find('img').attr('src',href);
-        var template_link = $(this).find('input').val();
-        $('.pop_img').find('input').val(template_link);
-        $('#setTP').attr('href',template_link);
+    $('.muban_content li a').click(function(){
+        $('#muban').css('opacity',100).css('zIndex',100);
+        $('#muban .mask').show();
 
-        popup(".muban");
+        var num=Number($(this).parent('li').attr('data-id'))+1
 
-        event.preventDefault();
-      });
-  });
+        var myswiper1 = new Swiper('.swiper-container', {
+            loop : true
+
+        });
+        myswiper1.slideTo(num, 0, false);
+    });
+
+
+    $('#muban').on('click', function(event) {
+        $('#muban').css('opacity',0).css('zIndex',-1);
+    });
 });
-  
+

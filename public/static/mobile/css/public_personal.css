@@ -26,9 +26,6 @@ mark{background: none;}
 .oh{overflow: hidden;}.pr{position: relative;}.pa{position: absolute;}.pf{position: fixed;}.toh{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .op{filter: Alpha(opacity=0);-webkit-opacity: 0;-moz-opacity: 0;-ms-opacity: 0;-o-opacity: 0;opacity: 0;}.db{display: block;}.dtc{display: table-cell;}.ma{margin: 0 auto;}
 
-.muban_content li a .div_img .selected{ position: absolute; z-index: 99; right: 0;bottom: 0; top: 0; left: 0;  background:rgba(0,0,0,.8);}
-.muban_content li a .div_img .selected img{ width: 1.8rem; height: 1.8rem; margin-top:43%;}
-.muban_content li a .div_img .selected span{ font-size: 0.5rem;  line-height: 0.8rem; color: #ccc;}
 .hide{ display: none; }
 .show{ display: block; }
 
@@ -279,37 +276,21 @@ body{background: #ffffff;width:100%; height:100%; min-width:320px; max-width:640
 .muban_content li a .div_img em{display: none; position: absolute; top: 0.25rem; right: 0.25rem; width: 0.7rem; height: 0.7rem; background: url(../images/choose.png) no-repeat; background-size: 100% 100%;}
 .muban_content li a h2{ width: 100%; height: 1rem; line-height: 1rem; text-align: center; font-size: 0.6rem; color: #333333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 
-.muban{opacity: 0; z-index:-1; position:fixed; width: 100%; height: 100%; top: 0; left: 0;}
+.muban_content li a .div_img .selected{ position: absolute; z-index: 99; right: 0;bottom: 0; top: 0; left: 0;  background:rgba(0,0,0,.8);}
+.muban_content li a .div_img .selected img{ width: 1.8rem; height: 1.8rem; margin-top:43%;}
+.muban_content li a .div_img .selected span{ font-size: 0.5rem;  line-height: 0.8rem; color: #ccc;}
+
+.hide{ display: none; }
+.show{ display: block; }
+
+.muban{ display: none; z-index: 100;position:fixed; width: 100%; height: 100%; top: 0; left: 0;}
 .muban .mask{position: absolute;background-color: #000;opacity: 0.6;z-index: 9;top: 0px; left: 0;width: 100%;height: 100%;display: none;}
 .muban .mubanCon{width: 12.5rem; height: auto; border-radius: 0.6rem; position: relative; z-index: 10; left: 50%; margin-left: -6.25rem;}
 .muban .close{ background: url(../images/close.png) no-repeat; background-size: 0.85rem 0.85rem; width: 0.85rem; display: block; height: 0.85rem; float: right; margin-bottom: 0.5rem;}
-.swiper-container {
-    width: 12.5rem;
-
-}
-.swiper-slide {
-    text-align: center;
-    /* Center slide text vertically */
-// display: -webkit-box;
-// display: -ms-flexbox;
-// display: -webkit-flex;
-// display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-}
-.pop_img{ width: 12.5rem; height: 15rem; display:inline-block;text-align: center;vertical-align: middle;}
-.pop_img img{ max-height: 100%;max-width: 100%;}
-.choose_card2{ z-index: 100; display: block; width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 0.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
-.choose_card3{ z-index: 100; display: block; width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;margin: 0.5rem auto 0;border-radius: 0.3rem;}
-.choose_card4{position: absolute; top:16.35rem; z-index: 0; left: 0; display: block; width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 0.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
+.pop_img{ width: 12rem; height: 15rem; display: table-cell;text-align: center;vertical-align: middle;}
+.pop_img img{ max-height: 100%; max-width: 100%;}
+.choose_card2{width:12.5rem;height: 1.65rem;line-height: 1.65rem;text-align: center;color: #fff;font-size: 0.75rem;margin: 0.5rem auto 0;background-image:-webkit-linear-gradient(0deg, #23deff, #50a7ff);border-radius: 0.3rem;}
 .close_wrap{ width: 100%; height: 1.35rem;}
-/*模板 end*/
 /*模板 end*/
 
 

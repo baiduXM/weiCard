@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
+use App\Models\Employee;
 use App\Models\Template;
+use App\Models\TemplateGroup;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,20 +76,46 @@ class TemplateController extends HomeController
      */
     public function comtemplate()
     {
+
+        if (!Auth::user()->company) {
+            //dd(11);
+            return redirect()->to('company/employee');
+        }
+
         $query = Template::query();
         $query->where('type', 2);
-        $templates = $query->orderBy('sort', 'asc')->get();
+        $template_list = $query->orderBy('sort', 'asc')->get();
         $user = Auth::user();
-
+        $id = $user->employee->id;
+        /* 查询当前所选模板 */
+        $person = Employee::find($id);
+        $templategroup_id = $person->templategroup_id;
+        if($templategroup_id){
+            $templategroup = TemplateGroup::where('id', $templategroup_id)->first();
+        }
+        $templates = $person->templates;
+        if(count($templates)>0){
+            $this_template= $templates[0];
+        }else{
+            if($templategroup_id){
+                    $template_id = $templategroup->template_id;
+                    $templates = Template::where('id', $template_id)->first();
+                    $this_template= $templates;
+            }else{
+                     $templates = Employee::find($person->id)->company->templates;
+                     if(count($templates) <= 0){
+                         $this_template = Template::whereIn('type', [0, 2])->first();
+                     }else{
+                         $this_template = $templates[0];
+                     }
+            }
+        }
         return view('mobile.templates.comtemplate')->with([
-            'templates' => $templates,
+            'templates' => $template_list,
+            'this_template' => $this_template,
             'user' => $user,
         ]);
     }
-
-
-
-
 
 
 
@@ -156,5 +184,27 @@ class TemplateController extends HomeController
 
         return redirect()->route('cardcase.show')->with('type','u');
     }
+
+    public function echange($params){
+        $data['type'] = 'App\Models\Employee';
+        $data['template_id'] = $params;
+        $employee = Auth::user()->employee;
+        $type = 'e';
+        if($employee){
+            $id = $employee->id;
+            $person = Employee::find($id);
+            $t = $person->templates;
+        }
+
+        if (count($t) > 0) { // 已选择模板
+            $person->templates()->detach($t[0]->id);
+            $person->templates()->attach($data['template_id']);
+        } else { // 未选择模板
+            $person->templates()->attach($data['template_id']);
+        }
+        return redirect('cardcase/show/'.$type);
+    }
+    
+    
 }
 
