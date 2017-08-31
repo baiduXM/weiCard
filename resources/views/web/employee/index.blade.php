@@ -241,17 +241,17 @@
                                     @endforeach
                                 </select>
                             </p>
-                            <p>
-                                <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id"
-                                        name="Employee[templategroup_id]">
-                                    <option value="">公司默认模板</option>
-                                    @foreach($templategroups as $templategroup)
-                                        <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
-                                                value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>
-                                    @endforeach
-                                </select>
-                            </p>
+                            {{--<p>--}}
+                                {{--<span>模板组 : </span>--}}
+                                {{--<select class="info-templategroup_id" id="templategroup_id"--}}
+                                        {{--name="Employee[templategroup_id]">--}}
+                                    {{--<option value="">公司默认模板</option>--}}
+                                    {{--@foreach($templategroups as $templategroup)--}}
+                                        {{--<option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}--}}
+                                                {{--value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--</select>--}}
+                            {{--</p>--}}
                             <p>
                                 <span>职位 : </span>
                                 <input type="text" name="Employee[positions]" placeholder=""
@@ -352,17 +352,17 @@
                                     @endforeach
                                 </select>
                             </p>
-                            <p>
-                                <span>模板组 : </span>
-                                <select class="info-templategroup_id" id="templategroup_id"
-                                        name="Employee[templategroup_id]">
-                                    <option value="">公司默认模板</option>
-                                    @foreach($templategroups as $templategroup)
-                                        <option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}
-                                                value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>
-                                    @endforeach
-                                </select>
-                            </p>
+                            {{--<p>--}}
+                                {{--<span>模板组 : </span>--}}
+                                {{--<select class="info-templategroup_id" id="templategroup_id"--}}
+                                        {{--name="Employee[templategroup_id]">--}}
+                                    {{--<option value="">公司默认模板</option>--}}
+                                    {{--@foreach($templategroups as $templategroup)--}}
+                                        {{--<option {{ old('Employee.templategroup_id') == $templategroup->id ? 'selected' : '' }}--}}
+                                                {{--value="{{ $templategroup->id }}">{{ $templategroup->name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--</select>--}}
+                            {{--</p>--}}
                             <p>
                                 <span>职位 : </span>
                                 <input type="text" name="Employee[positions]" placeholder="" class="info-positions"
