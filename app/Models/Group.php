@@ -39,5 +39,15 @@ class Group extends CommonModel
         return $this->hasMany('App\Models\Cardcase');
     }
 
+    /**
+     * 关系模型(一对多) - 名片
+     */
+    public function followers()
+    {
+        return $this->hasMany('App\Models\UserFollower');
+    }
+
+
+
 
 }

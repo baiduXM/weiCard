@@ -59,6 +59,7 @@ Route::post('mpmanager/password/email', 'Auth\PasswordController@sendResetLinkEm
 Route::post('mpmanager/password/reset', 'Auth\PasswordController@reset');
 
 /* 名片预览展示 */
+Route::get('viewcard/{id?}', ['as' => 'viewcard', 'uses' => 'Common\HomeController@viewCard']);// new 预览名片
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@errorview']);
 Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\HomeController@companyinfo']);
