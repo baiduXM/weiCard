@@ -48,21 +48,21 @@ $(function () {
                 once = true;
                 console.log('success');
                 console.log(data);
-                /* 现实成功消息，刷新当前页面 */
+                // /* 现实成功消息，刷新当前页面 */
                 $.Display.dismiss(_modal.data('display-name'));
-                $.messager.show("<i class='icon-check'>  " + data + "</i>", {
+                $.messager.show("<i class='icon-check'>  " + data.msg + "</i>", {
                     type: 'success', placement: 'center', autoHide: 1000, closeButton: false
                 });
-                // if (_method == 'delete') {
-                //
-                // }
-                // if (_method == 'put') {
-                //
-                // }
-                // if (_method == 'post') {
-                //
-                // }
-                window.location.href = _after_url ? _after_url : _url; // 1s后刷新页面
+                // // if (_method == 'delete') {
+                // //
+                // // }
+                // // if (_method == 'put') {
+                // //
+                // // }
+                // // if (_method == 'post') {
+                // //
+                // // }
+                window.location.href = data.data; // 1s后刷新页面
             },
             error: function (data) {
                 once = true;

@@ -355,7 +355,8 @@ class CardcaseController extends HomeController
         if ($cardcase) {
             if ($cardcase->delete()) {
                 if ($request->ajax()) {
-                    return response()->json('删除成功');
+                    return response()->json(['err' => 0, 'msg' => '删除成功', 'data' => url('cardcase')]);
+//                    return response()->json('删除成功');
                 }
                 return redirect()->route('cardcase.index')->with('success', '删除成功');
             }
@@ -404,7 +405,7 @@ class CardcaseController extends HomeController
             $cardcase = Cardcase::find($id);
             $cardcase->group_id = $group_id == 0 ? null : $group_id;
             if ($cardcase->save()) {
-                return response()->json('移动成功');
+                return response()->json(['err' => 0, 'msg' => '移动成功', 'data' => url('cardcase')]);
             }
         }
         return redirect()->route('cardcase.index');
