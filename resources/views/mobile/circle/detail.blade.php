@@ -34,12 +34,14 @@
             <div class="x-cont-had">{{--标题--}}
                 <a><input type="checkbox" id="boxAll"></a>
                 <span>未关注的</span>
-                <div class="bianji rt">
-                    <a href="javascript:">
-                        <img src="{{ asset('static/mobile/images/circle/11_03.png') }}" alt="">
-                        <span>编辑</span>
-                    </a>
-                </div>
+                @if($circle->user_id == Auth::id())
+                    <div class="bianji rt">
+                        <a href="javascript:">
+                            <img src="{{ asset('static/mobile/images/circle/11_03.png') }}" alt="">
+                            <span>编辑</span>
+                        </a>
+                    </div>
+                @endif
             </div>
             <div class="myCont">{{--创建人信息--}}
                 <dl>
@@ -123,8 +125,10 @@
                 var _url = $(this).attr('data-url');
                 console.log(_url)
                 useAjax('delete', _url);
-                alert(_json.msg)
-                location.href = '{{ route('circle.index') }}';
+                alert(_json.msg);
+                location.href = _json.data;
+
+                {{--location.href = '{{ route('circle.index') }}';--}}
 
 
             });
@@ -151,7 +155,12 @@
 
             /* 删除 */
             $('.G-close ').on('touchstart', function () {
-
+                var _url = $(this).attr('data-url');
+                console.log(_url)
+                useAjax('delete', _url);
+                alert(_json.msg)
+                location.href = _json.data;
+//                alert(1)
             });
 
 
@@ -207,7 +216,8 @@
                     _html += '<p>' + v.mobile + '</p>';
                 }
                 _html += '</dd></dl>';
-                _html += '<a class="G-close rt" href="javascript:"> × </a>';
+                {{--_html += '<a class="G-close rt" data-url="' + '{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}' + '" > × </a>';--}}
+                    _html += '<a class="G-close rt" data-url="' + '{{ url('circle/'.$circle->id.'/quit') }}' + '/' + v.id + '" > × </a>';
                 _html += '<span class="myBtn rt">';
                 if (v.isFollow) {
                     _html += '<i class="on">已关注</i>';
