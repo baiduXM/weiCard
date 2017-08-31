@@ -62,6 +62,7 @@ Route::post('mpmanager/password/reset', 'Auth\PasswordController@reset');
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@errorview']);
 Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\HomeController@companyinfo']);
+Route::get('invoice/{params}', ['as' => 'invoice', 'uses' => 'Common\HomeController@invoice']);
 
 /* 文件下载 */
 Route::get('download', ['as' => 'download', 'uses' => 'Common\Controller@download']);

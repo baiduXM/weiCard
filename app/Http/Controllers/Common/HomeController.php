@@ -298,16 +298,30 @@ class HomeController extends Controller
             'count_cardcase' => $count_cardcase, // 是否关注
         ]);
     }
+    /* 发票信息 */
+
+    public function invoice($params){
+        $id = $params;
+        $company = Company::find($id);
+        return view('common.invoice')->with([
+            'company' => $company, // 公司数据
+        ]);
+    }
 
 
+    /* 公司信息 */
     public function companyinfo($params)
     {
 
         $id = $params;
         $company = Company::find($id);
+        /* 二维码 */
+        $url = url('invoice/' . $id);
+        $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
         //dd($company);
         return view('common.companyinfo')->with([
-            'company' => $company, // 公司数据
+            'company'     => $company, // 公司数据
+            'qrcodeimg'   => $qrcodeimg, // 二维码图片
         ]);
     }
 
