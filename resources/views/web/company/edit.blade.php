@@ -69,6 +69,14 @@
             <p class="pass-error show">{{ $errors->first('Company.taxpayer_number') }}</p>
         @endif
         <div>
+            <span>发票联系电话: </span>
+            <input type="invoice_tel" name="Company[invoice_tel]" placeholder=""
+                   value="{{ old('Company.invoice_tel') ? old('Company.invoice_tel') : $company->invoice_tel }}">
+        </div>
+        @if ($errors->has('Company.invoice_tel'))
+            <p class="pass-error show">{{ $errors->first('Company.invoice_tel') }}</p>
+        @endif
+        <div>
             <span>开户银行: </span>
             <input type="bank" name="Company[bank]" placeholder=""
                    value="{{ old('Company.bank') ? old('Company.bank') : $company->bank }}">
