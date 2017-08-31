@@ -59,7 +59,7 @@
                                     </a>
                                     {{--<a class="opshow-group" onclick="showGroup({{$item['id']}});"--}}
                                     <a class="opshow-group"
-                                       data-url="{{ url('cardcase/move/'.$subitem['id']) }}"
+                                       data-url="{{ url('cardcaseAjax/move/'.$subitem['id']) }}"
                                        data-display data-backdrop="true" data-target="#groupListModal">
                                         {{--data-display data-backdrop="true">--}}
                                         <i class="icon icon-exchange has-padding-sm"></i>分组
@@ -114,7 +114,7 @@
 
     {{--分组列表--}}
     <div id="groupListModal" class="modal affix dock-bottom enter-from-bottom fade">
-        <form action="" method="put" onsubmit="return false;">
+        <form action="" method="post" onsubmit="return false;">
             <div class="heading divider">
                 <div class="title">分组列表</div>
                 <nav class="nav"><a data-dismiss="display"><i class="icon icon-remove muted"></i></a></nav>
@@ -122,11 +122,21 @@
             <div class="content has-padding">
                 <div class="control">
                     {{--动态分组信息--}}
+                    <div class="radio">
+                        <input type="radio" name="group_id" id="group0" value="0"/>
+                        <label for="group0">默认分组</label>
+                    </div>
+                    @foreach($groups as $item)
+                        <div class="radio">
+                            <input type="radio" name="group_id" id="group{{$item->id}}" value="{{$item->id}}"/>
+                            <label for="group{{$item->id}}">{{$item->name}}</label>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <div class="footer has-padding">
                 <input type="reset" class="btn-lg danger" data-dismiss="display" value="取消">
-                <input type="submit" class="op-submit btn-lg primary pull-right" value="确认">
+                <input type="submit" class="op-submit-group btn-lg primary pull-right" value="确认">
             </div>
         </form>
     </div>
@@ -138,46 +148,86 @@
 @stop
 @section('javascript')
     <script>
+        var _json;
         $(function () {
-            /* 加载分组信息 */
-            $.ajax({
-                type: 'get',
-                url: '/cardcase/group',
-                dataType: 'json',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
-                success: function (data) {
-                    var _modal = '#groupListModal';
-                    var _form  = $(_modal).find('form');
-                    var str    = '';
-                    str += '<div class="radio">';
-                    str += '<input type="radio" name="group_id" id="group0" value="0"/>';
-                    str += '<label for="group0">默认分组</label>';
-                    str += '</div>';
-                    if (data.length > 0) {
-                        $.each(data, function (k, v) {
-                            str += '<div class="radio">';
-                            str += '<input type="radio" name="group_id" id="group' + v.id + '" value="' + v.id + '"/>';
-                            str += '<label for="group' + v.id + '">' + v.name + '</label>';
-                            str += '</div>';
-                        });
-                    }
-                    _form.find('.control').html(str);
-                },
+            $('.op-submit-group').on('touchstart', function () {
+                var _this = $(this);
+                var _modal = _this.parents('.modal');
+                var _form = _this.parents('form');
+                var _url = _form.attr('action');
+                var _formData = _form.serializeArray();
+//                console.log(_url);
+//                console.log('_url');
+//                console.log(_formData);
+//                console.log('_formData');
+                useAjax('post', _url, _formData);
+//                $.Display.dismiss(_modal.data('display-name'));
+//                $.messager.show("<i class='icon-check'>  " + _json.msg + "</i>", {
+//                    type: 'success', placement: 'center', autoHide: 1000, closeButton: false
+//                });
+//                console.log(_json);
+//                console.log('_json');
+                window.location.href = _json.data;
+
             });
+            /* 加载分组信息 */
+//            $.ajax({
+//                type: 'get',
+//                url: '/cardcase/group',
+//                dataType: 'json',
+//                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
+//                success: function (data) {
+//                    var _modal = '#groupListModal';
+//                    var _form = $(_modal).find('form');
+//                    var str = '';
+//                    str += '<div class="radio">';
+//                    str += '<input type="radio" name="group_id" id="group0" value="0"/>';
+//                    str += '<label for="group0">默认分组</label>';
+//                    str += '</div>';
+//                    if (data.length > 0) {
+//                        $.each(data, function (k, v) {
+//                            str += '<div class="radio">';
+//                            str += '<input type="radio" name="group_id" id="group' + v.id + '" value="' + v.id + '"/>';
+//                            str += '<label for="group' + v.id + '">' + v.name + '</label>';
+//                            str += '</div>';
+//                        });
+//                    }
+//                    _form.find('.control').html(str);
+//                },
+//            });
 
             /* 展开分组 */
             $('.opshow-group').on('touchstart', function (e) {
-                var _this     = $(this);
+                var _this = $(this);
                 var _group_id = _this.parents('.list').attr('id');
-                var _modal    = $('#groupListModal');
-                var _form     = _modal.find('form');
-//                var _url   = _this.data('url');
-//                _modal.find('form').attr('action', _url);
+                var _modal = $('#groupListModal');
+                var _form = _modal.find('form');
+                var _url = _this.attr('data-url');
+                _modal.find('form').attr('action', _url);
                 _form.find('#group' + _group_id).attr('checked', true);
             });
 
 
         });
+
+        /**
+         * 调用ajax
+         */
+        function useAjax(type, url, data) {
+            $.ajax({
+                type: type,
+                url: url,
+                data: data,
+                async: false, // 非异步(同步)加载
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, // CSRF验证必填
+                success: function (data) {
+                    _json = data;
+                },
+            });
+        }
+
         //        function showGroup(group_id) {
         //            document.getElementById('group' + group_id).checked = true;
         //        }

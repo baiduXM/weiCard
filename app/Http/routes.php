@@ -181,7 +181,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
     /* 名片夹 */
     Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
-    Route::put('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
+    Route::post('cardcaseAjax/move/{id}', ['as' => 'cardcase.moveAjax', 'uses' => 'Home\CardcaseController@moveAjax']);
     Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::get('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::post('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);

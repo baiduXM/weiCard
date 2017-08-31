@@ -7,10 +7,10 @@ $(function () {
     /* 显示modal时，更新form里的action */
     // $('[class^="opshow-"]').on('touchstart', function () {
     $('[class^="opshow-"]').on('tap', function () {
-        var _this      = $(this);
-        var _url       = _this.data('url');
+        var _this = $(this);
+        var _url = _this.data('url');
         var _after_url = _this.data('after_url');
-        var _modal     = _this.data('target');
+        var _modal = _this.data('target');
         // console.log('opshow-');
         // console.log(_url);
         $(_modal).find('form').attr('action', _url);
@@ -31,28 +31,28 @@ $(function () {
         }
         once = false;
         event.stopPropagation();
-        var _this      = $(this);
-        var _modal     = _this.parents('.modal');
-        var _form      = _this.parents('form');
-        var _url       = _form.attr('action');
-        var _after_url = _form.find('[name="after-url"]');
-        var _method    = _form.attr('method');
-        var _formData  = _form.serializeArray();
+        var _this = $(this);
+        var _modal = _this.parents('.modal');
+        var _form = _this.parents('form');
+        var _url = _form.attr('action');
+        var _method = _form.attr('method');
+        var _formData = _form.serializeArray();
         $.ajax({
             type: _method,
             url: _url,
             data: _formData,
             dataType: 'json',
+            async: false, // 非异步(同步)加载
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}, // CSRF验证必填
-            success: function (data) {
+            success: function (json) {
                 once = true;
                 console.log('success');
-                console.log(data);
+                console.log(json);
                 // /* 现实成功消息，刷新当前页面 */
-                $.Display.dismiss(_modal.data('display-name'));
-                $.messager.show("<i class='icon-check'>  " + data.msg + "</i>", {
-                    type: 'success', placement: 'center', autoHide: 1000, closeButton: false
-                });
+                // $.Display.dismiss(_modal.data('display-name'));
+                // $.messager.show("<i class='icon-check'>  " + json.msg + "</i>", {
+                //     type: 'success', placement: 'center', autoHide: 1000, closeButton: false
+                // });
                 // // if (_method == 'delete') {
                 // //
                 // // }
@@ -62,14 +62,14 @@ $(function () {
                 // // if (_method == 'post') {
                 // //
                 // // }
-                window.location.href = data.data; // 1s后刷新页面
+                window.location.href = json.data; // 1s后刷新页面
             },
-            error: function (data) {
+            error: function (json) {
                 once = true;
                 console.log('error');
-                console.log(data);
+                console.log(json);
                 /* 显示错误 */
-                var errors = JSON.parse(data.response);
+                var errors = JSON.parse(json.response);
                 showError(_modal, errors);
             }
         });

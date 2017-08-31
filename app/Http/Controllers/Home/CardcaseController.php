@@ -10,8 +10,6 @@ use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
@@ -41,8 +39,10 @@ class CardcaseController extends HomeController
         if ($this->is_mobile) {
 
             $data = $this->index4Mobile();
+            $groups = Group::where('user_id', Auth::id())->get();
             return view('mobile.cardcase.index')->with([
-                'data' => $data,
+                'data'   => $data,
+                'groups' => $groups,
             ]);
 
 //            $word = Input::query('word') ? Input::query('word') : '';
@@ -74,7 +74,6 @@ class CardcaseController extends HomeController
 
     /**
      * 名片夹首页 - 移动端
-     *
      * @return array|mixed 返回数据
      */
     public function index4Mobile()
@@ -137,7 +136,6 @@ class CardcaseController extends HomeController
 
     /**
      * 字符串转拼音
-     *
      * @param array $data
      * @return mixed
      */
@@ -162,7 +160,6 @@ class CardcaseController extends HomeController
 
     /**
      * 收藏/取消收藏
-     *
      * @param Request $request
      * @param         $params   类型-ID
      * @return \Illuminate\Http\RedirectResponse
@@ -232,7 +229,6 @@ class CardcaseController extends HomeController
 
     /**
      * 取消关注
-     *
      * @param Request $request
      * @param         $params
      * @return \Illuminate\Http\RedirectResponse
@@ -294,7 +290,6 @@ class CardcaseController extends HomeController
 
     /**
      * 展示名片
-     *
      * @param string $type 名片类型，u-个人，e-员工，c-公司
      * @return $this|\Illuminate\Http\RedirectResponse
      */
@@ -344,7 +339,6 @@ class CardcaseController extends HomeController
 
     /**
      * 删除名片/取消关注
-     *
      * @param Request $request
      * @param         $id
      * @return \Illuminate\Http\JsonResponse
@@ -393,7 +387,6 @@ class CardcaseController extends HomeController
 
     /**
      * 移动分组
-     *
      * @param Request $request
      * @param int     $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
@@ -408,7 +401,19 @@ class CardcaseController extends HomeController
                 return response()->json(['err' => 0, 'msg' => '移动成功', 'data' => url('cardcase')]);
             }
         }
-        return redirect()->route('cardcase.index');
+//        return redirect()->route('cardcase.index');
+    }
+
+    public function moveAjax(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $group_id = $request->input('group_id');
+            $cardcase = Cardcase::find($id);
+            $cardcase->group_id = $group_id == 0 ? null : $group_id;
+            if ($cardcase->save()) {
+                return response()->json(['err' => 0, 'msg' => '移动成功', 'data' => url('cardcase')]);
+            }
+        }
     }
 
     public function fans(Request $request, $type = null)
