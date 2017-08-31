@@ -117,7 +117,7 @@
     <!--快速加入弹出框-->
     <div class="am-modal-actions" id="add2">
         <div class="modal-content">
-            <form action="{{ route('circle.ajaxJoin') }}">
+            <form action="{{ route('circle.ajaxJoin') }}"  onsubmit="return false;">
                 <h1 class="modal-header"><span>快速加入</span></h1>
                 <div class="modal-body">
                     <div class="name tele">

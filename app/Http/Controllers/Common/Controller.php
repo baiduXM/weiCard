@@ -23,7 +23,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Maatwebsite\Excel\Facades\Excel;
 
 
-
 class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
@@ -642,5 +641,55 @@ class Controller extends BaseController
     {
         return view('mobile.common.demo');
     }
+
+    /**
+     * 获取人员信息
+     * 有绑定员工，返回企业员工
+     * 无绑定员工，判断是否离职
+     *
+     * @param int  $user_id
+     * @param bool $leave
+     * @return mixed
+     */
+    public function getPerson($user_id, $leave = false)
+    {
+        $user = User::find($user_id);
+        if (!$user) { // 判断是否有用户信息
+            return '找不到用户信息';
+        }
+        if ($user->employee) { // 判断是否有员工信息
+            $person = $user->employee;
+        } else {
+            if ($leave) { // 是否需要判断离职
+                $employee = $user->employee()->onlyTrashed()->first();
+                $person = $this->getOwner($employee);
+            } else {
+                $person = $user;
+            }
+        }
+
+        return $person;
+
+    }
+
+    /**
+     * 获取主管
+     *
+     * @param object $employee
+     * @return null
+     */
+    public function getOwner($employee)
+    {
+        $owner = null;
+        if ($employee->department) { // 有部门
+            if ($employee->department->owner) { // 有部门主管
+                $owner = $employee->department->owner;
+            }
+        }
+
+        return $owner or $employee->user;
+
+    }
+
 
 }
