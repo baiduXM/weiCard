@@ -45,7 +45,6 @@ class HomeAuthController extends HomeController
         $iplong = $this->get_iplong($ip);//至ip
         $ipArr = array(
 //            '183.250.161.246', // 公司公网IP
-//            '192.168.1.*',
             '127.0.0.1', // 本地测试ip
         );
         /* 不在IP组里的微信登录，在IP组里的可账号登录 */

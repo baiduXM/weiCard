@@ -199,6 +199,7 @@ class UserController extends HomeController
         }
 
     }
+
     /**
      * 更换微信二维码
      **/
@@ -243,13 +244,12 @@ class UserController extends HomeController
     public function delqrcode()
     {
         $user = Auth::user();
-        if ($user->qrcode){
+        if ($user->qrcode) {
             $this->deleteFiles($user->qrcode);
             $user->qrcode = null;
-            if($user->save()){
+            if ($user->save()) {
                 return redirect('user/qrcode')->with('success', '删除微信二维码成功');
-            }
-            else{
+            } else {
                 return redirect()->back()->with('error', '删除微信二维码失败');
             }
         }
@@ -367,5 +367,26 @@ class UserController extends HomeController
 
     }
 
+    /**
+     * ajax关注用户
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxFollow(Request $request)
+    {
+        if ($request->ajax()) {
+//            $ids = $request->input();
+            $ids = explode(',', $request->input('ids'));
+            $count = 0;
+            foreach ($ids as $id) {
+                if (!Auth::user()->isFollow($id)) {
+                    $count += Auth::user()->followThisUser($id);
+                }
+            }
+            return response()->json(array('err' => 0, 'msg' => '关注成功', 'data' => $count));
+        }
+
+    }
 
 }

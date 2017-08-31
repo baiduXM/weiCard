@@ -59,6 +59,8 @@ label{ display: inline-block;
 
     cursor: pointer;
 }
+.operate-batch-delete{cursor: pointer;}
+
 label i{  width: 14px;
     height: 14px;
     line-height:14px;

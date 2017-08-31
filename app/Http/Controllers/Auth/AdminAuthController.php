@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Manager;
 
+//use Illuminate\Foundation\Auth\ResetsPasswords;
+
 
 class AdminAuthController extends AdminController
 {
@@ -37,7 +39,6 @@ class AdminAuthController extends AdminController
      * 重写登录方法
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function postLogin(Request $request)
@@ -81,7 +82,7 @@ class AdminAuthController extends AdminController
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|min:4|max:255|unique:managers',
+            'name'     => 'required|min:4|max:255|unique:managers',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -89,11 +90,15 @@ class AdminAuthController extends AdminController
     protected function create(array $data)
     {
         return Manager::create([
-            'name' => $data['name'],
-            'password' => bcrypt($data['password']),
+            'name'      => $data['name'],
+            'password'  => bcrypt($data['password']),
             'is_active' => 0,
         ]);
+    }
 
+    public function reset()
+    {
+        return view('admin.auth.passwords.reset');
     }
 
 }

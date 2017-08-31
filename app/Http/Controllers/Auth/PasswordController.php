@@ -20,13 +20,24 @@ class PasswordController extends HomeController
     use ResetsPasswords;
 
     protected $redirectTo = '/';
-    protected $linkRequestView = 'auth.passwords.forget'; // 忘记密码
-    protected $resetView = 'auth.passwords.reset'; // 重置密码
+    protected $linkRequestView = 'admin.auth.passwords.forget'; // 忘记密码
+    protected $resetView = 'admin.auth.passwords.reset'; // 重置密码
 
 
     public function __construct()
     {
-        $this->middleware('guest');
+
     }
+
+//    public function showResetForm()
+//    {
+//        return 2;
+//    }
+
+    public function reset()
+    {
+        return 1;
+    }
+
 
 }

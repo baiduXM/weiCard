@@ -12,7 +12,12 @@
         </ul>
         <div class="myCard-content rt-main">
             <ul class="b-button">
-                {{--<li class="b-btn-bg"><a href=""><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
+                <li class="b-btn-bg">
+                    <a class="operate-batch-delete" data-url="{{ route('cardcase.batchDestroy') }}"
+                       data-toggle="modal" data-target=".bs3">
+                        <i class="iconFont">&#xe6d3;</i>批量删除
+                    </a>
+                </li>
                 {{--<li class="b-btn-bor b-sort-btn ">--}}
                 {{--<a href="javascript:">选择排序<i class="iconFont">&#xe618;</i></a>--}}
                 {{--<ul class="b-sort none">--}}
@@ -51,9 +56,12 @@
                     @foreach($cardcases as $item)
                         @if($item->follower)
                             <tr>
-                                <td class="b-phone-w"><input type="checkbox" id="box{{ $item->follower->id }}"><label
-                                            for="box{{ $item->follower->id }}"><i
-                                                class="iconFont">&#xe7de;</i></label>
+                                <td class="b-phone-w">
+                                    <input class="select-item" value="{{ $item->id }}" type="checkbox"
+                                                             id="box{{ $item->follower->id }}">
+                                    <label for="box{{ $item->follower->id }}">
+                                        <i class="iconFont">&#xe7de;</i>
+                                    </label>
                                 </td>
                                 <td class="b-phone-w2">{{ $item->follower->nickname }}</td>
                                 <td class="b-phone-w2">{{ $item->getFollowerType($item->follower_type) == 'u' ? '个人用户' : $item->follower->company->display_name }}</td>
@@ -69,8 +77,10 @@
                                     {{--<a href=""--}}
                                     {{--data-url="{{  url('cardcase/follow/'.$item->getFollowerType($item->follower_type).'-'.$item->follower_id) }}"><i--}}
                                     {{--class="iconFont">&#xe921;</i></a>--}}
-                                    {{--<a href="javascript:" data-toggle="modal" data-target=".bs3"><i--}}
-                                    {{--class="iconFont">&#xe6d3;</i></a>--}}
+                                    <a href="" data-toggle="modal" data-target=".bs3" class="operate-delete"
+                                       data-url="{{ route('cardcase.destroy',$item->id) }}">
+                                        <i class="iconFont">&#xe6d3;</i>
+                                    </a>
                                 </td>
                                 <td class=" b-td-show" id="b-td-show"><a href="javascript:"><i
                                                 class="iconFont">&#xe621;</i></a>

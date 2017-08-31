@@ -17,7 +17,12 @@
         <div class="myCard-content rt-main">
             @if(Auth::user()->company)
                 <ul class="b-button">
-                    {{--<li class="b-btn-bg"><a href="{{ url('company/employee/batch') }}" class="delete"><i class="iconFont">&#xe6d3;</i>批量删除</a></li>--}}
+                    <li class="b-btn-bg">
+                        <a class="operate-batch-delete" data-url="{{ route('company.employee.batchDestroy') }}"
+                           data-toggle="modal" data-target=".bs3">
+                            <i class="iconFont">&#xe6d3;</i>批量删除
+                        </a>
+                    </li>
                     <li class="b-btn-bg">
                         <a href="javascript:;" data-toggle="modal" data-target="#modal-employee-add">
                             <i class="iconFont">&#xe67d;</i>添加</a>
@@ -74,7 +79,8 @@
                 @else
                     @foreach($employees as $item)
                         <tr class="{{ $item->user_id == Auth::id() ? 'info' : '' }}">
-                            <td class="b-phone-w"><input type="checkbox" id="{{ $item->id }}">
+                            <td class="b-phone-w">
+                                <input class="select-item" type="checkbox" id="{{ $item->id }}" value="{{ $item->id }}">
                                 <label for="{{ $item->id }}" class="iconFont"><i>&#xe7de;</i></label>
                             </td>
                             <td class="b-phone-w2">{{ $item->number }}</td>
@@ -288,7 +294,7 @@
 
     <div class="modal fade" id="modal-employee-show" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content modal1 modal2">
+            <div class="modal-content modal1 modal2 modal8">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span>
