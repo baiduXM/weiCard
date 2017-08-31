@@ -62,6 +62,9 @@
                         <p class="show">{{ $errors->first('User.email') }}</p>
                     @endif
                 </span>
+                <span>公司：
+                    <input name="User[company_name]" id="address" type="text" class="inputt" value="{{ old('User.company_name') ? old('User.company_name') : $user->company_name }}">
+                </span>
                 <span>地址：
                     <input name="User[address]" id="address" type="text" class="inputt" value="{{ old('User.address') ? old('User.address') : $user->address }}">
                 </span>

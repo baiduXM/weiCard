@@ -18,13 +18,25 @@
     <div class="card_main">
         <div class="card_content">
             @if($isComplete)
-                <div class="cards pr">
-                    <img src="{{ asset('static/mobile/images/bg7.png') }}">
-                    <div class="cards_tx cards-gr dtc tc vm pa"><img
-                                src="{{ asset($user->avatar) }}"></div>
-                    <div class="name pa">• 姓名：{{ $user->nickname }}</div>
-                    <div class="tell pa">• 手机：{{ $user->mobile }}</div>
+
+                <div class="cards pr"><img src="{{ asset('static/mobile/images/bg7.png') }}">
+                    <div class="cards_tx1 dtc tc vm pa"><img
+                                src="{{ $user->avatar ? asset($user->avatar) : asset('static/mobile/images/qy_tx.png') }}">
+                    </div>
+                    <div class="qy_name1 pa" style="background: rgba(237,133,44,0.5)">{{ $user->company_name ? $user->company_name :'' }} &nbsp; {{ $user->nickname }}</br>
+                        手机：{{ $user->mobile }}
+
+                    </div>
                 </div>
+
+
+                {{--<div class="cards pr">--}}
+                    {{--<img src="{{ asset('static/mobile/images/bg7.png') }}">--}}
+                    {{--<div class="cards_tx cards-gr dtc tc vm pa"><img--}}
+                                {{--src="{{ asset($user->avatar) }}"></div>--}}
+                    {{--<div class="name pa">• 姓名：{{ $user->nickname }}</div>--}}
+                    {{--<div class="tell pa">• 手机：{{ $user->mobile }}</div>--}}
+                {{--</div>--}}
                 <a href="{{ url('user/edit') }}">
                     <div class="choose_card1">编辑个人信息</div>
                 </a>

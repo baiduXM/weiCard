@@ -137,7 +137,9 @@ class UserController extends HomeController
             'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.qrcode'      => 'image|max:' . 2 * 1024, // 最大2MB
             'User.address'     => 'max:255',
+            'User.company_name'     => 'max:255',
             'User.homepage'    => 'url:true',
+
 //            'User.sex' => '',
 //            'User.age' => 'max:255',
             'User.description' => 'max:255',
@@ -150,6 +152,7 @@ class UserController extends HomeController
             'User.avatar'      => '头像',
             'User.qrcode'      => '微信二维码',
             'User.address'     => '地址',
+            'User.company_name'     => '公司名',
             'User.homepage'    => '个人网址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
