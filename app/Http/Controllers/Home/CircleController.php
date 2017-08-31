@@ -312,12 +312,10 @@ class CircleController extends HomeController
             $query->where('user_id', $user_id);
         }])->find($id);
 
-        if ($circle->user_id == Auth::id()) {
+        if ($circle->user_id == $user_id) {
             $circle->delete();
-            return response()->json(['err' => 0, 'msg' => '圈子已解散', 'data' => null]);
-
+            return response()->json(['err' => 0, 'msg' => '圈子已解散', 'data' => route('circle.index')]);
         }
-//        dd($circle);
         if (!$circle) { // 圈子是否存在
             return response()->json(['err' => 1, 'msg' => '圈子不存在', 'data' => null]);
         }
@@ -325,9 +323,12 @@ class CircleController extends HomeController
             return response()->json(['err' => 1, 'msg' => '您不在圈子中', 'data' => null]);
         }
         $this->exitCircle($id, $user_id);
-
         if ($request->ajax()) {
-            return response()->json(['err' => 0, 'msg' => '成功退出', 'data' => null]);
+            if ($user_id == Auth::id()) {
+                return response()->json(['err' => 0, 'msg' => '成功退出', 'data' => route('circle.index')]);
+            } else {
+                return response()->json(['err' => 0, 'msg' => '移出圈子', 'data' => route('circle.show', $id)]);
+            }
         }
         return redirect()->to('circle')->with('success', '退出成功');
     }
