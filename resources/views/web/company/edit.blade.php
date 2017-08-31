@@ -61,13 +61,29 @@
         @endif
 
         <div>
-            <span>纳税人识别号: </span>
+            <span>税号: </span>
             <input type="taxpayer_number" name="Company[taxpayer_number]" placeholder=""
                    value="{{ old('Company.taxpayer_number') ? old('Company.taxpayer_number') : $company->taxpayer_number }}">
         </div>
         @if ($errors->has('Company.taxpayer_number'))
             <p class="pass-error show">{{ $errors->first('Company.taxpayer_number') }}</p>
         @endif
+        <div>
+            <span>开户银行: </span>
+            <input type="bank" name="Company[bank]" placeholder=""
+                   value="{{ old('Company.bank') ? old('Company.bank') : $company->bank }}">
+        </div>
+        @if ($errors->has('Company.bank'))
+            <p class="pass-error show">{{ $errors->first('Company.bank') }}</p>
+        @endif<div>
+            <span>银行账户: </span>
+            <input type="bank_account" name="Company[bank_account]" placeholder=""
+                   value="{{ old('Company.bank_account') ? old('Company.bank_account') : $company->bank_account }}">
+        </div>
+        @if ($errors->has('Company.bank_account'))
+            <p class="pass-error show">{{ $errors->first('Company.bank_account') }}</p>
+        @endif
+
 
         <div class="user-j">
             <span>服务范围: </span>

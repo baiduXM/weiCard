@@ -76,8 +76,7 @@ class TemplateController extends HomeController
      */
     public function comtemplate()
     {
-
-        if (!Auth::user()->company) {
+        if (!Auth::user()->employee) {
             //dd(11);
             return redirect()->to('company/employee');
         }
