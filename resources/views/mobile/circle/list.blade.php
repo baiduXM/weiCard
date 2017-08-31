@@ -45,7 +45,7 @@
     <!--新建人脉圈弹出框-->
     <div class="am-modal-actions" id="add1">
         <div class="modal-content">
-            <form action="{{ route('circle.ajaxStore') }}" method="post">
+            <form action="{{ route('circle.ajaxStore') }}" method="post" onsubmit="return false;">
                 <h1 class="modal-header"><span>新建人脉圈</span></h1>
                 <div class="modal-body">
                     <div class="name">
