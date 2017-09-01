@@ -160,6 +160,30 @@ class CardcaseController extends HomeController
         /* 获取参数 */
         $param = explode('-', $params);
 
+        /* add */
+        if ($param[0] == 'u') {
+            $user_id = $param[1];
+        } else {
+            $employee = Employee::find($param[1]);
+            $user_id = $employee->user_id;
+        }
+
+        if (Auth::id() == $user_id) {
+            return response()->json(array('err' => 1, 'msg' => '不能关注自己'));
+        }
+        if (Auth::user()->isFollow($user_id)) {
+            return response()->json(array('err' => 1, 'msg' => '已关注'));
+        }
+        if (Auth::user()->followThisUser($user_id)) {
+//                $follower = UserFollower::where('follower_id', $user_id)->first();
+//                $follower->group_id = $group_id;
+//                $follower->save();
+            return response()->json(array('err' => 0, 'msg' => '关注成功'));
+        }
+
+        /* add-end */
+
+
         /* 无法关注自己 */
         if ($param[0] == 'e') {
             if (Auth::user()->employee) {
@@ -207,6 +231,7 @@ class CardcaseController extends HomeController
                 $err_msg = '关注成功';
             }
         }
+
 
         /* ajax收藏 */
         if ($request->ajax()) {
