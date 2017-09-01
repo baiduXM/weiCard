@@ -667,9 +667,24 @@ class Controller extends BaseController
                 $person = $user;
             }
         }
-
         return $person;
+    }
 
+
+    /**
+     * 判断员工是否离职
+     *
+     * @param $user_id
+     * @return mixed
+     */
+    public function isLeaveEmployee($user_id)
+    {
+        $employee = Employee::where('user_id', $user_id)->onlyTrashed()->first();
+        if ($employee) {
+            return 1; // 已离职
+        } else {
+            return 0; // 未离职
+        }
     }
 
     /**

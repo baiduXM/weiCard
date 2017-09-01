@@ -51,12 +51,21 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     }
 
     /**
+     * 关系模型(一对一) - 用户所在分组
+     */
+    public function group()
+    {
+        return $this->hasManyThrough('App\Models\Group', 'App\Models\UserFollower', 'user_id', 'id');
+    }
+
+    /**
      * 关系模型(一对多) - 分组
      */
     public function groups()
     {
         return $this->hasMany('App\Models\Group');
     }
+
 
     /**
      * 关系模型(一对多) - 名片夹
@@ -109,13 +118,13 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     /* 用户关注 */
     public function followings()
     {
-        return $this->belongsToMany(self::class, 'user_followers', 'follower_id', 'followed_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'user_id', 'followed_id')->withTimestamps();
     }
 
     /* 用户的粉丝 */
     public function fans()
     {
-        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'follower_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'user_id')->withTimestamps();
     }
 
     /**
@@ -130,22 +139,36 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     }
 
     /**
-     * 关注用户/取消关注
+     * 关注用户
      *
      * @param $user_id 用户ID
-     * @return mixed
+     * @return int
      */
     public function followThisUser($user_id)
     {
-        if ($this->isFollow($user_id)) {
-//            $this->followings()->detach($user_id);
-//            return -1;
-        } else {
+        if (!$this->isFollow($user_id)) {
             $this->followings()->attach($user_id);
             return 1;
         }
         return 0;
     }
+
+    /**
+     * 取消关注
+     *
+     * @param $user_id
+     * @return int
+     */
+    public function unFollowThisUser($user_id)
+    {
+        if ($this->isFollow($user_id)) {
+            $this->followings()->detach($user_id);
+            return 1;
+        }
+        return 0;
+
+    }
+
 
     /**
      * 用户绑定员工

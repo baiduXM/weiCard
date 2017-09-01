@@ -34,33 +34,21 @@ class CardcaseController extends HomeController
      */
     public function index()
     {
-
         // TODO:后期优化分页
         if ($this->is_mobile) {
-
-            $data = $this->index4Mobile();
             $groups = Group::where('user_id', Auth::id())->get();
-            return view('mobile.cardcase.index')->with([
-                'data'   => $data,
+            return view('mobile.cardcase.gz-index')->with([
                 'groups' => $groups,
+
             ]);
-
-//            $word = Input::query('word') ? Input::query('word') : '';
-//            $cardcases = Cardcase::with(['follower' => function ($query) use ($word) {
-//                if (isset($word) && $word != '') {
-//                    $query->where('nickname', 'like', '%' . $word . '%');
-//                }
-//            }])->where('user_id', Auth::id())->get();
-//            foreach ($cardcases as $key => $cardcase) {
-//                if (!$cardcase->follower) {
-//                    unset($cardcases[$key]);
-//                }
-//            }
-//            return view('mobile.cardcase.indexbak')->with([
-//                'cardcases' => $cardcases,
-//                'word'      => $word,
+//            return view('mobile.cardcase.mp-index');
+//
+//            $data = $this->index4Mobile();
+//            $groups = Group::where('user_id', Auth::id())->get();
+//            return view('mobile.cardcase.index')->with([
+//                'data'   => $data,
+//                'groups' => $groups,
 //            ]);
-
 
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
@@ -74,6 +62,7 @@ class CardcaseController extends HomeController
 
     /**
      * 名片夹首页 - 移动端
+     *
      * @return array|mixed 返回数据
      */
     public function index4Mobile()
@@ -136,6 +125,7 @@ class CardcaseController extends HomeController
 
     /**
      * 字符串转拼音
+     *
      * @param array $data
      * @return mixed
      */
@@ -160,6 +150,7 @@ class CardcaseController extends HomeController
 
     /**
      * 收藏/取消收藏
+     *
      * @param Request $request
      * @param         $params   类型-ID
      * @return \Illuminate\Http\RedirectResponse
@@ -229,6 +220,7 @@ class CardcaseController extends HomeController
 
     /**
      * 取消关注
+     *
      * @param Request $request
      * @param         $params
      * @return \Illuminate\Http\RedirectResponse
@@ -290,6 +282,7 @@ class CardcaseController extends HomeController
 
     /**
      * 展示名片
+     *
      * @param string $type 名片类型，u-个人，e-员工，c-公司
      * @return $this|\Illuminate\Http\RedirectResponse
      */
@@ -339,6 +332,7 @@ class CardcaseController extends HomeController
 
     /**
      * 删除名片/取消关注
+     *
      * @param Request $request
      * @param         $id
      * @return \Illuminate\Http\JsonResponse
@@ -387,6 +381,7 @@ class CardcaseController extends HomeController
 
     /**
      * 移动分组
+     *
      * @param Request $request
      * @param int     $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
@@ -425,7 +420,7 @@ class CardcaseController extends HomeController
             $fans = User::with('employee')->whereIn('id', $ids)->paginate();
 
         } else {
-            if ($type == 'followed') { // 被关注，粉丝
+            if (!$type || $type == 'followed') { // 被关注，粉丝
                 $fans = Auth::user()->fans();
             }
             if ($type == 'following') { // 关注的人
@@ -491,6 +486,76 @@ class CardcaseController extends HomeController
 //        dump($stat);
     }
 
+    public function indexAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $type = $request->input('type');
+            if (!$type || $type == 'followed') { // 关注我的，粉丝
+                $fans = Auth::user()->fans();
+            }
+            if ($type == 'following') { // 我关注的
+                $fans = Auth::user()->followings();
+            }
+            $fans = $fans->with('employee', 'group')->orderBy('created_at', 'desc')->paginate(); // 关注我的人（粉丝）
+
+            foreach ($fans as &$item) {
+                $item->avatar = asset($item->avatar);
+                $item->company = $item->employee ? $item->employee->company : null;
+                $item->isLeave = $item->employee ? null : $this->isLeaveEmployee($item->id);
+                $item->isFollow = Auth::user()->isFollow($item->id); // 我是否关注
+                $item->isFollowMe = $item->isFollow(Auth::id()); // 是否关注我
+            }
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $fans]);
+        }
+    }
+
+    public function unfollowAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $user_id = $request->input('user_id');
+
+
+
+            return response()->json(['err' => 0, 'msg' => 'test', 'data' => null]);
+        }
+
+//        $param = explode('-', $params);
+//        switch ($param[0]) {
+//            case 'e':
+//                $data['follower_type'] = 'App\Models\Employee';
+//                break;
+//            case 'u':
+//                $data['follower_type'] = 'App\Models\User';
+//                break;
+//            default:
+//                break;
+//        }
+//        $data['follower_id'] = $param[1];
+//        $data['user_id'] = Auth::id();
+//
+//        /* 查看数据库是否有数据 */
+//        $query = Cardcase::query();
+//        foreach ($data as $key => $value) {
+//            $query->where($key, $value);
+//        }
+//        $cardcase = $query->first();
+//        /* ajax收藏 */
+//        if ($cardcase) { // 有，删除
+//            if ($cardcase->delete()) {
+//                $err_msg = '取消关注成功';
+//            } else {
+//                $err_msg = '取消关注失败';
+//            }
+//        } else {
+//            $err_msg = '取消关注失败 - 未关注';
+//        }
+//        if ($request->ajax()) {
+//            return response()->json($err_msg);
+//        } else {
+//            return redirect('cardcase')->with('info', $err_msg);
+//
+//        }
+    }
 
 }
 

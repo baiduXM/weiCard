@@ -38,8 +38,9 @@
   <link rel="canonical" href="http://www.example.com/">
   -->
     @section('css')
-        <link href="{{ asset('static/mobile/css/circle/amazeui.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('static/mobile/css/circle/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('static/mobile/css/amaze/amazeui.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('static/mobile/css/amaze/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('static/mobile/css/amaze/common.css') }}" rel="stylesheet">
     @show
 
 </head>
@@ -60,12 +61,44 @@
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
-<script src="{{ asset('static/mobile/js/circle/amazeui.min.js') }}"></script>
-<script src="{{ asset('static/mobile/js/circle/function.js') }}"></script>
+<script src="{{ asset('static/mobile/js/amaze/amazeui.min.js') }}"></script>
+<script src="{{ asset('static/mobile/js/amaze/function.js') }}"></script>
 @section('javascript')
     <script>
-    </script>
 
+        /* 加载ajax */
+        function useAjax(type, url, data, sync) {
+            var json = '';
+            sync ? sync = true : sync = false;
+            $.ajax({
+                type: type,
+                url: url,
+                data: data,
+                async: sync, // 非异步(同步)加载
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, // CSRF验证必填
+                success: function (data) {
+                    json = data;
+                },
+                error: function (data) {
+                    json = data.responseJSON;
+                }
+            });
+            return json;
+        }
+
+        /* 显示数据 */
+        function showHtml(_html, _div, _type) {
+            if (_type == 'init' || _type == 'refresh') {
+                $(_div).html(_html);
+            } else if (_type == 'more') {
+                $(_div).append(_html);
+            } else if (_type == 'before') {
+                $(_div).prepend(_html);
+            }
+        }
+    </script>
 @show
 
 </body>

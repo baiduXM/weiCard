@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Template;
+use App\Models\UserFollower;
 use Illuminate\Support\Facades\Auth;
 use Breadcrumbs;
 use Illuminate\Http\Request;
@@ -130,33 +131,33 @@ class UserController extends HomeController
         $id = Auth::id();
         $this->validate($request, [
 //            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email'       => 'email|required|unique:users,users.email,' . $id,
-            'User.mobile'      => 'digits:11|required|unique:users,users.mobile,' . $id,
-            'User.fax'         => 'max:30',
-            'User.nickname'    => 'max:30|required',
-            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.qrcode'      => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.address'     => 'max:255',
-            'User.company_name'     => 'max:255',
-            'User.homepage'    => 'url:true',
+            'User.email'        => 'email|required|unique:users,users.email,' . $id,
+            'User.mobile'       => 'digits:11|required|unique:users,users.mobile,' . $id,
+            'User.fax'          => 'max:30',
+            'User.nickname'     => 'max:30|required',
+            'User.avatar'       => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.qrcode'       => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.address'      => 'max:255',
+            'User.company_name' => 'max:255',
+            'User.homepage'     => 'url:true',
 
 //            'User.sex' => '',
 //            'User.age' => 'max:255',
-            'User.description' => 'max:255',
+            'User.description'  => 'max:255',
         ], [], [
 //            'User.name' => '账号',
-            'User.email'       => '邮箱',
-            'User.mobile'      => '手机',
-            'User.fax'         => '传真',
-            'User.nickname'    => '昵称',
-            'User.avatar'      => '头像',
-            'User.qrcode'      => '微信二维码',
-            'User.address'     => '地址',
-            'User.company_name'     => '公司名',
-            'User.homepage'    => '个人网址',
+            'User.email'        => '邮箱',
+            'User.mobile'       => '手机',
+            'User.fax'          => '传真',
+            'User.nickname'     => '昵称',
+            'User.avatar'       => '头像',
+            'User.qrcode'       => '微信二维码',
+            'User.address'      => '地址',
+            'User.company_name' => '公司名',
+            'User.homepage'     => '个人网址',
 //            'User.sex' => '性别',
 //            'User.age' => '年龄',
-            'User.description' => '个性签名',
+            'User.description'  => '个性签名',
         ]);
         $data = $request->input('User');
 
@@ -389,7 +390,47 @@ class UserController extends HomeController
             }
             return response()->json(array('err' => 0, 'msg' => '关注成功', 'data' => $count));
         }
+    }
+
+    /**
+     * 取消关注
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unfollowAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $user_id = $request->input('user_id');
+            if (!Auth::user()->isFollow($user_id)) {
+                return response()->json(array('err' => 1, 'msg' => '未关注'));
+            }
+            if (Auth::user()->unfollowThisUser($user_id)) {
+                return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
+            }
+        }
 
     }
+
+    public function followAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $user_id = $request->input('user_id');
+            $group_id = $request->input('group_id');
+
+            if (Auth::user()->isFollow($user_id)) {
+                return response()->json(array('err' => 1, 'msg' => '已关注'));
+            }
+            if (Auth::user()->followThisUser($user_id)) {
+                $follower = UserFollower::where('user_id', $user_id)->first();
+                return $follower;
+                $follower->group_id = $group_id;
+                $follower->save();
+                return response()->json(array('err' => 0, 'msg' => '关注成功'));
+            }
+        }
+
+    }
+
 
 }

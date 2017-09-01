@@ -13,7 +13,7 @@ class Group extends CommonModel
      * @var array
      */
     protected $guarded = [
-        'id'
+        'id',
     ];
 
     /**
@@ -24,12 +24,23 @@ class Group extends CommonModel
     public $timestamps = false;
 
     /**
-     * 关系模型(多对一) - 用户
+     * 关系模型(一对一) - 用户所在分组
+     */
+    public function users()
+    {
+        return $this->hasManyThrough('App\Models\User', 'App\Models\UserFollower');
+    }
+
+    /**
+     * 分组创建者
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
+
 
     /**
      * 关系模型(一对多) - 名片
@@ -46,8 +57,6 @@ class Group extends CommonModel
     {
         return $this->hasMany('App\Models\UserFollower');
     }
-
-
 
 
 }

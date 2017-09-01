@@ -141,7 +141,7 @@
                 <a class="am-close am-close-spin" data-am-modal-close>&times;</a>
             </div>
             <div class="am-modal-bd">
-                <img src="{{ asset('static/mobile/images/circle/3_03d_03.png') }}" alt="">
+                <img src="{{ asset('static/mobile/images/amaze/3_03d_03.png') }}" alt="">
                 <p>加入成功</p>
             </div>
         </div>
@@ -152,10 +152,10 @@
 <!--新建人脉圈引导-->
 {{--<div class="new  lead ">--}}
 {{--<div class="new-title">--}}
-{{--<i> <img src="{{ asset('static/mobile/images/circle/1_04.png') }}" alt=""></i>--}}
+{{--<i> <img src="{{ asset('static/mobile/images/amaze/1_04.png') }}" alt=""></i>--}}
 {{--<span>新建人脉圈</span>--}}
 {{--</div>--}}
-{{--<img class="new-txt" src="{{ asset('static/mobile/images/circle/5_03.png') }}" alt="">--}}
+{{--<img class="new-txt" src="{{ asset('static/mobile/images/amaze/5_03.png') }}" alt="">--}}
 {{--<div class="new-btn">--}}
 {{--<a class="next on" href="javascript:">下一步</a>--}}
 {{--<a class="onShow" href="javascript:">不在提醒</a>--}}
@@ -165,16 +165,15 @@
 <!--快速加入圈子引导-->
 {{--<div class="quick  lead  hide">--}}
 {{--<div class="new-title rt">--}}
-{{--<i> <img src="{{ asset('static/mobile/images/circle/1_06.png') }}" alt=""></i>--}}
+{{--<i> <img src="{{ asset('static/mobile/images/amaze/1_06.png') }}" alt=""></i>--}}
 {{--<span>快速加入圈子</span>--}}
 {{--</div>--}}
-{{--<img class="quick-txt" src="{{ asset('static/mobile/images/circle/6_03.png') }}" alt="">--}}
+{{--<img class="quick-txt" src="{{ asset('static/mobile/images/amaze/6_03.png') }}" alt="">--}}
 {{--<div class="new-btn">--}}
 {{--<a class="onShow on" href="javascript:">完成引导</a>--}}
 {{--</div>--}}
 {{--</div>--}}
 @section('javascript')
-    @parent
     <script>
         var once = true, _json, _error; // 防止多次触发
         $(function () {

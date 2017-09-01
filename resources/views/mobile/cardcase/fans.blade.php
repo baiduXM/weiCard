@@ -26,7 +26,7 @@
                         <a>我关注的</a></li>
                     <li {{ isset($params['type']) && $params['type'] == 'followed' ? 'class=on' : ''}}
                         data-url="{{ url('cardcase/fans/followed') }}" id="show-content2">
-                        <a>粉丝</a></li>
+                        <a>关注我的</a></li>
                     <li {{ isset($params['type']) && $params['type'] == 'together' ? 'class=on' : ''}}
                         data-url="{{ url('cardcase/fans/together') }}" id="show-content3">
                         <a>相互关注</a></li>

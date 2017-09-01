@@ -104,10 +104,11 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('user/binding', ['as' => 'user.unbinding', 'uses' => 'Home\UserController@unbinding']);
     Route::post('userAjax/follow', ['as' => 'user.ajaxFollow', 'uses' => 'Home\UserController@ajaxFollow']);
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
-    Route::post('user/unfollow/{id}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
     Route::get('user/qrcode', ['as' => 'user.qrcode', 'uses' => 'Home\UserController@qrcode']);
     Route::put('user/qrcode', ['as' => 'user.changqrcode', 'uses' => 'Home\UserController@changeqrcode']);
     Route::get('user/delqrcode', ['as' => 'user.delqrcode', 'uses' => 'Home\UserController@delqrcode']);
+    Route::post('userAjax/unfollow', ['as' => 'user.unfollowAjax', 'uses' => 'Home\UserController@unfollowAjax']);
+    Route::post('userAjax/follow', ['as' => 'user.followAjax', 'uses' => 'Home\UserController@followAjax']);
 
 
     Route::group(['prefix' => 'company'], function () {
@@ -191,6 +192,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('cardcase/{id}', ['as' => 'cardcase.destroy', 'uses' => 'Home\CardcaseController@destroy']);
     Route::get('cardcase/{id}', ['as' => 'cardcase.ajaxshow', 'uses' => 'Home\CardcaseController@ajaxshow']); // 放到cardcase路由组的最后
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
+    Route::get('cardcaseAjax', ['as' => 'cardcase.indexAjax', 'uses' => 'Home\CardcaseController@indexAjax']);
+    Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
 
     /* 名片圈 */
     Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
