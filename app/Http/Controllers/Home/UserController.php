@@ -422,10 +422,9 @@ class UserController extends HomeController
                 return response()->json(array('err' => 1, 'msg' => '已关注'));
             }
             if (Auth::user()->followThisUser($user_id)) {
-                $follower = UserFollower::where('follower_id', $user_id)->first();
-                return $follower;
-                $follower->group_id = $group_id;
-                $follower->save();
+//                $follower = UserFollower::where('follower_id', $user_id)->first();
+//                $follower->group_id = $group_id;
+//                $follower->save();
                 return response()->json(array('err' => 0, 'msg' => '关注成功'));
             }
         }

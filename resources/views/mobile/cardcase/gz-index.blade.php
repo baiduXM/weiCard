@@ -101,15 +101,15 @@
                                 <span>默认组</span>
                             </label>
                         </li>
-                        @foreach($groups as $item)
-                            <li>
-                                <label for="num{{ $item->id }}">
-                                    <input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">
-                                    <span>{{ $item->name }}</span>
-                                </label>
-                            </li>
+                        {{--@foreach($groups as $item)--}}
+                            {{--<li>--}}
+                                {{--<label for="num{{ $item->id }}">--}}
+                                    {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
+                                    {{--<span>{{ $item->name }}</span>--}}
+                                {{--</label>--}}
+                            {{--</li>--}}
 
-                        @endforeach
+                        {{--@endforeach--}}
 
                         {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
                         {{--<span>+ 新建分组</span>--}}
