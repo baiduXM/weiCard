@@ -192,6 +192,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::delete('cardcase/{id}', ['as' => 'cardcase.destroy', 'uses' => 'Home\CardcaseController@destroy']);
     Route::get('cardcase/{id}', ['as' => 'cardcase.ajaxshow', 'uses' => 'Home\CardcaseController@ajaxshow']); // 放到cardcase路由组的最后
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
+    Route::get('cardcase/showuser/{id}', ['as' => 'cardcase.showuser', 'uses' => 'Home\CardcaseController@showuser']);
     Route::get('cardcaseAjax', ['as' => 'cardcase.indexAjax', 'uses' => 'Home\CardcaseController@indexAjax']);
     Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
 

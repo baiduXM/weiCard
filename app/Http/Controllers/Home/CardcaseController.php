@@ -301,15 +301,27 @@ class CardcaseController extends HomeController
             return $this->cardview($param);
         }
         return redirect('company/employee');
+    }
 
+    public function showuser($user_id)
+    {
+        $user = User::find($user_id);
+        if ($user->employee) {
+            $param = 'e-' . $user->employee->id;
+        } else {
+            $param = 'u-' . $user_id;
+        }
+        if (isset($param)) {
+            return $this->cardview($param);
+        }
+        return redirect('company/employee');
     }
 
     /**
      * @param Request $request
-     * @param         $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function ajaxShow(Request $request, $id)
+    public function ajaxShow(Request $request)
     {
         if ($request->ajax()) {
 
@@ -513,7 +525,6 @@ class CardcaseController extends HomeController
     {
         if ($request->ajax()) {
             $user_id = $request->input('user_id');
-
 
 
             return response()->json(['err' => 0, 'msg' => 'test', 'data' => null]);

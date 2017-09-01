@@ -418,6 +418,9 @@ class UserController extends HomeController
             $user_id = $request->input('user_id');
             $group_id = $request->input('group_id');
 
+            if (Auth::id() == $user_id) {
+                return response()->json(array('err' => 1, 'msg' => '不能关注自己'));
+            }
             if (Auth::user()->isFollow($user_id)) {
                 return response()->json(array('err' => 1, 'msg' => '已关注'));
             }

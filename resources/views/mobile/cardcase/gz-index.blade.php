@@ -102,12 +102,12 @@
                             </label>
                         </li>
                         {{--@foreach($groups as $item)--}}
-                            {{--<li>--}}
-                                {{--<label for="num{{ $item->id }}">--}}
-                                    {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
-                                    {{--<span>{{ $item->name }}</span>--}}
-                                {{--</label>--}}
-                            {{--</li>--}}
+                        {{--<li>--}}
+                        {{--<label for="num{{ $item->id }}">--}}
+                        {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
+                        {{--<span>{{ $item->name }}</span>--}}
+                        {{--</label>--}}
+                        {{--</li>--}}
 
                         {{--@endforeach--}}
 
@@ -160,6 +160,11 @@
                 } else {
                     $(more).attr('url', _json.data.next_page_url);
                 }
+            });
+
+            $('.mes-data,.mes-img').on('touchstart', function () {
+                var id               = $(this).parents('.group-list').attr('data-id');
+                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
 
             /* 取消关注 */
