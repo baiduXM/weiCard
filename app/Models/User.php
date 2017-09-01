@@ -55,7 +55,7 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
      */
     public function group()
     {
-        return $this->hasManyThrough('App\Models\Group', 'App\Models\UserFollower', 'user_id', 'id');
+        return $this->hasManyThrough('App\Models\Group', 'App\Models\UserFollower', 'follower_id', 'id');
     }
 
     /**
@@ -118,13 +118,13 @@ class User extends CommonModel implements AuthenticatableContract, AuthorizableC
     /* 用户关注 */
     public function followings()
     {
-        return $this->belongsToMany(self::class, 'user_followers', 'user_id', 'followed_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'follower_id', 'followed_id')->withTimestamps();
     }
 
     /* 用户的粉丝 */
     public function fans()
     {
-        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'follower_id')->withTimestamps();
     }
 
     /**
