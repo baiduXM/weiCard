@@ -4,12 +4,12 @@
     <div class="add-btn">
         <div class="add1">
             {{--<i> <img src="images/1_04.png" alt=""></i>--}}
-            <i> <img src="{{ asset('static/mobile/images/circle/1_04.png') }}" alt=""></i>
+            <i> <img src="{{ asset('static/mobile/images/amaze/1_04.png') }}" alt=""></i>
 
             <span>新建人脉圈</span>
         </div>
         <div class="add2 rt">
-            <i><img src="{{ asset('static/mobile/images/circle/1_06.png') }}" alt=""></i>
+            <i><img src="{{ asset('static/mobile/images/amaze/1_06.png') }}" alt=""></i>
             <span>快速加入圈子</span>
         </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="w-content">
         <div class="w-list current">
             <div class="indexImg"><!--有数据的时候隐藏，没有数据的时候显示-->
-                <img src="{{ asset('static/mobile/images/circle/4_03.png') }}" alt="">
+                <img src="{{ asset('static/mobile/images/amaze/4_03.png') }}" alt="">
                 <a class="add1"><span>来创建第一个名片人脉圈 </span> <i>+</i></a>
             </div>
             <div class="list i-create-content"><!--我创建的数据-->
