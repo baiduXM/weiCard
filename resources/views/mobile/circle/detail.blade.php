@@ -65,7 +65,7 @@
 
             </div>
             {{--<p class="G-total">合计 : 12人</p>--}}
-            <button type="submit" class="G-btn" data-url="{{ route('user.ajaxFollow') }}">
+            <button type="submit" class="G-btn" data-url="{{ route('user.followAjax') }}">
                 <img src="{{ asset('static/mobile/images/amaze/11xx_03.png') }}" alt="">
                 <span>加关注</span>
             </button>
