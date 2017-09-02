@@ -1,7 +1,7 @@
 ﻿/*人脉圈-名片夹-关注列表公用同个style.css*/
 
 
-.had{background: url(../../images/amaze/1_01.png) no-repeat center center;width:100%;height:2.15rem;line-height:2.15rem;background-size: 100% 100%;}
+.had{background: url(../images/1_01.png) no-repeat center center;width:100%;height:2.15rem;line-height:2.15rem;background-size: 100% 100%;}
 .had i.close{display:inline-block;width:1.25rem;border-right:2px solid #8ad1fe;height:1.25rem;line-height:1.25rem;margin-left:0.5rem;
     opacity: 1;text-align: left;text-shadow:none;margin-top:0.4rem;vertical-align: top;}
 .had i.close img{background-size: 0.75rem 0.75rem;width:0.75rem;height:0.75rem;}
@@ -55,8 +55,11 @@
 .modal-body div textarea{border:1px solid #34a2df;font-size:0.5rem;height:4rem;line-height:0.8rem;
     border-radius: 5px;width:100%;padding:0.1rem 0.5rem;}
 .modal-body div ul{padding-left:0.5rem;}
-.modal-body div ul li{display: inline-block;width:25%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-.modal-body div ul li i{color:#333;font-size:0.6rem;line-height:1rem;height:1rem;}
+.modal-body div ul li{display: inline-block;width:25%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;position: relative;}
+
+
+
+.modal-body div ul li i{color:#333;font-size:0.6rem;line-height:1rem;height:1rem;vertical-align: middle;}
 .modal-body div ul li.li-three{width:45%;}
 .modal-body div ul li  em{color:#f50c0d;}
 .modal-footer{padding:0.75rem 1.25rem 1.5rem;}
@@ -71,7 +74,7 @@
 
 /*加入成功弹出框*/
 .add_suc .am-modal-dialog{background: #3399df;border-radius: 10px;overflow: hidden;}
-.add_suc .am-modal-bd{background: url(../../images/amaze/3_03.png) no-repeat center center;background-size: 100% 100%;margin-bottom:1.125rem;}
+.add_suc .am-modal-bd{background: url(../images/3_03.png) no-repeat center center;background-size: 100% 100%;margin-bottom:1.125rem;}
 .add_suc .am-modal-hd{padding:0;height:1.125rem;}
 .add_suc .am-close{top:0;color:#fff;opacity: 1;font-weight: normal;text-shadow: none;line-height:1.125rem;}
 .add_suc .am-modal-bd img{width:3.2rem;height:3.2rem;margin:1.25rem auto 0;}
@@ -100,7 +103,8 @@
 
 .X-content{margin-top:0.5rem;}
 .x-cont-had{height:1.5rem;line-height:1.5rem;background: #2097ff;padding:0 0.5rem;}
-.x-cont-had input{width:0.7rem;height:0.7rem;line-height:0.7rem;margin:0;vertical-align: middle;}
+.x-cont-had input{width:0.7rem;height:0.7rem;line-height:0.7rem;margin:0;vertical-align: middle;  }
+.x-cont-had input[type='checkbox']:checked+label:before{line-height:14px;border-color:#fff;}
 .x-cont-had span{color:#fff;font-size:0.6rem;margin-left:0.2rem; display: inline-block;vertical-align: middle;}
 .x-cont-had  .bianji{display: inline-block;width:2.7rem;height:1rem;border:1px solid #fff;border-radius: 0.5rem;
     text-align: center;line-height:1rem;margin-top:0.25rem;}
@@ -108,7 +112,7 @@
 .x-cont-had  .bianji img{width:0.5rem;height:0.5rem;vertical-align: middle;margin-top:-0.2rem;}
 
 dt+dd{margin:0}
-.myCont{padding:0.75rem 0.5rem;border-bottom:1px solid #dedede;}
+.myCont{padding:0.75rem 0.5rem;border-bottom:1px solid #dedede;position: relative;}
 .myCont dl{width:11.5rem;display: inline-block;margin-left:1rem;}
 .myCont dl dt{width:3rem;height:3rem;border-radius: 50%;overflow: hidden;display: inline-block;background: #ddd;vertical-align: top;}
 .myCont dl dt img{}
@@ -118,15 +122,23 @@ dt+dd{margin:0}
 .myCont dl dd i{font-size:0.5rem;padding:0 0.3rem;background: #f50c0d;color:#fff;display: inline-block;border-radius: 3px;margin-left:0.4rem;margin-top: -0.3rem;
     vertical-align: middle;}
 .myCont dl dd p{font-size:0.6rem;color:#666;line-height:0.8rem;height:0.8rem;overflow: hidden;text-overflow: ellipsis;white-space: normal;}
-.myBtn{vertical-align: top;width:2.5rem; text-align: center;margin-top:0.2rem;}
+.myBtn{vertical-align: top;width:2.5rem; text-align: center;margin-top:0.2rem;display:inline-block;}
 .myBtn i{color:#f50c0d;font-size:0.6rem;}
 .myBtn a{display: block;margin:0.5rem auto 0;width:2.5rem;height:0.8rem;line-height:0.8rem;color:#fff;    box-shadow: 0 0 5px 1px #349ddf;
     background: #2097ff;border-radius: 0.4rem;}
 
 
-.G-list input{    width: 0.7rem;  height: 0.7rem;  line-height: 0.7rem;  margin: 0;  vertical-align: middle;}
-.G-list dl{vertical-align: middle;width:11.5rem;margin-left:0.1rem;}
-.G-list dl dt{}
+.G-list input,.G-list label{    width: 0.7rem;  height: 0.7rem;  line-height: 0.7rem;  margin: 0;  vertical-align: middle;    position: absolute;
+    top: 1.9rem;}
+.G-list dl{vertical-align: middle;width:11.5rem; }
+.G-list.bj-dl dl{margin-left:0;width:8rem;}
+.G-list.bj-dl dl dt{display: none;}
+.G-list.bj-dl .myBtn{float:none;margin-left: 0.3rem;}
+.G-list.bj-dl input{display: none;}
+.G-list.bj-dl   label{display: none;}
+.G-list.bj-dl .G-close{display: block;}
+
+
 .G-list .myBtn i{color:#666;}
 .G-list .myBtn i.on{color:#339cdf;}
 .G-total{color:#282828;font-size:0.7rem;padding:0.75rem 0.5rem;margin-bottom:2rem;}
@@ -136,8 +148,9 @@ dt+dd{margin:0}
 .G-btn img{width:1.2rem;height:1rem;}
 .G-btn span{color:#fff;font-size:0.7rem;margin-left:0.3rem;vertical-align: middle;}
 
-.G-close{ width:0.9rem;height:0.9rem;color:#fff;line-height:0.8rem;text-align: center;border-radius: 50%;box-shadow:0 0 5px 1px #f50c0d;background: #f50c0d;
-   font-size:0.9rem; margin-top:-0.5rem;display: none;}
+.G-close{display: none;width:3.35rem;height:100%;background: #eef7ff; position: absolute;top:0;right:0;text-align: center;}
+.G-close i{ width:0.9rem;height:0.9rem;color:#fff;line-height:0.75rem;text-align: center;border-radius: 50%;box-shadow:0 0 5px 1px #f50c0d;background: #f50c0d;
+   font-size:1.2rem;  display: block;position: absolute;top:50%;margin-top:-0.45rem;right:50%;margin-right:-0.45rem;}
 .G-close:hover{color:#fff;}
 
 /*是否删除弹出框*/
@@ -288,7 +301,7 @@ dt+dd{margin:0}
 .mp-modal5 .am-modal-bd ul li input{vertical-align: top;}
 
 /**************************新增关注列表--gz-index样式********************************/
-.gz-had{background: url(../../images/amaze/1_02.png) no-repeat center center;padding:0 0.5rem;width:16rem;height:2.8rem;line-height:2.8rem;text-align: center;}
+.gz-had{background: url(../images/1_02.png) no-repeat center center;padding:0 0.5rem;width:16rem;height:2.8rem;line-height:2.8rem;text-align: center;}
 .gz-back{color:#fff;font-size: 0.7rem;height:2.8rem;}
 .gz-back i{margin-right:0.2rem;}
 .gz-num{display: inline-block;width:80%;margin:0 auto;height:2.8rem;}
@@ -296,7 +309,7 @@ dt+dd{margin:0}
 .gz-num>div.current{display: inline-block;}
 .gz-num span{color:#fff;font-size: 0.6rem}
 .gz-num b{color:#fff;font-size: 1.4rem;font-weight: normal;margin-right:0.4rem;}
-.gz-num i{display: inline-block;background: url(../../images/amaze/1_03_03.png) no-repeat center center;
+.gz-num i{display: inline-block;background: url(../images/1_03_03.png) no-repeat center center;
     background-size:3.275rem 1.25rem;line-height:1.2rem;width:3.275rem;height:1.25rem;color:#349adf;font-size:0.6rem;vertical-align: top;margin-top:0.5rem;}
 
 .gz-peopleList .group-list{padding:0 0.5rem;}
