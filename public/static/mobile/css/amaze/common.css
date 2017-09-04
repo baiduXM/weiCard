@@ -18,7 +18,7 @@ ol>li>ol, ol>li>ul, ul>li>ol, ul>li>ul{margin:0 ;padding:0;}
 
 /*input[type="button"], input[type="submit"],input[type="checkbox"], input[type="radio"]{-webkit-tap-highlight-color:#34a2df;}*/
 input[type='radio']{
-    display: none;
+    /*display: none;*/
 }
 input[type='radio']+label:before{
     content: '';
