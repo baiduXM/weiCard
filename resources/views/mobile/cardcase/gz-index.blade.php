@@ -108,7 +108,6 @@
                         {{--<span>{{ $item->name }}</span>--}}
                         {{--</label>--}}
                         {{--</li>--}}
-
                         {{--@endforeach--}}
 
                         {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
@@ -231,8 +230,6 @@
 
         /* 拼接数据 */
         function jointDiv(data) {
-            console.log(data);
-            console.log('jointDiv');
             var _html = '';
             if (data.length) {
                 $.each(data, function (k, v) {

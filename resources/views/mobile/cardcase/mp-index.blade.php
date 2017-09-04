@@ -13,6 +13,10 @@
         <div class="mp-group">
 
             <section class="accordion-gapped">
+
+                {{--分组循环--}}
+                {{--人员循环--}}
+                {{--分组循环end--}}
                 <dl class=" accordion-item default-group">
                     <dt class=" accordion-title ">
                         <span> 默认分组</span>
@@ -121,7 +125,8 @@
                     </dd>
                 </dl>
             </section>
-            <div class="mp-groupBg"><a href="javascript:"><img src="images/4_03.png" alt=""><span>尚未编建分组</span></a>
+            <div class="mp-groupBg"><a href="javascript:"><img src="{{ asset('static/mobile/images/amaze/4_03.png') }}"
+                                                               alt=""><span>尚未编建分组</span></a>
             </div>
         </div>
     </div>
@@ -202,32 +207,22 @@
                 <div class="am-modal-bd">
                     <ul>
                         <li>
-                            <label for="num1">
-                                <input type="radio" name="num" id="num1">
+                            <label for="num0">
+                                <input type="radio" name="group_id" id="num0" value="0">
                                 <span>默认组</span>
                             </label>
                         </li>
-                        <li>
-                            <label for="num2">
-                                <input type="radio" name="num" id="num2">
-                                <span>家人亲戚</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label for="num3">
-                                <input type="radio" name="num" id="num3">
-                                <span>同学朋友</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label for="num4">
-                                <input type="radio" name="num" id="num4">
-                                <span>网友</span>
-                            </label>
-                        </li>
-                        <li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">
-                            <span>+ 新建分组</span>
-                        </li>
+                        @foreach($groups as $item)
+                            <li>
+                                <label for="num{{ $item->id }}">
+                                    <input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">
+                                    <span>{{ $item->name }}</span>
+                                </label>
+                            </li>
+                        @endforeach
+                        {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
+                        {{--<span>+ 新建分组</span>--}}
+                        {{--</li>--}}
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -242,7 +237,20 @@
     @parent
     <script>
         $(function () {
-        })
+            init();
+        });
+        function init() {
+            // 加载分组
+            var _json = useAjax('get', '{{ route('cardcase.mpAjax') }}')
+            console.log(_json);
+            console.log('init');
+            // 加载成员
+        }
+        //        function useAjax() {
+        //
+        //        }
+        function showHtml() {
+        }
     </script>
 @stop
 

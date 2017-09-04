@@ -30,7 +30,7 @@ class CardcaseController extends HomeController
 
 
     /**
-     * 首页
+     * 消息列表
      */
     public function index()
     {
@@ -41,22 +41,61 @@ class CardcaseController extends HomeController
                 'groups' => $groups,
 
             ]);
-//            return view('mobile.cardcase.mp-index');
-//
-//            $data = $this->index4Mobile();
-//            $groups = Group::where('user_id', Auth::id())->get();
-//            return view('mobile.cardcase.index')->with([
-//                'data'   => $data,
-//                'groups' => $groups,
-//            ]);
-
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('web.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
         }
+    }
 
+    public function mp()
+    {
+        if ($this->is_mobile) {
+            $groups = Group::where('user_id', Auth::id())->get();
+            return view('mobile.cardcase.mp-index')->with([
+                'groups' => $groups,
+            ]);
+        }
+    }
+
+    public function mpAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            /* 排序方式 */
+//            $sort = Input::query('sort') ? Input::query('sort') : 'group';
+            /* 排序顺序 */
+
+            $cardcases = Cardcase::with('group', 'follower')->where('user_id', Auth::id())->get()->toArray();
+            if (count($cardcases) > 0) {
+                $cardcases = $this->getPinyin($cardcases);
+            }
+//            if ($sort == 'group') {
+//                $field = 'order';
+            $groups = $this->getGroups(Auth::id());
+            if (count($groups) > 0) {
+//                    $groups = $this->sortArray($groups, $field);
+                foreach ($groups as $k => &$v) {
+                    if (count($cardcases) > 0) {
+                        foreach ($cardcases as $ck => $vk) {
+                            if ($v['id'] == $vk['group_id']) {
+                                $v['cardcases'][] = $vk;
+                            }
+                        }
+                    }
+                    if (!isset($v['cardcases'])) {
+                        $v['cardcases'] = array();
+                    }
+                }
+            }
+            $data = $groups;
+
+//            }
+//            return $data;
+//
+//            $data = $this->index4Mobile();
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $data]);
+        }
     }
 
 
@@ -555,43 +594,8 @@ class CardcaseController extends HomeController
             return response()->json(['err' => 0, 'msg' => 'test', 'data' => null]);
         }
 
-//        $param = explode('-', $params);
-//        switch ($param[0]) {
-//            case 'e':
-//                $data['follower_type'] = 'App\Models\Employee';
-//                break;
-//            case 'u':
-//                $data['follower_type'] = 'App\Models\User';
-//                break;
-//            default:
-//                break;
-//        }
-//        $data['follower_id'] = $param[1];
-//        $data['user_id'] = Auth::id();
-//
-//        /* 查看数据库是否有数据 */
-//        $query = Cardcase::query();
-//        foreach ($data as $key => $value) {
-//            $query->where($key, $value);
-//        }
-//        $cardcase = $query->first();
-//        /* ajax收藏 */
-//        if ($cardcase) { // 有，删除
-//            if ($cardcase->delete()) {
-//                $err_msg = '取消关注成功';
-//            } else {
-//                $err_msg = '取消关注失败';
-//            }
-//        } else {
-//            $err_msg = '取消关注失败 - 未关注';
-//        }
-//        if ($request->ajax()) {
-//            return response()->json($err_msg);
-//        } else {
-//            return redirect('cardcase')->with('info', $err_msg);
-//
-//        }
     }
+
 
 }
 

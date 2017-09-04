@@ -178,31 +178,33 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::post('cardcase/group', ['as' => 'cardcase.group.store', 'uses' => 'Home\GroupController@store']);
 
     /* 名片夹->粉丝 */
-    Route::get('cardcase/fans/{type?}', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
 
     /* 名片夹 */
-    Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::post('cardcaseAjax/move/{id}', ['as' => 'cardcase.moveAjax', 'uses' => 'Home\CardcaseController@moveAjax']);
+    Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
+    Route::get('cardcaseAjax/mp', ['as' => 'cardcase.mpAjax', 'uses' => 'Home\CardcaseController@mpAjax']); // 名片夹
+    Route::get('cardcaseAjax', ['as' => 'cardcase.indexAjax', 'uses' => 'Home\CardcaseController@indexAjax']);
+    Route::get('cardcase/fans/{type?}', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
+    Route::get('cardcase/mp', ['as' => 'cardcase.mp', 'uses' => 'Home\CardcaseController@mp']); // 名片夹
+    Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::get('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::post('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);
     Route::get('cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
     Route::post('cardcase/unfollow/{params}', ['as' => 'cardcase.unfollow', 'uses' => 'Home\CardcaseController@unfollow']);
+    Route::get('cardcase/showuser/{id}', ['as' => 'cardcase.showuser', 'uses' => 'Home\CardcaseController@showuser']);
     Route::delete('cardcase/batch', ['as' => 'cardcase.batchDestroy', 'uses' => 'Home\CardcaseController@batchDestroy']);
     Route::delete('cardcase/{id}', ['as' => 'cardcase.destroy', 'uses' => 'Home\CardcaseController@destroy']);
     Route::get('cardcase/{id}', ['as' => 'cardcase.ajaxshow', 'uses' => 'Home\CardcaseController@ajaxshow']); // 放到cardcase路由组的最后
-    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']);
-    Route::get('cardcase/showuser/{id}', ['as' => 'cardcase.showuser', 'uses' => 'Home\CardcaseController@showuser']);
-    Route::get('cardcaseAjax', ['as' => 'cardcase.indexAjax', 'uses' => 'Home\CardcaseController@indexAjax']);
-    Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
+    Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']); // 关注列表
 
     /* 名片圈 */
-    Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
-    Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
-    Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
     Route::post('circleAjax/join', ['as' => 'circle.ajaxJoin', 'uses' => 'Home\CircleController@ajaxJoin']);
     Route::get('circleAjax/{id}', ['as' => 'circle.ajaxShow', 'uses' => 'Home\CircleController@ajaxShow']);
     Route::post('circleAjax', ['as' => 'circle.ajaxStore', 'uses' => 'Home\CircleController@ajaxStore']);
+    Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
+    Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
+    Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
     Route::resource('circle', 'Home\CircleController');
 
     /* 模板中心 */
