@@ -20,7 +20,7 @@
                 <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
-        <div class="x-share rt" data-am-modal="{target: '#T-share'}">
+        <div class="x-share rt" >
             <span><img src="{{ asset($circle->qrcode_path) }}" alt=""></span>
             <p><img src="{{ asset('static/mobile/images/amaze/11_033_03.png') }}" alt=""><i>分享圈子</i></p>
         </div>
@@ -121,6 +121,8 @@
         $(function () {
             init();
 
+
+
             $('.i-quit').on('touchstart', function () {
                 var _url = $(this).attr('data-url');
                 console.log(_url)
@@ -183,6 +185,7 @@
                     $('#boxAll').prop('checked', false);
                 }
             });
+
 
         });
 

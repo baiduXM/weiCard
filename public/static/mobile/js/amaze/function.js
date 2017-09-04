@@ -264,6 +264,10 @@ $(function(){
     $(".add2").click('touchstart',function () {
         $('#add2').modal('toggle');
     });
+    $(".x-share").click('touchstart',function () {
+        $('#T-share').modal('toggle');
+    });
+
 
     /*gz--modal*/
     // $(".ygz").click('touchstart',function () {
