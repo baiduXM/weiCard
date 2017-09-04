@@ -20,7 +20,7 @@
                 <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
-        <div class="x-share rt">
+        <div class="x-share rt" data-am-modal="{target: '#T-share'}">
             <span><img src="{{ asset($circle->qrcode_path) }}" alt=""></span>
             <p><img src="{{ asset('static/mobile/images/amaze/11_033_03.png') }}" alt=""><i>分享圈子</i></p>
         </div>
