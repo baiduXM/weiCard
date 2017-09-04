@@ -93,7 +93,7 @@
             <div class="share-ma">
                 <i class="onShow"><img src="{{ asset($circle->qrcode_path)  }}" alt=""></i>
                 <p>面对面扫二维码加入人脉圈子</p>
-                {{--<p>圈号 : <b>3231F</b></p>--}}
+                <p>圈号 : <b>{{ $circle->code or '-' }}</b></p>
             </div>
         </div>
     </div>

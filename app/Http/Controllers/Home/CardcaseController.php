@@ -7,6 +7,7 @@ use App\Models\Cardcase;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\UserFollower;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,7 @@ class CardcaseController extends HomeController
         }
     }
 
-    public function mp()
+    public function mp(Request $request)
     {
         if ($this->is_mobile) {
             $groups = Group::where('user_id', Auth::id())->get();
@@ -57,44 +58,35 @@ class CardcaseController extends HomeController
                 'groups' => $groups,
             ]);
         }
+        $this->mpAjax($request);
     }
 
+    /* 根据分组获取用户 */
+    public function getFollowerAjax(Request $request)
+    {
+
+        if ($request->ajax()) {
+        }
+        $group_id = $request->input('group_id') ? $request->input('group_id') : null; // id
+        dump($group_id);
+        if ($group_id) {
+
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function mpAjax(Request $request)
     {
         if ($request->ajax()) {
-            /* 排序方式 */
-//            $sort = Input::query('sort') ? Input::query('sort') : 'group';
-            /* 排序顺序 */
-
-            $cardcases = Cardcase::with('group', 'follower')->where('user_id', Auth::id())->get()->toArray();
-            if (count($cardcases) > 0) {
-                $cardcases = $this->getPinyin($cardcases);
+            /* 获取分组 */
+            $groups = Auth::user()->groups()->with('followers')->orderBy('id', 'desc')->get();
+            foreach ($groups as $group) {
+                $group->count = $group->followers()->count();
             }
-//            if ($sort == 'group') {
-//                $field = 'order';
-            $groups = $this->getGroups(Auth::id());
-            if (count($groups) > 0) {
-//                    $groups = $this->sortArray($groups, $field);
-                foreach ($groups as $k => &$v) {
-                    if (count($cardcases) > 0) {
-                        foreach ($cardcases as $ck => $vk) {
-                            if ($v['id'] == $vk['group_id']) {
-                                $v['cardcases'][] = $vk;
-                            }
-                        }
-                    }
-                    if (!isset($v['cardcases'])) {
-                        $v['cardcases'] = array();
-                    }
-                }
-            }
-            $data = $groups;
-
-//            }
-//            return $data;
-//
-//            $data = $this->index4Mobile();
-            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $data]);
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $groups]);
         }
     }
 

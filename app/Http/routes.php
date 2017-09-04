@@ -183,6 +183,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::post('cardcaseAjax/move/{id}', ['as' => 'cardcase.moveAjax', 'uses' => 'Home\CardcaseController@moveAjax']);
     Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
     Route::get('cardcaseAjax/mp', ['as' => 'cardcase.mpAjax', 'uses' => 'Home\CardcaseController@mpAjax']); // 名片夹
+    Route::get('cardcaseAjax/getFollower', ['as' => 'cardcase.getFollowerAjax', 'uses' => 'Home\CardcaseController@getFollowerAjax']);
     Route::get('cardcaseAjax', ['as' => 'cardcase.indexAjax', 'uses' => 'Home\CardcaseController@indexAjax']);
     Route::get('cardcase/fans/{type?}', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
     Route::get('cardcase/mp', ['as' => 'cardcase.mp', 'uses' => 'Home\CardcaseController@mp']); // 名片夹

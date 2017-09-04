@@ -81,18 +81,17 @@
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/mobile/js/amaze/amazeui.min.js') }}"></script>
 @section('javascript')
-
     <script>
-
         /* 加载ajax */
         function useAjax(type, url, data, sync) {
             var json = '';
-            sync ? sync = true : sync = false;
+            var _sync;
+            _sync ? _sync = sync : _sync = false;
             $.ajax({
                 type: type,
                 url: url,
                 data: data,
-                async: sync, // 非异步(同步)加载
+                async: _sync, // 非异步(同步)加载
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }, // CSRF验证必填

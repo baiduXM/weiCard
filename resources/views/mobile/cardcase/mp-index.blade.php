@@ -13,7 +13,6 @@
         <div class="mp-group">
 
             <section class="accordion-gapped">
-
                 {{--分组循环--}}
                 {{--人员循环--}}
                 {{--分组循环end--}}
@@ -76,6 +75,7 @@
                         </div>
                     </dd>
                 </dl>
+
                 <dl class=" accordion-item custom-group">
                     <b data-am-modal="{target: '#mp-btn3'}"><em class="rt">-</em></b>
                     <dt class=" accordion-title">
@@ -205,21 +205,21 @@
             <form action="">
                 <h1 class="modal-header"><span>选择分组</span></h1>
                 <div class="am-modal-bd">
-                    <ul>
-                        <li>
-                            <label for="num0">
-                                <input type="radio" name="group_id" id="num0" value="0">
-                                <span>默认组</span>
-                            </label>
-                        </li>
-                        @foreach($groups as $item)
-                            <li>
-                                <label for="num{{ $item->id }}">
-                                    <input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">
-                                    <span>{{ $item->name }}</span>
-                                </label>
-                            </li>
-                        @endforeach
+                    <ul id="group-modal">
+                        {{--<li>--}}
+                        {{--<label for="num0">--}}
+                        {{--<input type="radio" name="group_id" id="num0" value="0">--}}
+                        {{--<span>默认组</span>--}}
+                        {{--</label>--}}
+                        {{--</li>--}}
+                        {{--@foreach($groups as $item)--}}
+                        {{--<li>--}}
+                        {{--<label for="num{{ $item->id }}">--}}
+                        {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
+                        {{--<span>{{ $item->name }}</span>--}}
+                        {{--</label>--}}
+                        {{--</li>--}}
+                        {{--@endforeach--}}
                         {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
                         {{--<span>+ 新建分组</span>--}}
                         {{--</li>--}}
@@ -238,19 +238,91 @@
     <script>
         $(function () {
             init();
+
         });
         function init() {
             // 加载分组
-            var _json = useAjax('get', '{{ route('cardcase.mpAjax') }}')
-            console.log(_json);
-            console.log('init');
+            var _json = useAjax('get', '{{ route('cardcase.mpAjax') }}');
+//            showHtml(jointDiv(_json.data),)
+            showHtml(jointGroup(_json.data), '.accordion-gapped', 'init'); //
+            showHtml(jointGroupModal(_json.data), '#group-modal', 'init'); //
+
             // 加载成员
+            var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': null});
+            console.log(_user)
+//            showHtml(jointFollower(_user.data), '#group-modal', 'init');
         }
-        //        function useAjax() {
-        //
-        //        }
-        function showHtml() {
+        /* 分组拼接 */
+        function jointGroup(data) {
+            var _html = '';
+            $.each(data, function (k, v) {
+                _html += '<dl class=" accordion-item custom-group">';
+                _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
+                _html += '<dt class=" accordion-title ">';
+                _html += '<span> ' + v.name + '</span>';
+                _html += '<i class="on">' + v.count + '</i>';
+                _html += '</dt>';
+                _html += '<dd class="accordion-bd am-collapse">';
+                _html += '<div class="accordion-content ' + 1 + '">';
+                _html += '</div>';
+                _html += '</dd>';
+                _html += '</dl>';
+            });
+            return _html;
         }
+
+        /* 分组模态拼接 */
+        function jointGroupModal(data) {
+            var _html = '';
+            // 默认分组
+            _html += '<li>';
+            _html += '<label for="num0">';
+            _html += '<input type="radio" name="group_id" id="num0" value="0">';
+            _html += '<span>默认组</span>';
+            _html += '</label>';
+            _html += '</li>';
+
+            // 循环已创建分组
+            $.each(data, function (k, v) {
+                _html += '<li>';
+                _html += '<label for="num' + v.id + '">';
+                _html += '<input type="radio" name="group_id" id="num' + v.id + '" value="' + v.id + '">';
+                _html += '<span>' + v.name + '</span>';
+                _html += '</label>';
+                _html += '</li>';
+            });
+            return _html;
+        }
+
+
+        /* 组内人员拼接 */
+        function jointFollower(data) {
+            var _html = '';
+            $.each(data, function (k, v) {
+                _html += '<div class="group-list">';
+                _html += '<div class="group-list-mes">';
+                _html += '<div class="mes-img"><img src="" alt=""></div>';
+                _html += '<div class="mes-data">';
+                _html += '<h3>开发人员（null）</h3>';
+                _html += '<p>测试测试...</p>';
+                _html += '<i>企业</i>';
+                _html += '</div>';
+                _html += '<div class="mes-gz rt ygz">';
+                _html += '<i class="iconfont">&#xe61b;</i>';
+                _html += '<span>已关注</span>';
+                _html += '</div>';
+                _html += '</div>';
+                _html += '<ul class="group-list-btn">';
+                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe639;</i><span>查看</span></a></li>';
+                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
+                _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
+                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
+                _html += '</ul>';
+                _html += '</div>';
+            });
+            return _html;
+        }
+
     </script>
 @stop
 

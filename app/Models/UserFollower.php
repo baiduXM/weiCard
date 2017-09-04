@@ -24,9 +24,16 @@ class UserFollower extends CommonModel
         return $this->belongsTo('App\Models\Group');
     }
 
-    public function follower()
+    /* 我 */
+    public function user()
     {
         return $this->belongsTo('App\Models\User', 'follower_id');
+    }
+
+    /* 被关注的人 */
+    public function followed()
+    {
+        return $this->belongsTo('App\Models\User', 'followed_id');
     }
 
     public function getFollower($user_id)

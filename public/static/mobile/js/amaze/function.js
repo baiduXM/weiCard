@@ -1,22 +1,22 @@
 
 $(function(){
-    (function(doc,win){
-        var docEl = doc.documentElement,
-            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize' ,
-            recalc = function()
-            {
-                var clientWidth = docEl.clientWidth;
-                if(!clientWidth) return;
-                if(clientWidth>640){
-                    clientWidth=640;
-                }
-                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
-            };
-        recalc();
-        if(!doc.addEventListener) return;
-        win.addEventListener(resizeEvt,recalc,false);
-        doc.addEventListener('DOMContentLoaded',recalc,false);
-    })(document,window);
+    // (function(doc,win){
+    //     var docEl = doc.documentElement,
+    //         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize' ,
+    //         recalc = function()
+    //         {
+    //             var clientWidth = docEl.clientWidth;
+    //             if(!clientWidth) return;
+    //             if(clientWidth>640){
+    //                 clientWidth=640;
+    //             }
+    //             docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    //         };
+    //     recalc();
+    //     if(!doc.addEventListener) return;
+    //     win.addEventListener(resizeEvt,recalc,false);
+    //     doc.addEventListener('DOMContentLoaded',recalc,false);
+    // })(document,window);
 
 
     /*选项卡*/
@@ -264,10 +264,18 @@ $(function(){
     $(".add2").click('touchstart',function () {
         $('#add2').modal('toggle');
     });
+
     $(".x-share").click('touchstart',function () {
         $('#T-share').modal('toggle');
     });
-
+    /* 删除 */
+    $(".mp-btn3").click('touchstart', function () {
+        $('#mp-btn3').modal('toggle');
+    });
+    /* 分组 */
+    $(".mp-btn5").click('touchstart', function () {
+        $('#mp-btn5').modal('toggle');
+    });
 
     /*gz--modal*/
     // $(".ygz").click('touchstart',function () {
