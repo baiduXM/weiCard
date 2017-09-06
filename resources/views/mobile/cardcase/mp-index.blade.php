@@ -1,133 +1,30 @@
 @extends('mobile.common.amaze')
 @section('title', '关注列表')
+@section('css')
+    @parent
+    <style type="text/css">
+        error-text {
+            color: red;
+        }
+    </style>
+@stop
 @section('content')
     <div class="mp-content">
         <div class="mp-bjBox hide">
             <a class="bjBtn" href="javascript:">名片组</a>
-            <a class="mp-back rt" href="JavaScript:history.go(-1)">
-             <span>
-                <i class="iconfont">&#xe600;</i><b>返回</b>
-            </span>
+            {{--<a class="mp-back rt" href="JavaScript:history.go(-1)">--}}
+            {{--<span>--}}
+            {{--<i class="iconfont">&#xe600;</i><b>返回</b>--}}
+            {{--</span>--}}
             </a>
         </div>
         <div class="mp-group">
-
             <section class="accordion-gapped">
-                {{--分组循环--}}
-                {{--人员循环--}}
-                {{--分组循环end--}}
-                <dl class=" accordion-item default-group">
-                    <dt class=" accordion-title ">
-                        <span> 默认分组</span>
-                        <i class="on">12</i>
-                    </dt>
-                    <dd class=" accordion-bd am-collapse">
-                        <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                        <div class="accordion-content">
-                            <div class="group-list">
-                                <div class="group-list-mes">
-                                    <div class="mes-img"><img src="" alt=""></div>
-                                    <div class="mes-data">
-                                        <h3>开发人员（null）</h3>
-                                        <p>测试测试...</p>
-                                        <i>企业</i>
-                                    </div>
-                                    <div class="mes-gz rt ygz">
-                                        <i class="iconfont">&#xe63c;</i>
-                                        <span>相互关注</span>
-                                    </div>
-                                </div>
-                                <ul class="group-list-btn">
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe639;</i><span>查看</span></a>
-                                    </li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe644;</i><span>拨号</span></a>
-                                    </li>
-                                    <li class="lt" data-am-modal="{target: '#mp-btn5'}"><a href="javascript:"><i
-                                                    class="iconfont">&#xe694;</i><span>分组</span></a></li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe609;</i><span>取消</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="group-list">
-                                <div class="group-list-mes">
-                                    <div class="mes-img"><img src="" alt=""></div>
-                                    <div class="mes-data">
-                                        <h3>开发人员（null）</h3>
-                                        <p>测试测试...</p>
-                                        <i>企业</i>
-                                    </div>
-                                    <div class="mes-gz rt ygz">
-                                        <i class="iconfont">&#xe61b;</i>
-                                        <span>已关注</span>
-                                    </div>
-                                </div>
-                                <ul class="group-list-btn">
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe639;</i><span>查看</span></a>
-                                    </li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe644;</i><span>拨号</span></a>
-                                    </li>
-                                    <li class="lt" data-am-modal="{target: '#mp-btn5'}"><a href="javascript:"><i
-                                                    class="iconfont">&#xe694;</i><span>分组</span></a></li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe609;</i><span>取消</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </dd>
-                </dl>
-
-                <dl class=" accordion-item custom-group">
-                    <b data-am-modal="{target: '#mp-btn3'}"><em class="rt">-</em></b>
-                    <dt class=" accordion-title">
-                        <span>同事朋友</span>
-                        <i class="on">1</i>
-                    </dt>
-                    <dd class=" accordion-bd am-collapse ">
-                        <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                        <div class="accordion-content">
-                            <div class="group-list">
-                                <div class="group-list-mes">
-                                    <div class="mes-img"><img src="" alt=""></div>
-                                    <div class="mes-data">
-                                        <h3>开发人员（null）</h3>
-                                        <p>测试测试...</p>
-                                        <i>企业</i>
-                                    </div>
-                                    <div class="mes-gz rt ygz">
-                                        <i class="iconfont">&#xe61b;</i>
-                                        <span>已关注</span>
-                                    </div>
-                                </div>
-                                <ul class="group-list-btn">
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe639;</i><span>查看</span></a>
-                                    </li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe644;</i><span>拨号</span></a>
-                                    </li>
-                                    <li class="lt" data-am-modal="{target: '#mp-btn5'}"><a href="javascript:"><i
-                                                    class="iconfont">&#xe694;</i><span>分组</span></a></li>
-                                    <li class="lt"><a href="javascript:"><i class="iconfont">&#xe609;</i><span>取消</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </dd>
-                </dl>
-                <dl class=" accordion-item custom-group">
-                    <b data-am-modal="{target: '#mp-btn3'}"><em class="rt">-</em></b>
-                    <dt class=" accordion-title">
-                        <span>亲戚家庭</span>
-                        <i class="on">0</i>
-                    </dt>
-                    <dd class=" accordion-bd am-collapse ">
-                        <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
-                        <div class="accordion-content">
-                        </div>
-                    </dd>
-                </dl>
             </section>
-            <div class="mp-groupBg"><a href="javascript:"><img src="{{ asset('static/mobile/images/amaze/4_03.png') }}"
-                                                               alt=""><span>尚未编建分组</span></a>
-            </div>
+            {{--<div class="mp-groupBg">--}}
+            {{--<a href="javascript:"><img src="{{ asset('static/mobile/images/amaze/4_03.png') }}"--}}
+            {{--alt=""><span>尚未编建分组</span></a>--}}
+            {{--</div>--}}
         </div>
     </div>
     <div class="mp-footBtn">
@@ -140,55 +37,62 @@
     <!--编辑弹出框-->
     <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal1" tabindex="-1" id="mp-btn1">
         <div class="am-modal-dialog  ">
-            <form action="">
+            {{--            <form action="{{ route('group.updateAjax') }}" method="put" id="form-btn1">--}}
+            <form action="{{ route('group.update') }}" method="put" id="form-btn1">
+                {{--{{ method_field('put') }}--}}
+                {{ csrf_field() }}
                 <h1 class="modal-header"><span>编辑分组</span></h1>
                 <div class="am-modal-bd modal-group-name">
                     <span>名称</span>
-                    <input type="text" placeholder="亲朋好友">
+                    <input type="text" placeholder="1-12个字符" name="Group[name]" value="">
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
-                    <button type="submit" class="confirm " data-am-modal-confirm>确定</button>
+                    <button type="submit" class="confirm confirm-btn1" data-am-modal-confirm>确定</button>
                 </div>
+                <input type="hidden" name="group_id" value="">
             </form>
         </div>
     </div>
     <!--新建分组弹出框-->
     <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-btn2">
         <div class="am-modal-dialog  ">
-            <form action="">
+            {{--            <form action="{{ route('group.storeAjax') }}" method="post" onsubmit="return false;">--}}
+            <form action="{{ route('group.store') }}" method="post" id="form-btn2">
+                {{--                {{ method_field('put') }}--}}
+                {{ csrf_field() }}
                 <h1 class="modal-header"><span>新建分组</span></h1>
                 <div class="am-modal-bd modal-group-name">
                     <span>名称</span>
-                    <input type="text" placeholder="1-12个字符">
+                    <input type="text" placeholder="1-12个字符" name="Group[name]">
+                    <span class="error-name hidden" style="color: red; font-size: 14px;">错误提示</span>
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close modal5-close" data-am-modal-close>取消</button>
-                    <button type="submit" class="confirm " data-am-modal-confirm>确定</button>
+                    <button type="submit" class="confirm confirm-btn2" data-am-modal-confirm>确定</button>
                 </div>
             </form>
         </div>
     </div>
     <!--确认删除该分组？弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-btn3">
+    <div class="am-modal am-modal-confirm mp-modal " tabindex="-1" id="mp-btn3">
         <div class="am-modal-dialog  ">
-            <form action="">
-
+            <form action="{{ route('group.destroyAjax') }}" onsubmit="return false;" method="delete">
                 <div class="am-modal-bd">
                     <p>确认删除该分组？</p>
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
-                    <span class="confirm  conRemove">确定</span>
+                    <span class="confirm conRemove confirm-btn3">确定</span>
                 </div>
+                <input type="hidden" name="group_id" value="">
             </form>
         </div>
     </div>
     <!--确认不再关注此人？弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-btn4">
+    <div class="am-modal am-modal-confirm mp-modal " tabindex="-1" id="mp-btn4">
         <div class="am-modal-dialog  ">
-            <form action="">
-
+            <form action="{{ route('cardcase.unfollowAjax') }}" method="post" onsubmit="return false;">
                 <div class="am-modal-bd">
                     <p>确认不再关注此人？</p>
                 </div>
@@ -196,132 +100,170 @@
                     <button class="mp-close" data-am-modal-close>取消</button>
                     <button class="confirm  conRemove">确定</button>
                 </div>
+                <input type="hidden" name="user_id" value="">
             </form>
         </div>
     </div>
     <!--选择分组弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal mp-modal5  " tabindex="-1" id="mp-btn5">
+    <div class="am-modal am-modal-confirm mp-modal mp-modal5" tabindex="-1" id="mp-btn5">
         <div class="am-modal-dialog  ">
-            <form action="">
+            <form action="{{ route('cardcase.moveAjax') }}" method="put" onsubmit="return false;">
                 <h1 class="modal-header"><span>选择分组</span></h1>
                 <div class="am-modal-bd">
                     <ul id="group-modal">
-                        {{--<li>--}}
-                        {{--<label for="num0">--}}
-                        {{--<input type="radio" name="group_id" id="num0" value="0">--}}
-                        {{--<span>默认组</span>--}}
-                        {{--</label>--}}
-                        {{--</li>--}}
-                        {{--@foreach($groups as $item)--}}
-                        {{--<li>--}}
-                        {{--<label for="num{{ $item->id }}">--}}
-                        {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
-                        {{--<span>{{ $item->name }}</span>--}}
-                        {{--</label>--}}
-                        {{--</li>--}}
-                        {{--@endforeach--}}
-                        {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
-                        {{--<span>+ 新建分组</span>--}}
-                        {{--</li>--}}
                     </ul>
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
                     <button type="submit" class="confirm " data-am-modal-confirm>确定</button>
                 </div>
+                <input type="hidden" name="user_id" value="">
+                <input type="hidden" name="group_id" value="">
+
             </form>
         </div>
     </div>
 @stop
 @section('javascript')
     @parent
+    <script src="{{ asset('static/mobile/js/common.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/cardcase/mp-index.js') }}"></script>
+
     <script>
         $(function () {
             init();
 
+            /*编辑分组*/
+            $('#form-btn1').submit(function (e) {
+                var data = $(this).serializeArray();
+                var rule = checkField('{{ route('group.rules') }}', data);
+                console.log(rule);
+                if (rule.status == 'error') { // 验证错误
+                    e.preventDefault();
+                    showError($(this), rule.responseJSON);
+                }
+            });
+
+            /* 新建分组提交 */
+            $('#form-btn2').submit(function (e) {
+                var data = $(this).serializeArray();
+                var rule = checkField('{{ route('group.rules') }}', data);
+                if (rule.status == 'error') { // 验证错误
+                    e.preventDefault();
+                    showError($(this), rule.responseJSON);
+                }
+            });
+
+
+            $('.confirm-btn1').click('touchstart', function () {
+            });
+
+            $('.confirm-btn1').click('touchstart', function () {
+            });
+
+            $('.confirm-btn1').click('touchstart', function () {
+            });
+
+            /* 访问名片 */
+            $('.mp-show').on('touchstart', function () {
+                var id               = $(this).parents('.group-list-btn').attr('data-id');
+                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
+            });
+
+            /* 分组 */
+            $('.mp-group-edit').click('touchstart', function () {
+                var id       = $(this).parents('.group-list-btn').attr('data-id');
+                var group_id = $(this).parents('.group-list-btn').attr('data-group-id');
+                var _modal   = $('#mp-btn5');
+//                var _modal = $('#mp-btn5').find('[name="group_id"]').val(group_id);
+                _modal.children('#num' + group_id).attr('checked', true);
+//                console.log(id)
+//                console.log(group_id)
+                _modal.modal('toggle');
+            });
+            /* 取消关注 */
+            $('.mp-unfollow').on('touchstart', function () {
+                var id = $(this).parents('.group-list-btn').attr('data-id');
+                alert(id)
+            });
+
+            /* 展开分组 */
+            $('.accordion-item').on('touchstart', function () {
+                var group_id = $(this).attr('data-id');
+                // 判断是否需要加载
+                var count    = $(this).find('.accordion-title').children('i').text(); // 成员数
+                if (count && $('#group' + group_id).children().length != count) {
+                    var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': group_id});
+                    showHtml(jointFollower(_user.data), '#group' + group_id, 'refresh');
+                    $(this).find('.accordion-title').children('i').text(_user.data.length);// 更新成员数
+                    console.log('in')
+                }
+            });
+
+            /* 模态确认提交 */
+//            $('.confirm').click('touchstart', function () {
+//                var url    = $(this).parents('form').attr('action');
+//                var method = $(this).parents('form').attr('method');
+//                var data   = $(this).parents('form').serializeArray();
+//                var _json  = useAjax(method, url, data);
+////                console.log(typeof _json);
+////                console.log(_json);
+////                console.log(typeof _json.err);
+////                console.log(_json.err);
+//                if (typeof _json.err == 'undefined') { // 验证错误
+//                    showError(_json);
+//                } else {
+//                    console.log(2)
+//                }
+////                if(typeof _json)
+//                $(".am-modal ").hide();
+//                $(".am-dimmer.am-active").hide();
+//            });
+
+
+            /* 删除 */
+            $(".mp-btn3").click('touchstart', function () {
+                var _modal   = $('#mp-btn3');
+                var url      = '{{ route('group.destroyAjax') }}';
+                var group_id = $(this).parents('.accordion-item').attr('data-id');
+                _modal.find('form').attr('action', url);
+                _modal.find('[name="group_id"]').val(group_id);
+
+//                var _json    = useAjax('delete', url, {'id': group_id});
+                _modal.modal('toggle');
+//                console.log(_json)
+            });
+
+            $('.onAfter').on('touchstart', function () {
+                alert(1)
+            })
+
+            /* 确认删除 */
+            $(".conRemove").click('touchstart', function () {
+                var url   = $(this).parents('form').attr('action');
+                var data  = $(this).parents('form').serializeArray();
+                var _json = useAjax('delete', url, data);
+                alert(_json.msg);
+                $(".am-modal ").hide();
+                $(".am-dimmer.am-active").hide();
+                // TODO:刷新分组
+                var _group = useAjax('get', '{{ route('cardcase.mpAjax') }}');
+                console.log(_group)
+                showHtml(jointGroup(_group.data), '.accordion-gapped', 'refresh'); //
+            });
         });
+
         function init() {
             // 加载分组
             var _json = useAjax('get', '{{ route('cardcase.mpAjax') }}');
-//            showHtml(jointDiv(_json.data),)
             showHtml(jointGroup(_json.data), '.accordion-gapped', 'init'); //
             showHtml(jointGroupModal(_json.data), '#group-modal', 'init'); //
 
             // 加载成员
-            var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': null});
-            console.log(_user)
-//            showHtml(jointFollower(_user.data), '#group-modal', 'init');
-        }
-        /* 分组拼接 */
-        function jointGroup(data) {
-            var _html = '';
-            $.each(data, function (k, v) {
-                _html += '<dl class=" accordion-item custom-group">';
-                _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
-                _html += '<dt class=" accordion-title ">';
-                _html += '<span> ' + v.name + '</span>';
-                _html += '<i class="on">' + v.count + '</i>';
-                _html += '</dt>';
-                _html += '<dd class="accordion-bd am-collapse">';
-                _html += '<div class="accordion-content ' + 1 + '">';
-                _html += '</div>';
-                _html += '</dd>';
-                _html += '</dl>';
-            });
-            return _html;
+            var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': 0});
+            showHtml(jointFollower(_user.data), '#group0', 'init');
         }
 
-        /* 分组模态拼接 */
-        function jointGroupModal(data) {
-            var _html = '';
-            // 默认分组
-            _html += '<li>';
-            _html += '<label for="num0">';
-            _html += '<input type="radio" name="group_id" id="num0" value="0">';
-            _html += '<span>默认组</span>';
-            _html += '</label>';
-            _html += '</li>';
-
-            // 循环已创建分组
-            $.each(data, function (k, v) {
-                _html += '<li>';
-                _html += '<label for="num' + v.id + '">';
-                _html += '<input type="radio" name="group_id" id="num' + v.id + '" value="' + v.id + '">';
-                _html += '<span>' + v.name + '</span>';
-                _html += '</label>';
-                _html += '</li>';
-            });
-            return _html;
-        }
-
-
-        /* 组内人员拼接 */
-        function jointFollower(data) {
-            var _html = '';
-            $.each(data, function (k, v) {
-                _html += '<div class="group-list">';
-                _html += '<div class="group-list-mes">';
-                _html += '<div class="mes-img"><img src="" alt=""></div>';
-                _html += '<div class="mes-data">';
-                _html += '<h3>开发人员（null）</h3>';
-                _html += '<p>测试测试...</p>';
-                _html += '<i>企业</i>';
-                _html += '</div>';
-                _html += '<div class="mes-gz rt ygz">';
-                _html += '<i class="iconfont">&#xe61b;</i>';
-                _html += '<span>已关注</span>';
-                _html += '</div>';
-                _html += '</div>';
-                _html += '<ul class="group-list-btn">';
-                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe639;</i><span>查看</span></a></li>';
-                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
-                _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
-                _html += '<li class="lt"><a href="javascript:"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
-                _html += '</ul>';
-                _html += '</div>';
-            });
-            return _html;
-        }
 
     </script>
 @stop

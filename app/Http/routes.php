@@ -171,6 +171,15 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::resource('contacts', 'Home\ContactsController');
 
     /* 名片夹->分组 */
+    Route::delete('groupAjax', ['as' => 'group.destroyAjax', 'uses' => 'Home\GroupController@destroyAjax']);
+    Route::post('groupAjax', ['as' => 'group.storeAjax', 'uses' => 'Home\GroupController@storeAjax']);
+    Route::put('groupAjax', ['as' => 'group.updateAjax', 'uses' => 'Home\GroupController@updateAjax']);
+    Route::post('group/rules', ['as' => 'group.rules', 'uses' => 'Home\GroupController@rules']);
+
+    Route::post('group', ['as' => 'group.store', 'uses' => 'Home\GroupController@store']);
+    Route::put('group/{id?}', ['as' => 'group.update', 'uses' => 'Home\GroupController@update']);
+
+
     Route::get('cardcase/group/{id}', ['as' => 'cardcase.group.show', 'uses' => 'Home\GroupController@show']);
     Route::put('cardcase/group/{id}', ['as' => 'cardcase.group.update', 'uses' => 'Home\GroupController@update']);
     Route::delete('cardcase/group/{id}', ['as' => 'cardcase.group.destroy', 'uses' => 'Home\GroupController@destroy']);
@@ -181,6 +190,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
     /* 名片夹 */
     Route::post('cardcaseAjax/move/{id}', ['as' => 'cardcase.moveAjax', 'uses' => 'Home\CardcaseController@moveAjax']);
+    Route::put('cardcaseAjax/move', ['as' => 'cardcase.moveAjax', 'uses' => 'Home\CardcaseController@moveAjax']);
     Route::post('cardcaseAjax/unfollow', ['as' => 'cardcase.unfollowAjax', 'uses' => 'Home\CardcaseController@unfollowAjax']);
     Route::get('cardcaseAjax/mp', ['as' => 'cardcase.mpAjax', 'uses' => 'Home\CardcaseController@mpAjax']); // 名片夹
     Route::get('cardcaseAjax/getFollower', ['as' => 'cardcase.getFollowerAjax', 'uses' => 'Home\CardcaseController@getFollowerAjax']);

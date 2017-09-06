@@ -50,7 +50,7 @@ class CardcaseController extends HomeController
         }
     }
 
-    public function mp(Request $request)
+    public function mp()
     {
         if ($this->is_mobile) {
             $groups = Group::where('user_id', Auth::id())->get();
@@ -58,21 +58,9 @@ class CardcaseController extends HomeController
                 'groups' => $groups,
             ]);
         }
-        $this->mpAjax($request);
+//        $this->getFollowerAjax($request);
     }
 
-    /* 根据分组获取用户 */
-    public function getFollowerAjax(Request $request)
-    {
-
-        if ($request->ajax()) {
-        }
-        $group_id = $request->input('group_id') ? $request->input('group_id') : null; // id
-        dump($group_id);
-        if ($group_id) {
-
-        }
-    }
 
     /**
      * @param Request $request
@@ -82,13 +70,51 @@ class CardcaseController extends HomeController
     {
         if ($request->ajax()) {
             /* 获取分组 */
-            $groups = Auth::user()->groups()->with('followers')->orderBy('id', 'desc')->get();
+            $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
+            $default = Group::find(0);
+//            $default->id = null;
+            $default->user_id = Auth::id();
+            $groups->prepend($default); // prepend() 添加数据项到集合开头
             foreach ($groups as $group) {
-                $group->count = $group->followers()->count();
+                $group->count = $group->followers()->where('follower_id', Auth::id())->has('followed')->count(); // has('followed') 判断用户是否存在
             }
             return response()->json(['err' => 0, 'msg' => 'success', 'data' => $groups]);
         }
     }
+
+
+    /* 根据分组获取用户 */
+    public function getFollowerAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $group_id = $request->input('group_id') or null; // id
+            if ($group_id) {
+                $followers = UserFollower::with('followed', 'employee')->has('followed')
+                    ->where('follower_id', Auth::id())
+                    ->where('group_id', $group_id)
+                    ->get();
+            } else {
+                $followers = UserFollower::with('followed', 'employee')->has('followed')
+                    ->where('follower_id', Auth::id())
+                    ->where('group_id', $group_id)
+                    ->orWhere('group_id', null)
+                    ->get();
+            }
+            foreach ($followers as $follower) {
+                $follower->avatar = asset($follower->followed->avatar);
+                $follower->company = $follower->employee ? $follower->employee->company : null;
+            }
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $followers]);
+        }
+    }
+
+//    public function getFollower($group_id = null)
+//    {
+////        $group_id = $request->input('group_id') ? $request->input('group_id') : null; // id
+//        $followers = UserFollower::has('followed')->where('follower_id', Auth::id())->where('group_id', $group_id)->get();
+//        return $followers;
+////        return response()->json(['err' => 0, 'msg' => 'success', 'data' => $followers]);
+//    }
 
 
     /**
@@ -454,7 +480,7 @@ class CardcaseController extends HomeController
      * @param int     $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function move(Request $request, $id)
+    public function move(Request $request, $id = 0)
     {
         if ($request->ajax()) {
             $group_id = $request->input('group_id');
@@ -579,6 +605,7 @@ class CardcaseController extends HomeController
 
     public function unfollowAjax(Request $request)
     {
+        // TODO
         if ($request->ajax()) {
             $user_id = $request->input('user_id');
 
@@ -588,6 +615,10 @@ class CardcaseController extends HomeController
 
     }
 
+    public function rules(Request $request)
+    {
+
+    }
 
 }
 

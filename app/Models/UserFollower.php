@@ -36,10 +36,23 @@ class UserFollower extends CommonModel
         return $this->belongsTo('App\Models\User', 'followed_id');
     }
 
-    public function getFollower($user_id)
+    /* 被关注的人 员工信息 */
+    public function employee()
     {
-//        $this->
+        return $this->belongsTo('App\Models\Employee', 'followed_id', 'user_id');
     }
+
+//    /* 被关注的人 公司信息 */
+//    public function company()
+//    {
+//        return $this->hasManyThrough('App\Models\Company', 'App\Models\Employee', 'user_id', 'employee_id', 'followed_id');
+//    }
+
+
+//    public function employee()
+//    {
+//        return $this->hasManyThrough('App\Models\Employee', 'App\Models\User', 'id', 'user_id', 'followed_id');
+//    }
 
 }
 

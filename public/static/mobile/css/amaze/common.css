@@ -9,6 +9,7 @@ label{margin:0;font-weight: normal;}
 .rt{float:right;}
 .clear{clear:both;}
 .hide{display:none;}
+.hidden{display:none !important;}
 .show{display:block;}
 body{font-family:  Microsoft YaHei,"微软雅黑";font-size:0.6rem;  background-color: #fff;max-width:640px;
     min-width:320px;margin:0 auto; height:inherit; }
