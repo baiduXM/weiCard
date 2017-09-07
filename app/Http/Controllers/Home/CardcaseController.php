@@ -74,7 +74,6 @@ class CardcaseController extends HomeController
             $default = Group::where('user_id', null)->where('name', '默认组')->first();
 //            $default->id = 0;
             $default->user_id = Auth::id();
-            dd($default);
             $groups->prepend($default); // prepend() 添加数据项到集合开头
             foreach ($groups as $group) {
                 $group->count = $group->followers()->where('follower_id', Auth::id())->has('followed')->count(); // has('followed') 判断用户是否存在
@@ -472,6 +471,7 @@ class CardcaseController extends HomeController
         $employee = Employee::with('company', 'department', 'user')->find($id);
         return $employee;
     }
+
 
 
     /**
