@@ -12,11 +12,11 @@
     <div class="mp-content">
         <div class="mp-bjBox hide">
             <a class="bjBtn" href="javascript:">名片组</a>
-            <a class="mp-back rt" href="JavaScript:history.go(-1)">
-             <span>
-                <i class="iconfont">&#xe600;</i><b>返回</b>
-            </span>
-            </a>
+            {{--<a class="mp-back rt" href="JavaScript:history.go(-1)">--}}
+             {{--<span>--}}
+                {{--<i class="iconfont">&#xe600;</i><b>返回</b>--}}
+            {{--</span>--}}
+            {{--</a>--}}
         </div>
         <div class="mp-group">
 
