@@ -214,7 +214,7 @@ $(function () {
 
                 $('.modelBtn').unbind('click');
                 iThis.find('dt').bind('touchstart', groupSlide);
-                onSlide();
+                // onSlide();
             }
         });
 
@@ -230,7 +230,7 @@ $(function () {
 
             $('.modelBtn').unbind('click');
             iThis.find('dt').bind('touchstart', groupSlide);
-            onSlide();
+            // onSlide();
         });
 
     }
