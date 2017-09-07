@@ -12,14 +12,13 @@
     <div class="mp-content">
         <div class="mp-bjBox hide">
             <a class="bjBtn" href="javascript:">名片组</a>
-            <a class="mp-back rt" href="JavaScript:history.go(-1)">
-             <span>
-                <i class="iconfont">&#xe600;</i><b>返回</b>
-            </span>
+            {{--<a class="mp-back rt" href="JavaScript:history.go(-1)">--}}
+            {{--<span>--}}
+            {{--<i class="iconfont">&#xe600;</i><b>返回</b>--}}
+            {{--</span>--}}
             </a>
         </div>
         <div class="mp-group">
-
             <section class="accordion-gapped">
             </section>
             {{--<div class="mp-groupBg">--}}
@@ -28,11 +27,9 @@
             {{--</div>--}}
         </div>
     </div>
-
-
     <div class="mp-footBtn">
-        <a class="footBtn1 " href="javascript:;" tabindex="-1">编辑</a>
-        <a class="rt" href="javascript:;" tabindex="-1" data-am-modal="{target: '#mp-btn2'}">+ 新建分组</a>
+        <a class="footBtn1 " href="javascript:" tabindex="-1">编辑</a>
+        <a class="rt" href="javascript:" tabindex="-1" data-am-modal="{target: '#mp-btn2'}">+ 新建分组</a>
     </div>
 @stop
 @section('modal')
@@ -40,18 +37,18 @@
     <!--编辑弹出框-->
     <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal1" tabindex="-1" id="mp-btn1">
         <div class="am-modal-dialog  ">
-            <form action="{{ route('group.update') }}" method="post" id="form-btn1">
-                {{ method_field('put') }}
+            {{--            <form action="{{ route('group.updateAjax') }}" method="put" id="form-btn1">--}}
+            <form action="{{ route('group.update') }}" method="put" id="form-btn1">
+                {{--{{ method_field('put') }}--}}
                 {{ csrf_field() }}
                 <h1 class="modal-header"><span>编辑分组</span></h1>
                 <div class="am-modal-bd modal-group-name">
                     <span>名称</span>
                     <input type="text" placeholder="1-12个字符" name="Group[name]" value="">
-                    <span class="error-name hidden" style="color: red; font-size: 14px;">错误提示</span>
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
-                    <button type="submit" class="confirm " data-am-modal-confirm>确定</button>
+                    <button type="submit" class="confirm confirm-btn1" data-am-modal-confirm>确定</button>
                 </div>
                 <input type="hidden" name="group_id" value="">
             </form>
@@ -60,8 +57,9 @@
     <!--新建分组弹出框-->
     <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-btn2">
         <div class="am-modal-dialog  ">
+            {{--            <form action="{{ route('group.storeAjax') }}" method="post" onsubmit="return false;">--}}
             <form action="{{ route('group.store') }}" method="post" id="form-btn2">
-                {{ method_field('post') }}
+                {{--                {{ method_field('put') }}--}}
                 {{ csrf_field() }}
                 <h1 class="modal-header"><span>新建分组</span></h1>
                 <div class="am-modal-bd modal-group-name">
@@ -71,7 +69,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close modal5-close" data-am-modal-close>取消</button>
-                    <button type="submit" class="confirm" data-am-modal-confirm>确定</button>
+                    <button type="submit" class="confirm confirm-btn2" data-am-modal-confirm>确定</button>
                 </div>
             </form>
         </div>
@@ -79,15 +77,13 @@
     <!--确认删除该分组？弹出框-->
     <div class="am-modal am-modal-confirm mp-modal " tabindex="-1" id="mp-btn3">
         <div class="am-modal-dialog  ">
-            <form action="{{ route('group.destroy') }}" method="post" id="form-btn3">
-                {{ method_field('delete') }}
-                {{ csrf_field() }}
+            <form action="{{ route('group.destroyAjax') }}" onsubmit="return false;" method="delete">
                 <div class="am-modal-bd">
                     <p>确认删除该分组？</p>
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
-                    <button type="submit" class="confirm" data-am-modal-confirm>确定</button>
+                    <span class="confirm conRemove confirm-btn3">确定</span>
                 </div>
                 <input type="hidden" name="group_id" value="">
             </form>
@@ -96,9 +92,7 @@
     <!--确认不再关注此人？弹出框-->
     <div class="am-modal am-modal-confirm mp-modal " tabindex="-1" id="mp-btn4">
         <div class="am-modal-dialog  ">
-            <form action="{{ route('user.unfollow') }}" method="post">
-                {{ method_field('post') }}
-                {{ csrf_field() }}
+            <form action="{{ route('cardcase.unfollowAjax') }}" method="post" onsubmit="return false;">
                 <div class="am-modal-bd">
                     <p>确认不再关注此人？</p>
                 </div>
@@ -113,9 +107,7 @@
     <!--选择分组弹出框-->
     <div class="am-modal am-modal-confirm mp-modal mp-modal5" tabindex="-1" id="mp-btn5">
         <div class="am-modal-dialog  ">
-            <form action="{{ route('cardcase.move') }}" method="post">
-                {{ method_field('post') }}
-                {{ csrf_field() }}
+            <form action="{{ route('cardcase.moveAjax') }}" method="put" onsubmit="return false;">
                 <h1 class="modal-header"><span>选择分组</span></h1>
                 <div class="am-modal-bd">
                     <ul id="group-modal">
@@ -126,7 +118,7 @@
                     <button type="submit" class="confirm " data-am-modal-confirm>确定</button>
                 </div>
                 <input type="hidden" name="user_id" value="">
-                {{--<input type="hidden" name="group_id" value="">--}}
+                <input type="hidden" name="group_id" value="">
 
             </form>
         </div>
@@ -145,6 +137,7 @@
             $('#form-btn1').submit(function (e) {
                 var data = $(this).serializeArray();
                 var rule = checkField('{{ route('group.rules') }}', data);
+                console.log(rule);
                 if (rule.status == 'error') { // 验证错误
                     e.preventDefault();
                     showError($(this), rule.responseJSON);
@@ -154,8 +147,6 @@
             /* 新建分组提交 */
             $('#form-btn2').submit(function (e) {
                 var data = $(this).serializeArray();
-                console.log(data)
-                return false;
                 var rule = checkField('{{ route('group.rules') }}', data);
                 if (rule.status == 'error') { // 验证错误
                     e.preventDefault();
@@ -163,49 +154,102 @@
                 }
             });
 
-            /* 删除 */
-            $(".mp-btn3").click('touchstart', function () {
-                var _modal   = $('#mp-btn3');
-                var group_id = $(this).parents('.accordion-item').attr('data-id');
-                _modal.find('[name="group_id"]').val(group_id);
-                _modal.modal('toggle');
+
+            $('.confirm-btn1').click('touchstart', function () {
             });
 
-            /* 取消关注 */
-            $(".mp-btn4").click('touchstart', function () {
-                var _modal  = $('#mp-btn4');
-                var user_id = $(this).parents('.group-list-btn').attr('data-user-id');
-                _modal.find('[name="user_id"]').val(user_id);
-                _modal.modal('toggle');
+            $('.confirm-btn1').click('touchstart', function () {
             });
-            /* 分组 */
-            $(".mp-btn5").click('touchstart', function () {
-                var _modal   = $('#mp-btn5');
-                var user_id  = $(this).parents('.group-list-btn').attr('data-user-id');
-                var group_id = $(this).parents('.group-list-btn').attr('data-group-id');
-                _modal.find('#num' + group_id).attr('checked', true);
-                _modal.find('[name="user_id"]').val(user_id);
-                _modal.modal('toggle');
+
+            $('.confirm-btn1').click('touchstart', function () {
             });
 
             /* 访问名片 */
             $('.mp-show').on('touchstart', function () {
-                var user_id          = $(this).parents('.group-list-btn').attr('data-user-id');
-                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + user_id;
+                var id               = $(this).parents('.group-list-btn').attr('data-id');
+                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
+            });
+
+            /* 分组 */
+            $('.mp-group-edit').click('touchstart', function () {
+                var id       = $(this).parents('.group-list-btn').attr('data-id');
+                var group_id = $(this).parents('.group-list-btn').attr('data-group-id');
+                var _modal   = $('#mp-btn5');
+//                var _modal = $('#mp-btn5').find('[name="group_id"]').val(group_id);
+                _modal.children('#num' + group_id).attr('checked', true);
+//                console.log(id)
+//                console.log(group_id)
+                _modal.modal('toggle');
+            });
+            /* 取消关注 */
+            $('.mp-unfollow').on('touchstart', function () {
+                var id = $(this).parents('.group-list-btn').attr('data-id');
+                alert(id)
             });
 
             /* 展开分组 */
-            $('.accordion-title').on('touchstart', function () {
-                var _this    = $(this);
-                var count    = _this.children('i').text(); // 成员数
-                var group_id = $(this).parent('dl').attr('data-group-id');
+            $('.accordion-item').on('touchstart', function () {
+                var group_id = $(this).attr('data-id');
                 // 判断是否需要加载
+                var count    = $(this).find('.accordion-title').children('i').text(); // 成员数
                 if (count && $('#group' + group_id).children().length != count) {
                     var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': group_id});
                     showHtml(jointFollower(_user.data), '#group' + group_id, 'refresh');
-                    _this.children('i').text(_user.data.length);// 更新成员数
+                    $(this).find('.accordion-title').children('i').text(_user.data.length);// 更新成员数
                     console.log('in')
                 }
+            });
+
+            /* 模态确认提交 */
+//            $('.confirm').click('touchstart', function () {
+//                var url    = $(this).parents('form').attr('action');
+//                var method = $(this).parents('form').attr('method');
+//                var data   = $(this).parents('form').serializeArray();
+//                var _json  = useAjax(method, url, data);
+////                console.log(typeof _json);
+////                console.log(_json);
+////                console.log(typeof _json.err);
+////                console.log(_json.err);
+//                if (typeof _json.err == 'undefined') { // 验证错误
+//                    showError(_json);
+//                } else {
+//                    console.log(2)
+//                }
+////                if(typeof _json)
+//                $(".am-modal ").hide();
+//                $(".am-dimmer.am-active").hide();
+//            });
+
+
+            /* 删除 */
+            $(".mp-btn3").click('touchstart', function () {
+                var _modal   = $('#mp-btn3');
+                var url      = '{{ route('group.destroyAjax') }}';
+                var group_id = $(this).parents('.accordion-item').attr('data-id');
+                _modal.find('form').attr('action', url);
+                _modal.find('[name="group_id"]').val(group_id);
+
+//                var _json    = useAjax('delete', url, {'id': group_id});
+                _modal.modal('toggle');
+//                console.log(_json)
+            });
+
+            $('.onAfter').on('touchstart', function () {
+                alert(1)
+            })
+
+            /* 确认删除 */
+            $(".conRemove").click('touchstart', function () {
+                var url   = $(this).parents('form').attr('action');
+                var data  = $(this).parents('form').serializeArray();
+                var _json = useAjax('delete', url, data);
+                alert(_json.msg);
+//                $(".am-modal ").hide();
+//                $(".am-dimmer.am-active").hide();
+                // TODO:刷新分组
+                var _group = useAjax('get', '{{ route('cardcase.mpAjax') }}');
+                console.log(_group)
+                showHtml(jointGroup(_group.data), '.accordion-gapped', 'refresh'); //
             });
         });
 

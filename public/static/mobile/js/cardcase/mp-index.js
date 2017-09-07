@@ -3,6 +3,8 @@ $(function () {
 });
 
 function checkField(url, data) {
+    console.log(url)
+    console.log(data)
     return useAjax('post', url, data);
 }
 
@@ -10,7 +12,7 @@ function checkField(url, data) {
 function jointGroup(data) {
     var _html = '';
     $.each(data, function (k, v) {
-        _html += '<dl class=" accordion-item custom-group" data-id="' + v.id + '">';
+        _html += '<dl class=" accordion-item custom-group" data-group-id="' + v.id + '">';
         if (v.id) {
             _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
         }
@@ -65,15 +67,15 @@ function jointFollower(data) {
 //                _html += '<span>已关注</span>';
 //                _html += '</div>';
         _html += '</div>';
-        _html += '<ul class="group-list-btn" data-id="' + v.followed_id + '" data-group-id="' + v.group_id + '">';
+        _html += '<ul class="group-list-btn" data-user-id="' + v.followed_id + '" data-group-id="' + v.group_id + '">';
         _html += '<li class="lt mp-show"><a href="javascript:;"><i class="iconfont">&#xe639;</i><span>查看</span></a></li>';
         if (v.employee) {
             _html += '<li class="lt mp-call"><a href="TEL:' + v.employee.mobile + '"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
         } else {
             _html += '<li class="lt mp-call"><a href="TEL:' + v.followed.mobile + '"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
         }
-        _html += '<li class="lt mp-group-edit mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
-        _html += '<li class="lt mp-unfollow"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
+        _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
+        _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
         _html += '</ul>';
         _html += '</div>';
     });

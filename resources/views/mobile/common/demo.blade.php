@@ -21,7 +21,7 @@
     <title>G名片案例</title>
     <link rel="stylesheet" href="{{ asset('static/mobile/demo/css/demo.css') }}" />
     <script type="text/javascript" src="{{ asset('static/mobile/demo/js/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('static/mobile/demo/js/function.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('static/mobile/demo/js/function_bak.js') }}"></script>
     <script type="text/javascript">
         window.addEventListener('load', function(){
             setTimeout(function(){ window.scrollTo(0, 1);}, 100);

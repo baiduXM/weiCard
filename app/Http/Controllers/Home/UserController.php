@@ -359,15 +359,23 @@ class UserController extends HomeController
      * @param $user_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unfollow($user_id)
+    public function unfollow(Request $request, $user_id = null)
     {
+        if (!$user_id) {
+            $user_id = $request->input('user_id');
+        }
         if (!Auth::user()->isFollow($user_id)) {
-            return response()->json(array('err' => 1, 'msg' => '未关注'));
+            if ($this->is_mobile) {
+                return redirect()->back();
+            }
+//            return response()->json(array('err' => 1, 'msg' => '未关注'));
         }
-        if (Auth::user()->followThisUser($user_id)) {
-            return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
+        if (Auth::user()->unfollowThisUser($user_id)) {
+            if ($this->is_mobile) {
+                return redirect()->back();
+            }
+//            return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
         }
-        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
 
     }
 

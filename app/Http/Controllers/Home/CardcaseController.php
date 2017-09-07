@@ -477,20 +477,24 @@ class CardcaseController extends HomeController
      * 移动分组
      *
      * @param Request $request
-     * @param int     $id 名片ID
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @param int     $user_id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function move(Request $request, $id = 0)
+    public function move(Request $request, $user_id = 0)
     {
-        if ($request->ajax()) {
-            $group_id = $request->input('group_id');
-            $cardcase = Cardcase::find($id);
-            $cardcase->group_id = $group_id == 0 ? null : $group_id;
-            if ($cardcase->save()) {
-                return response()->json(['err' => 0, 'msg' => '移动成功', 'data' => url('cardcase')]);
-            }
+        if (!$user_id) {
+            $user_id = $request->input('user_id');
         }
-//        return redirect()->route('cardcase.index');
+        $group_id = $request->input('group_id');
+        $res = UserFollower::where('follower_id', Auth::id())
+            ->where('followed_id', $user_id)
+            ->update(['group_id' => $group_id]);
+        if ($res) {
+            if ($this->is_mobile) {
+                return redirect()->back();
+            }
+            return redirect()->back();
+        }
     }
 
     public function moveAjax(Request $request, $id)

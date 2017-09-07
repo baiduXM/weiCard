@@ -148,16 +148,15 @@ class GroupController extends HomeController
      */
     public function update(Request $request, $id = null)
     {
-        if ($id) {
+        if (!$id) {
             $id = $request->input('group_id');
         }
         $group = Group::find($id);
-
-        $this->validate($request, [
-            'Group.name' => 'required|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
-        ], [], [
-            'Group.name' => '名称',
-        ]);
+//        $this->validate($request, [
+//            'Group.name' => 'required|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
+//        ], [], [
+//            'Group.name' => '名称',
+//        ]);
 
         $data = $request->input('Group');
         foreach ($data as $key => $value) {
@@ -169,6 +168,7 @@ class GroupController extends HomeController
             }
             return redirect()->route('cardcase.mp')->with('success', '修改成功');
         }
+        return redirect()->route('cardcase.mp')->with('error', '修改失败');
     }
 
     public function updateAjax(Request $request)
@@ -188,14 +188,26 @@ class GroupController extends HomeController
     /**
      * 删除
      *
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse|int
+     * @param Request $request
+     * @param null    $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id = null)
     {
+        if (!$id) {
+            $id = $request->input('group_id');
+        }
         $group = Group::find($id);
+        /* 删除分组前，将关注用户移动到默认分组 */
+        UserFollower::where('follower_id', Auth::id())
+            ->where('group_id', $id)
+            ->update(['group_id' => 0]);
         if ($group->delete()) {
-            return response()->json('删除成功');
+            if ($this->is_mobile) {
+                return redirect()->route('cardcase.mp')->with('success', '删除成功');
+            }
+            return redirect()->route('cardcase.mp')->with('success', '删除成功');
+
         }
     }
 
