@@ -498,14 +498,11 @@ class CardcaseController extends HomeController
             $user_id = $request->input('user_id');
         }
         $group_id = $request->input('group_id');
-        $res = $this->moveGroup(['followed_id' => $user_id, 'group_id' => $group_id]);
-
-        if ($res) {
-            if ($this->is_mobile) {
-                return redirect()->back();
-            }
+        $this->moveGroup(['followed_id' => $user_id, 'group_id' => $group_id]);
+        if ($this->is_mobile) {
             return redirect()->back();
         }
+        return redirect()->back();
     }
 
     public function moveAjax(Request $request, $id)
