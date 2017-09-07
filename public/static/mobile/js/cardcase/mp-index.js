@@ -13,7 +13,7 @@ function jointGroup(data) {
     var _html = '';
     $.each(data, function (k, v) {
         _html += '<dl class=" accordion-item custom-group" data-group-id="' + v.id + '">';
-        if (v.id) {
+        if (k) {
             _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
         }
         _html += '<dt class=" accordion-title ">';
