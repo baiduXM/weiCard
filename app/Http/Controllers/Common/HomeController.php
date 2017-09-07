@@ -372,6 +372,8 @@ class HomeController extends Controller
         }
         if ($group_id) {
             $query->where('group_id', $group_id);
+        } else {
+            $query->whereNull('group_id');
         }
 
         if (!$to_group_id) {

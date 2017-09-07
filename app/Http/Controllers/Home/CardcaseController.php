@@ -74,6 +74,7 @@ class CardcaseController extends HomeController
             $default = Group::where('user_id', null)->where('name', '默认组')->first();
             if (!$default) {
                 $default = Group::create(['user_id' => null, 'name' => '默认组']);
+                $this->moveGroup();
             }
 //            $default->id = 0;
             $default->user_id = Auth::id();
