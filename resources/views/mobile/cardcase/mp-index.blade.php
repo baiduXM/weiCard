@@ -134,7 +134,6 @@
 @stop
 @section('javascript')
     @parent
-    <script src="{{ asset('static/mobile/js/common.js') }}"></script>
     <script src="{{ asset('static/mobile/js/cardcase/mp-index.js') }}"></script>
 
     <script>

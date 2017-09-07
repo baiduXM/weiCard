@@ -12,11 +12,12 @@ function checkField(url, data) {
 function jointGroup(data) {
     var _html = '';
     $.each(data, function (k, v) {
-        if (k == 0) {
-            _html += '<dl class=" accordion-item custom-group" >';
+        if (k) {
+            _html += '<dl class=" accordion-item custom-group" data-group-id="' + v.id + '">';
             _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
+        } else {
+            _html += '<dl class=" accordion-item custom-group" >';
         }
-        _html += '<dl class=" accordion-item custom-group" data-group-id="' + v.id + '">';
         _html += '<dt class=" accordion-title ">';
         _html += '<span> ' + v.name + '</span>';
         _html += '<i class="on">' + v.count + '</i>';

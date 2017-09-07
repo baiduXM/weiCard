@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     /* 用户中心 */
     Route::post('userAjax/unfollow', ['as' => 'user.unfollowAjax', 'uses' => 'Home\UserController@unfollowAjax']);
     Route::post('userAjax/follow', ['as' => 'user.followAjax', 'uses' => 'Home\UserController@followAjax']);
-    Route::post('userAjax/follow', ['as' => 'user.ajaxFollow', 'uses' => 'Home\UserController@ajaxFollow']);
+//    Route::post('userAjax/follow', ['as' => 'user.ajaxFollow', 'uses' => 'Home\UserController@ajaxFollow']);
 
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
     Route::post('user/unfollow/{id?}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
