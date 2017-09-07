@@ -1,5 +1,5 @@
 @extends('mobile.common.amaze')
-@section('title', '关注列表')
+@section('title', '名片夹')
 @section('css')
     @parent
     <style type="text/css">
