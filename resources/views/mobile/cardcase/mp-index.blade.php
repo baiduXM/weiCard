@@ -163,7 +163,7 @@
             /* 删除 */
             $(".mp-btn3").click('touchstart', function () {
                 var _modal   = $('#mp-btn3');
-                var group_id = $(this).parents('.accordion-item').attr('data-id');
+                var group_id = $(this).parents('.accordion-item').attr('data-group-id');
                 _modal.find('[name="group_id"]').val(group_id);
                 _modal.modal('toggle');
             });
