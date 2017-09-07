@@ -194,8 +194,12 @@ $(function () {
 
                 iThis.find('dt').unbind();
                 iThis.find('dt').addClass('modelBtn');
+
                 $('.modelBtn').click('touchstart', function () {
                     var modelBtnThis = $(this);
+                    if (modelBtnThis.parent('dl').attr('data-group-id') == 0) {
+                        return false;
+                    }
                     var group_id     = modelBtnThis.parent('dl').attr('data-group-id');
                     var modelBtnText = $(modelBtnThis).find('span').text();
                     $('#mp-btn1').modal('toggle');

@@ -71,9 +71,10 @@ class CardcaseController extends HomeController
         if ($request->ajax()) {
             /* 获取分组 */
             $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
-            $default = Group::find(0);
-//            $default->id = null;
+            $default = Group::where('user_id', null)->where('name', '默认组')->first();
+//            $default->id = 0;
             $default->user_id = Auth::id();
+            dd($default);
             $groups->prepend($default); // prepend() 添加数据项到集合开头
             foreach ($groups as $group) {
                 $group->count = $group->followers()->where('follower_id', Auth::id())->has('followed')->count(); // has('followed') 判断用户是否存在
@@ -486,9 +487,8 @@ class CardcaseController extends HomeController
             $user_id = $request->input('user_id');
         }
         $group_id = $request->input('group_id');
-        $res = UserFollower::where('follower_id', Auth::id())
-            ->where('followed_id', $user_id)
-            ->update(['group_id' => $group_id]);
+        $res = $this->moveGroup(['followed_id' => $user_id, 'group_id' => $group_id]);
+
         if ($res) {
             if ($this->is_mobile) {
                 return redirect()->back();
