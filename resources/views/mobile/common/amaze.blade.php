@@ -79,7 +79,7 @@
 <script src="{{ asset('static/mobile/js/amaze/amazeui.min.js') }}"></script>
 @section('javascript')
 @show
-<script src="{{ asset('static/mobile/js/amaze/function.js') }}"></script>
+<script src="{{ asset('static/mobile/js/amaze/function.js?v=20170907') }}"></script>
 
 
 </body>
