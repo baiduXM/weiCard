@@ -12,7 +12,7 @@ function checkField(url, data) {
 function jointGroup(data) {
     var _html = '';
     $.each(data, function (k, v) {
-        if (k) {
+        if (k == 0) {
             _html += '<dl class=" accordion-item custom-group" >';
             _html += '<b class="mp-btn3"><em class="rt">-</em></b>';
         }
