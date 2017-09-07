@@ -153,8 +153,6 @@
             /* 新建分组提交 */
             $('#form-btn2').submit(function (e) {
                 var data = $(this).serializeArray();
-                console.log(data)
-                return false;
                 var rule = checkField('{{ route('group.rules') }}', data);
                 if (rule.status == 'error') { // 验证错误
                     e.preventDefault();
