@@ -211,10 +211,9 @@
             var _json = useAjax('get', '{{ route('cardcase.mpAjax') }}');
             showHtml(jointGroup(_json.data), '.accordion-gapped', 'init'); //
             showHtml(jointGroupModal(_json.data), '#group-modal', 'init'); //
-
             // 加载成员
             var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': 0});
-            showHtml(jointFollower(_user.data), '#group0', 'init');
+            showHtml(jointFollower(_user.data), '#group'+_json.data[0].id, 'init');
         }
 
 
