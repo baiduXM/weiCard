@@ -358,10 +358,10 @@ class HomeController extends Controller
      */
     public function moveGroup(array $params)
     {
-        $user_id = $params['follower_id']; // 用户ID
-        $followed_id = $params['followed_id']; // 关注的用户ID
-        $group_id = $params['group_id']; // 原来分组ID
-        $to_group_id = $params['to_group_id']; // 移动的分组ID
+        $user_id = isset($params['follower_id']) ? $params['follower_id'] : null; // 用户ID
+        $followed_id = isset($params['followed_id']) ? $params['followed_id'] : null; // 用户ID
+        $group_id = isset($params['group_id']) ? $params['group_id'] : null; // 用户ID
+        $to_group_id = isset($params['to_group_id']) ? $params['to_group_id'] : null; // 用户ID
         if (!$user_id) {
             $user_id = Auth::id();
         }
@@ -375,10 +375,15 @@ class HomeController extends Controller
         }
 
         if (!$to_group_id) {
-            $default = Group::where('user_id', null)->where('name', '默认组')->first();
+            $default = $this->getDefaultGroup();
             $to_group_id = $default->id;
         }
         $query->update(['group_id' => $to_group_id]);
+    }
+
+    public function getDefaultGroup()
+    {
+        return Group::where('user_id', null)->where('name', '默认组')->first();
     }
 
     /**

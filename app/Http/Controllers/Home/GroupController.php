@@ -186,7 +186,7 @@ class GroupController extends HomeController
     }
 
     /**
-     * 删除
+     * 删除分组
      *
      * @param Request $request
      * @param null    $id

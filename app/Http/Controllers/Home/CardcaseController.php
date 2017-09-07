@@ -72,6 +72,9 @@ class CardcaseController extends HomeController
             /* 获取分组 */
             $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
             $default = Group::where('user_id', null)->where('name', '默认组')->first();
+            if (!$default) {
+                $default = Group::create(['user_id' => null, 'name' => '默认组']);
+            }
 //            $default->id = 0;
             $default->user_id = Auth::id();
             $groups->prepend($default); // prepend() 添加数据项到集合开头
@@ -94,14 +97,22 @@ class CardcaseController extends HomeController
                     ->where('group_id', $group_id)
                     ->get();
             } else {
+                $defaultGroup = $this->getDefaultGroup();
+                $group_id = $defaultGroup->id;
                 $followers = UserFollower::with('followed', 'employee')->has('followed')
                     ->where('follower_id', Auth::id())
                     ->where('group_id', $group_id)
-                    ->orWhere('group_id', null)
                     ->get();
+
+//                if (!count($followers)) {
+//                    $followers = UserFollower::with('followed', 'employee')->has('followed')
+//                        ->where('follower_id', Auth::id())
+//                        ->whereNull('group_id')
+//                        ->get();
+//                }
             }
             foreach ($followers as $follower) {
-                $follower->avatar = asset($follower->followed->avatar);
+                $follower->avatar = $follower->followed ? asset($follower->followed->avatar) : null;
                 $follower->company = $follower->employee ? $follower->employee->company : null;
             }
             return response()->json(['err' => 0, 'msg' => 'success', 'data' => $followers]);
@@ -471,7 +482,6 @@ class CardcaseController extends HomeController
         $employee = Employee::with('company', 'department', 'user')->find($id);
         return $employee;
     }
-
 
 
     /**
