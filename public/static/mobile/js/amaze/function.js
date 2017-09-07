@@ -197,7 +197,7 @@ $(function () {
 
                 $('.modelBtn').click('touchstart', function () {
                     var modelBtnThis = $(this);
-                    if (modelBtnThis.parent('dl').attr('data-group-id') == 0) {
+                    if (modelBtnThis.parent('dl').attr('data-group-id')) {
                         return false;
                     }
                     var group_id     = modelBtnThis.parent('dl').attr('data-group-id');
