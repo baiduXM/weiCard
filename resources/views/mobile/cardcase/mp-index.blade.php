@@ -136,8 +136,8 @@
 @stop
 @section('javascript')
     @parent
-    <script src="{{ asset('static/mobile/js/common.js??v=20170907') }}"></script>
-    <script src="{{ asset('static/mobile/js/cardcase/mp-index.js?v=20170907') }}"></script>
+    <script src="{{ asset('static/mobile/js/common.js??v=20170908') }}"></script>
+    <script src="{{ asset('static/mobile/js/cardcase/mp-index.js?v=20170908') }}"></script>
     <script>
         $(function () {
             init();
