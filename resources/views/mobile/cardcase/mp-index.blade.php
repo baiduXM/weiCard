@@ -30,7 +30,7 @@
     </div>
 
 
-    <div class="mp-footBtn">
+    <div class="mp-footBtn m-topbar-fixed-bottom" >
         <a class="footBtn1 " href="javascript:;" tabindex="-1">编辑</a>
         <a class="rt" href="javascript:;" tabindex="-1" data-am-modal="{target: '#mp-btn2'}">+ 新建分组</a>
     </div>
