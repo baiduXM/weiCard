@@ -13,8 +13,8 @@
         <div class="mp-bjBox hide">
             <a class="bjBtn" href="javascript:">名片组</a>
             {{--<a class="mp-back rt" href="JavaScript:history.go(-1)">--}}
-             {{--<span>--}}
-                {{--<i class="iconfont">&#xe600;</i><b>返回</b>--}}
+            {{--<span>--}}
+            {{--<i class="iconfont">&#xe600;</i><b>返回</b>--}}
             {{--</span>--}}
             {{--</a>--}}
         </div>
@@ -104,7 +104,9 @@
                 </div>
                 <div class="modal-footer">
                     <button class="mp-close" data-am-modal-close>取消</button>
-                    <button class="confirm  conRemove">确定</button>
+                    <button type="submit" class="confirm" data-am-modal-confirm>确定</button>
+                    {{--<button class="mp-close" data-am-modal-close>取消</button>--}}
+                    {{--<button class="confirm  conRemove">确定</button>--}}
                 </div>
                 <input type="hidden" name="user_id" value="">
             </form>
@@ -161,22 +163,27 @@
             });
 
             /* 删除 */
-            $(".mp-btn3").click('touchstart', function () {
+            $(".mp-btn3").unbind().click('touchstart', function () {
                 var _modal   = $('#mp-btn3');
                 var group_id = $(this).parents('.accordion-item').attr('data-group-id');
                 _modal.find('[name="group_id"]').val(group_id);
                 _modal.modal('toggle');
             });
 
+
             /* 取消关注 */
-            $(".mp-btn4").click('touchstart', function () {
+            $(".mp-group").on('click', ".mp-btn4", function (e) {
+                console.log('once')
                 var _modal  = $('#mp-btn4');
                 var user_id = $(this).parents('.group-list-btn').attr('data-user-id');
                 _modal.find('[name="user_id"]').val(user_id);
                 _modal.modal('toggle');
+//                _modal.show();
+//                _modal.addClass("am-modal-active");
             });
+
             /* 分组 */
-            $(".mp-btn5").click('touchstart', function () {
+            $(".mp-group").on('touchstart', ".mp-btn5", function () {
                 var _modal   = $('#mp-btn5');
                 var user_id  = $(this).parents('.group-list-btn').attr('data-user-id');
                 var group_id = $(this).parents('.group-list-btn').attr('data-group-id');
@@ -185,19 +192,13 @@
                 _modal.modal('toggle');
             });
 
-            /* 访问名片 */
-            $('.mp-show').on('touchstart', function () {
-                var user_id          = $(this).parents('.group-list-btn').attr('data-user-id');
-                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + user_id;
-            });
-
             /* 展开分组 */
             $('.accordion-title').on('touchstart', function () {
                 var _this    = $(this);
                 var count    = _this.children('i').text(); // 成员数
                 var group_id = $(this).parent('dl').attr('data-group-id');
                 // 判断是否需要加载
-                if (count && $('#group' + group_id).children().length != count) {
+                if (count && group_id && $('#group' + group_id).children().length != count) {
                     var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': group_id});
                     showHtml(jointFollower(_user.data), '#group' + group_id, 'refresh');
                     _this.children('i').text(_user.data.length);// 更新成员数
@@ -213,7 +214,7 @@
             showHtml(jointGroupModal(_json.data), '#group-modal', 'init'); //
             // 加载成员
             var _user = useAjax('get', '{{ route('cardcase.getFollowerAjax') }}', {'group_id': 0});
-            showHtml(jointFollower(_user.data), '#group'+_json.data[0].id, 'init');
+            showHtml(jointFollower(_user.data), '#group' + _json.data[0].id, 'init');
         }
 
 

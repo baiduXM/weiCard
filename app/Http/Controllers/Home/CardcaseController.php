@@ -498,7 +498,9 @@ class CardcaseController extends HomeController
             $user_id = $request->input('user_id');
         }
         $group_id = $request->input('group_id');
-        $this->moveGroup(['followed_id' => $user_id, 'group_id' => $group_id]);
+//        dump('in');
+        $res = $this->moveGroup(['followed_id' => $user_id, 'to_group_id' => $group_id]);
+//        dd($res);
         if ($this->is_mobile) {
             return redirect()->back();
         }

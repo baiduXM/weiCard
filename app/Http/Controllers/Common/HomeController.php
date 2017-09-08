@@ -358,29 +358,25 @@ class HomeController extends Controller
      */
     public function moveGroup(array $params)
     {
-        $user_id = isset($params['follower_id']) ? $params['follower_id'] : null; // 用户ID
-        $followed_id = isset($params['followed_id']) ? $params['followed_id'] : null; // 用户ID
-        $group_id = isset($params['group_id']) ? $params['group_id'] : null; // 用户ID
-        $to_group_id = isset($params['to_group_id']) ? $params['to_group_id'] : null; // 用户ID
-        if (!$user_id) {
-            $user_id = Auth::id();
-        }
-        $query = UserFollower::where('follower_id', $user_id);
+        $default = $this->getDefaultGroup();
 
-        if ($followed_id) {
-            $query->where('followed_id', $followed_id);
+        $user_id = isset($params['follower_id']) ? $params['follower_id'] : Auth::id(); // 用户ID，必填
+        $followed_id = isset($params['followed_id']) ? $params['followed_id'] : null; // 关注用户ID，可选|删除分组可为空，移动分组需要
+        $group_id = isset($params['group_id']) ? $params['group_id'] : null; // 当前分组ID，可选|删除分组需要，移动分组可为空
+        $to_group_id = isset($params['to_group_id']) ? $params['to_group_id'] : $default->id; // 移动目标分组，必填|删除分组可为默认，移动分组需要
+        if ($followed_id) { // 移动分组
+            $res = UserFollower::where('follower_id', $user_id)
+                ->where('followed_id', $followed_id)
+                ->first();
+            $res->group_id = $to_group_id;
+            $res = $res->save();
         }
-        if ($group_id) {
-            $query->where('group_id', $group_id);
-        } else {
-            $query->whereNull('group_id');
+        if ($group_id) { // 删除分组
+            $res = UserFollower::where('follower_id', $user_id)
+                ->where('group_id', $group_id)
+                ->update(['group_id' => $to_group_id]);
         }
-
-        if (!$to_group_id) {
-            $default = $this->getDefaultGroup();
-            $to_group_id = $default->id;
-        }
-        $query->update(['group_id' => $to_group_id]);
+        return $res;
     }
 
     public function getDefaultGroup()

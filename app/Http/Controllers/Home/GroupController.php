@@ -199,7 +199,9 @@ class GroupController extends HomeController
         }
         $group = Group::find($id);
         /* 删除分组前，将关注用户移动到默认分组 */
-        $this->moveGroup(['group_id' => $id]);
+        if (count($group->followers)) {
+            $this->moveGroup(['group_id' => $id]);
+        }
         if ($group->delete()) {
             if ($this->is_mobile) {
                 return redirect()->route('cardcase.mp')->with('success', '删除成功');
@@ -216,7 +218,9 @@ class GroupController extends HomeController
             $group_id = $request->input('group_id');
             $group = Group::find($group_id);
             /* 删除分组前，将关注用户移动到默认分组 */
-            $this->moveGroup(['group_id' => $group_id]);
+            if (count($group->followers)) {
+                $this->moveGroup(['group_id' => $group_id]);
+            }
             if ($group->delete()) {
                 return response()->json(['err' => 0, 'msg' => '删除成功']);
             }

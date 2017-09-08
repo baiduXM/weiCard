@@ -73,7 +73,7 @@
 @section('modal')
     <!------------弹出框------------->
     <!--确认不再关注此人？弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-btn4">
+    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-gz-btn4">
         <div class="am-modal-dialog  ">
             <form action="" onsubmit="return false;">
 
@@ -89,7 +89,7 @@
         </div>
     </div>
     <!--选择分组弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal mp-modal5  " tabindex="-1" id="mp-btn5">
+    <div class="am-modal am-modal-confirm   mp-modal mp-modal5  " tabindex="-1" id="mp-gz-btn5">
         <div class="am-modal-dialog  ">
             <form action="" onsubmit="return false;">
                 <h1 class="modal-header"><span>选择分组</span></h1>
@@ -124,7 +124,7 @@
         </div>
     </div>
     <!--新建分组弹出框-->
-    <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-btn2">
+    <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-gz-btn2">
         <div class="am-modal-dialog  ">
             <form action="">
                 <h1 class="modal-header"><span>新建分组</span></h1>

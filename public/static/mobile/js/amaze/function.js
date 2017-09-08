@@ -274,10 +274,10 @@ $(function () {
     /*gz--modal*/
     $(".ygz").click('touchstart', function () {
         console.log(123);
-        $('#mp-btn4').modal('toggle');
+        $('#mp-gz-btn4').modal('toggle');
     });
     $(".jgz").click('touchstart', function () {
-        $('#mp-btn5').modal('toggle');
+        $('#mp-gz-btn5').modal('toggle');
     });
 
 });

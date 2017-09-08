@@ -200,7 +200,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
 
     Route::get('cardcase/fans/{type?}', ['as' => 'cardcase.fans', 'uses' => 'Home\CardcaseController@fans']);
     Route::get('cardcase/mp', ['as' => 'cardcase.mp', 'uses' => 'Home\CardcaseController@mp']); // 名片夹
-    Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
+//    Route::get('cardcase/move/{id}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::post('cardcase/move/{user_id?}', ['as' => 'cardcase.move', 'uses' => 'Home\CardcaseController@move']);
     Route::get('cardcase/show/{type?}', ['as' => 'cardcase.show', 'uses' => 'Home\CardcaseController@show']);
     Route::get('cardcase/follow/{params}', ['as' => 'cardcase.follow', 'uses' => 'Home\CardcaseController@follow']);

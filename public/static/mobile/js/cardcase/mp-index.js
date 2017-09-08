@@ -70,17 +70,20 @@ function jointFollower(data) {
 //                _html += '</div>';
         _html += '</div>';
         _html += '<ul class="group-list-btn" data-user-id="' + v.followed_id + '" data-group-id="' + v.group_id + '">';
-        _html += '<li class="lt mp-show"><a href="javascript:;"><i class="iconfont">&#xe639;</i><span>查看</span></a></li>';
+        _html += '<li class="lt mp-show"><a href="/cardcase/showuser/' + v.followed_id + '"><i class="iconfont">&#xe639;</i><span>查看</span></a></li>';
         if (v.employee) {
             _html += '<li class="lt mp-call"><a href="TEL:' + v.employee.mobile + '"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
         } else {
             _html += '<li class="lt mp-call"><a href="TEL:' + v.followed.mobile + '"><i class="iconfont">&#xe644;</i><span>拨号</span></a></li>';
         }
+        // _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
+        // _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
         _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
         _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
         _html += '</ul>';
         _html += '</div>';
     });
+
     return _html;
 }
 
