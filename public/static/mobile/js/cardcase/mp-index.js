@@ -79,7 +79,7 @@ function jointFollower(data) {
         // _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
         // _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
         _html += '<li class="lt mp-btn5" ><a href="javascript:;"><i class="iconfont">&#xe694;</i><span>分组</span></a></li>';
-        _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消</span></a></li>';
+        _html += '<li class="lt mp-btn4"><a href="javascript:;"><i class="iconfont">&#xe609;</i><span>取消关注</span></a></li>';
         _html += '</ul>';
         _html += '</div>';
     });
