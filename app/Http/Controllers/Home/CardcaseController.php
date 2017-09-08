@@ -590,6 +590,8 @@ class CardcaseController extends HomeController
             if ($id) {
                 $user = $cardcase->user;
                 $res = $user->followThisUser($id);
+                $this->moveGroup(['followed_id' => $id, 'follower_id' => $user->id]);
+
                 if ($res) {
                     if ($res > 0) {
                         $stat['attach']++;

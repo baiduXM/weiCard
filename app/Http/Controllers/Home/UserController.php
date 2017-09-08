@@ -347,6 +347,7 @@ class UserController extends HomeController
             return response()->json(array('err' => 1, 'msg' => '已关注'));
         }
         if (Auth::user()->followThisUser($user_id)) {
+            $this->moveGroup(['followed_id' => $user_id]);
             return response()->json(array('err' => 0, 'msg' => '关注成功'));
         }
         return response()->json(array('err' => 1001, 'msg' => '请求错误'));
@@ -394,6 +395,8 @@ class UserController extends HomeController
             foreach ($ids as $id) {
                 if (!Auth::user()->isFollow($id)) {
                     $count += Auth::user()->followThisUser($id);
+                    $this->moveGroup(['followed_id' => $id]);
+
                 }
             }
             return response()->json(array('err' => 0, 'msg' => '关注成功', 'data' => $count));
