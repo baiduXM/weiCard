@@ -275,7 +275,7 @@ dt+dd{margin:0}
 .mp-groupBg img{width:9.275rem;height:9.05rem;}
 .mp-groupBg span{color:#888888;font-size:0.7rem;display: block;}
 
-.mp-footBtn{position: fixed;bottom:0;width:100%;max-width:640px;min-width:320px;right:0; margin: auto;}
+.mp-footBtn{position: fixed;bottom:0;width:100%;max-width:640px;min-width:320px;right:0; margin: auto;z-index: 1000;}
 .mp-footBtn a{display: inline-block;background:#2097ff;width:49.5%;height:1.75rem;line-height:1.75rem;padding:0 0.5rem;color:#fff;font-size:0.7rem;text-align: center;}
 
 
