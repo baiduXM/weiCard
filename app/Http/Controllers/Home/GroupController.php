@@ -199,7 +199,7 @@ class GroupController extends HomeController
         }
         $group = Group::find($id);
         /* 删除分组前，将关注用户移动到默认分组 */
-        if (count($group->followers)) {
+        if (count($group->followers) > 0) {
             $this->moveGroup(['group_id' => $id]);
         }
         if ($group->delete()) {
@@ -233,7 +233,7 @@ class GroupController extends HomeController
 //        $group = $request->input('Group');
         $id = $request->input('group_id') ? $request->input('group_id') : 'null';
         $this->validate($request, [
-            'Group.name' => 'required|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
+            'Group.name' => 'required|max:12|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
         ], [], [
             'Group.name' => '名称',
         ]);
