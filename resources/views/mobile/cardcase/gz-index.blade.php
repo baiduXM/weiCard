@@ -95,24 +95,14 @@
                 <h1 class="modal-header"><span>选择分组</span></h1>
                 <div class="am-modal-bd">
                     <ul>
-                        <li>
-                            <label for="num0">
-                                <input type="radio" name="group_id" id="num0" value="0" checked>
-                                <span>默认组</span>
-                            </label>
-                        </li>
-                        {{--@foreach($groups as $item)--}}
-                        {{--<li>--}}
-                        {{--<label for="num{{ $item->id }}">--}}
-                        {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
-                        {{--<span>{{ $item->name }}</span>--}}
-                        {{--</label>--}}
-                        {{--</li>--}}
-                        {{--@endforeach--}}
-
-                        {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
-                        {{--<span>+ 新建分组</span>--}}
-                        {{--</li>--}}
+                        @foreach($groups as $item)
+                            <li>
+                                <label for="num{{ $item->id }}">
+                                    <input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">
+                                    <span>{{ $item->name }}</span>
+                                </label>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <input type="hidden" name="user_id" value="">

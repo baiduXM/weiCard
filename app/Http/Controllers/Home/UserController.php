@@ -424,6 +424,8 @@ class UserController extends HomeController
     {
         if ($request->ajax()) {
             $user_id = $request->input('user_id');
+            $group_id = $request->input('group_id');
+
             if (Auth::id() == $user_id) {
                 return response()->json(array('err' => 1, 'msg' => '不能关注自己'));
             }
@@ -431,6 +433,7 @@ class UserController extends HomeController
                 return response()->json(array('err' => 1, 'msg' => '已关注'));
             }
             if (Auth::user()->followThisUser($user_id)) {
+                $this->moveGroup(['to_group_id' => $group_id, 'followed_id' => $user_id]);
                 return response()->json(array('err' => 0, 'msg' => '关注成功'));
             }
             return response()->json(array('err' => 1, 'msg' => '操作失败'));

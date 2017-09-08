@@ -37,7 +37,16 @@ class CardcaseController extends HomeController
     {
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $groups = Group::where('user_id', Auth::id())->get();
+            $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
+//            $groups = Group::where('user_id', Auth::id())->get();
+            $default = Group::where('user_id', null)->where('name', '默认组')->first();
+            if (!$default) {
+                $default = Group::create(['user_id' => null, 'name' => '默认组']);
+                $this->moveGroup();
+            }
+//            $default->id = 0;
+            $default->user_id = Auth::id();
+            $groups->prepend($default); // prepend() 添加数据项到集合开头
             return view('mobile.cardcase.gz-index')->with([
                 'groups' => $groups,
 
