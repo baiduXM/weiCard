@@ -183,7 +183,7 @@
             });
 
             /* 分组 */
-            $(".mp-group").on('touchstart', ".mp-btn5", function () {
+            $(".mp-group").on('click', ".mp-btn5", function () {
                 var _modal   = $('#mp-btn5');
                 var user_id  = $(this).parents('.group-list-btn').attr('data-user-id');
                 var group_id = $(this).parents('.group-list-btn').attr('data-group-id');
