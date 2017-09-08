@@ -197,9 +197,9 @@ class GroupController extends HomeController
         if (!$id) {
             $id = $request->input('group_id');
         }
-        $group = Group::find($id);
+        $group = Group::with('followers')->find($id);
         /* 删除分组前，将关注用户移动到默认分组 */
-        if (count($group->followers) > 0) {
+        if ($group->followers()->count()) {
             $this->moveGroup(['group_id' => $id]);
         }
         if ($group->delete()) {
