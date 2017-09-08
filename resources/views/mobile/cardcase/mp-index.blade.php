@@ -10,7 +10,7 @@
 @stop
 @section('content')
     <div class="mp-content">
-        <div class="mp-bjBox hide">
+        <div class="mp-bjBox">
             <a class="bjBtn" href="javascript:">名片组</a>
             {{--<a class="mp-back rt" href="JavaScript:history.go(-1)">--}}
             {{--<span>--}}
