@@ -163,7 +163,7 @@
             });
 
             $('.mes-data,.mes-img').on('touchstart', function () {
-                var id               = $(this).parents('.group-list').attr('data-id');
+                var id               = $(this).parents('.group-list').attr('data-user-id');
                 window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
 
@@ -185,16 +185,17 @@
 
             /* 加关注 */
             $(".jgz").click('touchstart', function (e) {
-                var uid = $(this).parents('.group-list').attr('data-id');
-                $('#mp-btn5').find('[name="user_id"]').val(uid);
-                $('#mp-btn5').modal('toggle');
+                var uid = $(this).parents('.group-list').attr('data-user-id');
+                $('#mp-gz-btn5').find('input[name="user_id"]').val(uid);
+                $('#mp-gz-btn5').modal('toggle');
                 e.stopPropagation();
             });
+
             /* 取消关注 */
             $(".ygz").click('touchstart', function () {
-                var uid = $(this).parents('.group-list').attr('data-id');
-                $('#mp-btn4').find('[name="user_id"]').val(uid);
-                $('#mp-btn4').modal('toggle');
+                var uid = $(this).parents('.group-list').attr('data-user-id');
+                $('#mp-gz-btn4').find('[name="user_id"]').val(uid);
+                $('#mp-gz-btn4').modal('toggle');
             });
         });
         /* 初始化 */
@@ -234,7 +235,7 @@
             var _html = '';
             if (data.length) {
                 $.each(data, function (k, v) {
-                    _html += '<div class="group-list" data-id="' + v.id + '">';
+                    _html += '<div class="group-list" data-user-id="' + v.id + '">';
                     if (v.isFollow) {
                         _html += '<div class="group-list-mes">';
                     } else if (v.isFollowMe) {

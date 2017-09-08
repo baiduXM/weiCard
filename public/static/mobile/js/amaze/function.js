@@ -272,12 +272,12 @@ $(function () {
     });
 
     /*gz--modal*/
-    $(".ygz").click('touchstart', function () {
-        console.log(123);
-        $('#mp-gz-btn4').modal('toggle');
-    });
-    $(".jgz").click('touchstart', function () {
-        $('#mp-gz-btn5').modal('toggle');
-    });
+    // $(".ygz").click('touchstart', function () {
+    //     console.log(123);
+    //     $('#mp-gz-btn4').modal('toggle');
+    // });
+    // $(".jgz").click('touchstart', function () {
+    //     $('#mp-gz-btn5').modal('toggle');
+    // });
 
 });
