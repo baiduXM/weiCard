@@ -103,14 +103,14 @@ $(function () {
     $(".mp-groupBg").height(mpH - $(".mp-footBtn").height() - $(" .default-group .accordion-title").height());
 
     /*mp背景图显示与隐藏*/
-    function mpBg() {
-        var mpGroup = $(".mp-group .accordion-gapped .accordion-item");
-        if (mpGroup.length > 1) {
-            $(".mp-groupBg").hide();
-        } else {
-            $(".mp-groupBg").show();
-            $(".mp-bjBox").hide();
-        }
+    // function mpBg() {
+    //     var mpGroup = $(".mp-group .accordion-gapped .accordion-item");
+    //     if (mpGroup.length > 1) {
+    //         $(".mp-groupBg").hide();
+    //     } else {
+    //         $(".mp-groupBg").show();
+    //         $(".mp-bjBox").hide();
+    //     }
         // $(".accordion-gapped .accordion-title").click('touchstart', function () {
         //         var groupList = $(".group-list");
         //         if (groupList.length !== 0) {
@@ -118,9 +118,9 @@ $(function () {
         //         }
         //     }
         // );
-    }
+    // }
 
-    mpBg();
+    // mpBg();
 
     /*编辑 - 名片组的显示以及删除操作*/
     function compile(group) {
