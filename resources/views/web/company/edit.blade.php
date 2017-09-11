@@ -11,6 +11,7 @@
         <div class="file">
             <span>公司图标: </span>
             <input type="file" name="Company[logo]">
+            <em>[建议尺寸:200X200]</em>
         </div>
         @if ($errors->has('Company.logo'))
             <p class="pass-error show">{{ $errors->first('Company.logo') }}</p>

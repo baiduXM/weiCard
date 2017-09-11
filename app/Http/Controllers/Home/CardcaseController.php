@@ -10,6 +10,7 @@ use App\Models\User;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
@@ -100,8 +101,8 @@ class CardcaseController extends HomeController
             $alph = range('A', 'Z');
             foreach ($alph as $k => $v) {
                 $groups[$v] = array(
-                    'id'        => $k,
-                    'name'      => $v,
+                    'id' => $k,
+                    'name' => $v,
                     'cardcases' => array(),
                 );
             }
@@ -159,7 +160,6 @@ class CardcaseController extends HomeController
     {
         /* 获取参数 */
         $param = explode('-', $params);
-
         /* add */
         if ($param[0] == 'u') {
             $user_id = $param[1];
@@ -167,25 +167,91 @@ class CardcaseController extends HomeController
             $employee = Employee::find($param[1]);
             $user_id = $employee->user_id;
         }
-
+        $ids = DB::table('user_followers')->select('followed_id')->where('follower_id',Auth::id())->get();
+        //转化成数组
+        $ids = array_map('get_object_vars',$ids);
+        $person = DB::table('users')->select('id', 'nickname', 'avatar', 'company_name')->where('id','<>',Auth::id())->whereNotIn('id',$ids)->inRandomOrder()->limit(3)->get();
         if (Auth::id() == $user_id) {
-            return response()->json(array('err' => 1, 'msg' => '不能关注自己'));
+            if($param[0] == 'u') {
+                foreach ($person as $item) {
+                    $item->avatar = asset($item->avatar);
+                    $item->url = url('cardview/u-' . $item->id);
+                }
+            }else{
+                foreach ($person as $item) {
+                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
+                    if(count($employee)>0){
+                        $item->id = $employee->id;
+                        $item->nickname = $employee->nickname;
+                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $item->avatar = asset($company->logo);
+                        $item->url = url('cardview/e-' . $item->id);
+                    }else{
+                        $item->avatar = asset($item->avatar);
+                        $item->url = url('cardview/u-' . $item->id);
+                    }
+                }
+            }
+            //succes = 2为不能关注自己状态
+            $response = ["succes" => 2, "user" => $person];
+            return response()->json($response);
         }
         if (Auth::user()->isFollow($user_id)) {
-            return response()->json(array('err' => 1, 'msg' => '已关注'));
+            if($param[0] == 'u') {
+                foreach ($person as $item) {
+                    $item->avatar = asset($item->avatar);
+                    $item->url = url('cardview/u-' . $item->id);
+                }
+            }else{
+                foreach ($person as $item) {
+                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
+                    if(count($employee)>0){
+                        $item->id = $employee->id;
+                        $item->nickname = $employee->nickname;
+                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $item->avatar = asset($company->logo);
+                        $item->url = url('cardview/e-' . $item->id);
+                    }else{
+                        $item->avatar = asset($item->avatar);
+                        $item->url = url('cardview/u-' . $item->id);
+                    }
+                }
+            }
+            //succes = 3为已关注
+            $response = ["succes" => 3, "user" => $person];
+            return response()->json($response);
         }
         if (Auth::user()->followThisUser($user_id)) {
-//                $follower = UserFollower::where('follower_id', $user_id)->first();
-//                $follower->group_id = $group_id;
-//                $follower->save();
-            return response()->json(array('err' => 0, 'msg' => '关注成功'));
+            if($param[0] == 'u') {
+                foreach ($person as $item) {
+                    $item->avatar = asset($item->avatar);
+                    $item->url = url('cardview/u-' . $item->id);
+                }
+            }else{
+                foreach ($person as $item) {
+                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
+                    if(count($employee)>0){
+                        $item->id = $employee->id;
+                        $item->nickname = $employee->nickname;
+                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $item->avatar = asset($company->logo);
+                        $item->url = url('cardview/e-' . $item->id);
+                    }else{
+                        $item->avatar = asset($item->avatar);
+                        $item->url = url('cardview/u-' . $item->id);
+                    }
+                }
+            }
+            //succes = 1为关注成功
+            $response = ["succes" => 1, "user" => $person];
+            return response()->json($response);
+
         }
 
         /* add-end */
-
-
         /* 无法关注自己 */
         if ($param[0] == 'e') {
+
             if (Auth::user()->employee) {
                 if ($param[1] == Auth::user()->employee->id) {
                     $err_msg = '不能关注自己';
@@ -420,7 +486,7 @@ class CardcaseController extends HomeController
      * 移动分组
      *
      * @param Request $request
-     * @param int     $id 名片ID
+     * @param int $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function move(Request $request, $id)

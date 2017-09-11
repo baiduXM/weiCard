@@ -98,7 +98,7 @@ class CompanyController extends HomeController
         $this->validate($request, [
             'Company.name'               => 'required|regex:/^([A-Za-z0-9])*$/|unique:companies,companies.name,' . $id,
             'Company.display_name'       => 'required|unique:companies,companies.display_name,' . $id,
-            'Company.logo'               => 'image|max:' . 2 * 1024, // 最大2MB
+            'Company.logo'               => 'image|max:' . 1 * 512, // 最大2MB
             'Company.address'            => 'max:255',
             'Company.email'              => 'email',
             'Company.telephone'          => '',
