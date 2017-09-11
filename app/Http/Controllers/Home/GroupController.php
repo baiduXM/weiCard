@@ -199,9 +199,9 @@ class GroupController extends HomeController
         }
         $group = Group::with('followers')->find($id);
         /* 删除分组前，将关注用户移动到默认分组 */
-        if ($group->followers()->count()) {
+//        if ($group->followers()->count()) {
             $this->moveGroup(['group_id' => $id]);
-        }
+//        }
         if ($group->delete()) {
             if ($this->is_mobile) {
                 return redirect()->route('cardcase.mp')->with('success', '删除成功');
