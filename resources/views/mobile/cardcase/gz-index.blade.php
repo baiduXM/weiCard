@@ -152,7 +152,7 @@
                 }
             });
 
-            $('.mes-data,.mes-img').on('touchstart', function () {
+            $('.mes-data,.mes-img').click('touchstart', function () {
                 var id               = $(this).parents('.group-list').attr('data-user-id');
                 window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
