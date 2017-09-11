@@ -138,7 +138,7 @@
             init();
 
             /* 加载更多 */
-            $('.gz-more').on('touchstart', function () {
+            $('.gz-more').click('touchstart', function () {
                 var url   = $(this).attr('url');
                 var type  = $(this).hasClass('more-ed') ? 'followed' : 'following';
                 var _json = useAjax('get', url, {'type': type});
@@ -158,7 +158,7 @@
             });
 
             /* 取消关注 */
-            $('.conRemove').on('touchstart', function () {
+            $('.conRemove').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
                 alert(json.msg);
@@ -166,7 +166,7 @@
             });
 
             /* 关注且分组 */
-            $('.conFollow ').on('touchstart', function () {
+            $('.conFollow ').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.followAjax') }}', data);
                 alert(json.msg);
