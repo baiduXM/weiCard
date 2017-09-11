@@ -20,7 +20,7 @@
                 <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
-        <div class="x-share rt">
+        <div class="x-share rt" >
             <span><img src="{{ asset($circle->qrcode_path) }}" alt=""></span>
             <p><img src="{{ asset('static/mobile/images/amaze/11_033_03.png') }}" alt=""><i>分享圈子</i></p>
         </div>
@@ -93,7 +93,7 @@
             <div class="share-ma">
                 <i class="onShow"><img src="{{ asset($circle->qrcode_path)  }}" alt=""></i>
                 <p>面对面扫二维码加入人脉圈子</p>
-                {{--<p>圈号 : <b>3231F</b></p>--}}
+                <p>圈号 : <b>{{ $circle->code or '-' }}</b></p>
             </div>
         </div>
     </div>
@@ -120,6 +120,8 @@
         var once = true, _json; // 防止多次触发
         $(function () {
             init();
+
+
 
             $('.i-quit').on('touchstart', function () {
                 var _url = $(this).attr('data-url');
@@ -183,6 +185,7 @@
                     $('#boxAll').prop('checked', false);
                 }
             });
+
 
         });
 

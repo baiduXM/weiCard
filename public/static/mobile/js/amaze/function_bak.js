@@ -1,4 +1,23 @@
 $(function () {
+    // (function(doc,win){
+    //     var docEl = doc.documentElement,
+    //         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize' ,
+    //         recalc = function()
+    //         {
+    //             var clientWidth = docEl.clientWidth;
+    //             if(!clientWidth) return;
+    //             if(clientWidth>640){
+    //                 clientWidth=640;
+    //             }
+    //             docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    //         };
+    //     recalc();
+    //     if(!doc.addEventListener) return;
+    //     win.addEventListener(resizeEvt,recalc,false);
+    //     doc.addEventListener('DOMContentLoaded',recalc,false);
+    // })(document,window);
+
+
     /*选项卡*/
     function Wtab(eId, index) {
         if ($(eId).length == 0) return;
@@ -12,7 +31,7 @@ $(function () {
         tab.siblings('.w-content').find('.w-list').hide();
         tab.siblings('.w-content').find('.w-list').eq(index).show();
 
-        tab.find('div').on('touchstart', function () {
+        tab.find('div').click('touchstart', function () {
             var index = $(this).index();
             $(this).parent().find('div').removeClass('current');
             $(this).parent().siblings('.w-content').find('.w-list').hide();
@@ -26,7 +45,6 @@ $(function () {
 
         });
         var listL = tab.find('div').parent().siblings('.w-content').find('.w-list').eq(index).find('.list1');
-        console.log(listL.length);
         if (listL.length == 0) {
             $('.list').siblings('.indexImg').show();
         } else {
@@ -103,14 +121,14 @@ $(function () {
     $(".mp-groupBg").height(mpH - $(".mp-footBtn").height() - $(" .default-group .accordion-title").height());
 
     /*mp背景图显示与隐藏*/
-    // function mpBg() {
-    //     var mpGroup = $(".mp-group .accordion-gapped .accordion-item");
-    //     if (mpGroup.length > 1) {
-    //         $(".mp-groupBg").hide();
-    //     } else {
-    //         $(".mp-groupBg").show();
-    //         $(".mp-bjBox").hide();
-    //     }
+    function mpBg() {
+        var mpGroup = $(".mp-group .accordion-gapped .accordion-item");
+        if (mpGroup.length > 1) {
+            $(".mp-groupBg").hide();
+        } else {
+            $(".mp-groupBg").show();
+            $(".mp-bjBox").hide();
+        }
         // $(".accordion-gapped .accordion-title").click('touchstart', function () {
         //         var groupList = $(".group-list");
         //         if (groupList.length !== 0) {
@@ -118,9 +136,9 @@ $(function () {
         //         }
         //     }
         // );
-    // }
+    }
 
-    // mpBg();
+    mpBg();
 
     /*编辑 - 名片组的显示以及删除操作*/
     function compile(group) {
@@ -140,6 +158,9 @@ $(function () {
         // function myModel(e) {/*添加编辑分组模态框*/
         //     e.preventDefault();
         //     iThis.find('dt').attr("data-am-modal", "{target: '#mp-btn1'}");
+        // alert(iThis.find('dt').find('span').text());
+        // iThis.find('dt').addClass('mp-btn1');
+
         // }
 
         /*分组下拉*/
@@ -148,35 +169,34 @@ $(function () {
             $(this).toggleClass("active");
         });
         function groupSlide(e) {
-            var length = $(this).siblings('dd').find('.group-list').length;
-            if (length) {
-                var target = $(e.target);
-                target.removeAttr("data-am-modal", "{target: '#mp-btn1'}");
-                target.siblings(".accordion-bd").slideToggle();
-                target.toggleClass("active");
-            }
+            var target = $(e.target);
+            target.removeAttr("data-am-modal", "{target: '#mp-btn1'}");
+            target.siblings(".accordion-bd").slideToggle();
+            target.toggleClass("active");
         }
+
 
         iThis.find('dt').bind('touchstart', groupSlide);
         /*初始状态下绑定*/
 
         /*判断当前分组是否有子级，没有则下拉不显示*/
-        // function onSlide() {
-        //     iThis.each(function (iIndex) {
-        //         iThis.click('touchstart', function () {
-        //             var listG = iThis.find(".group-list");
-        //             if (listG.eq(iIndex).length == 0) {
-        //                 console.log(iIndex);
-        //                 // console.log($(listG).eq(iIndex).parent().parent());
-        //                 $(iThis).eq(iIndex).find(".accordion-title").removeClass("active");
-        //                 $(iThis).eq(iIndex).find(".accordion-bd").stop(true, true).slideDown();
-        //                 $(iThis).eq(iIndex).find(".accordion-bd").hide();
-        //             }
-        //         });
-        //     });
-        // }
-        //
-        // onSlide();
+        function onSlide() {
+            iThis.each(function (iIndex) {
+                iThis.click('touchstart', function () {
+                    var listG = iThis.find(".group-list");
+                    // console.log(iIndex);
+                    // console.log(listG.eq(iIndex).length);
+                    // console.log('listG.eq(iIndex).length');
+                    if (listG.eq(iIndex).length == 0) {
+                        $(iThis).eq(iIndex).find(".accordion-title").removeClass("active");
+                        $(iThis).eq(iIndex).find(".accordion-bd").stop(true, true).slideDown();
+                        $(iThis).eq(iIndex).find(".accordion-bd").hide();
+                    }
+                });
+            });
+        }
+
+        onSlide();
 
 
         /*点击底部编辑按钮显示正在编辑的状态*/
@@ -193,20 +213,13 @@ $(function () {
                 /*上下箭头隐藏*/
 
                 iThis.find('dt').unbind();
-                iThis.find('dt').addClass('modelBtn');
-
+                iThis.addClass('modelBtn');
                 $('.modelBtn').click('touchstart', function () {
                     var modelBtnThis = $(this);
-                    if (!modelBtnThis.parent('dl').attr('data-group-id')) {
-                        return false;
-                    }
-                    var group_id     = modelBtnThis.parent('dl').attr('data-group-id');
-                    var modelBtnText = $(modelBtnThis).find('span').text();
+                    var modelBtnText = $(modelBtnThis).find('dt').find('span').text();
                     $('#mp-btn1').modal('toggle');
-                    $('#mp-btn1').find('input[name="Group[name]"]').val(modelBtnText);
-                    $('#mp-btn1').find('[name="group_id"]').val(group_id);
+                    $('#mp-btn1').find('input').val(modelBtnText);
                 });
-                // $('.modelBtn').click('touchstart', myModel);
 
             } else {
                 $(this).html("编辑");
@@ -218,8 +231,9 @@ $(function () {
 
                 $('.modelBtn').unbind('click');
                 iThis.find('dt').bind('touchstart', groupSlide);
-                // onSlide();
+                onSlide();
             }
+
         });
 
         /*点击返回回到最初状态*/
@@ -234,7 +248,7 @@ $(function () {
 
             $('.modelBtn').unbind('click');
             iThis.find('dt').bind('touchstart', groupSlide);
-            // onSlide();
+            onSlide();
         });
 
     }
@@ -245,13 +259,13 @@ $(function () {
     /*确认删除的显示与删除*/
     $(".custom-group   b  ").click('touchstart', function () {
         $(this).siblings("dt").removeAttr("data-am-modal", "{target: '#mp-btn1'}");
-        var self = $(this);
-        $(".conRemove").click('touchstart', function () {
-            $(self).parent().hide();
-            $(".am-modal ").hide();
-            $(".am-dimmer.am-active").hide();
-
-        });
+        // var self=$(this);
+        // $(".conRemove").click('touchstart',function (){
+        //     $(self).parent().hide();
+        //     $(".am-modal ").hide();
+        //     $(".am-dimmer.am-active").hide();
+        //
+        // });
     });
 
     /*选择分组中点击新建分组*/
@@ -271,13 +285,25 @@ $(function () {
         $('#add2').modal('toggle');
     });
 
+
+    $(".mp-btn1").click('touchstart', function () {
+        $('#mp-btn1').modal('toggle');
+    });
+
+
+    $(".x-share").click('touchstart', function () {
+        $('#T-share').modal('toggle');
+    });
+
+
     /*gz--modal*/
-    // $(".ygz").click('touchstart', function () {
+    // $(".ygz").click('touchstart',function () {
     //     console.log(123);
-    //     $('#mp-gz-btn4').modal('toggle');
+    //     $('#mp-btn4').modal('toggle');
     // });
-    // $(".jgz").click('touchstart', function () {
-    //     $('#mp-gz-btn5').modal('toggle');
+    // $(".jgz").click('touchstart',function () {
+    //     console.log(111)
+    //     $('#mp-btn5').modal('toggle');
     // });
 
 });

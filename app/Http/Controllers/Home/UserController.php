@@ -347,6 +347,7 @@ class UserController extends HomeController
             return response()->json(array('err' => 1, 'msg' => '已关注'));
         }
         if (Auth::user()->followThisUser($user_id)) {
+            $this->moveGroup(['followed_id' => $user_id]);
             return response()->json(array('err' => 0, 'msg' => '关注成功'));
         }
         return response()->json(array('err' => 1001, 'msg' => '请求错误'));
@@ -359,15 +360,23 @@ class UserController extends HomeController
      * @param $user_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function unfollow($user_id)
+    public function unfollow(Request $request, $user_id = null)
     {
+        if (!$user_id) {
+            $user_id = $request->input('user_id');
+        }
         if (!Auth::user()->isFollow($user_id)) {
-            return response()->json(array('err' => 1, 'msg' => '未关注'));
+            if ($this->is_mobile) {
+                return redirect()->back();
+            }
+//            return response()->json(array('err' => 1, 'msg' => '未关注'));
         }
-        if (Auth::user()->followThisUser($user_id)) {
-            return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
+        if (Auth::user()->unfollowThisUser($user_id)) {
+            if ($this->is_mobile) {
+                return redirect()->back();
+            }
+//            return response()->json(array('err' => 0, 'msg' => '取消关注成功'));
         }
-        return response()->json(array('err' => 1001, 'msg' => '请求错误'));
 
     }
 
@@ -386,6 +395,8 @@ class UserController extends HomeController
             foreach ($ids as $id) {
                 if (!Auth::user()->isFollow($id)) {
                     $count += Auth::user()->followThisUser($id);
+                    $this->moveGroup(['followed_id' => $id]);
+
                 }
             }
             return response()->json(array('err' => 0, 'msg' => '关注成功', 'data' => $count));
@@ -425,11 +436,10 @@ class UserController extends HomeController
                 return response()->json(array('err' => 1, 'msg' => '已关注'));
             }
             if (Auth::user()->followThisUser($user_id)) {
-//                $follower = UserFollower::where('follower_id', $user_id)->first();
-//                $follower->group_id = $group_id;
-//                $follower->save();
+                $this->moveGroup(['to_group_id' => $group_id, 'followed_id' => $user_id]);
                 return response()->json(array('err' => 0, 'msg' => '关注成功'));
             }
+            return response()->json(array('err' => 1, 'msg' => '操作失败'));
         }
 
     }

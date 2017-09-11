@@ -7,6 +7,7 @@ use App\Models\Cardcase;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\UserFollower;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,34 +32,111 @@ class CardcaseController extends HomeController
 
 
     /**
-     * 首页
+     * 消息列表
      */
     public function index()
     {
         // TODO:后期优化分页
         if ($this->is_mobile) {
-            $groups = Group::where('user_id', Auth::id())->get();
+            $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
+//            $groups = Group::where('user_id', Auth::id())->get();
+            $default = Group::where('user_id', null)->where('name', '默认组')->first();
+            if (!$default) {
+                $default = Group::create(['user_id' => null, 'name' => '默认组']);
+                $this->moveGroup();
+            }
+//            $default->id = 0;
+            $default->user_id = Auth::id();
+            $groups->prepend($default); // prepend() 添加数据项到集合开头
             return view('mobile.cardcase.gz-index')->with([
                 'groups' => $groups,
 
             ]);
-//            return view('mobile.cardcase.mp-index');
-//
-//            $data = $this->index4Mobile();
-//            $groups = Group::where('user_id', Auth::id())->get();
-//            return view('mobile.cardcase.index')->with([
-//                'data'   => $data,
-//                'groups' => $groups,
-//            ]);
-
         } else {
             $cardcases = Cardcase::with('follower')->where('user_id', Auth::id())->paginate();
             return view('web.cardcase.index')->with([
                 'cardcases' => $cardcases,
             ]);
         }
-
     }
+
+    public function mp()
+    {
+        if ($this->is_mobile) {
+            $groups = Group::where('user_id', Auth::id())->get();
+            return view('mobile.cardcase.mp-index')->with([
+                'groups' => $groups,
+            ]);
+        }
+//        $this->getFollowerAjax($request);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function mpAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            /* 获取分组 */
+            $groups = Auth::user()->groups()->orderBy('id', 'desc')->get();
+            $default = Group::where('user_id', null)->where('name', '默认组')->first();
+            if (!$default) {
+                $default = Group::create(['user_id' => null, 'name' => '默认组']);
+                $this->moveGroup();
+            }
+//            $default->id = 0;
+            $default->user_id = Auth::id();
+            $groups->prepend($default); // prepend() 添加数据项到集合开头
+            foreach ($groups as $group) {
+                $group->count = $group->followers()->where('follower_id', Auth::id())->has('followed')->count(); // has('followed') 判断用户是否存在
+            }
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $groups]);
+        }
+    }
+
+
+    /* 根据分组获取用户 */
+    public function getFollowerAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $group_id = $request->input('group_id') or null; // id
+            if ($group_id) {
+                $followers = UserFollower::with('followed', 'employee')->has('followed')
+                    ->where('follower_id', Auth::id())
+                    ->where('group_id', $group_id)
+                    ->get();
+            } else {
+                $defaultGroup = $this->getDefaultGroup();
+                $group_id = $defaultGroup->id;
+                $followers = UserFollower::with('followed', 'employee')->has('followed')
+                    ->where('follower_id', Auth::id())
+                    ->where('group_id', $group_id)
+                    ->get();
+
+//                if (!count($followers)) {
+//                    $followers = UserFollower::with('followed', 'employee')->has('followed')
+//                        ->where('follower_id', Auth::id())
+//                        ->whereNull('group_id')
+//                        ->get();
+//                }
+            }
+            foreach ($followers as $follower) {
+                $follower->avatar = $follower->followed ? asset($follower->followed->avatar) : null;
+                $follower->company = $follower->employee ? $follower->employee->company : null;
+            }
+            return response()->json(['err' => 0, 'msg' => 'success', 'data' => $followers]);
+        }
+    }
+
+//    public function getFollower($group_id = null)
+//    {
+////        $group_id = $request->input('group_id') ? $request->input('group_id') : null; // id
+//        $followers = UserFollower::has('followed')->where('follower_id', Auth::id())->where('group_id', $group_id)->get();
+//        return $followers;
+////        return response()->json(['err' => 0, 'msg' => 'success', 'data' => $followers]);
+//    }
 
 
     /**
@@ -167,26 +245,26 @@ class CardcaseController extends HomeController
             $employee = Employee::find($param[1]);
             $user_id = $employee->user_id;
         }
-        $ids = DB::table('user_followers')->select('followed_id')->where('follower_id',Auth::id())->get();
+        $ids = DB::table('user_followers')->select('followed_id')->where('follower_id', Auth::id())->get();
         //转化成数组
-        $ids = array_map('get_object_vars',$ids);
-        $person = DB::table('users')->select('id', 'nickname', 'avatar', 'company_name')->where('id','<>',Auth::id())->whereNotIn('id',$ids)->inRandomOrder()->limit(3)->get();
+        $ids = array_map('get_object_vars', $ids);
+        $person = DB::table('users')->select('id', 'nickname', 'avatar', 'company_name')->where('id', '<>', Auth::id())->whereNotIn('id', $ids)->inRandomOrder()->limit(3)->get();
         if (Auth::id() == $user_id) {
-            if($param[0] == 'u') {
+            if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
                     $item->url = url('cardview/u-' . $item->id);
                 }
-            }else{
+            } else {
                 foreach ($person as $item) {
-                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
-                    if(count($employee)>0){
+                    $employee = DB::table('employees')->where('user_id', $item->id)->first();
+                    if (count($employee) > 0) {
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
-                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $company = DB::table('companies')->where('id', $employee->company_id)->first();
                         $item->avatar = asset($company->logo);
                         $item->url = url('cardview/e-' . $item->id);
-                    }else{
+                    } else {
                         $item->avatar = asset($item->avatar);
                         $item->url = url('cardview/u-' . $item->id);
                     }
@@ -197,21 +275,21 @@ class CardcaseController extends HomeController
             return response()->json($response);
         }
         if (Auth::user()->isFollow($user_id)) {
-            if($param[0] == 'u') {
+            if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
                     $item->url = url('cardview/u-' . $item->id);
                 }
-            }else{
+            } else {
                 foreach ($person as $item) {
-                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
-                    if(count($employee)>0){
+                    $employee = DB::table('employees')->where('user_id', $item->id)->first();
+                    if (count($employee) > 0) {
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
-                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $company = DB::table('companies')->where('id', $employee->company_id)->first();
                         $item->avatar = asset($company->logo);
                         $item->url = url('cardview/e-' . $item->id);
-                    }else{
+                    } else {
                         $item->avatar = asset($item->avatar);
                         $item->url = url('cardview/u-' . $item->id);
                     }
@@ -222,21 +300,21 @@ class CardcaseController extends HomeController
             return response()->json($response);
         }
         if (Auth::user()->followThisUser($user_id)) {
-            if($param[0] == 'u') {
+            if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
                     $item->url = url('cardview/u-' . $item->id);
                 }
-            }else{
+            } else {
                 foreach ($person as $item) {
-                    $employee =DB::table('employees')->where('user_id',$item->id)->first();
-                    if(count($employee)>0){
+                    $employee = DB::table('employees')->where('user_id', $item->id)->first();
+                    if (count($employee) > 0) {
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
-                        $company = DB::table('companies')->where('id',$employee->company_id)->first();
+                        $company = DB::table('companies')->where('id', $employee->company_id)->first();
                         $item->avatar = asset($company->logo);
                         $item->url = url('cardview/e-' . $item->id);
-                    }else{
+                    } else {
                         $item->avatar = asset($item->avatar);
                         $item->url = url('cardview/u-' . $item->id);
                     }
@@ -244,7 +322,9 @@ class CardcaseController extends HomeController
             }
             //succes = 1为关注成功
             $response = ["succes" => 1, "user" => $person];
+            $this->moveGroup(['followed_id' => $user_id]);
             return response()->json($response);
+//            return response()->json(['err' => 0, 'msg' => '关注成功', 'data' => $person]);
 
         }
 
@@ -488,18 +568,21 @@ class CardcaseController extends HomeController
      * @param Request $request
      * @param int $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+
      */
-    public function move(Request $request, $id)
+    public function move(Request $request, $user_id = 0)
     {
-        if ($request->ajax()) {
-            $group_id = $request->input('group_id');
-            $cardcase = Cardcase::find($id);
-            $cardcase->group_id = $group_id == 0 ? null : $group_id;
-            if ($cardcase->save()) {
-                return response()->json(['err' => 0, 'msg' => '移动成功', 'data' => url('cardcase')]);
-            }
+        if (!$user_id) {
+            $user_id = $request->input('user_id');
         }
-//        return redirect()->route('cardcase.index');
+        $group_id = $request->input('group_id');
+//        dump('in');
+        $res = $this->moveGroup(['followed_id' => $user_id, 'to_group_id' => $group_id]);
+//        dd($res);
+        if ($this->is_mobile) {
+            return redirect()->back();
+        }
+        return redirect()->back();
     }
 
     public function moveAjax(Request $request, $id)
@@ -574,6 +657,8 @@ class CardcaseController extends HomeController
             if ($id) {
                 $user = $cardcase->user;
                 $res = $user->followThisUser($id);
+                $this->moveGroup(['followed_id' => $id, 'follower_id' => $user->id]);
+
                 if ($res) {
                     if ($res > 0) {
                         $stat['attach']++;
@@ -614,6 +699,7 @@ class CardcaseController extends HomeController
 
     public function unfollowAjax(Request $request)
     {
+        // TODO
         if ($request->ajax()) {
             $user_id = $request->input('user_id');
 
@@ -621,42 +707,11 @@ class CardcaseController extends HomeController
             return response()->json(['err' => 0, 'msg' => 'test', 'data' => null]);
         }
 
-//        $param = explode('-', $params);
-//        switch ($param[0]) {
-//            case 'e':
-//                $data['follower_type'] = 'App\Models\Employee';
-//                break;
-//            case 'u':
-//                $data['follower_type'] = 'App\Models\User';
-//                break;
-//            default:
-//                break;
-//        }
-//        $data['follower_id'] = $param[1];
-//        $data['user_id'] = Auth::id();
-//
-//        /* 查看数据库是否有数据 */
-//        $query = Cardcase::query();
-//        foreach ($data as $key => $value) {
-//            $query->where($key, $value);
-//        }
-//        $cardcase = $query->first();
-//        /* ajax收藏 */
-//        if ($cardcase) { // 有，删除
-//            if ($cardcase->delete()) {
-//                $err_msg = '取消关注成功';
-//            } else {
-//                $err_msg = '取消关注失败';
-//            }
-//        } else {
-//            $err_msg = '取消关注失败 - 未关注';
-//        }
-//        if ($request->ajax()) {
-//            return response()->json($err_msg);
-//        } else {
-//            return redirect('cardcase')->with('info', $err_msg);
-//
-//        }
+    }
+
+    public function rules(Request $request)
+    {
+
     }
 
 }

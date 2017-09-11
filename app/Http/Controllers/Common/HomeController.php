@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Template;
 use App\Models\TemplateGroup;
 use App\Models\User;
+use App\Models\UserFollower;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function MongoDB\BSON\toJSON;
@@ -197,9 +198,9 @@ class HomeController extends Controller
                 $templategroup = TemplateGroup::where('id', $person->templategroup_id)->first();
                 /* 企业模板使用优先级：员工自主选择>模板组选择>公司选择 */
                 /* 查询员工是否自主选择企业模板 */
-                if(count($person->templates) > 0){
+                if (count($person->templates) > 0) {
                     $templates = $person->templates;//员工自主选择模板的信息
-                }else{
+                } else {
                     /* 员工没有自主选择企业模板则查询员工是否使用模板组 */
                     if (count($templategroup) > 0) {
                         $template_id = $templategroup->template_id;
@@ -209,13 +210,13 @@ class HomeController extends Controller
                     }
                 }
                 if (count($templates) > 0) {
-                    if(count($person->templates) > 0){
+                    if (count($person->templates) > 0) {
                         $template = $templates[0];
-                    }else{
-                        if(count($templategroup) > 0){
+                    } else {
+                        if (count($templategroup) > 0) {
                             /* 模板组所选模板 */
                             $template = $templates;
-                        }else{
+                        } else {
                             $template = null;
                         }
                     }
@@ -298,9 +299,11 @@ class HomeController extends Controller
             'count_cardcase' => $count_cardcase, // 是否关注
         ]);
     }
+
     /* 发票信息 */
 
-    public function invoice($params){
+    public function invoice($params)
+    {
         $id = $params;
         $company = Company::find($id);
         return view('common.invoice')->with([
@@ -320,8 +323,8 @@ class HomeController extends Controller
         $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
         //dd($company);
         return view('common.companyinfo')->with([
-            'company'     => $company, // 公司数据
-            'qrcodeimg'   => $qrcodeimg, // 二维码图片
+            'company'   => $company, // 公司数据
+            'qrcodeimg' => $qrcodeimg, // 二维码图片
         ]);
     }
 
@@ -346,6 +349,39 @@ class HomeController extends Controller
         );
         array_unshift($groups, $group); // 将默认数组加入到$groups中
         return $groups;
+    }
+
+    /**
+     * 移动分组
+     *
+     * @param array $params 数组参数
+     */
+    public function moveGroup(array $params)
+    {
+        $default = $this->getDefaultGroup();
+
+        $user_id = isset($params['follower_id']) ? $params['follower_id'] : Auth::id(); // 用户ID，必填
+        $followed_id = isset($params['followed_id']) ? $params['followed_id'] : null; // 关注用户ID，可选|删除分组可为空，移动分组需要
+        $group_id = isset($params['group_id']) ? $params['group_id'] : null; // 当前分组ID，可选|删除分组需要，移动分组可为空
+        $to_group_id = isset($params['to_group_id']) ? $params['to_group_id'] : $default->id; // 移动目标分组，必填|删除分组可为默认，移动分组需要
+        if ($followed_id) { // 移动分组
+            $res = UserFollower::where('follower_id', $user_id)
+                ->where('followed_id', $followed_id)
+                ->first();
+            $res->group_id = $to_group_id;
+            $res = $res->save();
+        }
+        if ($group_id) { // 删除分组
+            $res = UserFollower::where('follower_id', $user_id)
+                ->where('group_id', $group_id)
+                ->update(['group_id' => $to_group_id]);
+        }
+        return $res;
+    }
+
+    public function getDefaultGroup()
+    {
+        return Group::where('user_id', null)->where('name', '默认组')->first();
     }
 
     /**

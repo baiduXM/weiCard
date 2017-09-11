@@ -1,22 +1,22 @@
 $(document).ready(function () {
     // 字体大小
-    (function (doc, win) {
-
-        var docEl     = doc.documentElement,
-            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-            recalc    = function () {
-                var clientWidth = docEl.clientWidth;
-                if (!clientWidth) return;
-                if (clientWidth > 640) {
-                    clientWidth = 640;
-                }
-                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
-            };
-        recalc();
-        if (!doc.addEventListener) return;
-        win.addEventListener(resizeEvt, recalc, false);
-        doc.addEventListener('DOMContentLoaded', recalc, false);
-    })(document, window);
+    // (function (doc, win) {
+    //
+    //     var docEl     = doc.documentElement,
+    //         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+    //         recalc    = function () {
+    //             var clientWidth = docEl.clientWidth;
+    //             if (!clientWidth) return;
+    //             if (clientWidth > 640) {
+    //                 clientWidth = 640;
+    //             }
+    //             docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    //         };
+    //     recalc();
+    //     if (!doc.addEventListener) return;
+    //     win.addEventListener(resizeEvt, recalc, false);
+    //     doc.addEventListener('DOMContentLoaded', recalc, false);
+    // })(document, window);
     /*start--全屏通用代码,body、html高度100%。底部有快捷导航*/
     function myPublic(eleId, footerId, headId) {
         var docHeight  = $(window).height();

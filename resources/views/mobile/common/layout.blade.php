@@ -35,6 +35,24 @@
         <link href="{{ asset('static/mobile/css/css.css') }}" rel="stylesheet">
         <link href="{{ asset('static/mobile/css/style.css') }}" rel="stylesheet">
     @show
+    <script>
+        (function (doc, win) {
+            var docEl     = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc    = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    if (clientWidth > 640) {
+                        clientWidth = 640;
+                    }
+                    docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+                };
+            recalc();
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
 </head>
 
 <body>
@@ -62,7 +80,7 @@
 @section('javascript')
     <script src="{{ asset('static/mobile/js/index.js') }}"></script>
     <script src="{{ asset('static/mobile/js/fontsize.js') }}"></script>
-    <script src="{{ asset('static/mobile/js/function.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
 @show
 </body>
 </html>

@@ -21,27 +21,42 @@
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
     <meta name="msapplication-TileColor" content="#0e90d2">
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
   <link rel="canonical" href="http://www.example.com/">
   -->
+    <link href="{{ asset('static/mobile/css/amaze/amazeui.min.css') }}" rel="stylesheet">
     @section('css')
-        <link href="{{ asset('static/mobile/css/amaze/amazeui.min.css') }}" rel="stylesheet">
         <link href="{{ asset('static/mobile/css/amaze/style.css') }}" rel="stylesheet">
         <link href="{{ asset('static/mobile/css/amaze/common.css') }}" rel="stylesheet">
     @show
+    <script>
+        (function (doc, win) {
+            var docEl     = doc.documentElement,
+                resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                recalc    = function () {
+                    var clientWidth = docEl.clientWidth;
+                    if (!clientWidth) return;
+                    if (clientWidth > 640) {
+                        clientWidth = 640;
+                    }
+                    docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+                };
+            recalc();
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        })(document, window);
+    </script>
 
 </head>
 <body>
@@ -62,44 +77,10 @@
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/mobile/js/amaze/amazeui.min.js') }}"></script>
-<script src="{{ asset('static/mobile/js/amaze/function.js') }}"></script>
 @section('javascript')
-    <script>
-
-        /* 加载ajax */
-        function useAjax(type, url, data, sync) {
-            var json = '';
-            sync ? sync = true : sync = false;
-            $.ajax({
-                type: type,
-                url: url,
-                data: data,
-                async: sync, // 非异步(同步)加载
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }, // CSRF验证必填
-                success: function (data) {
-                    json = data;
-                },
-                error: function (data) {
-                    json = data.responseJSON;
-                }
-            });
-            return json;
-        }
-
-        /* 显示数据 */
-        function showHtml(_html, _div, _type) {
-            if (_type == 'init' || _type == 'refresh') {
-                $(_div).html(_html);
-            } else if (_type == 'more') {
-                $(_div).append(_html);
-            } else if (_type == 'before') {
-                $(_div).prepend(_html);
-            }
-        }
-    </script>
 @show
+<script src="{{ asset('static/mobile/js/amaze/function.js?v=20170908-2') }}"></script>
+
 
 </body>
 </html>

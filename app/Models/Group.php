@@ -31,6 +31,7 @@ class Group extends CommonModel
         return $this->hasManyThrough('App\Models\User', 'App\Models\UserFollower');
     }
 
+
     /**
      * 分组创建者
      *

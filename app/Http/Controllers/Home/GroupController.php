@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Common\HomeController;
 use App\Models\Cardcase;
 use App\Models\Group;
+use App\Models\UserFollower;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,6 @@ class GroupController extends HomeController
 
     /**
      * @param Request $request
-     *
      * @return $this|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
@@ -78,7 +78,6 @@ class GroupController extends HomeController
      *
      * @param Request $request
      * @param         $id
-     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function show(Request $request, $id)
@@ -98,12 +97,10 @@ class GroupController extends HomeController
      * 添加分组
      *
      * @param Request $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-
         /* 验证 */
         $this->validate($request, [
             'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(), // 不允许重名
@@ -114,8 +111,32 @@ class GroupController extends HomeController
         $data['user_id'] = Auth::id();
         $data['order'] = 0;
 
-        if (Group::create($data)) {
-            return response()->json('添加成功');
+        $group = Group::create($data);
+        if ($group) {
+            if ($this->is_mobile) {
+                return redirect()->route('cardcase.mp')->with('success', '添加成功');
+            }
+            return redirect()->route('group.index')->with('success', '添加成功'); //
+        }
+    }
+
+    public function storeAjax(Request $request)
+    {
+        if ($request->ajax()) {
+
+            /* 验证 */
+            $this->validate($request, [
+                'Group.name' => 'required|unique:groups,groups.name,null,id,user_id,' . Auth::id(), // 不允许重名
+            ], [], [
+                'Group.name' => '名称',
+            ]);
+            $data = $request->input('Group');
+            $data['user_id'] = Auth::id();
+            $data['order'] = 0;
+
+            if ($group = Group::create($data)) {
+                return response()->json(['err' => 0, 'msg' => '添加成功', 'data' => $group]);
+            }
         }
     }
 
@@ -123,37 +144,103 @@ class GroupController extends HomeController
     /**
      * @param Request $request
      * @param int     $id 分组ID
-     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id = null)
+    {
+        if (!$id) {
+            $id = $request->input('group_id');
+        }
+        $group = Group::find($id);
+//        $this->validate($request, [
+//            'Group.name' => 'required|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
+//        ], [], [
+//            'Group.name' => '名称',
+//        ]);
+
+        $data = $request->input('Group');
+        foreach ($data as $key => $value) {
+            $group->$key = trim($value); // 去除空格
+        }
+        if ($group->save()) {
+            if ($this->is_mobile) {
+                return redirect()->route('cardcase.mp')->with('success', '修改成功');
+            }
+            return redirect()->route('cardcase.mp')->with('success', '修改成功');
+        }
+        return redirect()->route('cardcase.mp')->with('error', '修改失败');
+    }
+
+    public function updateAjax(Request $request)
     {
         if ($request->ajax()) {
-            $ids = $request->input('ids');
-            $cardcases = Cardcase::whereIn('id', $ids)->get();
-            foreach ($cardcases as $k => &$v) {
-                $v->group_id = $id;
-                $res[] = $v->save();
-            }
-            return response()->json('成功移动' . count($res) . '条数据');
+            $id = $request->input('id');
+            $group = Group::find($id);
+            /* 验证 */
+            $this->validate($request, [
+                'Group.name' => 'required|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
+            ], [], [
+                'Group.name' => '名称',
+            ]);
         }
-        return redirect()->route('cardcase.group.index');
     }
 
     /**
-     * 删除
+     * 删除分组
      *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|int
+     * @param Request $request
+     * @param null    $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id = null)
     {
-        if ($request->ajax()) {
-            $group = Group::find($id);
-            if ($group->delete()) {
-                return response()->json('删除成功');
+        if (!$id) {
+            $id = $request->input('group_id');
+        }
+        $group = Group::with('followers')->find($id);
+        /* 删除分组前，将关注用户移动到默认分组 */
+//        if ($group->followers()->count()) {
+            $this->moveGroup(['group_id' => $id]);
+//        }
+        if ($group->delete()) {
+            if ($this->is_mobile) {
+                return redirect()->route('cardcase.mp')->with('success', '删除成功');
             }
+            return redirect()->route('cardcase.mp')->with('success', '删除成功');
+
         }
     }
+
+
+    public function destroyAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $group_id = $request->input('group_id');
+            $group = Group::find($group_id);
+            /* 删除分组前，将关注用户移动到默认分组 */
+            if (count($group->followers)) {
+                $this->moveGroup(['group_id' => $group_id]);
+            }
+            if ($group->delete()) {
+                return response()->json(['err' => 0, 'msg' => '删除成功']);
+            }
+            return response()->json(['err' => 1, 'msg' => '删除失败']);
+        }
+    }
+
+    public function rules(Request $request)
+    {
+//        $group = $request->input('Group');
+        $id = $request->input('group_id') ? $request->input('group_id') : 'null';
+        $this->validate($request, [
+            'Group.name' => 'required|max:12|unique:groups,groups.name,' . $id . ',id,user_id,' . Auth::id(), // 不允许重名
+        ], [], [
+            'Group.name' => '名称',
+        ]);
+        if ($request->ajax()) {
+            return response()->json(['err' => 0, 'msg' => '有效数据']);
+        }
+    }
+
+
 }

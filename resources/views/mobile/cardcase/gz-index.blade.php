@@ -73,7 +73,7 @@
 @section('modal')
     <!------------弹出框------------->
     <!--确认不再关注此人？弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-btn4">
+    <div class="am-modal am-modal-confirm   mp-modal " tabindex="-1" id="mp-gz-btn4">
         <div class="am-modal-dialog  ">
             <form action="" onsubmit="return false;">
 
@@ -89,31 +89,20 @@
         </div>
     </div>
     <!--选择分组弹出框-->
-    <div class="am-modal am-modal-confirm   mp-modal mp-modal5  " tabindex="-1" id="mp-btn5">
+    <div class="am-modal am-modal-confirm   mp-modal mp-modal5  " tabindex="-1" id="mp-gz-btn5">
         <div class="am-modal-dialog  ">
             <form action="" onsubmit="return false;">
                 <h1 class="modal-header"><span>选择分组</span></h1>
                 <div class="am-modal-bd">
                     <ul>
-                        <li>
-                            <label for="num0">
-                                <input type="radio" name="group_id" id="num0" value="0" checked>
-                                <span>默认组</span>
-                            </label>
-                        </li>
-                        {{--@foreach($groups as $item)--}}
-                        {{--<li>--}}
-                        {{--<label for="num{{ $item->id }}">--}}
-                        {{--<input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">--}}
-                        {{--<span>{{ $item->name }}</span>--}}
-                        {{--</label>--}}
-                        {{--</li>--}}
-
-                        {{--@endforeach--}}
-
-                        {{--<li class="modal5-xj" data-am-modal="{target: '#mp-btn2'}">--}}
-                        {{--<span>+ 新建分组</span>--}}
-                        {{--</li>--}}
+                        @foreach($groups as $item)
+                            <li>
+                                <label for="num{{ $item->id }}">
+                                    <input type="radio" name="group_id" id="num{{ $item->id }}" value="{{ $item->id }}">
+                                    <span>{{ $item->name }}</span>
+                                </label>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <input type="hidden" name="user_id" value="">
@@ -125,7 +114,7 @@
         </div>
     </div>
     <!--新建分组弹出框-->
-    <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-btn2">
+    <div class="am-modal am-modal-confirm mp-btn1 mp-modal mp-modal2" tabindex="-1" id="mp-gz-btn2">
         <div class="am-modal-dialog  ">
             <form action="">
                 <h1 class="modal-header"><span>新建分组</span></h1>
@@ -142,13 +131,14 @@
     </div>
 @stop
 @section('javascript')
-    @parent
+    <script src="{{ asset('static/mobile/js/common.js??v=20170907') }}"></script>
+
     <script>
         $(function () {
             init();
 
             /* 加载更多 */
-            $('.gz-more').on('touchstart', function () {
+            $('.gz-more').click('touchstart', function () {
                 var url   = $(this).attr('url');
                 var type  = $(this).hasClass('more-ed') ? 'followed' : 'following';
                 var _json = useAjax('get', url, {'type': type});
@@ -162,13 +152,13 @@
                 }
             });
 
-            $('.mes-data,.mes-img').on('touchstart', function () {
-                var id               = $(this).parents('.group-list').attr('data-id');
+            $('.mes-data,.mes-img').click('touchstart', function () {
+                var id               = $(this).parents('.group-list').attr('data-user-id');
                 window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
 
             /* 取消关注 */
-            $('.conRemove').on('touchstart', function () {
+            $('.conRemove').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
                 alert(json.msg);
@@ -176,7 +166,7 @@
             });
 
             /* 关注且分组 */
-            $('.conFollow ').on('touchstart', function () {
+            $('.conFollow ').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.followAjax') }}', data);
                 alert(json.msg);
@@ -185,16 +175,17 @@
 
             /* 加关注 */
             $(".jgz").click('touchstart', function (e) {
-                var uid = $(this).parents('.group-list').attr('data-id');
-                $('#mp-btn5').find('[name="user_id"]').val(uid);
-                $('#mp-btn5').modal('toggle');
+                var uid = $(this).parents('.group-list').attr('data-user-id');
+                $('#mp-gz-btn5').find('input[name="user_id"]').val(uid);
+                $('#mp-gz-btn5').modal('toggle');
                 e.stopPropagation();
             });
+
             /* 取消关注 */
             $(".ygz").click('touchstart', function () {
-                var uid = $(this).parents('.group-list').attr('data-id');
-                $('#mp-btn4').find('[name="user_id"]').val(uid);
-                $('#mp-btn4').modal('toggle');
+                var uid = $(this).parents('.group-list').attr('data-user-id');
+                $('#mp-gz-btn4').find('[name="user_id"]').val(uid);
+                $('#mp-gz-btn4').modal('toggle');
             });
         });
         /* 初始化 */
@@ -231,12 +222,10 @@
 
         /* 拼接数据 */
         function jointDiv(data) {
-            console.log(data);
-            console.log('jointDiv');
             var _html = '';
             if (data.length) {
                 $.each(data, function (k, v) {
-                    _html += '<div class="group-list" data-id="' + v.id + '">';
+                    _html += '<div class="group-list" data-user-id="' + v.id + '">';
                     if (v.isFollow) {
                         _html += '<div class="group-list-mes">';
                     } else if (v.isFollowMe) {
