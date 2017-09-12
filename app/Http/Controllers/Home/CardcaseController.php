@@ -285,7 +285,8 @@ class CardcaseController extends HomeController
             }
             //succes = 2为不能关注自己状态
             $response = ["succes" => 2, "user" => $person];
-            return response()->json($response);
+//            return response()->json($response);
+            return response()->json(['err' => 0, 'msg' => '不能关注自己', 'data' => $response]);
         }
         if (Auth::user()->isFollow($user_id)) {
             if ($param[0] == 'u') {
@@ -317,7 +318,8 @@ class CardcaseController extends HomeController
             }
             //succes = 3为已关注
             $response = ["succes" => 3, "user" => $person];
-            return response()->json($response);
+//            return response()->json($response);
+            return response()->json(['err' => 0, 'msg' => '已关注', 'data' => $response]);
         }
         if (Auth::user()->followThisUser($user_id)) {
             if ($param[0] == 'u') {
@@ -350,8 +352,8 @@ class CardcaseController extends HomeController
             //succes = 1为关注成功
             $response = ["succes" => 1, "user" => $person];
             $this->moveGroup(['followed_id' => $user_id]);
-            return response()->json($response);
-//            return response()->json(['err' => 0, 'msg' => '关注成功', 'data' => $person]);
+//            return response()->json($response);
+            return response()->json(['err' => 0, 'msg' => '关注成功', 'data' => $response]);
 
         }
 
