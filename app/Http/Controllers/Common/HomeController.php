@@ -263,7 +263,6 @@ class HomeController extends Controller
                     if(count($person->address)<= 0 ){
                         $person->address = '尚未填写';
                     }
-                $invoiceurl = url('invoice/' . $person->company->id);
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有个人模板，使用默认模板
                     $template = Template::whereIn('type', [0, 1])->first();
@@ -299,7 +298,6 @@ class HomeController extends Controller
             'person'         => $person, // 对象，用户/员工
             'type'           => $param[0], // 类型
             'qrcodeimg'      => $qrcodeimg, // 二维码图片
-            'invoiceurl'     => $invoiceurl, // 发票信息
             'sign_package'   => $sign_package, // 微信签名包
             'count_cardcase' => $count_cardcase, // 是否关注
         ]);
