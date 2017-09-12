@@ -303,6 +303,7 @@ class CardcaseController extends HomeController
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
                         $company = DB::table('companies')->where('id', $employee->company_id)->first();
+                        $item->company_name = $company->display_name;
                         $item->avatar = asset($company->logo);
                         $item->url = url('cardview/e-' . $item->id);
                     } else {
@@ -334,6 +335,7 @@ class CardcaseController extends HomeController
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
                         $company = DB::table('companies')->where('id', $employee->company_id)->first();
+                        $item->company_name = $company->display_name;
                         $item->avatar = asset($company->logo);
                         $item->url = url('cardview/e-' . $item->id);
                     } else {
