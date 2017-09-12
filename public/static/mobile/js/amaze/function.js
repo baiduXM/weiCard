@@ -26,7 +26,7 @@ $(function () {
 
         });
         var listL = tab.find('div').parent().siblings('.w-content').find('.w-list').eq(index).find('.list1');
-        console.log(listL.length);
+        // console.log(listL.length);
         if (listL.length == 0) {
             $('.list').siblings('.indexImg').show();
         } else {
@@ -36,9 +36,9 @@ $(function () {
 
 
     /*加入成功弹出框*/
-    $(".confirm").click('touchstart', function () {
-        $(this).parents('#add2').hide();
-    });
+    // $(".confirm").click('touchstart', function () {
+    //     $(this).parents('#add2').hide();
+    // });
 
     /*编辑*/
     $(".x-cont-had .bianji a").click('touchstart', function () {
@@ -61,13 +61,13 @@ $(function () {
 
 
     /*删除*/
-    $(".G-close").click('touchstart', function () {
-        $(this).attr("data-am-modal", "{target: '#G-close' }");
-        var self = $(this);
-        $(".close-modal .confirm").click('touchstart', function () {
-            $(self).parent('.G-list').hide();
-        });
-    });
+    // $(".G-close").click('touchstart', function () {
+    //     $(this).attr("data-am-modal", "{target: '#G-close' }");
+    //     var self = $(this);
+    //     $(".close-modal .confirm").click('touchstart', function () {
+    //         $(self).parent('.G-list').hide();
+    //     });
+    // });
 
     /*引导页高度*/
     var height = $('html').height();
@@ -270,6 +270,15 @@ $(function () {
     $(".add2").click('touchstart', function () {
         $('#add2').modal('toggle');
     });
+
+    $(".mp-btn1").click('touchstart', function () {
+        $('#mp-btn1').modal('toggle');
+    });
+
+    $(".x-share").click('touchstart', function () {
+        $('#T-share').modal('toggle');
+    });
+
 
     /*gz--modal*/
     // $(".ygz").click('touchstart', function () {

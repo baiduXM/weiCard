@@ -47,3 +47,29 @@ function showHtml(_html, _div, _type) {
         $(_div).prepend(_html);
     }
 }
+
+/**
+ * 清空表单字段
+ */
+function clearAll() {
+    var ipts = document.getElementsByTagName("INPUT");
+    for (var i = 0; i < ipts.length; i++) {
+        if (ipts[i].type == "text" || ipts[i].type == "hidden" || ipts[i].type == "password") {
+            ipts[i].value = "";
+        }
+        if (ipts[i].type == "checkbox" || ipts[i].type == "radio") {
+            ipts[i].checked = false;
+        }
+        if (ipts[i].type == "file") {
+            ipts[i].outerHTML = ipts[i].outerHTML;
+        }
+    }
+    var tas = document.getElementsByTagName("TEXTAREA");
+    for (var i = 0; i < tas.length; i++) {
+        tas[i].value = "";
+    }
+    var sts = document.getElementsByTagName("SELECT");
+    for (var i = 0; i < sts.length; i++) {
+        sts[i].selectedIndex = -1;
+    }
+}

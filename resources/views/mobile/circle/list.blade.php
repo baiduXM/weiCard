@@ -45,7 +45,9 @@
     <!--新建人脉圈弹出框-->
     <div class="am-modal-actions" id="add1">
         <div class="modal-content">
-            <form action="{{ route('circle.ajaxStore') }}" method="post" onsubmit="return false;">
+            <form action="{{ route('circle.store') }}" method="post" id="form-add1">
+                {{ method_field('post') }}
+                {{ csrf_field() }}
                 <h1 class="modal-header"><span>新建人脉圈</span></h1>
                 <div class="modal-body">
                     <div class="name">
@@ -108,7 +110,7 @@
                 </div>
                 <div class="modal-footer">
                     <span class=" " data-am-modal-close>取消</span>
-                    <span class="confirm rt" data-am-modal-confirm>确定</span>
+                    <span class="confirm rt confirm-add1" data-am-modal-confirm>确定</span>
                 </div>
             </form>
         </div>
@@ -117,18 +119,22 @@
     <!--快速加入弹出框-->
     <div class="am-modal-actions" id="add2">
         <div class="modal-content">
-            <form action="{{ route('circle.ajaxJoin') }}"  onsubmit="return false;">
+            <form action="{{ route('circle.join') }}" method="post" id="form-add2">
+                {{ method_field('post') }}
+                {{ csrf_field() }}
                 <h1 class="modal-header"><span>快速加入</span></h1>
                 <div class="modal-body">
                     <div class="name tele">
                         <span>请输入圈号</span>
-                        <input type="text" name="Circle[code]">
+                        <input type="text" name="Circle[code]" value="">
                     </div>
                     <p class="txtRed"></p><!--添加 class='on' 该字段显示-->
                 </div>
                 <div class="modal-footer">
+                    {{--<button class="mp-close" data-am-modal-close>取消</button>--}}
+                    {{--<button type="submit" class="confirm" data-am-modal-confirm>确定</button>--}}
                     <span class="" data-am-modal-close>取消</span>
-                    <span class="confirm rt" data-am-modal-confirm>确定</span>
+                    <span class="confirm rt confirm-add2" data-am-modal-confirm>确定</span>
                 </div>
             </form>
         </div>
@@ -174,73 +180,98 @@
 {{--</div>--}}
 {{--</div>--}}
 @section('javascript')
+    @parent
     <script>
-        var once = true, _json, _error; // 防止多次触发
+        var once = true; // 防止多次触发
         $(function () {
             init();
 
-            $('.confirm').on('touchstart', function () { // 表单确认按钮
-                // 提交表单内容
-                console.log("$")
-                var _form     = $(this).parents('form');
-                var _formData = _form.serializeArray();
-                var _url      = _form.attr('action');
-                // 回调函数
-                useAjax('post', _url, _formData);
-                // 改变DOM
-                console.log(_json);
-                if (_error) {
-                    showError(_form, _error);
-                }
-                if (_json) { // 回调成功
-                    if (_json.err) { // 错误
-                        showError(_form, _json.msg);
-                    } else {
-                        // 跳转页面
-                        location.href = '{{ url('circle') }}' + '/' + _json.data.id;
-                        // 清空表单字段
-                        clearAll();
-                    }
-                    // 关闭模态框
-//                    $('.am-modal-actions').modal('close');
-                    // 添加新数据
-//                    showHtml(jointDiv(_json.data), '.i-create-content', 'before');
-                }
-
-
+            /* 新建圈子提交 */
+            $('.confirm-add1').click('touchstart', function () {
+                $(this).parents('form').submit();
             });
+            /* 新建圈子 */
+            $('#form-add1').submit(function (e) {
+                // 验证字段
+                var data = $(this).serializeArray();
+                var rule = useAjax('post', '{{ route('circle.storeAjax') }}', data)
+                if (rule.status == 'error' || rule.err) {
+                    e.preventDefault();
+                    if (rule.err) {
+                        showError($(this), rule.msg);
+                    } else {
+                        showError($(this), rule.responseJSON);
+                    }
+                }
+            });
+
+
+            /* 快速加入提交 */
+            $('.confirm-add2').click('touchstart', function () {
+                $(this).parents('form').submit();
+            });
+            /* 快速加入圈子 */
+            $('#form-add2').submit(function (e) {
+                var data = $(this).serializeArray();
+                var rule = useAjax('post', '{{ route('circle.joinAjax') }}', data)
+                console.log(rule)
+                if (rule.status == 'error' || rule.err) {
+                    e.preventDefault();
+                    if (rule.err) {
+                        showError($(this), rule.msg);
+                    } else {
+                        showError($(this), rule.responseJSON);
+                    }
+                }
+            });
+
+//
+//            /* 表单验证 */
+//            $('.confirm').click('touchstart', function (e) { // 表单确认按钮
+//                // 提交表单内容
+//                e.preventDefault();
+//                var _form     = $(this).parents('form');
+//                var _formData = _form.serializeArray();
+//                var _url      = _form.attr('action');
+//                // 回调函数
+//                var _json     = useAjax('post', _url, _formData);
+//                // 改变DOM
+//                if (_json.status == 'error' || _json.err) {
+//                    if (_json.err) {
+//                        showError(_form, _json.msg);
+//                    } else {
+//                        showError(_form, _json.responseJSON);
+//                    }
+//                }
+//
+//            });
 
             /* Modal 窗口完全关闭以后触发（CSS 动画执行完成） */
             $('.am-modal-actions').on('closed.modal.amui', function () {
                 $('.txtRed').removeClass('on'); // 隐藏错误提示
+                clearAll();
             });
         });
         /* 初始化数据 */
         function init() {
             // 加载数据
-            useAjax('get', '{{ route('circle.ajaxIndex') }}');
+            var _json = useAjax('get', '{{ route('circle.ajaxIndex') }}');
             // 显示数据
             $('.i-create').text('(' + _json.data.create.total + ')');
             $('.i-join').text('(' + _json.data.join.total + ')');
-            var createData = jointDiv(_json.data.create.data);
-            if (createData) { // 有数据的时候隐藏，没有数据的时候显示
-                $('.indexImg').addClass('hide');
+            if (_json.data.create.data) {
+                var createData = jointDiv(_json.data.create.data);
+                if (createData) { // 有数据的时候隐藏，没有数据的时候显示
+                    $('.indexImg').addClass('hide');
+                }
+                showHtml(createData, '.i-create-content', 'init');
             }
-            showHtml(createData, '.i-create-content', 'init');
-            var joinData = jointDiv(_json.data.join.data);
-            showHtml(joinData, '.i-join-content', 'init');
+            if (_json.data.create.data) {
+                var joinData = jointDiv(_json.data.join.data);
+                showHtml(joinData, '.i-join-content', 'init');
+            }
         }
 
-        /* 显示数据 */
-        function showHtml(_html, _div, _type) {
-            if (_type == 'init' || _type == 'refresh') {
-                $(_div).html(_html);
-            } else if (_type == 'more') {
-                $(_div).append(_html);
-            } else if (_type == 'before') {
-                $(_div).prepend(_html);
-            }
-        }
 
         /* 拼接数据 */
         function jointDiv(data) {
@@ -272,52 +303,29 @@
             return _html;
         }
 
-        /* 清空表单字段 */
-        function clearAll() {
-            var ipts = document.getElementsByTagName("INPUT");
-            for (var i = 0; i < ipts.length; i++) {
-                if (ipts[i].type == "text" || ipts[i].type == "hidden" || ipts[i].type == "password") {
-                    ipts[i].value = "";
-                }
-                if (ipts[i].type == "checkbox" || ipts[i].type == "radio") {
-                    ipts[i].checked = false;
-                }
-                if (ipts[i].type == "file") {
-                    ipts[i].outerHTML = ipts[i].outerHTML;
-                }
-            }
-            var tas = document.getElementsByTagName("TEXTAREA");
-            for (var i = 0; i < tas.length; i++) {
-                tas[i].value = "";
-            }
-            var sts = document.getElementsByTagName("SELECT");
-            for (var i = 0; i < sts.length; i++) {
-                sts[i].selectedIndex = -1;
-            }
-        }
 
         /**
          * 调用ajax
          */
-        function useAjax(type, url, data) {
-            $.ajax({
-                type: type,
-                url: url,
-                data: data,
-                async: false, // 非异步(同步)加载
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }, // CSRF验证必填
-                success: function (data) {
-                    _json  = data;
-                    _error = '';
-                },
-                error: function (data) {
-                    _json  = '';
-                    _error = data.responseJSON;
-                }
-            });
-        }
+        //        function useAjax(type, url, data) {
+        //            $.ajax({
+        //                type: type,
+        //                url: url,
+        //                data: data,
+        //                async: false, // 非异步(同步)加载
+        //                headers: {
+        //                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        //                }, // CSRF验证必填
+        //                success: function (data) {
+        //                    _json  = data;
+        //                    _error = '';
+        //                },
+        //                error: function (data) {
+        //                    _json  = '';
+        //                    _error = data.responseJSON;
+        //                }
+        //            });
+        //        }
 
         /**
          * 显示错误信息

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Circle extends CommonModel
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $timestamps = true;
 

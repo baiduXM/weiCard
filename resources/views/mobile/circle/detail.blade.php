@@ -13,14 +13,15 @@
         <div class="x-title">
             <h2>{{ $circle->name }}</h2>
             <span>圈号 : {{ $circle->code or '-' }}</span>
-            <a data-url="{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}"
-               class="i-quit">{{ Auth::id()==$circle->user_id ? '解散该圈子' : '退出圈子'}}</a>
-            <p><i>人数{{ count($circle->users) }}
+            <a class="G-close-btn">
+                {{ Auth::id()==$circle->user_id ? '解散该圈子' : '退出圈子'}}
+            </a>
+            <p><i>人数 : {{ count($circle->users) }}
                     / {{ $circle->limit ? $circle->limit : '∞' }}</i>
                 <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
-        <div class="x-share rt" >
+        <div class="x-share rt">
             <span><img src="{{ asset($circle->qrcode_path) }}" alt=""></span>
             <p><img src="{{ asset('static/mobile/images/amaze/11_033_03.png') }}" alt=""><i>分享圈子</i></p>
         </div>
@@ -43,7 +44,8 @@
                     </div>
                 @endif
             </div>
-            <div class="myCont">{{--创建人信息--}}
+            {{--创建人信息--}}
+            <div class="myCont">
                 <dl>
                     <dt><img src="{{ asset($circle->user->avatar) }}" alt=""></dt>
                     <dd>
@@ -61,11 +63,11 @@
                     <a href="{{ route('cardview',$circle->user->employee?'e-'.$circle->user->employee->id:'u-'.$circle->user_id) }}">查看</a>
                 </span>
             </div>
-            <div class="x-cont-list">{{--成员信息--}}
-
+            <div class="x-cont-list">
+                {{--成员信息--}}
             </div>
             {{--<p class="G-total">合计 : 12人</p>--}}
-            <button type="submit" class="G-btn" data-url="{{ route('user.followAjax') }}">
+            <button type="submit" class="G-btn" data-url="{{ route('user.followsAjax') }}">
                 <img src="{{ asset('static/mobile/images/amaze/11xx_03.png') }}" alt="">
                 <span>加关注</span>
             </button>
@@ -76,13 +78,36 @@
     <!--是否删除弹出框-->
     <div class="am-modal am-modal-confirm  close-modal" tabindex="-1" id="G-close">
         <div class="am-modal-dialog">
-            <div class="am-modal-bd">
-                <p>是否删除！</p>
-            </div>
-            <div class="modal-footer">
-                <span class=" " data-am-modal-close>取消</span>
-                <span class="confirm am-modal-btn" data-am-modal-confirm>确定</span>
-            </div>
+            <form method="post" id="form-destroy" action="{{ route('circle.destroy',$circle->id) }}">
+                {{ method_field('delete') }}
+                {{ csrf_field() }}
+                <div class="am-modal-bd">
+                    <p>是否{{ Auth::id()==$circle->user_id ? '解散该圈子' : '退出圈子'}}</p>
+                </div>
+                <div class="modal-footer">
+                    <span class=" " data-am-modal-close>取消</span>
+                    <span class="confirm am-modal-btn confirm-destory" data-am-modal-confirm>确定</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--踢人弹出框-->
+    <div class="am-modal am-modal-confirm  close-modal" tabindex="-1" id="G-close-quit">
+        <div class="am-modal-dialog">
+            <form action="{{ route('circle.quit') }}" method="post" id="form-quit">
+                {{ method_field('delete') }}
+                {{ csrf_field() }}
+                <div class="am-modal-bd">
+                    <p>是否踢出圈子</p>
+                </div>
+                <div class="modal-footer">
+                    <span class=" " data-am-modal-close>取消</span>
+                    <span class="confirm am-modal-btn confirm-quit" data-am-modal-confirm>确定</span>
+                </div>
+                <input type="hidden" name="circle_id" value="{{ $circle->id }}">
+                <input type="hidden" name="user_id" value="">
+            </form>
         </div>
     </div>
 
@@ -117,28 +142,31 @@
 @section('javascript')
     @parent
     <script>
-        var once = true, _json; // 防止多次触发
+        var once = true; // 防止多次触发
         $(function () {
             init();
 
-
-
-            $('.i-quit').on('touchstart', function () {
-                var _url = $(this).attr('data-url');
-                console.log(_url)
-                useAjax('delete', _url);
-                alert(_json.msg);
-                location.href = _json.data;
-
-                {{--location.href = '{{ route('circle.index') }}';--}}
-
-
+            /* 退出圈子 模态框 */
+            $(".G-close-btn").click('touchstart', function () {
+                $('#G-close').modal('toggle');
+            });
+            /* 提交删除 */
+            $('.confirm-destory').click('touchstart', function () {
+                $('#form-destroy').submit();
+            });
+            /* 踢出圈子 模态框 */
+            $(".G-close-quit").click('touchstart', function () {
+                $('#G-close-quit').modal('toggle');
+            });
+            /* 踢出圈子 */
+            $('.confirm-quit').click('touchstart', function () {
+                $('#form-quit').submit();
             });
 
             /* 加关注 */
             $('.G-btn').click(function () {
-                var length = $('.select-item:checked').length;
-                var _url   = $(this).data('url');
+                var length    = $('.select-item:checked').length;
+                var _url      = $(this).data('url');
                 if (length == 0) {
                     alert('未选择');
                 } else {
@@ -146,23 +174,13 @@
                     $('.select-item:checked').each(function () {
                         ids_arr.push($(this).val()); // 遍历checkbox，有checked的加到ids_arr数组中
                     });
-                    var ids_str = ids_arr.join(','); // 将数组用','连接成字符串
-                    useAjax('post', _url, {'ids': ids_str});
+//                    var ids_str = ids_arr.join(','); // 将数组用','连接成字符串
+//                    console.log(ids_str);
+                    var _json = useAjax('post', _url, {'ids': ids_arr});
                     alert(_json.msg)
                     location.href = '{{ route('circle.show',$circle->id) }}';
                 }
                 return false;
-
-            });
-
-            /* 删除 */
-            $('.G-close ').on('touchstart', function () {
-                var _url = $(this).attr('data-url');
-                console.log(_url)
-                useAjax('delete', _url);
-                alert(_json.msg)
-                location.href = _json.data;
-//                alert(1)
             });
 
 
@@ -189,87 +207,54 @@
 
         });
 
-
+        /* 初始化 */
         function init() {
             // 加载数据
-            useAjax('get', '{{ route('circle.ajaxShow',$circle->id) }}');
-            console.log(_json);
+            var _json = useAjax('get', '{{ route('circle.showAjax',$circle->id) }}');
             showHtml(jointDiv(_json.data.users), '.x-cont-list', 'init');
 
         }
 
 
         function jointDiv(data) {
-            console.log(data);
             var _html = '';
-            $.each(data, function (k, v) {
-                _html += '<div class="G-list myCont">';
-                if (!v.isFollow) {
-                    _html += '<input type="checkbox" class="select-item" id="' + v.id + '" value="' + v.id + '">';
-                }
-                _html += '<dl>';
-                _html += '<dt><img src="' + v.avatar + '" alt=""></dt>';
-                _html += '<dd>';
-                if (v.employee) { // 企业员工
-                    _html += '<span><b>' + v.employee.nickname + '</b> </span>';
-                    _html += '<p>' + v.company.display_name + '</p>';
-                    _html += '<p>' + v.employee.positions + '</p>';
-                } else {
-                    _html += '<span><b>' + v.nickname + '</b> </span>';
-                    _html += '<p>' + v.mobile + '</p>';
-                }
-                _html += '</dd></dl>';
-                {{--_html += '<a class="G-close rt" data-url="' + '{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}' + '" > × </a>';--}}
-                    _html += '<a class="G-close rt" data-url="' + '{{ url('circle/'.$circle->id.'/quit') }}' + '/' + v.id + '" > × </a>';
-                _html += '<span class="myBtn rt">';
-                if (v.isFollow) {
-                    _html += '<i class="on">已关注</i>';
-                } else {
-                    _html += '<i>未关注</i>';
-                }
-                if (v.employee) { // 企业员工
-                    _html += '<a href="' + '{{ url('cardview') }}' + '/e-' + v.employee.id + '">查看</a>';
-                } else {
-                    _html += '<a href="' + '{{ url('cardview') }}' + '/u-' + v.id + '">查看</a>';
-                }
-                _html += '</span>';
-                _html += '</div>';
-            });
+            if (data.length) {
+                $.each(data, function (k, v) {
+                    _html += '<div class="G-list myCont" data-user-id="' + v.id + '">';
+                    if (!v.isFollow) {
+                        _html += '<input type="checkbox" class="select-item" id="' + v.id + '" value="' + v.id + '">';
+                    }
+                    _html += '<dl>';
+                    _html += '<dt><img src="' + v.avatar + '" alt=""></dt>';
+                    _html += '<dd>';
+                    if (v.employee) { // 企业员工
+                        _html += '<span><b>' + v.employee.nickname + '</b> </span>';
+                        _html += '<p>' + v.company.display_name + '</p>';
+                        _html += '<p>' + v.employee.positions + '</p>';
+                    } else {
+                        _html += '<span><b>' + v.nickname + '</b> </span>';
+                        _html += '<p>' + v.mobile + '</p>';
+                    }
+                    _html += '</dd></dl>';
+                    {{--_html += '<a class="G-close rt" data-url="' + '{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}' + '" > × </a>';--}}
+                        _html += '<a class="G-close G-close-quit rt" data-url="' + '{{ url('circle/'.$circle->id.'/quit') }}' + '/' + v.id + '" > × </a>';
+                    _html += '<span class="myBtn rt">';
+                    if (v.isFollow) {
+                        _html += '<i class="on">已关注</i>';
+                    } else {
+                        _html += '<i>未关注</i>';
+                    }
+                    if (v.employee) { // 企业员工
+                        _html += '<a href="' + '{{ url('cardview') }}' + '/e-' + v.employee.id + '">查看</a>';
+                    } else {
+                        _html += '<a href="' + '{{ url('cardview') }}' + '/u-' + v.id + '">查看</a>';
+                    }
+                    _html += '</span>';
+                    _html += '</div>';
+                });
+            }
             return _html;
         }
 
-        function showHtml(_html, _div, _type) {
-            if (_type == 'init' || _type == 'refresh') {
-                $(_div).html(_html);
-            } else if (_type == 'more') {
-                $(_div).append(_html);
-            } else if (_type == 'before') {
-                $(_div).prepend(_html);
-            }
-        }
-
-
-        /**
-         * 调用ajax
-         */
-        function useAjax(type, url, data) {
-            $.ajax({
-                type: type,
-                url: url,
-                data: data,
-                async: false, // 非异步(同步)加载
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }, // CSRF验证必填
-                success: function (data) {
-                    _json  = data;
-                    _error = '';
-                },
-                error: function (data) {
-                    _json  = '';
-                    _error = data.responseJSON;
-                }
-            });
-        }
     </script>
 @stop
