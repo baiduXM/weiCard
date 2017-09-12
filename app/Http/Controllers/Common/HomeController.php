@@ -260,6 +260,9 @@ class HomeController extends Controller
                 $count_cardcase = count($cardcases);
                 //dd($count_cardcase);
                 $person = User::find($param[1]);
+                    if(count($person->address)<= 0 ){
+                        $person->address = '尚未填写';
+                    }
                 $templates = $person->templates;
                 if (count($templates) <= 0) { // 没有个人模板，使用默认模板
                     $template = Template::whereIn('type', [0, 1])->first();
@@ -284,6 +287,7 @@ class HomeController extends Controller
         $sign_package = $this->getSignPackage();
         /* 二维码 */
         $url = url('cardview/' . $param[0] . '-' . $person->id);
+        $invoiceurl = url('invoice/' . $person->company->id);
         $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
@@ -295,6 +299,7 @@ class HomeController extends Controller
             'person'         => $person, // 对象，用户/员工
             'type'           => $param[0], // 类型
             'qrcodeimg'      => $qrcodeimg, // 二维码图片
+            'invoiceurl'     => $invoiceurl, // 发票信息
             'sign_package'   => $sign_package, // 微信签名包
             'count_cardcase' => $count_cardcase, // 是否关注
         ]);
