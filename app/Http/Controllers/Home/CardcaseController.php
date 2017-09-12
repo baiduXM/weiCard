@@ -245,27 +245,40 @@ class CardcaseController extends HomeController
             $employee = Employee::find($param[1]);
             $user_id = $employee->user_id;
         }
-        $ids = DB::table('user_followers')->select('followed_id')->where('follower_id', Auth::id())->get();
+        $ids = UserFollower::where('follower_id', Auth::id())->pluck('followed_id');
+//        $ids = DB::table('user_followers')->select('followed_id')->where('follower_id', Auth::id())->get();
+//        dd($ids);
         //转化成数组
-        $ids = array_map('get_object_vars', $ids);
-        $person = DB::table('users')->select('id', 'nickname', 'avatar', 'company_name')->where('id', '<>', Auth::id())->whereNotIn('id', $ids)->inRandomOrder()->limit(3)->get();
+//        $ids = array_map('get_object_vars', $ids);
+        $person = User::with('employee')->where('id', '<>', Auth::id())->whereNotIn('id', $ids)->inRandomOrder()->limit(3)->get();
+//        $person = DB::table('users')->select('id', 'nickname', 'avatar', 'company_name')->where('id', '<>', Auth::id())->whereNotIn('id', $ids)->inRandomOrder()->limit(3)->get();
+//        dd($person);
         if (Auth::id() == $user_id) {
             if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
+                    if(count($item->company_name)<= 0 ){
+                        $item->company_name = ' ';
+                    }
                     $item->url = url('cardview/u-' . $item->id);
                 }
             } else {
                 foreach ($person as $item) {
-                    $employee = DB::table('employees')->where('user_id', $item->id)->first();
+                    $employee = $item->employee;
+//                    $employee = DB::table('employees')->where('user_id', $item->id)->first();
                     if (count($employee) > 0) {
                         $item->id = $employee->id;
                         $item->nickname = $employee->nickname;
-                        $company = DB::table('companies')->where('id', $employee->company_id)->first();
+//                        $company = DB::table('companies')->where('id', $employee->company_id)->first();
+                        $company = $item->employee->company;
                         $item->avatar = asset($company->logo);
+                        $item->company_name = $company->display_name;
                         $item->url = url('cardview/e-' . $item->id);
                     } else {
                         $item->avatar = asset($item->avatar);
+                        if(count($item->company_name)<= 0 ){
+                            $item->company_name = ' ';
+                        }
                         $item->url = url('cardview/u-' . $item->id);
                     }
                 }
@@ -278,6 +291,9 @@ class CardcaseController extends HomeController
             if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
+                    if(count($item->company_name)<= 0 ){
+                        $item->company_name = ' ';
+                    }
                     $item->url = url('cardview/u-' . $item->id);
                 }
             } else {
@@ -291,6 +307,9 @@ class CardcaseController extends HomeController
                         $item->url = url('cardview/e-' . $item->id);
                     } else {
                         $item->avatar = asset($item->avatar);
+                        if(count($item->company_name)<= 0 ){
+                            $item->company_name = ' ';
+                        }
                         $item->url = url('cardview/u-' . $item->id);
                     }
                 }
@@ -303,6 +322,9 @@ class CardcaseController extends HomeController
             if ($param[0] == 'u') {
                 foreach ($person as $item) {
                     $item->avatar = asset($item->avatar);
+                    if(count($item->company_name)<= 0 ){
+                        $item->company_name = ' ';
+                    }
                     $item->url = url('cardview/u-' . $item->id);
                 }
             } else {
@@ -316,6 +338,9 @@ class CardcaseController extends HomeController
                         $item->url = url('cardview/e-' . $item->id);
                     } else {
                         $item->avatar = asset($item->avatar);
+                        if(count($item->company_name)<= 0 ){
+                            $item->company_name = ' ';
+                        }
                         $item->url = url('cardview/u-' . $item->id);
                     }
                 }
@@ -568,7 +593,6 @@ class CardcaseController extends HomeController
      * @param Request $request
      * @param int $id 名片ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-
      */
     public function move(Request $request, $user_id = 0)
     {
