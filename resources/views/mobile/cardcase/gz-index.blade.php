@@ -131,8 +131,7 @@
     </div>
 @stop
 @section('javascript')
-    <script src="{{ asset('static/mobile/js/common.js??v=20170907') }}"></script>
-
+    @parent
     <script>
         $(function () {
             init();

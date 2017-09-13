@@ -3,8 +3,6 @@ $(function () {
 });
 
 function checkField(url, data) {
-    console.log(url)
-    console.log(data)
     return useAjax('post', url, data);
 }
 

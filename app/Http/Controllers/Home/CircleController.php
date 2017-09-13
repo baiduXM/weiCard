@@ -104,7 +104,7 @@ class CircleController extends HomeController
     public function store(Request $request)
     {
         $this->validate($request, [
-            'Circle.name' => 'required',
+            'Circle.name' => 'required|max:20|unique:circles,circles.name,null',
 //            'Circle.expired_time' => 'required',
         ], [], [
             'Circle.name' => '名称',
@@ -128,44 +128,39 @@ class CircleController extends HomeController
             $data[$key] = trim($value); // 未填字段设置为null，否则会保存''
         }
         $data['user_id'] = Auth::id();
-
+        $data['code'] = base_convert(time(), 10, 16);
         $res = Circle::create($data);
         if (!$res) {
-            if ($request->ajax()) {
-                return response()->json('添加失败');
-            }
-            return redirect()->back()->with('error', '添加失败');
+            return redirect()->back()->with('error', '创建失败');
         }
         $this->joinCircle($res->id); // 加入圈子
         $res->qrcode_path = $this->createQrcode(url('circle/' . $res->id . '/join'), 'uploads/circle'); // 创建二维码
         $res->save(); // 保存
-        if ($request->ajax()) {
-            return response()->json('添加成功');
-        }
-        return redirect()->back()->with('success', '添加成功');
+//        $res->users_num = $res->users->count();
+        return redirect()->route('circle.show', $res->id)->with('success', '创建并加入圈子');
     }
 
 
     /**
-     * 删除圈子
+     * 删除圈子/退出圈子
      *
-     * @param Request $request
      * @param         $id
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $circle = Circle::find($id);
-        if (!$circle->user_id == Auth::id()) {
-            return response()->json('不是创建者，无法删除');
+        if ($circle->user_id == Auth::id()) { // 创建者，删除
+            if (!$circle->delete()) {
+                return redirect()->back()->with('error', '删除失败');
+            }
+            return redirect()->route('circle.index')->with('success', '删除成功');
+        } else { // 加入圈子，退出
+            if (!$this->exitCircle($circle->id)) {
+                return redirect()->route('circle.index')->with('error', '退出失败');
+            }
+            return redirect()->route('circle.index')->with('success', '退出成功');
         }
-        if (!$circle->delete()) {
-            return response()->json('删除失败');
-        }
-        if ($request->ajax()) {
-            return response()->json('删除成功');
-        }
-        return redirect()->back()->with('success', '删除成功');
     }
 
     /**
@@ -177,6 +172,7 @@ class CircleController extends HomeController
     public function show($id)
     {
         $circle = Circle::with('users')->find($id);
+        $circle->expired_time = $circle->expired_time ? date('Y-m-d', strtotime($circle->expired_time)) : null; // 未填字段设置为null，否则会保存''
         if ($this->is_mobile) {
             return view('mobile.circle.detail')->with([
                 'circle' => $circle,
@@ -211,7 +207,7 @@ class CircleController extends HomeController
         $circle = Circle::find($id);
         /* 验证 */
         $this->validate($request, [
-            'Circle.name' => 'required',
+            'Circle.name' => 'required|max:20|unique:circles,circles.name,' . $id,
         ], [], [
             'Circle.name' => '名称',
         ]);
@@ -254,47 +250,90 @@ class CircleController extends HomeController
     /**
      * 加入名片圈
      *
-     * @param      $id      圈子ID
-     * @param null $user_id 用户ID
+     * @param      $circle_id 圈子ID
+     * @param null $user_id   用户ID
+     * @return bool
      */
-    protected function joinCircle($id, $user_id = null)
+    protected function joinCircle($circle_id, $user_id = null)
     {
         $user_id = $user_id ? $user_id : Auth::id();
-        User::find($user_id)->join_circles()->attach($id);
+        $circle = Circle::find($circle_id);
+        if ($circle) {
+            User::find($user_id)->join_circles()->attach($circle_id);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
      * 退出名片圈
      *
-     * @param      $id      圈子ID
-     * @param null $user_id 用户ID(默认，当前用户)
+     * @param      $circle_id      圈子ID
+     * @param null $user_id        用户ID(默认，当前用户)
+     * @return bool
      */
-    protected function exitCircle($id, $user_id = null)
+    protected function exitCircle($circle_id, $user_id = null)
     {
         $user_id = $user_id ? $user_id : Auth::id();
-        User::find($user_id)->join_circles()->detach($id);
+        $circle = Circle::find($circle_id);
+        if ($circle) {
+            User::find($user_id)->join_circles()->detach($circle_id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * 加入名片圈
      * 查询圈子是否存在，是否已在圈子中
      *
-     * @param int $id 圈子ID
-     * @return string
+     * @param Request $request
+     * @param null    $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function join($id)
+    public function join(Request $request, $id = null)
     {
+        $code = strtolower(trim($request->input('Circle.code')));
         $circle = Circle::with(['users' => function ($query) {
             $query->where('user_id', Auth::id());
-        }])->find($id);
+        }])->where('code', $code)->first();
+//        $circle = Circle::with(['users' => function ($query) {
+//            $query->where('user_id', Auth::id());
+//        }])->find($id);
         if (!$circle) { // 圈子是否存在
             return redirect()->to('circle')->with('error', '圈子不存在');
         }
         if (count($circle->users)) { // 是否已加入圈子
             return redirect()->to('circle/' . $id)->with('error', '您已在圈子中');
         }
-        $this->joinCircle($id);
-        return redirect()->to('circle/' . $id)->with('success', '加入成功');
+        $this->joinCircle($circle->id);
+        return redirect()->route('circle.show', $id)->with('success', '加入成功');
+    }
+
+    public function joinAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            $code = strtolower(trim($request->input('Circle.code')));
+            $circle = Circle::with(['users' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])->where('code', $code)->first();
+            if (!$circle) { // 圈子是否存在
+                return response()->json(['err' => 1, 'msg' => '圈子不存在', 'data' => null]);
+            }
+            return response()->json(['err' => 0, 'msg' => '圈子存在', 'data' => $circle]);
+
+//            if (count($circle->users)) { // 是否已加入圈子
+//                return response()->json(['err' => 0, 'msg' => '您已在圈子中', 'data' => $circle]);
+//                //return response()->json(['err' => 1, 'msg' => '您已在圈子中', 'data' => null]);
+//            }
+//            dd($this->joinCircle($circle->id));
+////            return redirect()->to('circle/' . $id)->with('success', '加入成功');
+//            return response()->json(['err' => 0, 'msg' => '加入成功', 'data' => $circle]);
+        }
+
     }
 
     /**
@@ -305,7 +344,7 @@ class CircleController extends HomeController
      * @param int     $user_id 用户ID
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function quit(Request $request, $id, $user_id = null)
+    public function quit(Request $request, $id = null, $user_id = null)
     {
         $user_id = $user_id ? $user_id : Auth::id();
         $circle = Circle::with(['users' => function ($query) use ($user_id) {
@@ -367,7 +406,7 @@ class CircleController extends HomeController
         }
     }
 
-    public function ajaxShow(Request $request, $id)
+    public function showAjax(Request $request, $id)
     {
         if ($request->ajax()) {
             $circle = Circle::find($id);
@@ -384,73 +423,47 @@ class CircleController extends HomeController
         }
     }
 
-    public function ajaxStore(Request $request)
+    public function storeAjax(Request $request)
     {
         if ($request->ajax()) {
             $this->validate($request, [
-                'Circle.name' => 'required|max:20',
+                'Circle.name' => 'required|max:20|unique:circles,circles.name,null',
 //            'Circle.expired_time' => 'required',
             ], [], [
                 'Circle.name' => '名称',
 //            'Circle.expired_time' => '有效期',
             ]);
-            $data = $request->input('Circle');
-            /* 处理数据 */
-            foreach ($data as $key => $value) {
-                if (trim($value) == '') {
-                    $data[$key] = null; // 未填字段设置为null，否则会保存''
-                    continue;
-                }
-                if ($key == 'expired_time') {
-                    if ($value == 0) {
-                        $data[$key] = null;
-                    } else {
-                        $data[$key] = date('Y-m-d H:i:s', strtotime('+' . $value . ' day')); // 未填字段设置为null，否则会保存''
-                    }
-                    continue;
-                }
-                $data[$key] = trim($value); // 未填字段设置为null，否则会保存''
-            }
-            $data['user_id'] = Auth::id();
-            $data['code'] = base_convert(time(), 10, 16);
-            $res = Circle::create($data);
-            if (!$res) {
-                return response()->json(['err' => 1, 'msg' => '添加失败', 'data' => null]);
-            }
-            $this->joinCircle($res->id); // 加入圈子
-            $res->qrcode_path = $this->createQrcode(url('circle/' . $res->id . '/join'), 'uploads/circle'); // 创建二维码
-            $res->save(); // 保存
-            $res->users_num = $res->users->count();
+//            $data = $request->input('Circle');
+//            /* 处理数据 */
+//            foreach ($data as $key => $value) {
+//                if (trim($value) == '') {
+//                    $data[$key] = null; // 未填字段设置为null，否则会保存''
+//                    continue;
+//                }
+//                if ($key == 'expired_time') {
+//                    if ($value == 0) {
+//                        $data[$key] = null;
+//                    } else {
+//                        $data[$key] = date('Y-m-d H:i:s', strtotime('+' . $value . ' day')); // 未填字段设置为null，否则会保存''
+//                    }
+//                    continue;
+//                }
+//                $data[$key] = trim($value); // 未填字段设置为null，否则会保存''
+//            }
+//            $data['user_id'] = Auth::id();
+//            $data['code'] = base_convert(time(), 10, 16);
+//            $res = Circle::create($data);
+//            if (!$res) {
+//                return response()->json(['err' => 1, 'msg' => '添加失败', 'data' => null]);
+//            }
+//            $this->joinCircle($res->id); // 加入圈子
+//            $res->qrcode_path = $this->createQrcode(url('circle/' . $res->id . '/join'), 'uploads/circle'); // 创建二维码
+//            $res->save(); // 保存
+//            $res->users_num = $res->users->count();
 //            return redirect()->route('circle.show', $res->id);
-            return response()->json(['err' => 0, 'msg' => '添加成功', 'data' => $res]);
+//            return response()->json(['err' => 0, 'msg' => '添加成功', 'data' => $res]);
         }
     }
 
-    /**
-     * 加入圈子
-     *
-     * @param Request $request
-     * @param   null  $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     */
-    public function ajaxJoin(Request $request, $id = null)
-    {
-        if ($request->ajax()) {
-            $code = strtolower(trim($request->input('Circle.code')));
-            $circle = Circle::with(['users' => function ($query) {
-                $query->where('user_id', Auth::id());
-            }])->where('code', $code)->first();
-            if (!$circle) { // 圈子是否存在
-                return response()->json(['err' => 1, 'msg' => '圈子不存在', 'data' => null]);
-            }
-            if (count($circle->users)) { // 是否已加入圈子
-                return response()->json(['err' => 0, 'msg' => '您已在圈子中', 'data' => $circle]);
-                //return response()->json(['err' => 1, 'msg' => '您已在圈子中', 'data' => null]);
-            }
-            $this->joinCircle($id);
-//            return redirect()->to('circle/' . $id)->with('success', '加入成功');
-            return response()->json(['err' => 0, 'msg' => '加入成功', 'data' => $circle]);
-        }
-    }
 }
 

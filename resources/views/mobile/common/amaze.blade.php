@@ -71,13 +71,21 @@
 
 
 @section('modal')
-    {{--modal扩展--}}
+    {{--modal扩展 信息提示--}}
+    <div class="am-modal am-modal-alert" tabindex="-1" id="info-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">Amaze UI</div>
+            {{--<div class="am-modal-bd">--}}
+            {{--Hello world！--}}
+            {{--</div>--}}
+        </div>
+    </div>
 @show
-
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>
 <script src="{{ asset('static/mobile/js/amaze/amazeui.min.js') }}"></script>
 @section('javascript')
+    <script src="{{ asset('static/mobile/js/common.js??v=20170908') }}"></script>
 @show
 <script src="{{ asset('static/mobile/js/amaze/function.js?v=20170908-2') }}"></script>
 

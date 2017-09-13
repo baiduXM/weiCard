@@ -136,7 +136,6 @@
 @stop
 @section('javascript')
     @parent
-    <script src="{{ asset('static/mobile/js/common.js??v=20170908') }}"></script>
     <script src="{{ asset('static/mobile/js/cardcase/mp-index.js?v=20170908') }}"></script>
     <script>
         $(function () {
@@ -193,7 +192,7 @@
             });
 
             /* 展开分组 */
-            $('.accordion-title').on('touchstart', function () {
+            $('.accordion-title').click('touchstart', function () {
                 var _this    = $(this);
                 var count    = _this.children('i').text(); // 成员数
                 var group_id = $(this).parent('dl').attr('data-group-id');

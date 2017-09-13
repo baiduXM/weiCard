@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     /* 用户中心 */
     Route::post('userAjax/unfollow', ['as' => 'user.unfollowAjax', 'uses' => 'Home\UserController@unfollowAjax']);
     Route::post('userAjax/follow', ['as' => 'user.followAjax', 'uses' => 'Home\UserController@followAjax']);
-//    Route::post('userAjax/follow', ['as' => 'user.ajaxFollow', 'uses' => 'Home\UserController@ajaxFollow']);
+    Route::post('userAjax/follows', ['as' => 'user.followsAjax', 'uses' => 'Home\UserController@followsAjax']);
 
     Route::post('user/follow/{id}', ['as' => 'user.follow', 'uses' => 'Home\UserController@follow']);
     Route::post('user/unfollow/{id?}', ['as' => 'user.unfollow', 'uses' => 'Home\UserController@unfollow']);
@@ -214,12 +214,12 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::get('cardcase', ['as' => 'cardcase.index', 'uses' => 'Home\CardcaseController@index']); // 关注列表
 
     /* 名片圈 */
-    Route::post('circleAjax/join', ['as' => 'circle.ajaxJoin', 'uses' => 'Home\CircleController@ajaxJoin']);
-    Route::get('circleAjax/{id}', ['as' => 'circle.ajaxShow', 'uses' => 'Home\CircleController@ajaxShow']);
-    Route::post('circleAjax', ['as' => 'circle.ajaxStore', 'uses' => 'Home\CircleController@ajaxStore']);
+    Route::post('circleAjax/join', ['as' => 'circle.joinAjax', 'uses' => 'Home\CircleController@joinAjax']);
+    Route::get('circleAjax/{id}', ['as' => 'circle.showAjax', 'uses' => 'Home\CircleController@showAjax']);
+    Route::post('circleAjax', ['as' => 'circle.storeAjax', 'uses' => 'Home\CircleController@storeAjax']);
     Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
-    Route::delete('circle/{id}/quit/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
-    Route::get('circle/{id}/join', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
+    Route::delete('circle/quit/{id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
+    Route::post('circle/join/{id?}', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
     Route::resource('circle', 'Home\CircleController');
 
     /* 模板中心 */

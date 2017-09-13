@@ -380,28 +380,6 @@ class UserController extends HomeController
 
     }
 
-    /**
-     * ajax关注用户
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function ajaxFollow(Request $request)
-    {
-        if ($request->ajax()) {
-//            $ids = $request->input();
-            $ids = explode(',', $request->input('ids'));
-            $count = 0;
-            foreach ($ids as $id) {
-                if (!Auth::user()->isFollow($id)) {
-                    $count += Auth::user()->followThisUser($id);
-                    $this->moveGroup(['followed_id' => $id]);
-
-                }
-            }
-            return response()->json(array('err' => 0, 'msg' => '关注成功', 'data' => $count));
-        }
-    }
 
     /**
      * 取消关注
@@ -423,6 +401,12 @@ class UserController extends HomeController
 
     }
 
+    /**
+     * 单个关注用户
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function followAjax(Request $request)
     {
         if ($request->ajax()) {
@@ -444,5 +428,26 @@ class UserController extends HomeController
 
     }
 
+    /**
+     * 批量关注用户
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function followsAjax(Request $request)
+    {
+        if ($request->ajax()) {
+//            $ids = explode(',', $request->input('ids'));
+            $ids = $request->input('ids');
+            $count = 0;
+            foreach ($ids as $id) {
+                if (!Auth::user()->isFollow($id)) {
+                    $count += Auth::user()->followThisUser($id);
+                    $this->moveGroup(['followed_id' => $id]);
+                }
+            }
+            return response()->json(array('err' => 0, 'msg' => '关注成功 ' . $count . ' 位用户'));
+        }
+    }
 
 }
