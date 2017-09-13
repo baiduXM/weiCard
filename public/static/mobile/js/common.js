@@ -54,12 +54,13 @@ function showHtml(_html, _div, _type) {
 function clearAll() {
     var ipts = document.getElementsByTagName("INPUT");
     for (var i = 0; i < ipts.length; i++) {
-        if (ipts[i].type == "text" || ipts[i].type == "hidden" || ipts[i].type == "password") {
+
+        if (ipts[i].type == "text" || ipts[i].type == "password") {
             ipts[i].value = "";
         }
-        if (ipts[i].type == "checkbox" || ipts[i].type == "radio") {
-            ipts[i].checked = false;
-        }
+        // if (ipts[i].type == "checkbox" || ipts[i].type == "radio") {
+        //     ipts[i].checked = false;
+        // }
         if (ipts[i].type == "file") {
             ipts[i].outerHTML = ipts[i].outerHTML;
         }

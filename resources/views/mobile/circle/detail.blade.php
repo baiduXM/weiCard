@@ -211,7 +211,7 @@
         function init() {
             // 加载数据
             var _json = useAjax('get', '{{ route('circle.showAjax',$circle->id) }}');
-            showHtml(jointDiv(_json.data.users), '.x-cont-list', 'init');
+            showHtml(jointDiv(_json.data), '.x-cont-list', 'init');
 
         }
 
