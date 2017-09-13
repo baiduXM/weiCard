@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '员工管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee') !!}
+    {!! Breadcrumbs::render('mpmanager.employee') !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,12 +9,26 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     员工管理
+                    <span class="text-danger">{{ request()->is('*/trash') ? '(垃圾箱)' : '' }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="bootstrap-table">
                         {{--表单功能栏--}}
-                        <div class="fixed-table-toolbar">
+                        <div class=" fixed-table-toolbar">
                             <div class="columns btn-group pull-left">
+                                <div class="pull-left cell-3">
+                                    <select name="select-company" class="form-control select-company">
+                                        <option value="0">选择公司</option>
+                                        @foreach($companies as $company)
+                                            @if(isset($params['company_id']) && $params['company_id']== $company->id)
+                                                <option value="{{$company->id}}"
+                                                        selected>{{$company->display_name}}</option>
+                                            @else
+                                                <option value="{{$company->id}}">{{$company->display_name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div><!--公司信息-->
                                 <button class="btn btn-default operate-batch-delete" type="button"
                                         name="operate-batch-delete" data-url="company_employee/batch"
                                         data-toggle="modal" data-target=".confirmModal" title="删除">
@@ -26,9 +40,17 @@
                                 </button>
                             </div><!--添加/删除-->
                             <div class="columns btn-group pull-right">
-                                <button class="btn btn-default operate-refresh" type="button" name="refresh"
-                                        data-url="company_employee" title="重置刷新">
-                                    <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+                                <a class="btn btn-default operate-refresh" type="button" name="refresh"
+                                   data-url="{{ url('mpmanager/company_employee') }}" title="重置刷新">
+                                    <i class="glyphicon glyphicon-refresh icon-refresh"></i></a>
+                                <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
+                                   href="{{ url('mpmanager/company_employee/trash') }}"
+                                   title="垃圾箱">
+                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></a>
+                                <a class="btn btn-default operate-dustbin" type="button" name="dustbin"
+                                   href="{{ route('mpmanager.employee.exportExcel',['type'=>'all-unbinding']) }}"
+                                   title="全库未绑定员工信息导出">
+                                    <i class="glyphicon glyphicon-export icon-export"></i></a>
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -43,18 +65,18 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--ID-->
+                                        </th> --><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="number">工号</div>
                                             <div class="fht-cell"></div>
                                         </th><!--number-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">姓名</div>
+                                            <div class="th-inner" data-name="nickname">姓名</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--name-->
+                                        </th><!--nickname-->
                                         <th style="">
                                             <div class="th-inner" data-name="company">公司</div>
                                             <div class="fht-cell"></div>
@@ -91,39 +113,56 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
+                                        <!-- <td>{{ $item->id }}</td> -->
+                                            <!--ID-->
                                             <td>{{ $item->number }}</td><!--工号-->
-                                            <td>{!! ($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->name.'</a>' : $item->name !!}</td>
+                                            <td>{!! ($item->user) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->nickname.'</a>' : $item->nickname !!}</td>
                                             <!--姓名-->
-                                            <td>{!! ($item->company) ? '<a href="'.url('admin/company/'.$item->company->id).'">'.$item->company->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->company) ? '<a href="'.url('mpmanager/company/'.$item->company->id).'">'.$item->company->display_name.'</a>' : '' !!}</td>
                                             <!--公司-->
-                                            <td>{!! ($item->department) ? '<a href="'.url('admin/department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
+                                            <td>{!! ($item->department) ? '<a href="'.url('mpmanager/company_department/'.$item->department->id).'">'.$item->department->name.'</a>' : '' !!}</td>
                                             <!--部门-->
-                                            <td>{!! ($item->position) ? '<a href="'.url('admin/position/'.$item->position->id).'">'.$item->position->name.'</a>' : '' !!}</td>
+                                            <td>{{ $item->positions or '' }}</td>
                                             <!--头衔-->
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
+                                            <td>{!! ($item->created_at) ? $item->created_at->format('Y-m-d'): '' !!}</td>
+                                            <!--创建时间-->
                                             <td>
-                                                <a href="{{ url('admin/company_employee/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/company_employee/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/company_employee/'. $item->id .'/edit') }}"
-                                                   class="btn btn-primary btn-xs" title="编辑"><i
-                                                            class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(!isset($item->user))
-                                                    <a class="btn btn-primary btn-xs operate-code"
-                                                       data-toggle="modal" data-target="#shareModal"
-                                                       data-code="{{ $item->company->name . '/' . $item->number }}"
-                                                       data-url-code="{{ url('/user/binding?code=' . $item->company->name . '/' . $item->number) }}"
-                                                       title="代码">
-                                                        <i class="glyphicon glyphicon-copy"></i>代码
+                                                @if(request()->is('*/trash'))
+                                                    <a href="" class="btn btn-success btn-xs operate-recover"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="{{ url('mpmanager/company_employee/'.$item->id.'/recover') }}"
+                                                       data-info="{{ $item->nickname }} 员工"
+                                                       title="恢复">
+                                                        <i class="glyphicon glyphicon-transfer"></i>恢复
+                                                    </a>
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="{{ url('mpmanager/company_employee/trash/'.$item->id) }}"
+                                                       data-info="{{ $item->number }} 员工" title="彻底删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>彻底删除
+                                                    </a>
+                                                @else
+                                                    <a href="{{ url('mpmanager/company_employee/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    @if($item->user)
+                                                        <a href="" class="btn btn-warning btn-xs operate-unbinding"
+                                                           data-toggle="modal" data-target=".confirmModal"
+                                                           data-url="company_employee/{{ $item->id }}/unbinding"
+                                                           data-info="{{ $item->user->nickname }}"
+                                                           title="解绑用户">
+                                                            <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                    @endif
+                                                    <a class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="company_employee/{{ $item->id }}"
+                                                       data-info="{{ $item->number }} 员工" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
                                                     </a>
                                                 @endif
-                                                <a class="btn btn-danger btn-xs operate-delete"
-                                                   data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="company_employee/{{ $item->id }}"
-                                                   data-info="{{ $item->number }} 员工" title="删除">
-                                                    <i class="glyphicon glyphicon-trash"></i>删除
-                                                </a>
                                             </td><!--操作-->
                                         </tr>
                                     @endforeach

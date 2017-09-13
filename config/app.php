@@ -67,7 +67,7 @@ return [
     */
 
 //    'locale' => 'en',
-    'locale' => 'zh-CN',
+    'locale'   => 'zh-CN',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +162,10 @@ return [
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class, // added 面包屑扩展
         Intervention\Image\ImageServiceProvider::class, // added 图片处理
 //        Laravel\Socialite\SocialiteServiceProvider::class, // added 第三方登录
-        \SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
+        SocialiteProviders\Manager\ServiceProvider::class, // updated 第三方登录
+        Maatwebsite\Excel\ExcelServiceProvider::class, // added Excel插件
+        Overtrue\LaravelPinyin\ServiceProvider::class, // added 中文转拼音
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class, // added 二维码
 
 
     ],
@@ -180,42 +183,44 @@ return [
 
     'aliases' => [
 
-        'App' => Illuminate\Support\Facades\App::class,
-        'Artisan' => Illuminate\Support\Facades\Artisan::class,
-        'Auth' => Illuminate\Support\Facades\Auth::class,
-        'Blade' => Illuminate\Support\Facades\Blade::class,
-        'Cache' => Illuminate\Support\Facades\Cache::class,
-        'Config' => Illuminate\Support\Facades\Config::class,
-        'Cookie' => Illuminate\Support\Facades\Cookie::class,
-        'Crypt' => Illuminate\Support\Facades\Crypt::class,
-        'DB' => Illuminate\Support\Facades\DB::class,
-        'Eloquent' => Illuminate\Database\Eloquent\Model::class,
-        'Event' => Illuminate\Support\Facades\Event::class,
-        'File' => Illuminate\Support\Facades\File::class,
-        'Gate' => Illuminate\Support\Facades\Gate::class,
-        'Hash' => Illuminate\Support\Facades\Hash::class,
-        'Lang' => Illuminate\Support\Facades\Lang::class,
-        'Log' => Illuminate\Support\Facades\Log::class,
-        'Mail' => Illuminate\Support\Facades\Mail::class,
-        'Password' => Illuminate\Support\Facades\Password::class,
-        'Queue' => Illuminate\Support\Facades\Queue::class,
-        'Redirect' => Illuminate\Support\Facades\Redirect::class,
-        'Redis' => Illuminate\Support\Facades\Redis::class,
-        'Request' => Illuminate\Support\Facades\Request::class,
-        'Response' => Illuminate\Support\Facades\Response::class,
-        'Route' => Illuminate\Support\Facades\Route::class,
+        'App'       => Illuminate\Support\Facades\App::class,
+        'Artisan'   => Illuminate\Support\Facades\Artisan::class,
+        'Auth'      => Illuminate\Support\Facades\Auth::class,
+        'Blade'     => Illuminate\Support\Facades\Blade::class,
+        'Cache'     => Illuminate\Support\Facades\Cache::class,
+        'Config'    => Illuminate\Support\Facades\Config::class,
+        'Cookie'    => Illuminate\Support\Facades\Cookie::class,
+        'Crypt'     => Illuminate\Support\Facades\Crypt::class,
+        'DB'        => Illuminate\Support\Facades\DB::class,
+        'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
+        'Event'     => Illuminate\Support\Facades\Event::class,
+        'File'      => Illuminate\Support\Facades\File::class,
+        'Gate'      => Illuminate\Support\Facades\Gate::class,
+        'Hash'      => Illuminate\Support\Facades\Hash::class,
+        'Lang'      => Illuminate\Support\Facades\Lang::class,
+        'Log'       => Illuminate\Support\Facades\Log::class,
+        'Mail'      => Illuminate\Support\Facades\Mail::class,
+        'Password'  => Illuminate\Support\Facades\Password::class,
+        'Queue'     => Illuminate\Support\Facades\Queue::class,
+        'Redirect'  => Illuminate\Support\Facades\Redirect::class,
+        'Redis'     => Illuminate\Support\Facades\Redis::class,
+        'Request'   => Illuminate\Support\Facades\Request::class,
+        'Response'  => Illuminate\Support\Facades\Response::class,
+        'Route'     => Illuminate\Support\Facades\Route::class,
         //'Schema' => Illuminate\Support\Facades\Schema::class,
-        'Schema' => zedisdog\LaravelSchemaExtend\Schema::class, // updated 数据迁移表注释
-        'Session' => Illuminate\Support\Facades\Session::class,
-        'Storage' => Illuminate\Support\Facades\Storage::class,
-        'URL' => Illuminate\Support\Facades\URL::class,
+        'Schema'    => zedisdog\LaravelSchemaExtend\Schema::class, // updated 数据迁移表注释
+        'Session'   => Illuminate\Support\Facades\Session::class,
+        'Storage'   => Illuminate\Support\Facades\Storage::class,
+        'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,
+        'View'      => Illuminate\Support\Facades\View::class,
 
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class, // added 面包屑扩展
-        'Image' => Intervention\Image\Facades\Image::class, // added 图片处理
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added 第三方登录
-
+        'Image'       => Intervention\Image\Facades\Image::class, // added 图片处理
+        'Socialite'   => Laravel\Socialite\Facades\Socialite::class, // added 第三方登录
+        'Excel'       => Maatwebsite\Excel\Facades\Excel::class, // added Excel插件
+        'Pinyin'      => Overtrue\LaravelPinyin\Facades\Pinyin::class, // added 中文转拼音
+        'QrCode'      => SimpleSoftwareIO\QrCode\Facades\QrCode::class, // added 二维码插件
 
     ],
 

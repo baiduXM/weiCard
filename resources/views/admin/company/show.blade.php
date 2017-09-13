@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '公司详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.show', $company->id) !!}
+    {!! Breadcrumbs::render('mpmanager.company.show', $company->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -16,13 +16,17 @@
                                 <td class="col-md-9">{{ $company->id }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司名称</th>
+                                <th class="text-right">公司账号</th>
                                 <td class="">{{ $company->name }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">公司显示名称</th>
+                                <th class="text-right">公司名称</th>
                                 <td>{{ $company->display_name }}</td>
                             </tr>
+                            {{--<tr>--}}
+                            {{--<th class="text-right">员工人数上限</th>--}}
+                            {{--<td>{{ $company->limit }}</td>--}}
+                            {{--</tr>--}}
                             <tr>
                                 <th class="text-right">LOGO</th>
                                 <td>
@@ -51,36 +55,36 @@
                                 <td>{{ $company->description }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">注册人</th>
-                                <td>{!! isset($company->user_id) ? '<a href="'.url('admin/user/'.$company->user->id).'">'.$company->user->name .'</a>' : '' !!}</td>
+                                <th class="text-right">管理员</th>
+                                <td>{!! isset($company->user) ? '<a href="'.url('mpmanager/user/'.$company->user->id).'">'.$company->user->nickname .'</a>' : '' !!}</td>
                             </tr>
-                            <tr>
-                                <th class="text-right">审核人</th>
-                                <td>{!! isset($company->manager_id) ? '<a href="'.url('admin/manager/'.$company->manager->id).'">'.$company->manager->name .'</a>' : '' !!}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核状态</th>
-                                <td>
-                                    @if($company->status == 0)
-                                        <span class="label label-primary">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 1)
-                                        <span class="label label-success">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 2)
-                                        <span class="label label-default">{{ $company->getStatus($company->status) }}</span>
-                                    @elseif($company->status == 3)
-                                        <span class="label label-warning">{{ $company->getStatus($company->status) }}</span>
-                                    @endif
-                                    {{--                                    {{ $company->getStatus($company->status) }}--}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核失败原因</th>
-                                <td>{{ $company->reason }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">审核时间</th>
-                                <td>{{ $company->verified_at }}</td>
-                            </tr>
+                            {{--<tr>--}}
+                            {{--<th class="text-right">审核人</th>--}}
+                            {{--<td>{!! isset($company->manager_id) ? '<a href="'.url('mpmanager/manager/'.$company->manager->id).'">'.$company->manager->name .'</a>' : '' !!}</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                            {{--<th class="text-right">审核状态</th>--}}
+                            {{--<td>--}}
+                            {{--@if($company->status == 0)--}}
+                            {{--<span class="label label-primary">{{ $company->getStatus($company->status) }}</span>--}}
+                            {{--@elseif($company->status == 1)--}}
+                            {{--<span class="label label-success">{{ $company->getStatus($company->status) }}</span>--}}
+                            {{--@elseif($company->status == 2)--}}
+                            {{--<span class="label label-default">{{ $company->getStatus($company->status) }}</span>--}}
+                            {{--@elseif($company->status == 3)--}}
+                            {{--<span class="label label-warning">{{ $company->getStatus($company->status) }}</span>--}}
+                            {{--@endif--}}
+                            {{--                                    {{ $company->getStatus($company->status) }}--}}
+                            {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                            {{--<th class="text-right">审核失败原因</th>--}}
+                            {{--<td>{{ $company->reason }}</td>--}}
+                            {{--</tr>--}}
+                            {{--<tr>--}}
+                            {{--<th class="text-right">审核时间</th>--}}
+                            {{--<td>{{ $company->verified_at }}</td>--}}
+                            {{--</tr>--}}
                             <tr>
                                 <th class="text-right">创建时间</th>
                                 <td>{{ $company->created_at }}</td>
@@ -96,13 +100,20 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                @if($company->status != $company::VERIFIED_SUCCEED)
-                                    <a href="{{ url('admin/company/' . $company->id . '/verified') }}" type="button"
-                                       class="btn btn-success btn-md">审核</a>
+                                {{--@if($company->status != $company::VERIFIED_SUCCEED)--}}
+                                {{--<a href="{{ url('mpmanager/company/' . $company->id . '/verified') }}" type="button"--}}
+                                {{--class="btn btn-success btn-md">审核</a>--}}
+                                {{--@endif--}}
+                                @if($company->user)
+                                    <a href="" class="btn btn-warning btn-md operate-unbinding"
+                                       data-toggle="modal" data-target=".confirmModal"
+                                       data-url="{{ url('mpmanager/company/'. $company->id .'/unbinding') }}"
+                                       data-info="{{ $company->user->nickname }}"
+                                       title="解绑用户">解绑</a>
                                 @endif
-                                <a href="{{ url('admin/company/' . $company->id . '/edit') }}" type="button"
+                                <a href="{{ url('mpmanager/company/' . $company->id . '/edit') }}" type="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>
@@ -114,8 +125,8 @@
 @stop
 @section('javascript')
     <script>
-        $(".verify-failed").click(function () {
-            alert({{ $company->id }});
-        });
+        {{--$(".verify-failed").click(function () {--}}
+            {{--alert({{ $company->id }});--}}
+        {{--});--}}
     </script>
 @stop

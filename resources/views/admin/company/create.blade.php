@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '注册公司')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.create') !!}
+    {!! Breadcrumbs::render('mpmanager.company.create') !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,13 +9,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/company') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group {{ $errors->has('Company.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
-                                公司名称</label>
+                                公司账号</label>
                             <div class="col-md-6">
                                 <input id="name" name="Company[name]" type="text" placeholder="公司名（字母或数字）"
                                        class="form-control" value="{{ old('Company.name') }}">
@@ -25,10 +25,10 @@
                                     <strong>{{ $errors->first('Company.name') }}</strong>
                                 </span>
                             @endif
-                        </div><!-- name公司代码 -->
+                        </div><!-- name公司账号 -->
                         <div class="form-group {{ $errors->has('Company.display_name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="display_name"><span class="text-danger">*</span>
-                                显示名称</label>
+                                公司名称</label>
                             <div class="col-md-6">
                                 <input id="display_name" name="Company[display_name]" type="text" placeholder="输入公司显示名称"
                                        class="form-control" value="{{ old('Company.display_name') }}">
@@ -39,6 +39,19 @@
                                 </span>
                             @endif
                         </div><!-- display_name公司名 -->
+                        {{--<div class="form-group {{ $errors->has('Company.limit') ? ' has-error' : '' }}">--}}
+                            {{--<label class="col-md-3 control-label" for="limit"><span class="text-danger">*</span>--}}
+                                {{--员工人数上限</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input id="limit" name="Company[limit]" type="text" placeholder="输入员工上限人数"--}}
+                                       {{--class="form-control" value="{{ old('Company.limit') }}">--}}
+                            {{--</div>--}}
+                            {{--@if ($errors->has('Company.limit'))--}}
+                                {{--<span class="help-block col-md-3">--}}
+                                    {{--<strong>{{ $errors->first('Company.limit') }}</strong>--}}
+                                {{--</span>--}}
+                            {{--@endif--}}
+                        {{--</div><!-- limit公司员工人数上线设置 -->--}}
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">LOGO</label>
                             <div class="col-md-6">
@@ -113,7 +126,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company') : url()->previous() }}"
                                    role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>

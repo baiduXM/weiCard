@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '员工详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee.show', $employee->id) !!}
+    {!! Breadcrumbs::render('mpmanager.employee.show', $employee->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -21,30 +21,35 @@
                             </tr>
                             <tr>
                                 <th class="text-right">姓名</th>
-                                <td>{{ $employee->name }}</td>
+                                <td>{{ $employee->nickname }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">头像</th>
                                 <td>
-                                    <img src="{{ $employee->avatar ? asset($employee->avatar) : ''}}" class="img-responsive"
+                                    <img src="{{ $employee->avatar ? asset($employee->avatar) : ''}}"
+                                         class="img-responsive"
                                          style="max-height: 200px;max-width: 200px;">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-right">绑定用户</th>
-                                <td>{!! isset($employee->user) ? '<a href="'.url('admin/user/'.$employee->user->id).'">'.$employee->user->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->user) ? '<a href="'.url('mpmanager/user/'.$employee->user->id).'">'.$employee->user->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司</th>
-                                <td>{!! isset($employee->company) ? '<a href="'.url('admin/company/'.$employee->company->id).'">'.$employee->company->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->company) ? '<a href="'.url('mpmanager/company/'.$employee->company->id).'">'.$employee->company->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">部门</th>
-                                <td>{!! isset($employee->department) ? '<a href="'.url('admin/company_department/'.$employee->department->id).'">'.$employee->department->name .'</a>' : '' !!}</td>
+                                <td>{!! isset($employee->department) ? '<a href="'.url('mpmanager/company_department/'.$employee->department->id).'">'.$employee->department->name .'</a>' : '' !!}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">职位</th>
-                                <td>{!! isset($employee->position) ? '<a href="'.url('admin/company_position/'.$employee->position->id).'">'.$employee->position->name .'</a>' : '' !!}</td>
+                                <td>{{ $employee->positions or '' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">手机</th>
+                                <td>{{ $employee->mobile }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">座机</th>
@@ -65,9 +70,26 @@
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/company_employee/' . $employee->id . '/edit') }}" role="button"
-                                   class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
+                                @if($employee->user_id)
+                                    <a href="" class="btn btn-warning btn-md operate-unbinding"
+                                       data-toggle="modal" data-target=".confirmModal"
+                                       data-url="{{ url('mpmanager/company_employee/'. $employee->id .'/unbinding') }}"
+                                       data-info="{{ $employee->user->nickname }}"
+                                       title="解绑用户">解绑</a>
+                                @endif
+                                @if($employee->deleted_at)
+                                    <a href="" class="btn btn-success btn-md operate-recover"
+                                       data-toggle="modal" data-target=".confirmModal"
+                                       data-url="company_employee/{{ $employee->id }}/recover"
+                                       data-info="{{ $employee->nickname }} 员工"
+                                       title="恢复">恢复
+                                    </a>
+                                @else
+                                    <a href="{{ url('mpmanager/company_employee/' . $employee->id . '/edit') }}"
+                                       role="button"
+                                       class="btn btn-primary btn-md">编辑</a>
+                                @endif
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

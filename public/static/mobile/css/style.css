@@ -25,8 +25,8 @@ img{max-width:100%;max-height:100%;}
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-#search{border:1px solid #999;border-radius:0.5rem;width:90%;margin: 0.5rem auto; overflow: hidden}
-#search input{width:70%;padding-left:0.5rem;height:1.3rem;font-size:0.6rem;line-height:1.3rem;float:left;}
+#search{border:1px solid #999;border-radius:0.5rem;width:90%;margin: 0.5rem auto;}
+#search input{width:83%;padding-left:0.5rem;height:1.3rem;font-size:0.6rem;line-height:1.3rem;}
 #search button{border:none;background: none;color:#666;font-size:1rem;float:right;line-height:1.3rem;}
 
 
@@ -37,14 +37,14 @@ img{max-width:100%;max-height:100%;}
 .content li .list div.name span{font-size:0.7rem;}
 .content li .list div.name b{display: block;color: #0062b1; height:1rem;margin-top:0.4rem;text-align: center;line-height:1rem;}
 .content li .list div.name b.v{ display: none; }
-.content li .list i{font-size:1.5rem;vertical-align: top;margin-top:0.5rem;color:#bdbdbd;}
+.content li .list i{font-size:1.2rem;vertical-align: top;margin-top:0.5rem;color:#bdbdbd;}
 
-.icon-list{width:100%;padding:0.5rem 0;border-top:1px solid #ccc;display: none;}
+.icon-list{width:100%;padding:0.4rem 0;border-top:1px solid #ccc;display: none;}
 .icon-list dl{text-align: center;-moz-box-flex:1;  -webkit-box-flex:1;  box-flex:1; position: relative;}
-.icon-list dl dt{ height: 1.5rem; overflow: hidden}
-.icon-list dl dt i{font-size: 1.5rem; line-height: 1.5rem;}
-.icon-list dl dd{font-size:0.7rem; color:#666;}
-.icon-list dl.phone dt i{font-size: 1.3rem;}
+.icon-list dl dt{ height: 1.2rem; overflow: hidden}
+.icon-list dl dt i{font-size: 1rem; line-height: 1.2rem;}
+.icon-list dl dd{font-size:0.6rem; color:#666;}
+/*.icon-list dl.phone dt i{font-size: 1.3rem;}*/
 .tt{background: #f1f1f1; display:box;display:-webkit-box;display:-moz-box; -moz-box-orient: horizontal;-webkit-box-orient: horizontal;box-orient: horizontal;
     animation:animations .5s ease-out forwards;
     -moz-animation:animations .5s ease-out forwards;

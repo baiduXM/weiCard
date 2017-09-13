@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '公司管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company') !!}
+    {!! Breadcrumbs::render('mpmanager.company') !!}
 @stop
 @section('content')
     <div class="row">
@@ -29,9 +29,9 @@
                                 <button class="btn btn-default operate-refresh" type="button" name="refresh"
                                         data-url="company" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
-                                <button class="btn btn-default operate-retweet" type="button" name="retweet"
-                                        data-url="company" title="垃圾箱">
-                                    <i class="glyphicon glyphicon-retweet icon-retweet"></i></button>
+                                {{--<button class="btn btn-default operate-dustbin" type="button" name="dustbin"--}}
+                                        {{--data-url="company" title="垃圾箱">--}}
+                                    {{--<i class="glyphicon glyphicon-retweet icon-retweet"></i></button>--}}
                             </div><!--显示-->
                         </div>
                         {{--表单容器--}}
@@ -52,30 +52,30 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
+                                        <!-- <th style="">
                                             <div class="th-inner" data-name="id">#</div>
                                             <div class="fht-cell"></div>
-                                        </th><!--id-->
+                                        </th> --><!--id-->
                                         <th style="">
-                                            <div class="th-inner" data-name="name">公司名称</div>
+                                            <div class="th-inner" data-name="name">公司账号</div>
                                             <div class="fht-cell"></div>
                                         </th><!--name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="display_name">显示名称</div>
+                                            <div class="th-inner" data-name="display_name">公司名称</div>
                                             <div class="fht-cell"></div>
                                         </th><!--display_name-->
                                         <th style="">
-                                            <div class="th-inner" data-name="user_name">创始人</div>
+                                            <div class="th-inner" data-name="user_name">管理员</div>
                                             <div class="fht-cell"></div>
                                         </th><!--user_name-->
-                                        <th style="">
-                                            <div class="th-inner sortable" data-name="status">状态
-                                                <span class="order">
-                                                    <span class="caret" style="margin: 10px 5px;"></span>
-                                                </span>
-                                            </div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--status-->
+                                        {{--<th style="">--}}
+                                        {{--<div class="th-inner sortable" data-name="status">状态--}}
+                                        {{--<span class="order">--}}
+                                        {{--<span class="caret" style="margin: 10px 5px;"></span>--}}
+                                        {{--</span>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="fht-cell"></div>--}}
+                                        {{--</th><!--status-->--}}
                                         <th style="">
                                             <div class="th-inner sortable" data-name="created_at">创建时间
                                                 <span class="order">
@@ -101,71 +101,89 @@
                                                         <label for="id-{{ $item->id }}"></label>
                                                     </div>
                                                 </td><!--checkbox-->
-                                                <td>{{ $item->id }}</td>
+                                            <!-- <td>{{ $item->id }}</td> -->
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->display_name }}</td>
-                                                <td>{!! isset($item->user) ? '<a href="'.url('admin/user/'.$item->user->id).'">'.$item->user->name.'</a>' : '' !!}</td>
-                                                <td>
-                                                    @if($item->deleted_at != null)
-                                                        <span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>
-                                                    @else
-                                                        @if($item->status == $item::VERIFIED_ING)
-                                                            <span class="label label-primary">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_SUCCEED)
-                                                            <span class="label label-success">{{ $item->getStatus($item->status) }}</span>
-                                                        @elseif($item->status == $item::VERIFIED_FAILED)
-                                                            <span class="label label-default">{{ $item->getStatus($item->status) }}</span>
-                                                        @endif
-                                                    @endif
-                                                </td>
+                                                <td>{!! isset($item->user) ? '<a href="'.url('mpmanager/user/'.$item->user->id).'">'.$item->user->nickname.'</a>' : '' !!}</td>
+                                                {{--<td>--}}
+                                                {{--@if($item->deleted_at != null)--}}
+                                                {{--<span class="label label-danger">{{ $common->isDelete($item->deleted_at) }}</span>--}}
+                                                {{--@else--}}
+                                                {{--@if($item->status == $item::VERIFIED_ING)--}}
+                                                {{--<span class="label label-primary">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@elseif($item->status == $item::VERIFIED_SUCCEED)--}}
+                                                {{--<span class="label label-success">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@elseif($item->status == $item::VERIFIED_FAILED)--}}
+                                                {{--<span class="label label-default">{{ $item->getStatus($item->status) }}</span>--}}
+                                                {{--@endif--}}
+                                                {{--@endif--}}
+                                                {{--</td>--}}
                                                 <td>{{ $item->created_at }}</td>
                                                 <td>
-                                                    <a href="{{ url('admin/company/'.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company/'.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="详情"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                    <a href="{{ url('admin/company_employee?company_id='.$item->id) }}"
+                                                    <a href="{{ url('mpmanager/company_employee?company_id='.$item->id) }}"
                                                        class="btn btn-white btn-xs" title="查看员工"><i
                                                                 class="glyphicon glyphicon-list-alt"></i>员工</a>
-                                                    @if($item->deleted_at == null)
-                                                        @if($item->status == $item::VERIFIED_ING)
-                                                            <a href="{{ url('admin/company/'.$item->id . '/verified') }}"
-                                                               class="btn btn-success btn-xs" title="审核"><i
-                                                                        class="glyphicon glyphicon-bookmark"></i>审核</a>
-                                                        @endif
-                                                        @if(!$item->user)
-                                                            <a href="" class="btn btn-success btn-xs operate-binding"
-                                                               data-toggle="modal" data-target="#bindingModal"
-                                                               data-url="company/{{ $item->id }}/binding" title="绑定用户">
-                                                                <i class="glyphicon glyphicon-link"></i>绑定</a>
-                                                        @endif
-                                                        <a href="{{ url('admin/company/'. $item->id .'/edit') }}"
-                                                           class="btn btn-primary btn-xs" title="编辑"><i
-                                                                    class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-delete"
+                                                    <a href="{{ url('mpmanager/company_product?company_id='.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="查看产品"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>产品</a>
+                                                    <a href="{{ url('mpmanager/company_position?company_id='.$item->id) }}"
+                                                       class="btn btn-white btn-xs" title="查看职位"><i
+                                                                class="glyphicon glyphicon-list-alt"></i>职位</a>
+                                                    {{--@if($item->deleted_at == null)--}}
+                                                    {{--@if($item->status == $item::VERIFIED_ING)--}}
+                                                    {{--<a href="{{ url('mpmanager/company/'.$item->id . '/verified') }}"--}}
+                                                    {{--class="btn btn-success btn-xs" title="审核"><i--}}
+                                                    {{--class="glyphicon glyphicon-bookmark"></i>审核</a>--}}
+                                                    {{--@endif--}}
+                                                    @if($item->user)
+                                                        <a href="" class="btn btn-warning btn-xs operate-unbinding"
                                                            data-toggle="modal" data-target=".confirmModal"
-                                                           data-url="company/{{ $item->id }}"
-                                                           data-info="{{ $item->name }} 公司" title="删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>删除
-                                                        </a>
-                                                    @else
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-warning btn-xs operate-recover"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="恢复">
-                                                            <i class="glyphicon glyphicon-repeat"></i>恢复
-                                                        </a>
-                                                        <a href="#confirmModel"
-                                                           class="btn btn-danger btn-xs operate-destroy"
-                                                           {{--data-toggle="modal" data-target=".confirmModal"--}}
-                                                           {{--data-id="{{ $item->id }}"--}}
-                                                           {{--data-url="company/{{ $item->id }}"--}}
-                                                           title="彻底删除">
-                                                            <i class="glyphicon glyphicon-trash"></i>销毁
+                                                           data-url="company/{{ $item->id }}/unbinding"
+                                                           data-info="{{ $item->user->nickname }}"
+                                                           title="解绑管理员">
+                                                            <i class="glyphicon glyphicon-link"></i>解绑</a>
+                                                    @endif
+                                                    <a href="{{ url('mpmanager/company/'. $item->id .'/edit') }}"
+                                                       class="btn btn-primary btn-xs" title="编辑"><i
+                                                                class="glyphicon glyphicon-pencil"></i>编辑</a>
+                                                    <a href="#confirmModel"
+                                                       class="btn btn-danger btn-xs operate-delete"
+                                                       data-toggle="modal" data-target=".confirmModal"
+                                                       data-url="company/{{ $item->id }}"
+                                                       data-info="{{ $item->name }} 公司" title="删除">
+                                                        <i class="glyphicon glyphicon-trash"></i>删除
+                                                    </a>
+                                                    @if($item->user)
+                                                        <a href="#confirmModal" target="_blank"
+                                                           class="btn btn-darkblue btn-xs operate-login"
+                                                           data-toggle="modal" data-target=".confirmModal"
+                                                           data-url="{{ url('mpmanager/company/'. $item->id .'/login') }}"
+                                                           data-info="{{ $item->name }} 公司账号"
+                                                           title="登录公司前台管理">
+                                                            <i class="glyphicon glyphicon-user"></i>登录
                                                         </a>
                                                     @endif
+                                                    {{--@else--}}
+                                                    {{--<a href="#confirmModel"--}}
+                                                    {{--class="btn btn-warning btn-xs operate-recover"--}}
+                                                    {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                    {{--data-id="{{ $item->id }}"--}}
+                                                    {{--data-url="company/{{ $item->id }}"--}}
+                                                    {{--title="恢复">--}}
+                                                    {{--<i class="glyphicon glyphicon-repeat"></i>恢复--}}
+                                                    {{--</a>--}}
+                                                    {{--<a href="#confirmModel"--}}
+                                                    {{--class="btn btn-danger btn-xs operate-destroy"--}}
+                                                    {{--data-toggle="modal" data-target=".confirmModal"--}}
+                                                    {{--data-id="{{ $item->id }}"--}}
+                                                    {{--data-url="company/{{ $item->id }}"--}}
+                                                    {{--title="彻底删除">--}}
+                                                    {{--<i class="glyphicon glyphicon-trash"></i>销毁--}}
+                                                    {{--</a>--}}
+                                                    {{--@endif--}}
 
                                                 </td><!--操作-->
                                             </tr>
@@ -195,7 +213,21 @@
 @section('javascript')
     <script>
         $(function () {
-
+            /* 恢复员工 */
+            $(".operate-login").click(function () {
+                $('#confirmModal').on('show.bs.modal', function (event) {
+                    var relatedTarget = $(event.relatedTarget);
+                    var _id           = relatedTarget.data('id');
+                    var _info         = relatedTarget.data('info');
+                    var _url          = relatedTarget.data('url');
+                    var modal         = $(this);
+                    modal.find('.modal-title').text('登录确认');
+                    modal.find('.modal-body').text('确定登录 ' + _info);
+                    modal.find('form').attr('action', _url);
+                    modal.find('[name="_method"]').val('post');
+                    modal.find('form').append('<input type="hidden" name="id" value="' + _id + '"/>');
+                });
+            });
         });
     </script>
 @stop

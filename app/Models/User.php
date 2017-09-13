@@ -2,21 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+
+class User extends CommonModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
+    use Authenticatable, Authorizable, CanResetPassword;
+    use SoftDeletes;
 
 //    const IS_ADMIN = 1; // 管理员
 
-//    protected $guarded = [
-//        'id', 'password_confirmation',
-//    ];
-    protected $fillable = [
-        'id', 'name', 'email', 'mobile', 'password', 'remember_token', 'nickname', 'avatar', 'sex', 'description',
-        'oauth_weixin', 'is_active', 'created_at', 'updated_at', 'deleted_at',
+    /**
+     * @var array
+     */
+    protected $guarded = [
+        'id', 'password_confirmation',
     ];
 
+    /**
+     * 在数组中隐藏的属性
+     *
+     * @var array
+     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -38,12 +51,21 @@ class User extends Authenticatable
     }
 
     /**
-     * 关系模型(一对一) - 名片群
+     * 关系模型(一对一) - 用户所在分组
      */
     public function group()
     {
-        return $this->hasOne('App\Models\Group');
+        return $this->hasManyThrough('App\Models\Group', 'App\Models\UserFollower', 'follower_id', 'id');
     }
+
+    /**
+     * 关系模型(一对多) - 分组
+     */
+    public function groups()
+    {
+        return $this->hasMany('App\Models\Group');
+    }
+
 
     /**
      * 关系模型(一对多) - 名片夹
@@ -53,21 +75,29 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Cardcase');
     }
 
-//    /**
-//     * 关系模型(多对多) - 名片群
-//     */
-//    public function groups()
-//    {
-//        return $this->belongsToMany('App\Models\Group', 'group_user');
-//    }
+    /**
+     * 关系模型(一对多) - 名片圈（我创建的名片圈）
+     */
+    public function create_circles()
+    {
+        return $this->hasMany('App\Models\Circle');
+    }
 
     /**
-     * 关系模型(一对多) - 标签
+     * 关系模型(多对多) - 名片圈(我加入的名片圈)
      */
-    public function tags()
+    public function join_circles()
     {
-        return $this->hasMany('App\Models\Tag');
+        return $this->belongsToMany('App\Models\Circle', 'circle_user')->withTimestamps();
     }
+
+//    /**
+//     * 关系模型(一对多) - 标签
+//     */
+//    public function tags()
+//    {
+//        return $this->hasMany('App\Models\Tag');
+//    }
 
     /**
      * 关系模型(一对多,多态) - 被谁关注
@@ -82,42 +112,97 @@ class User extends Authenticatable
      */
     public function templates()
     {
-        return $this->morphToMany('App\Models\Template', 'useable');
+        return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
+    }
+
+    /* 用户关注 */
+    public function followings()
+    {
+        return $this->belongsToMany(self::class, 'user_followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /* 用户的粉丝 */
+    public function fans()
+    {
+        return $this->belongsToMany(self::class, 'user_followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * 是否关注
+     *
+     * @param $user_id 用户ID
+     * @return mixed
+     */
+    public function isFollow($user_id)
+    {
+        return $this->followings()->where('followed_id', $user_id)->count();
+    }
+
+    /**
+     * 关注用户
+     *
+     * @param $user_id 用户ID
+     * @return int
+     */
+    public function followThisUser($user_id)
+    {
+        if (!$this->isFollow($user_id)) {
+            $this->followings()->attach($user_id);
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * 取消关注
+     *
+     * @param $user_id
+     * @return int
+     */
+    public function unFollowThisUser($user_id)
+    {
+        if ($this->isFollow($user_id)) {
+            $this->followings()->detach($user_id);
+            return 1;
+        }
+        return 0;
+
     }
 
 
     /**
      * 用户绑定员工
      *
-     * @param $code
-     * @param $id
+     * @param $code 绑定代码
+     * @param $id   用户ID
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding($code, $id)
     {
-        $code = explode('/', $code);
-        $count = count($code);
-        if ($count != 2) {
-            return 101; // 绑定失败 - 代码无效
-        }
+
+//        $code = explode('/', $code);
+//        $count = count($code);
+//        if ($count != 2) {
+//            return 101; // 绑定失败 - 代码无效
+//        }
         $user = User::with('company', 'employee')->find($id);
         if ($user->employee) {
             return 109;
         }
-        $company = Company::where('name', '=', $code[0])->first();
-        if (!$company) {
-            return 102; // 绑定失败 - 找不到公司信息
-        }
-        $employee = Employee::where('number', '=', $code[1])->where('company_id', '=', $company->id)->first();
+//        $company = Company::where('mobile', $code)->first();
+//        if (!$company) {
+//            return 102; // 绑定失败 - 找不到公司信息
+//        }
+        $employee = Employee::where('mobile', $code)->first();
         if (!$employee) {
             return 103; // 绑定失败 - 找不到员工信息
         }
         if ($employee->user_id) {
             return 104; // 绑定失败 - 员工已绑定用户
         }
-        if (!$company->user_id) { // 公司无创始人
-            $user->company()->save($company); // 绑定公司
-        }
+//        if (!$company->user_id) { // 公司无创始人
+//            $user->company()->save($company); // 绑定公司
+//        }
         $user->employee()->save($employee); // 绑定员工
         return 100;
     }
@@ -143,5 +228,6 @@ class User extends Authenticatable
         }
         return 200;
     }
+
 
 }

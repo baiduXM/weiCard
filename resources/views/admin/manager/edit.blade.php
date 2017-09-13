@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '编辑管理员')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.manager.edit', $manager->id) !!}
+    {!! Breadcrumbs::render('mpmanager.manager.edit', $manager->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">编辑</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/manager/' . $manager->id) }}" method="post">
+                    <form class="form-horizontal" action="{{ url('mpmanager/manager/' . $manager->id) }}" method="post">
                     {{ method_field('put') }}
                     {{ csrf_field() }}
 
@@ -34,6 +34,7 @@
                                         data-toggle="popover" data-placement="right"
                                         data-content="暂时无法修改密码">修改密码
                                 </button>
+                                <!-- <a href="{{ url('mpmanager/manager/'. $manager->id .'/password') }}" class="btn btn-default" title="修改密码">修改密码</a> -->
                             </div>
                         </div><!-- password密码 -->
                         <div class="form-group {{ $errors->has('Manager.email') ? ' has-error' : '' }}">
@@ -125,7 +126,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}" type="button"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/employee') : url()->previous() }}" type="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

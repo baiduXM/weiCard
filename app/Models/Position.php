@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Position extends Model
+class Position extends CommonModel
 {
     public $timestamps = false;
+    const IS_ONLY = 1; // 是否唯一
 
     protected $guarded = [
         'id',

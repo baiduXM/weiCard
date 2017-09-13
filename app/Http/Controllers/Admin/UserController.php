@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Http\Controllers\Common\AdminController;
+use App\Models\CommonModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Breadcrumbs;
 use Illuminate\Support\Facades\Input;
 
-class UserController extends Controller
+class UserController extends AdminController
 {
 
     protected $path_type = 'user'; // 文件路径保存分类
@@ -19,27 +18,26 @@ class UserController extends Controller
     {
 
         // 首页 > 用户列表 > 添加用户
-        Breadcrumbs::register('admin.user.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('添加', route('admin.user.create'));
+        Breadcrumbs::register('mpmanager.user.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('添加', route('mpmanager.user.create'));
         });
 
         // 首页 > 用户列表 > 详情
-        Breadcrumbs::register('admin.user.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('详情', route('admin.user.show', $id));
+        Breadcrumbs::register('mpmanager.user.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('详情', route('mpmanager.user.show', $id));
         });
 
         // 首页 > 用户列表 > 编辑
-        Breadcrumbs::register('admin.user.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.user');
-            $breadcrumbs->push('编辑', route('admin.user.edit', $id));
+        Breadcrumbs::register('mpmanager.user.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.user');
+            $breadcrumbs->push('编辑', route('mpmanager.user.edit', $id));
         });
     }
 
     /**
      * 根据条件获取数据
-     *
      */
     public function index()
     {
@@ -65,10 +63,16 @@ class UserController extends Controller
         if (isset($sort)) {
             $query->orderBy($sort['column'], $sort['order']);
         }
-        $users = $query->with('company', 'employee')->paginate();
+        $users = $query->with('company', 'employee')->orderBy('created_at', 'desc')->paginate();
+        foreach ($users as $k => $v) {
+            $users[$k]->flag = 0; // 1：绑定公司，2：绑定员工，3：都绑定了
+            if ($v->company)
+                $users[$k]->flag += 1;
+            if ($v->employee)
+                $users[$k]->flag += 2;
+        }
         return view('admin.user.index')->with([
             'users' => $users,
-            'common' => new Common(),
         ]);
     }
 
@@ -80,7 +84,7 @@ class UserController extends Controller
     public function create()
     {
         return view('admin.user.create')->with([
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -94,22 +98,22 @@ class UserController extends Controller
     {
         /* 验证 */
         $this->validate($request, [
-            'User.name' => 'required|unique:users,users.name|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
-            'User.password' => 'required|confirmed',
-            'User.email' => 'email|unique:users,users.email',
-            'User.mobile' => 'digits:11|unique:users,users.mobile',
-            'User.nickname' => 'max:30',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.sex' => '',
+            'User.name'        => 'required|unique:users,users.name|regex:/^([A-Za-z0-9])*$/',
+            'User.password'    => 'required|confirmed',
+            'User.email'       => 'email|unique:users,users.email',
+            'User.mobile'      => 'digits:11|unique:users,users.mobile',
+            'User.nickname'    => 'required|max:30',
+            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.sex'         => '',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
-            'User.password' => '密码',
-            'User.email' => '邮箱',
-            'User.mobile' => '手机',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.sex' => '性别',
+            'User.name'        => '账号',
+            'User.password'    => '密码',
+            'User.email'       => '邮箱',
+            'User.mobile'      => '手机',
+            'User.nickname'    => '昵称',
+            'User.avatar'      => '头像',
+            'User.sex'         => '性别',
             'User.description' => '个性签名',
         ]);
 
@@ -125,17 +129,21 @@ class UserController extends Controller
         }
 
         /* 获取文件类型 */
-        if ($request->hasFile('User.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
-        }
+//        if ($request->hasFile('User.avatar')) {
+//            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $data['id']);
+//        }
 
         // 默认激活
         $data['is_active'] = 1;
-
+        $user = User::create($data);
+        //dd($user);
         /* 添加 */
-        if (User::create($data)) {
-            return redirect('admin/user')->with('success', '添加成功');
+        if ($user) {
+            if ($request->hasFile('User.avatar')) {
+                $user->avatar = $this->save($request->file('User.avatar'), $this->path_type, $user->id);
+                $user->save();
+            }
+            return redirect('mpmanager/user')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -150,11 +158,11 @@ class UserController extends Controller
     public function show($id)
     {
         if (!$user = User::find($id)) {
-            return redirect('admin/user')->with('warning', '用户不存在');
+            return redirect('mpmanager/user')->with('warning', '用户不存在');
         }
         return view('admin.user.show')->with([
-            'user' => $user,
-            'common' => new Common(),
+            'user'   => $user,
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -167,11 +175,11 @@ class UserController extends Controller
     public function edit($id)
     {
         if (!$user = User::find($id)) {
-            return redirect('admin/user')->with('warning', '用户不存在');
+            return redirect('mpmanager/user')->with('warning', '用户不存在');
         }
         return view('admin.user.edit')->with([
-            'user' => $user,
-            'common' => new Common(),
+            'user'   => $user,
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -179,45 +187,45 @@ class UserController extends Controller
      * 更新
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'User.name' => 'required|alpha_dash|unique:users,users.name,' . $id,
-            'User.email' => 'email|unique:users,users.email,' . $id,
-            'User.mobile' => 'digits:11|unique:users,users.mobile,' . $id,
-            'User.nickname' => 'max:30',
-            'User.avatar' => 'image|max:' . 2 * 1024, // 最大2MB
-            'User.sex' => '',
-            'User.age' => 'max:255',
+            'User.name'        => 'required|alpha_dash|unique:users,users.name,' . $id,
+            'User.email'       => 'email|unique:users,users.email,' . $id,
+            'User.mobile'      => 'digits:11|unique:users,users.mobile,' . $id,
+            'User.nickname'    => 'required|max:30',
+            'User.avatar'      => 'image|max:' . 2 * 1024, // 最大2MB
+            'User.sex'         => '',
+            'User.age'         => 'max:255',
             'User.description' => 'max:255',
         ], [], [
-            'User.name' => '账号',
-            'User.email' => '邮箱',
-            'User.mobile' => '手机',
-            'User.nickname' => '昵称',
-            'User.avatar' => '头像',
-            'User.sex' => '性别',
-            'User.age' => '年龄',
+            'User.name'        => '账号',
+            'User.email'       => '邮箱',
+            'User.mobile'      => '手机',
+            'User.nickname'    => '昵称',
+            'User.avatar'      => '头像',
+            'User.sex'         => '性别',
+            'User.age'         => '年龄',
             'User.description' => '说明',
         ]);
         $data = $request->input('User');
 
         /* 获取文件 */
-        if ($request->hasFile('User.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('User.avatar'), $this->path_type, $data['name']);
-        }
+
         $user = User::find($id);
+        if ($request->hasFile('User.avatar')) {
+            $data['avatar'] = $this->save($request->file('User.avatar'), $this->path_type, $id);
+        }
         foreach ($data as $key => $value) {
             if ($value !== '') {
                 $user->$key = $data[$key];
             }
         }
         if ($user->save()) {
-            return redirect('admin/user')->with('success', '修改成功' . ' - ' . $user->id);
+            return redirect('mpmanager/user')->with('success', '修改成功' . ' - ' . $user->id);
         } else {
             return redirect()->back();
         }
@@ -233,9 +241,30 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if ($user->delete()) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $user->name);
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $user->nickname);
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $user->name);
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $user->nickname);
+        }
+    }
+
+    /**
+     * 切换状态
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function refresh($id)
+    {
+        $user = User::find($id);
+        if ($user->is_active) {
+            $user->is_active = 0;
+        } else {
+            $user->is_active = 1;
+        }
+        if ($user->save()) {
+            return redirect('mpmanager/user')->with('success', $user->nickname . ' - 状态切换成功');
+        } else {
+            return redirect('mpmanager/user')->with('error', $user->nickname . ' - 状态切换失败');
         }
     }
 
@@ -243,7 +272,7 @@ class UserController extends Controller
      * 批量删除
      *
      * @param Request $request
-     * @param array $ids
+     * @param array   $ids
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)
@@ -251,9 +280,9 @@ class UserController extends Controller
         $ids = explode(',', $request->input('ids'));
         $res = User::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 
@@ -261,19 +290,27 @@ class UserController extends Controller
      * 用户关联员工
      *
      * @param Request $request
-     * @param $id
+     * @param         $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function binding(Request $request, $id)
     {
+        $type = $request->input('type') or 'company';
         $code = $request->input('code');
-        $user = new User();
-        $res = $user->binding($code, $id);
-        if ($res % 100 == 0) {
-            return redirect('admin/user')->with('success', config('global.msg.' . $res));
-        } else {
-            return redirect()->back()->with('error', config('global.msg.' . $res));
+        if (!$code) {
+            return redirect()->back()->with('error', '绑定代码不能为空');
         }
+        if ($type == 'employee') {
+            $res = $this->bindEmployee('mobile', $code, $id);
+        } elseif ($type == 'company') {
+            $res = $this->bindCompany('name', $code, $id);
+        }
+        if ($res === true) {
+            return redirect('mpmanager/user')->with('success', '绑定成功');
+        } else {
+            return redirect()->back()->with('error', $res);
+        }
+
     }
 
     /**
@@ -287,7 +324,7 @@ class UserController extends Controller
         $user = new User();
         $err_code = $user->unbinding($id);
         if ($err_code % 100 == 0) {
-            return redirect('admin/user')->with('success', config('global.msg.' . $err_code));
+            return redirect('mpmanager/user')->with('success', config('global.msg.' . $err_code));
         } else {
             return redirect()->back()->with('error', config('global.msg.' . $err_code));
         }

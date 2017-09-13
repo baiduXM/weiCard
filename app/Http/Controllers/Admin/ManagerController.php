@@ -2,38 +2,37 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Common\UploadController;
-use App\Http\Controllers\Controller;
-use App\Models\Common;
+use App\Http\Controllers\Common\AdminController;
+use App\Models\CommonModel;
 use App\Models\Manager;
 use Breadcrumbs;
 use Illuminate\Http\Request;
 
-class ManagerController extends Controller
+class ManagerController extends AdminController
 {
     protected $path_type = 'admin'; // 文件路径保存分类
 
     public function __construct()
     {
         // 首页 > 客服管理
-        Breadcrumbs::register('admin.manager', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin');
-            $breadcrumbs->push('客服管理', route('admin.manager.index'));
+        Breadcrumbs::register('mpmanager.manager', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager');
+            $breadcrumbs->push('客服管理', route('mpmanager.manager.index'));
         });
         // 首页 > 客服管理 > 添加
-        Breadcrumbs::register('admin.manager.create', function ($breadcrumbs) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('添加', route('admin.manager.create'));
+        Breadcrumbs::register('mpmanager.manager.create', function ($breadcrumbs) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('添加', route('mpmanager.manager.create'));
         });
         // 首页 > 客服管理 > 详情
-        Breadcrumbs::register('admin.manager.show', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('详情', route('admin.manager.index', $id));
+        Breadcrumbs::register('mpmanager.manager.show', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('详情', route('mpmanager.manager.index', $id));
         });
         // 首页 > 客服管理 > 编辑
-        Breadcrumbs::register('admin.manager.edit', function ($breadcrumbs, $id) {
-            $breadcrumbs->parent('admin.manager');
-            $breadcrumbs->push('编辑', route('admin.manager.edit', $id));
+        Breadcrumbs::register('mpmanager.manager.edit', function ($breadcrumbs, $id) {
+            $breadcrumbs->parent('mpmanager.manager');
+            $breadcrumbs->push('编辑', route('mpmanager.manager.edit', $id));
         });
     }
 
@@ -43,7 +42,7 @@ class ManagerController extends Controller
         $managers = Manager::paginate();
         return view('admin.manager.index')->with([
             'managers' => $managers,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -53,7 +52,7 @@ class ManagerController extends Controller
         $manager = new Manager;
         return view('admin.manager.create')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -66,7 +65,7 @@ class ManagerController extends Controller
             'Manager.password' => 'required|confirmed',
             'Manager.email' => 'email|unique:managers,managers.email',
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile',
-            'Manager.nickname' => 'max:30',
+            'Manager.nickname' => 'max:30|min:6',
             'Manager.is_super' => 'boolean',
             'Manager.is_active' => 'boolean',
         ], [], [
@@ -90,15 +89,14 @@ class ManagerController extends Controller
             }
         }
 
-        /* 获取文件类型 */
-        if ($request->hasFile('Manager.avatar')) {
-            $uploadController = new UploadController();
-            $data['avatar'] = $uploadController->saveImg($request->file('Manager.avatar'), $this->path_type, $data['name']);
-        }
+//        /* 获取文件类型 */
+//        if ($request->hasFile('Manager.avatar')) {
+//            $data['avatar'] = $this->save($request->file('Manager.avatar'), $this->path_type, $data['name']);
+//        }
 
         /* 添加 */
         if (Manager::create($data)) {
-            return redirect('admin/manager')->with('success', '添加成功');
+            return redirect('mpmanager/manager')->with('success', '添加成功');
         } else {
             return redirect()->back();
         }
@@ -108,11 +106,11 @@ class ManagerController extends Controller
     public function show($id)
     {
         if (!$manager = Manager::find($id)) {
-            return redirect('admin/manager')->with('warning', '用户不存在');
+            return redirect('mpmanager/manager')->with('warning', '用户不存在');
         }
         return view('admin.manager.show')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -121,11 +119,11 @@ class ManagerController extends Controller
     public function edit($id)
     {
         if (!$manager = Manager::find($id)) {
-            return redirect('admin/manager')->with('warning', '用户不存在');
+            return redirect('mpmanager/manager')->with('warning', '用户不存在');
         }
         return view('admin.manager.edit')->with([
             'manager' => $manager,
-            'common' => new Common(),
+            'common' => new CommonModel(),
         ]);
     }
 
@@ -136,7 +134,7 @@ class ManagerController extends Controller
             'Manager.name' => 'required|unique:managers,managers.name,' . $id . '|regex:/^[a-zA-Z]+([A-Za-z0-9])*$/',
             'Manager.email' => 'email|unique:managers,managers.email,' . $id,
             'Manager.mobile' => 'digits:11|unique:managers,managers.mobile,' . $id,
-            'Manager.nickname' => 'max:30',
+            'Manager.nickname' => 'max:30|min:6',
             'Manager.is_super' => 'boolean',
             'Manager.is_active' => 'boolean',
         ], [], [
@@ -158,7 +156,7 @@ class ManagerController extends Controller
             $manager->is_super = 0;
         }
         if ($manager->save()) {
-            return redirect('admin/manager')->with('success', '修改成功' . ' - ' . $manager->id);
+            return redirect('mpmanager/manager')->with('success', '修改成功' . ' - ' . $manager->id);
         } else {
             return redirect()->back();
         }
@@ -175,9 +173,9 @@ class ManagerController extends Controller
     {
         $manager = Manager::find($id);
         if ($manager->delete()) {
-            return redirect('admin/manager')->with('success', '删除成功 - ' . $manager->name);
+            return redirect('mpmanager/manager')->with('success', '删除成功 - ' . $manager->name);
         } else {
-            return redirect('admin/manager')->with('error', '删除失败 - ' . $manager->name);
+            return redirect('mpmanager/manager')->with('error', '删除失败 - ' . $manager->name);
         }
     }
 
@@ -185,7 +183,6 @@ class ManagerController extends Controller
      * 批量删除
      *
      * @param Request $request
-     * @param array $ids
      * @return \Illuminate\Http\RedirectResponse
      */
     public function batchDestroy(Request $request)
@@ -193,9 +190,9 @@ class ManagerController extends Controller
         $ids = explode(',', $request->input('ids'));
         $res = Manager::whereIn('id', $ids)->delete();
         if ($res) {
-            return redirect('admin/user')->with('success', '删除成功 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('success', '删除成功 - ' . $res . '条记录');
         } else {
-            return redirect('admin/user')->with('error', '删除失败 - ' . $res . '条记录');
+            return redirect('mpmanager/user')->with('error', '删除失败 - ' . $res . '条记录');
         }
     }
 

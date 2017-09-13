@@ -1,27 +1,36 @@
 @extends('mobile.common.layout')
 @section('title', '获取名片')
 @section('content')
+<div class="card_main">
     <div id="content2">
-        {{--<div class="header2">--}}
-        {{--<a href="" class="back animated fadeInLeftBig go"></a>--}}
-        {{--<h2 class="slowest flipInX go">获取名片</h2>--}}
-        {{--</div>--}}
         <div class="content2">
-            <div class="img1"><img src="{{ asset('static/mobile/images/binding.png') }}"></div>
-            <h2 class="title1">当前尚无企业名片</h2>
-            <em class="success display"></em>
-            <input type="text" value="输入名片码" name="code" class="txt1">
-            <input type="submit" value="立即获取" class="submit-btn btn1">
-        </div>
-        <div class="copyright1 animated fadeInDown go">
-            <p>copyright© 厦门易尔通网络科技有限公司 版权所有</p>
+            <div class="wrap_c">
+                <div class="img1"><img src="{{ asset('static/mobile/images/binding.png') }}"></div>
+                <div class="clearfix"></div>
+                <h2 class="title1">当前尚无企业名片</h2>
+                <em class="success display"></em>
+                <input type="text" value="输入名片码" name="code" class="txt1">
+                <input type="submit" value="立即获取" class="submit-btn btn1">
+                <input type="button" value="完善个人资料" class="edit-btn btn1">
+            </div>
         </div>
     </div>
-    <div class="mask1"></div>
+</div>
+<div class="sea_l pa">
+    <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
+    <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
+    <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
+</div>
 @stop
 @section('javascript')
     <script>
         $(function () {
+            /* 完善个人资料 */
+            $(".edit-btn").click(function () {
+                window.location.href = "/user/edit";
+            });
+
+            /* 获取名片 */
             $(".submit-btn").click(function () {
                 var code = $("[name='code']").val();
                 $.ajaxSetup({ // 无form表单时
@@ -38,6 +47,7 @@
                             window.location.href = "/user";
                         } else {
                             $("input").show();
+                            $(".success").text("");
                             $(".success").addClass("display");
                         }
                     });

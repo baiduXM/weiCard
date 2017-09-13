@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
-@section('title', '员工详情')
+@section('title', '部门详情')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee.show', $employee->id) !!}
+    {!! Breadcrumbs::render('mpmanager.department.show', $department->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -13,58 +13,34 @@
                         <table class="table table-hover table-bordered">
                             <tr>
                                 <th class="text-right col-md-3">ID</th>
-                                <td class="col-md-9">{{ $employee->id }}</td>
+                                <td class="col-md-9">{{ $department->id }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">公司</th>
-                                <td>{{ isset($employee->company) ? $employee->company->name : '' }}</td>
+                                <td>{{ isset($department->company) ? $department->company->display_name : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">部门</th>
-                                <td>{{ isset($employee->department) ? $employee->department->name : '' }}</td>
+                                <td>{{ $department->name or '' }}</td>
                             </tr>
                             <tr>
-                                <th class="text-right">关联用户</th>
-                                <td>{{ isset($employee->user) ? $employee->user->name : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">工号</th>
-                                <td>{{ $employee->number }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">姓名</th>
-                                <td>{{ $employee->name }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">职位</th>
-                                <td>{{ $employee->title }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">手机</th>
-                                <td>{{ $employee->mobile }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">座机</th>
-                                <td>{{ $employee->telephone }}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-right">简介</th>
-                                <td>{{ $employee->description }}</td>
+                                <th class="text-right">交接人</th>
+                                <td>{{ isset($department->owner) ? $department->owner->nickname : '' }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">创建时间</th>
-                                <td>{{ $employee->created_at }}</td>
+                                <td>{{ $department->created_at }}</td>
                             </tr>
                             <tr>
                                 <th class="text-right">更新时间</th>
-                                <td>{{ $employee->updated_at }}</td>
+                                <td>{{ $department->updated_at }}</td>
                             </tr>
                         </table>
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
-                                <a href="{{ url('admin/employee/' . $employee->id . '/edit') }}" role="button"
+                                <a href="{{ url('mpmanager/company_department/' . $department->id . '/edit') }}" role="button"
                                    class="btn btn-primary btn-md">编辑</a>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

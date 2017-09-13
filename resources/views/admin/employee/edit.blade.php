@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '修改资料')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.employee.edit', $employee->id) !!}
+    {!! Breadcrumbs::render('mpmanager.employee.edit', $employee->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">编辑信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company_employee/' . $employee->id) }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/company_employee/' . $employee->id) }}"
+                          method="post"
                           enctype="multipart/form-data">
                         {{ method_field('put') }}
                         {{ csrf_field() }}
@@ -18,7 +19,7 @@
                                 公司</label>
                             <div class="col-md-6">
                                 <select class="form-control" id="company_id" name="Employee[company_id]" readonly>
-                                    <option value="{{ $employee->company->id }}">{{ $employee->company->name }}</option>
+                                    <option value="{{ $employee->company->id }}">{{ $employee->company->nickname }}</option>
                                 </select>
                             </div>
                             @if ($errors->has('Employee.company_id'))
@@ -28,42 +29,46 @@
                             @endif
                         </div><!-- company_id公司ID -->
 
-                        {{--<div class="form-group {{ $errors->has('Employee.department_id') ? ' has-error' : '' }}">--}}
-                        {{--<label class="col-md-3 control-label" for="department_id"><span class="text-danger">*</span>--}}
-                        {{--部门</label>--}}
-                        {{--<div class="col-md-6">--}}
-                        {{--<select class="form-control" id="department_id" name="Employee[department_id]">--}}
-                        {{--<option selected value="">无部门</option>--}}
-                        {{--</select>--}}
-                        {{--</div>--}}
-                        {{--@if ($errors->has('Employee.company_id'))--}}
-                        {{--<span class="help-block col-md-3">--}}
-                        {{--<strong>{{ $errors->first('Employee.company_id') }}</strong>--}}
-                        {{--</span>--}}
-                        {{--@endif--}}
-                        {{--</div><!-- department_id部门ID -->--}}
+                        <div class="form-group {{ $errors->has('Employee.department_id') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="department_id">
+                                部门</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="department_id" name="Employee[department_id]">
+                                    <option selected value="0">无部门</option>
+                                    @foreach($employee->company->departments as $department)
+                                        <option {{ $employee->department_id == $department->id ? 'selected' : '' }}
+                                                value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @if ($errors->has('Employee.company_id'))
+                                <span class="help-block col-md-3">
+                        <strong>{{ $errors->first('Employee.company_id') }}</strong>
+                        </span>
+                            @endif
+                        </div><!-- department_id部门ID -->
 
-                        {{--<div class="form-group {{ $errors->has('Employee.position_id') ? ' has-error' : '' }}">--}}
-                        {{--<label class="col-md-3 control-label" for="position_id"><span class="text-danger">*</span>--}}
-                        {{--职位</label>--}}
-                        {{--<div class="col-md-6">--}}
-                        {{--<select class="form-control" id="position_id" name="Employee[position_id]">--}}
-                        {{--<option selected value="">无职位</option>--}}
-                        {{--</select>--}}
-                        {{--</div>--}}
-                        {{--@if ($errors->has('Employee.position_id'))--}}
-                        {{--<span class="help-block col-md-3">--}}
-                        {{--<strong>{{ $errors->first('Employee.position_id') }}</strong>--}}
-                        {{--</span>--}}
-                        {{--@endif--}}
-                        {{--</div><!-- position_id职位ID -->--}}
+                        <div class="form-group {{ $errors->has('Employee.positions') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="positions">
+                                职位</label>
+                            <div class="col-md-6">
+                                <input id="positions" name="Employee[positions]" type="text" placeholder=""
+                                       class="form-control"
+                                       value="{{ old('Employee.positions') ? old('Employee.positions') : $employee->positions }}">
+                            </div>
+                            @if ($errors->has('Employee.positions'))
+                                <span class="help-block col-md-3">
+                        <strong>{{ $errors->first('Employee.positions') }}</strong>
+                        </span>
+                            @endif
+                        </div><!-- position_id职位ID -->
 
                         <div class="form-group {{ $errors->has('Employee.number') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="number"><span class="text-danger">*</span>
                                 工号</label>
                             <div class="col-md-6">
                                 <input id="number" name="Employee[number]" type="text" placeholder=""
-                                       class="form-control" readonly
+                                       class="form-control"
                                        value="{{ old('Employee.number') ? old('Employee.number') : $employee->number }}">
                             </div>
                             @if ($errors->has('Employee.number'))
@@ -73,17 +78,17 @@
                             @endif
                         </div><!-- number工号 -->
 
-                        <div class="form-group {{ $errors->has('Employee.name') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="name"><span class="text-danger">*</span>
+                        <div class="form-group {{ $errors->has('Employee.nickname') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="nickname"><span class="text-danger">*</span>
                                 姓名</label>
                             <div class="col-md-6">
-                                <input id="name" name="Employee[name]" type="text" placeholder=""
+                                <input id="nickname" name="Employee[nickname]" type="text" placeholder=""
                                        class="form-control"
-                                       value="{{ old('Employee.name') ? old('Employee.name') : $employee->name }}">
+                                       value="{{ old('Employee.nickname') ? old('Employee.nickname') : $employee->nickname }}">
                             </div>
-                            @if ($errors->has('Employee.name'))
+                            @if ($errors->has('Employee.nickname'))
                                 <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('Employee.name') }}</strong>
+                                    <strong>{{ $errors->first('Employee.nickname') }}</strong>
                                 </span>
                             @endif
                         </div><!-- name姓名 -->
@@ -107,6 +112,21 @@
                             </div><!-- avatar头像 img显示 -->
                         @endif
 
+                        <div class="form-group {{ $errors->has('Employee.mobile') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="mobile">
+                                手机</label>
+                            <div class="col-md-6">
+                                <input id="mobile" name="Employee[mobile]" type="text" placeholder=""
+                                       class="form-control"
+                                       value="{{ old('Employee.mobile') ? old('Employee.mobile') : $employee->mobile }}">
+                            </div>
+                            @if ($errors->has('Employee.mobile'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Employee.mobile') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- mobile手机 -->
+
                         <div class="form-group {{ $errors->has('Employee.telephone') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="telephone">
                                 座机</label>
@@ -126,7 +146,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company_employee') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company_employee') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

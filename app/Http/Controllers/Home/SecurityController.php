@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Common\HomeController;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
-class SecurityController extends Controller
+class SecurityController extends HomeController
 {
     public function __construct()
     {
@@ -43,13 +43,13 @@ class SecurityController extends Controller
 
     public function index()
     {
-        return view('home.security.index');
+        return view('web.security.index');
     }
 
 
     public function email()
     {
-        return view('home.security.email');
+        return view('web.security.email');
     }
 
     public function postEmail()
@@ -69,7 +69,7 @@ class SecurityController extends Controller
             Config::set('services.' . $driver . '.redirect', 'http://mp.gbpen.com/security/binding/' . $driver . '/callback');
             return Socialite::with($driver)->redirect();
         }
-        return view('home.security.binding')->with([
+        return view('web.security.binding')->with([
             'user' => Auth::user(),
         ]);
     }
@@ -86,7 +86,7 @@ class SecurityController extends Controller
 
     public function password()
     {
-        return view('home.security.password');
+        return view('web.security.password');
     }
 
     public function postPassword(Request $request)

@@ -25,6 +25,22 @@ a:focus {  outline:  none;outline-offset:0;}
     url('//at.alicdn.com/t/font_3kn78bl57r38r529.svg?t=1493713883803#iconfont') format('svg'); /* iOS 4.1- */
 }
 
+@font-face {
+    font-family: 'iconfonts';  /* project id 320262 */
+    src: url('//at.alicdn.com/t/font_ctkyzlzdt6rjxlxr.eot');
+    src: url('//at.alicdn.com/t/font_ctkyzlzdt6rjxlxr.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_ctkyzlzdt6rjxlxr.woff') format('woff'),
+    url('//at.alicdn.com/t/font_ctkyzlzdt6rjxlxr.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_ctkyzlzdt6rjxlxr.svg#iconfont') format('svg');
+}
+.iconfonts {
+    font-family:"iconfonts" !important;
+    font-size:14px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .iconFont {
     font-family:"iconfont" !important;
     font-size:14px;
@@ -43,6 +59,8 @@ label{ display: inline-block;
 
     cursor: pointer;
 }
+.operate-batch-delete{cursor: pointer;}
+
 label i{  width: 14px;
     height: 14px;
     line-height:14px;
@@ -64,7 +82,8 @@ input[type='checkbox']:checked+label i{color:#fff; background-color: #1da1dc;bor
     vertical-align: middle;;display: inline-block;padding-left:8px;margin-left:8px;border-left:1px solid #e2e2e2;height:22px;line-height:22px;}
 .login div.input input{width:210px;height:46px;vertical-align: middle;}
 .login div.input {margin-bottom:15px;}
-.login .pass-error{color:#ff2a1f;font-size: 16px;margin-left:53px;text-align: left;margin-bottom:15px;}
+.pass-error{color:#ff2a1f;font-size: 16px;margin-left:53px;text-align: left;margin-bottom:15px;}
+.myCard-content .input p.pass-error{ margin-left: 117px;}
 .login button{background-color: #0c7cb5;color:#fff;font-size:22px;
     width:322px;height:46px;line-height:46px;text-align: center;border:none;border-radius: 10px;margin: 0 0 20px 0;cursor: pointer;}
 .login .txt{overflow: hidden;}
@@ -138,7 +157,7 @@ a:hover{text-decoration: none;}
 @media (max-width: 992px) {
     #myCard .main-cont form div.file-img{float:none;margin:0 auto 40px;}
     .input{float:none;}
-    .myCard-content form{float:none;text-align: center;}
+    .myCard-content form{float:none;text-align: left;}
     .main .main-cont{padding:40px;}
     .card-a{padding:20px;}
 }
@@ -150,11 +169,11 @@ a:hover{text-decoration: none;}
     .main .main-content{padding:10px;}
     .main .navbar-default{background-color: transparent;position:absolute;}
     .main .main-nav{    position: absolute;  top: 0;  z-index: 1;}
-    .myCard-content form{float:none;text-align: center;padding:20px 0;}
+    .myCard-content form{float:none;text-align: left;padding:20px 0;}
     .main-cont form div.input>input{margin:0;}
     #myCard .cont-nav{margin:0 0 8px 0; }
     .had-nav-name{display: none;}
-    .main-cont form div.input div span{width:27%;}
+    .main-cont form div.input div span{width:35%;}
     .main-cont form div.input div input{width:59%;}
     .main-cont form div.input div.user-j textarea{width:59%;}
     .nav-mod{background-color: rgba(000,000,000,.5);}
@@ -225,7 +244,7 @@ a:hover{text-decoration: none;}
 .main-cont form div.input div{ margin-bottom:30px;}
 .main-cont div.input div input{width:278px;height:35px;border:1px solid #c4c4c4;padding-left:10px;line-height:35px;}
 .main-cont form div.input div.file input{border:none;display: inline-block;}
-.main-cont  div.input div span{display:inline-block;font-size:16px;color:#333;margin-right:10px;width:78px;text-align: right;}
+.main-cont  div.input div span{display:inline-block;font-size:16px;color:#333;margin-right:10px;width:105px;text-align: right;}
 .main-cont   div.input>input{width:120px;height:36px;background: #1da1dc;color:#fff;font-size:16px;text-align:center;line-height:36px;border:none;border-radius: 5px;margin:0  0 0 160px;}
 .main-cont form div.file-img{width:128px;height:128px;margin-left:70px;background-color:#fff;border:1px solid #ccc;border-radius: 5px;padding:5px;}
 .main-cont form div.file-img img{width:100%;height:100%;}
@@ -302,6 +321,13 @@ a:hover{text-decoration: none;}
 .b-sort li a{width:120px;}
 .b-sort li:hover a{background-color: #1692c9;}
 .b-sort-icon a i{transform:rotate(90deg);-webkit-transform: rotate(90deg);transition: all linear .3s;-webkit-transition: all linear .3s;}
+.b-word-icon a i{transform:rotate(90deg);-webkit-transform: rotate(90deg);transition: all linear .3s;-webkit-transition: all linear .3s;}
+
+.b-word {border-radius: 3px;position: absolute;overflow: hidden;width:120px;z-index:500;}
+.b-word li {color:#fff;background-color: #1da1dc;margin:0;}
+.b-word li a{width:120px;}
+.b-word li:hover a{background-color: #1692c9;}
+.b-word-icon a i{transform:rotate(90deg);-webkit-transform: rotate(90deg);transition: all linear .3s;-webkit-transition: all linear .3s;}
 
 /******************address-phone-addName*************************/
 #phone-header{height:30px;line-height:30px;background-color: #1da1dc;}
@@ -332,11 +358,18 @@ a:hover{text-decoration: none;}
 .td-img a img{width:100%;height:100%;}
 .t-sort-btn{position: relative;}
 .t-sort-btn a{font-size:14px;}
+.t-word-btn{position: relative;}
+.t-word-btn a{font-size:14px;}
 .t-sort{position: absolute;left:-8px;top:42px;border:1px solid #ddd;border-top:2px solid #1da1dc;border-radius: 3px;width:100%;}
 .t-sort li{background-color: #fff;height:32px;line-height:32px;}
 .t-sort li a{border:none!important;}
 .t-sort li:hover a{background-color: #f5f5f5;}
+.t-word{position: absolute;left:-8px;top:42px;border:1px solid #ddd;border-top:2px solid #1da1dc;border-radius: 3px;width:100%;}
+.t-word li{background-color: #fff;height:32px;line-height:32px;}
+.t-word li a{border:none!important;}
+.t-word li:hover a{background-color: #f5f5f5;}
 .t-sort-icon a i{display:inline-block;transform:rotate(180deg);-webkit-transform: rotate(180deg);transition: all linear .3s; -webkit-transition: all linear .3s;}
+.t-word-icon a i{display:inline-block;transform:rotate(180deg);-webkit-transform: rotate(180deg);transition: all linear .3s; -webkit-transition: all linear .3s;}
 .add-yg{margin-top:-10px;}
 .add-btn{text-align: center;padding-top:10px;}
 .add-btn button{display: inline-block;padding:8px 25px;color:#fff;background-color: #1da1dc;border:none;border-radius: 3px;margin:0 5px;}
@@ -362,9 +395,9 @@ a:hover{text-decoration: none;}
 .g-look-main .modal-foot ul.modal-page li a{padding:2px 6px;}
 /*****************mb-main*******************/
 .mb-main{overflow: hidden;width:102.5%;}
-.mb-main dl{width:305px;/*height:463px;*/border:1px solid #ddd;border-radius: 3px;padding:5px;margin:0 14px 18px 0;display: inline-block;}
+.mb-main dl{width:305px;height:463px;border:1px solid #ddd;border-radius: 3px;padding:5px;margin:0 14px 18px 0;display: inline-block;}
 .mb-main dl dt{width:100%;height:400px;position: relative; overflow: hidden;}
-.mb-main dl dt img{width:100%;}
+.mb-main dl dt img{width:100%;height: 100%}
 .mb-main dl dd{margin-top:10px;text-align: right;}
 .mb-main dl dd a{color:#afafaf;display: inline-block;margin-left:5%;}
 .mb-main dl dd a:hover{color:#1da1dc;}
@@ -414,6 +447,8 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
     .b-button li a{margin-right:10px;width:110px;}
     .b-button li .b-sort{width:110px;}
     .b-sort li a{margin:0;font-size:12px;}
+    .b-word{width:110px;}
+    .b-word li a{margin:0;font-size:12px;}
     .mb-main dl{width:48%;height:100%;border:1px solid #ddd;border-radius: 3px;padding:3px;margin:0 5px 10px 0;display: inline-block;}
     .mb-main dl dt{width:100%;height:100%;}
     .sj-cont{margin:30px 0 0 0;}
@@ -444,6 +479,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
     table.b-table thead tr th.b-phone-w2{width:30%;}
     .b-table tr{height:22px;}
     .b-button li .b-sort{width:23%;}
+    .b-word{width:23%;}
     .clickMore{display: block;}
     .mb-main dl{width:48%;height:100%;border:1px solid #ddd;border-radius: 3px;padding:3px;margin:0 5px 10px 0;display: inline-block;}
     .mb-main dl dt{width:100%;height:100%;}
@@ -502,7 +538,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 .modal1 .modal-header button.close{color:#fff;opacity: 1;text-shadow: none;}
 .modal1 .modal-header h4{color:#fff;}
 .modal1 .modal-body{background-color: #fff;margin:5px 5px 0 5px;border:1px solid #ddd;padding-top:24px;}
-.modal1 .modal-body p{text-align: center;margin-bottom:14px;}
+.modal1 .modal-body p{text-align: left;margin-bottom:14px;}
 .modal1 .modal-body p span{color:#333;}
 .modal1 form .modal-body input{width:241px;height:28px;line-height:28px;border:1px solid #b1b1b1;padding-left:5px;border-radius: 3px;}
 .modal .modal-footer{border-radius: 0 0 3px 3px;background-color: #fff;margin:0 5px 5px 5px;border:1px solid #ddd;border-top:none;text-align: center;}
@@ -551,7 +587,7 @@ div.an-cont>a i{vertical-align:middle; margin-left:5px;display: inline-block;}
 .modal-foot ul.modal-page li a{display:inline-block;padding:5px 15px;border:1px solid #ddd;color:#b1b1b1;}
 .modal-foot ul.modal-page li:hover a{border-color:#1da1dc;color:#1da1dc;}
 .modal-foot ul li.modal-ok:hover a{color:#fff;background-color: #1da1dc;}
-.modal8{height:524px;}
+.modal8{/*height:524px;*/height: auto;}
 .modal8 .modal-body div.modal-address p input{border:1px solid #ddd;border-radius: 3px;}
 input[type=file] {
     display: inline-block;border:none!important;
@@ -568,21 +604,21 @@ input[type=file] {
 .modal11{width:322px;height:626px;margin-top:-250px;margin-left:-260px;}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .foot-txt{font-size:14px;color:#666;text-align: center;padding:10px 5px;line-height: 22px;}
 
 
+/*2017-6-26 公司产品外链*/
+.myCard-content .myCard-off form{font-size: 16px; text-align: left !important;}
+.myCard-content .myCard-off span{ padding-right: 20px;}
+.myCard-content .myCard-off input.cardInput{ border:1px solid #ccc; height:30px;margin:0 20px; line-height: 30px;}
+.myCard-content .myCard-off input.cardSave{background: #4dbef1;padding: 0 20px;line-height: 30px; height: 30px; color: #ffffff; border-radius:4px;}
+
+/*2017-6-26 公司简介外链*/
+.main-cont .companyLink{ line-height: 30px; vertical-align: top;}
+.main-cont .companyLink .com{ width: 280px; margin-bottom: 0;display: inline-block; text-align: left}
+.main-cont .companyLink input.comLinkInput{  width:auto; height:auto; line-height: 30px;}
+.main-cont .companyLink input.cardInput{ width: 213px; }
+.main-cont .companyLink .comTap{ text-align: left; font-size: 16px;}
+.main-cont .companyLink .comTap span{ color: red;}
 
 

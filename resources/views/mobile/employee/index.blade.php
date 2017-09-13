@@ -1,0 +1,112 @@
+@extends('mobile.common.layout')
+@section('title', '获取名片')
+@section('css')
+    @parent
+    <link href="{{ asset('static/mobile/css/public.css') }}" rel="stylesheet">
+@stop
+@section('content')
+    {{--<div class="card_top">--}}
+    {{--<a href="{{ url()->previous() }}" class="back fl"><img--}}
+    {{--src="{{ asset('static/mobile/images/back.png') }}"></a><span>获取名片</span>--}}
+    {{--</div>--}}
+    @if($company)
+        @if($company->is_person)
+            <div class="card_choose_b">
+                <ul>
+                    <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
+                </ul>
+            </div>
+        @else
+            <div class="card_choose">
+                <ul>
+                    <li><a href="{{ url('user') }}">个人名片</a></li>
+                    <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
+                </ul>
+            </div>
+        @endif
+    @else
+        <div class="card_choose">
+            <ul>
+                <li><a href="{{ url('user') }}">个人名片</a></li>
+                <li class="on"><a href="{{ url('company/employee') }}">企业名片</a></li>
+            </ul>
+        </div>
+    @endif
+    <div class="card_main">
+        <div class="card_content">
+            @if($employee)
+                <div class="cards pr"><img src="{{ asset('static/mobile/images/bg9.png') }}">
+                    <div class="cards_tx1 dtc tc vm pa"><img
+                                src="{{ $employee->avatar ? asset($employee->avatar) : asset('static/mobile/images/qy_tx.png') }}">
+                    </div>
+                    <div class="qy_name1 pa">{{ $employee->company->display_name }}</br>
+                        {{ $employee->nickname }}{{ $employee->positions ? '&nbsp;' . $employee->positions : ($employee->position ? '&nbsp;' . $employee->position->name : '') }}
+                        
+                    </div>
+                </div>
+                <a href="{{ url('cardcase/show/e') }}">
+                    <div class="choose_card pr">查看企业名片
+                        {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                    </div>
+                </a>
+                <a href="{{ url('template/com-template') }}">
+                    <div class="choose_card pr">更换企业模板
+                        {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                    </div>
+                </a>
+            @else
+                <div class="card_c_we pr"><img src="{{ asset('static/mobile/images/bg22.png') }}">
+                    <div class="card_c_gth pa"><img src="{{ asset('static/mobile/images/gth.png') }}"></div>
+                </div>
+                <div class="card_c_cjbox">
+                    <p class="qy hide">* 当前尚无企业名片！</p>
+                    <span>
+                    <input name="code" id="code" type="text" class="inputt" placeholder="输入名片码">
+                   </span>
+                    <a href="javascript:;" class="card_c_cj">立即获取企业名片</a>
+                    {{--<a href="{{ url('template/com-template') }}">--}}
+                        {{--<div class="choose_card pr">体验企业模板--}}
+                            {{--<div class="choose_box pa" name="error-info">已获取成功！</div>--}}
+                        {{--</div>--}}
+                    {{--</a>--}}
+                    {{--<a href="{{ url('template/com-template') }}" class="card_c_cj">体验企业模板</a>--}}
+                </div>
+            @endif
+        </div>
+    </div>
+    <div class="sea_l pa">
+        <div class="sea_hl1 pa"><img src="{{ asset('static/mobile/images/hl1.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl2.png') }}"></div>
+        <div class="sea_hl2 pa"><img src="{{ asset('static/mobile/images/hl3.png') }}"></div>
+    </div>
+@stop
+@section('javascript')
+    @parent
+    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
+    <script>
+        $(function () {
+            /* 完善个人资料 */
+            $(".edit-btn").click(function () {
+                window.location.href = "/user/edit";
+            });
+
+            /* 获取名片 */
+            $(".card_c_cj").click(function () {
+                var code = $("[name='code']").val();
+                $.ajaxSetup({ // 无form表单时
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.post("/user/binding", {code: code}, function (json) {
+                    $(".qy").text(json);
+                    $(".qy").removeClass("hide");
+                    $(".qy").oneTime('1s', function () {
+                        window.location.href = "/company/employee";
+                    });
+                });
+            });
+        });
+    </script>
+@stop
+

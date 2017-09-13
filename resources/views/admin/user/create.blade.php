@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '添加用户')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.user.create') !!}
+    {!! Breadcrumbs::render('mpmanager.user.create') !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,14 +9,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">添加信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/user') }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/user') }}" method="post"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group {{ $errors->has('User.name') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="name">用户名<span
                                         class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <input id="name" name="User[name]" type="text" placeholder="输入用户名"
+                                <input id="name" name="User[name]" type="text" placeholder="输入用户名（以字母开头，可包含字母和数字）"
                                        class="form-control" value="{{ old('User.name') }}">
                             </div>
                             @if ($errors->has('User.name'))
@@ -25,6 +25,19 @@
                                 </span>
                             @endif
                         </div><!-- name用户名 -->
+                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="nickname">昵称<span
+                                        class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
+                                       class="form-control" value="{{ old('User.nickname') }}">
+                            </div>
+                            @if ($errors->has('User.nickname'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('User.nickname') }}</strong>
+                                </span>
+                            @endif
+                        </div><!-- nickname昵称 -->
                         <div class="form-group {{ $errors->has('User.password') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="password">密码 <span
                                         class="text-danger">*</span></label>
@@ -75,18 +88,7 @@
                                 </span>
                             @endif
                         </div><!-- mobile手机 -->
-                        <div class="form-group {{ $errors->has('User.nickname') ? ' has-error' : '' }}">
-                            <label class="col-md-3 control-label" for="nickname">昵称</label>
-                            <div class="col-md-6">
-                                <input id="nickname" name="User[nickname]" type="text" placeholder="输入昵称"
-                                       class="form-control" value="{{ old('User.nickname') }}">
-                            </div>
-                            @if ($errors->has('User.nickname'))
-                                <span class="help-block col-md-3">
-                                    <strong>{{ $errors->first('User.nickname') }}</strong>
-                                </span>
-                            @endif
-                        </div><!-- nickname昵称 -->
+
                         <div class="form-group {{ $errors->has('User.avatar') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="avatar">头像</label>
                             <div class="col-md-6">
@@ -144,7 +146,7 @@
                         <div class="form-group">
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/user') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/user') : url()->previous() }}"
                                    role="button"
                                    class="btn btn-danger btn-md">返回</a>
                             </div>

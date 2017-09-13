@@ -22,4 +22,8 @@ composer install
 ```php
 php artisan key:generate  
 ```
-- 修改php.ini文件，upload_max_filesize=10M 上传文件大小限制确保>2M
+
+### 修改php.ini
+- upload_max_filesize=10M 上传文件大小限制确保>2M
+- curl.cainfo="[PATH]\Apache\bin\curl-ca-bundle.crt"
+

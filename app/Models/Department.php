@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class Department extends CommonModel
 {
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
@@ -20,6 +19,15 @@ class Department extends Model
     public $query = array(
         'company_id' => '=',
     );
+
+    /**
+     * 关系模型(一对一) - 交接人
+     */
+    public function owner()
+    {
+        return $this->belongsTo('App\Models\Employee', 'employee_id');
+    }
+
 
     /**
      * 关系模型(多对一) - 公司

@@ -8,10 +8,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Company extends Model
+class Company extends CommonModel
 {
 
 //    use SoftDeletes; // 软删除
@@ -34,6 +32,7 @@ class Company extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
 
     /**
      * 关系模型(多对一) - 管理员
@@ -60,11 +59,43 @@ class Company extends Model
     }
 
     /**
+     * 关系模型(一对多) - 职位
+     */
+    public function positions()
+    {
+        return $this->hasMany('App\Models\Position');
+    }
+
+    /**
+     * 关系模型(一对多) - 产品
+     */
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
+
+    /**
+     * 关系模型(一对多) - 微链接
+     */
+    public function links()
+    {
+        return $this->hasMany('App\Models\Link');
+    }
+
+    /**
+     * 关系模型(一对多) - 模板组
+     */
+    public function templategroups()
+    {
+        return $this->hasMany('App\Models\TemplateGroup');
+    }
+
+    /**
      * 关系模型(多对多,多态) - 模板
      */
     public function templates()
     {
-        return $this->morphToMany('App\Models\Template', 'useable');
+        return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
     }
 
     /**
@@ -76,9 +107,9 @@ class Company extends Model
     public function getStatus($index = null)
     {
         $array = [
-            self::VERIFIED_ING => '待审核',
+            self::VERIFIED_ING     => '待审核',
             self::VERIFIED_SUCCEED => '审核通过',
-            self::VERIFIED_FAILED => '审核失败',
+            self::VERIFIED_FAILED  => '审核失败',
         ];
         if ($index !== null) {
             return array_key_exists($index, $array) ? $array[$index] : reset($array);

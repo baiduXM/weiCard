@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', '首页') - {{ config('global.website.product_name') }}后台</title>
     <link href="{{ asset('static/common/css/bootstrap.min.css') }}" rel="stylesheet">
     {{--    <link href="{{ asset('static/admin/css/datepicker3.css') }}" rel="stylesheet">--}}
@@ -43,12 +44,12 @@
                                     class="glyphicon glyphicon-user"></span> {{ Auth::guard('admin')->user()->name }}
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('admin/setting/person') }}"><span
+                            <li><a href="{{ url('mpmanager/setting/person') }}"><span
                                             class="glyphicon glyphicon-user"></span>
                                     Profile</a></li>
-                            <li><a href="{{ url('admin/setting') }}"><span class="glyphicon glyphicon-cog"></span>
+                            <li><a href="{{ url('mpmanager/setting') }}"><span class="glyphicon glyphicon-cog"></span>
                                     Settings</a></li>
-                            <li><a href="{{ url('admin/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
+                            <li><a href="{{ url('mpmanager/logout') }}"><span class="glyphicon glyphicon-log-out"></span>
                                     Logout</a></li>
                         </ul>
                     </li>
@@ -72,6 +73,10 @@
     @show
 </div><!--/.main-->
 @include('admin.common.modal')
+@section('modal-extend')
+
+@show
+
 
 
 <script src="{{ asset('static/common/js/jquery-1.11.3.min.js') }}"></script>

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Employee extends Model
+class Employee extends CommonModel
 {
+    use SoftDeletes;
+
     protected $guarded = [
         'id', 'created_at', 'updated_at', 'deleted_at',
     ];
@@ -27,6 +29,14 @@ class Employee extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * 关系模型(一对一) - 部门 负责人
+     */
+    public function owner()
+    {
+        return $this->hasOne('App\Models\Department', 'employee_id');
     }
 
     /**
@@ -54,6 +64,14 @@ class Employee extends Model
     }
 
     /**
+     * 关系模型(多对一) - 职位
+     */
+    public function templategroup()
+    {
+        return $this->belongsTo('App\Models\TemplateGroup');
+    }
+
+    /**
      * 关系模型(一对多,多态) - 被谁关注
      */
     public function followers()
@@ -61,5 +79,12 @@ class Employee extends Model
         return $this->morphMany('App\Models\Cardcase', 'follower');
     }
 
+    /**
+     * 关系模型(多对多,多态) - 模板
+     */
+    public function templates()
+    {
+        return $this->morphToMany('App\Models\Template', 'useable', 'template_useable');
+    }
 
 }

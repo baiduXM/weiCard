@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '修改资料')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.company.edit', $company->id) !!}
+    {!! Breadcrumbs::render('mpmanager.company.edit', $company->id) !!}
 @stop
 @section('content')
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">编辑信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" action="{{ url('admin/company/' . $company->id) }}" method="post"
+                    <form class="form-horizontal" action="{{ url('mpmanager/company/' . $company->id) }}" method="post"
                           enctype="multipart/form-data">
                         {{ method_field('put') }}
                         {{ csrf_field() }}
@@ -41,6 +41,20 @@
                                 </span>
                             @endif
                         </div><!-- display_name公司名 -->
+                        {{--<div class="form-group {{ $errors->has('Company.limit') ? ' has-error' : '' }}">--}}
+                            {{--<label class="col-md-3 control-label" for="limit"><span class="text-danger">*</span>--}}
+                                {{--员工人数上限</label>--}}
+                            {{--<div class="col-md-6">--}}
+                                {{--<input id="limit" name="Company[limit]" type="text" placeholder="输入员工上限人数"--}}
+                                       {{--class="form-control"--}}
+                                       {{--value="{{ old('Company.limit') ? old('Company.limit') : $company->limit }}">--}}
+                            {{--</div>--}}
+                            {{--@if ($errors->has('Company.limit'))--}}
+                                {{--<span class="help-block col-md-3">--}}
+                                    {{--<strong>{{ $errors->first('Company.limit') }}</strong>--}}
+                                {{--</span>--}}
+                            {{--@endif--}}
+                        {{--</div><!-- limit公司员工人数上线设置 -->--}}
                         <div class="form-group {{ $errors->has('Company.logo') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="logo">Logo</label>
                             <div class="col-md-6">
@@ -129,7 +143,7 @@
                             <div class="col-md-12 widget-left">
                                 <button type="submit" class="btn btn-primary btn-md">确认</button>
                                 <button type="reset" class="btn btn-warning btn-md">重置</button>
-                                <a href="{{ url()->previous() == url()->current() ? url('admin/company') : url()->previous() }}"
+                                <a href="{{ url()->previous() == url()->current() ? url('mpmanager/company') : url()->previous() }}"
                                    role="button" class="btn btn-danger btn-md">返回</a>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 @extends('admin.common.layout')
 @section('title', '用户管理')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('admin.user') !!}
+    {!! Breadcrumbs::render('mpmanager.user') !!}
 @stop
 @section('content')
     <div class="row">
@@ -40,7 +40,7 @@
                                         data-url="user" title="重置刷新">
                                     <i class="glyphicon glyphicon-refresh icon-refresh"></i></button>
                             </div><!--显示-->
-                            <form name="form_search" action="{{ url('/admin/user') }}" method="get">
+                            <form name="form_search" action="{{ url('mpmanager/user') }}" method="get">
                                 <div class="input-group pull-right col-md-6">
                                     {{--{{ csrf_field() }}--}}
                                     <div class="input-group-btn btn-group keep-open">
@@ -51,10 +51,10 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" id="columnDropdown">
-                                            <li><a class="dropdown-item" data-column="name" name="column_name"
-                                                   style="cursor: pointer;">用户名</a></li>
                                             <li><a class="dropdown-item" data-column="nickname" name="column_nickname"
-                                                   style="cursor: pointer;">昵称</a></li>
+                                                   style="cursor: pointer;">用户名</a></li>
+                                            {{--<li><a class="dropdown-item" data-column="name" name="column_name"--}}
+                                                   {{--style="cursor: pointer;">用户名</a></li>--}}
                                             <li><a class="dropdown-item" data-column="mobile" name="column_mobile"
                                                    style="cursor: pointer;">手机</a></li>
                                             <li><a class="dropdown-item" data-column="email" name="column_email"
@@ -90,10 +90,6 @@
                                             </div>
                                             <div class="fht-cell"></div>
                                         </th><!--checkbox-->
-                                        <th style="">
-                                            <div class="th-inner" data-name="id">#</div>
-                                            <div class="fht-cell"></div>
-                                        </th><!--ID-->
                                         <th style="">
                                             <div class="th-inner" data-name="name">用户名</div>
                                             <div class="fht-cell"></div>
@@ -138,43 +134,45 @@
                                                     <label for="id-{{ $item->id }}"></label>
                                                 </div>
                                             </td><!--checkbox-->
-                                            <td>{{ $item->id }}</td><!--ID-->
-                                            <td>{{ $item->name }}</td><!--用户名-->
-                                            <td>{!! ($item->employee) ? '<a href="'.url('admin/company/'.$item->employee->company_id).'">'.$item->employee->company->name.'</a>' : '' !!}</td><!--公司-->
-                                            <td>{!! ($item->employee) ? '<a href="'.url('admin/employee/'.$item->employee->id).'">'.$item->employee->number.'</a>' : '' !!}</td><!--员工-->
+                                            <td>{{ $item->nickname }}</td><!--用户名-->
                                             <td>
-                                                @if($item->is_active == $common::IS_ACTIVE)
-                                                    <span class="label label-success">{{ $common->isActive($item->is_active) }}</span>
-                                                @else
-                                                    <span class="label label-default">{{ $common->isActive($item->is_active) }}</span>
+                                                @if($item->company)
+                                                    <a href="{{ url('mpmanager/company/'.$item->company->id) }}">{{ $item->company->display_name }}</a>(管理员)
+                                                @elseif($item->employee)
+                                                    <a href="{{ url('mpmanager/company/'.$item->employee->company_id) }}">{{ $item->employee->company->display_name }}</a>
                                                 @endif
+                                            </td>
+                                            <!--公司-->
+                                            <td>{!! ($item->employee) ? '<a href="'.url('mpmanager/company_employee/'.$item->employee->id).'">'.$item->employee->nickname.'</a>' : '' !!}</td>
+                                            <!--员工-->
+                                            <td>
+                                                <a href="{{ url('mpmanager/user/'. $item->id .'/refresh') }}"
+                                                   class="btn btn-xs label {{ $item->is_active == $item::IS_ACTIVE ? 'label-success' : 'label-default' }}"
+                                                   title="切换状态">
+                                                    <i class="glyphicon glyphicon-repeat"></i>{{ $item->isActive($item->is_active) }}
+                                                </a>
                                             </td><!--状态-->
                                             <td>{{ $item->created_at->format('Y-m-d') }}</td><!--创建时间-->
                                             <td>
-                                                <a href="{{ url('admin/user/'.$item->id) }}"
+                                                <a href="{{ url('mpmanager/user/'.$item->id) }}"
                                                    class="btn btn-white btn-xs" title="详情"><i
                                                             class="glyphicon glyphicon-list-alt"></i>详情</a>
-                                                <a href="{{ url('admin/user_cardcase/?user_id='.$item->id) }}"
-                                                   class="btn btn-white btn-xs" title="名片夹"><i
-                                                            class="glyphicon glyphicon-list-alt"></i>名片夹</a>
-                                                <a href="{{ url('admin/user/'. $item->id .'/edit') }}"
+                                                {{--<a href="{{ url('mpmanager/user_cardcase/?user_id='.$item->id) }}"--}}
+                                                   {{--class="btn btn-white btn-xs" title="名片夹"><i--}}
+                                                            {{--class="glyphicon glyphicon-list-alt"></i>名片夹</a>--}}
+                                                <a href="{{ url('mpmanager/user/'. $item->id .'/edit') }}"
                                                    class="btn btn-primary btn-xs" title="编辑"><i
                                                             class="glyphicon glyphicon-pencil"></i>编辑</a>
-                                                @if(($item->employee))
-                                                    <a href="" class="btn btn-warning btn-xs operate-unbinding"
-                                                       data-toggle="modal" data-target=".confirmModal"
-                                                       data-info="{{ $item->employee->company->name }}"
-                                                       data-url="user/{{ $item->id }}/binding" title="解绑员工">
-                                                        <i class="glyphicon glyphicon-link"></i>解绑</a>
-                                                @else
+                                                @if(!$item->employee || !$item->employee->company->user_id )
                                                     <a href="" class="btn btn-success btn-xs operate-binding"
                                                        data-toggle="modal" data-target="#bindingModal"
-                                                       data-url="user/{{ $item->id }}/binding" title="绑定员工">
-                                                        <i class="glyphicon glyphicon-link"></i>绑定</a>
+                                                       data-url="user/{{ $item->id }}/binding" title="绑定公司/员工"
+                                                       data-type="{{ $item->flag }}">
+                                                        <i class=" glyphicon glyphicon-link"></i>绑定</a>
                                                 @endif
                                                 <a href="" class="btn btn-danger btn-xs operate-delete"
                                                    data-toggle="modal" data-target=".confirmModal"
-                                                   data-url="user/{{ $item->id }}" data-info="{{ $item->name }} 用户"
+                                                   data-url="user/{{ $item->id }}" data-info="{{ $item->nickname }} 用户"
                                                    title="删除">
                                                     <i class="glyphicon glyphicon-trash"></i>删除
                                                 </a>
@@ -197,9 +195,80 @@
         </div>
     </div><!--/.row-->
 @stop
+@section('modal-extend')
+    <div class="modal fade formModal" id="bindingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-describedby="myModalContent">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">绑定公司/员工</h4>
+                </div>
+                <form action="" method="post">
+                    {{ csrf_field() }}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="" class="control-label">类型:</label>
+                            <div class="radio">
+                                <label>
+                                    <input class="radio-1" type="radio" name="type" value="company">绑定公司
+                                </label>
+                                <label>
+                                    <input class="radio-2" type="radio" name="type" value="employee"> 绑定员工
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group {{ $errors->has('code') ? ' has-error' : '' }}">
+                            <label for="code" class="control-label">绑定码:</label>
+                            <input type="text" class="form-control" id="code" name="code"
+                                   placeholder="公司账号/员工手机" value="{{ old('code') }}">
+                            @if ($errors->has('code'))
+                                <span class="help-block col-md-3">
+                                <strong>{{ $errors->first('code') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ">确认</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- 绑定模态框bindingModal -->
+@stop
 @section('javascript')
     <script>
         $(function () {
+            /* 用户绑定公司 */
+            $(".operate-binding").unbind('click').on('click', function () {
+                $('#bindingModal').unbind('show.bs.modal').on('show.bs.modal', function (event) {
+                    var relatedTarget = $(event.relatedTarget);
+                    var _url          = relatedTarget.data('url');
+                    var _type         = relatedTarget.data('type');
+                    var modal         = $(this);
+                    modal.find('form').attr('action', _url);
+                    if (_type == 0) {
+                        modal.find('.radio-1').attr('checked', true);
+                        modal.find('.radio-1').removeAttr('disabled');
+                        modal.find('.radio-2').removeAttr('disabled');
+
+                    }
+                    if (_type == 1) {
+                        modal.find('.radio-1').attr('disabled', true);
+                        modal.find('.radio-2').removeAttr('disabled');
+                        modal.find('.radio-2').attr('checked', true);
+
+                    }
+                    if (_type == 2) {
+                        modal.find('.radio-2').attr('disabled', true);
+                        modal.find('.radio-1').removeAttr('disabled');
+                        modal.find('.radio-1').attr('checked', true);
+                    }
+                });
+            });
         });
     </script>
 @stop
