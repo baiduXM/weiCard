@@ -219,7 +219,8 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::post('circleAjax', ['as' => 'circle.storeAjax', 'uses' => 'Home\CircleController@storeAjax']);
     Route::get('circleAjax', ['as' => 'circle.ajaxIndex', 'uses' => 'Home\CircleController@ajaxIndex']);
     Route::delete('circle/quit/{id?}', ['as' => 'circle.quit', 'uses' => 'Home\CircleController@quit']);
-    Route::post('circle/join/{id?}', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
+    Route::match(['get', 'post'], 'circle/join/{id?}', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
+    Route::get('circle/{id}/join', ['as' => 'circle.joinId', 'uses' => 'Home\CircleController@join']);
     Route::resource('circle', 'Home\CircleController');
 
     /* 模板中心 */

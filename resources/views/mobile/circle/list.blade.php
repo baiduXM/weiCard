@@ -249,7 +249,7 @@
             /* Modal 窗口完全关闭以后触发（CSS 动画执行完成） */
             $('.am-modal-actions').on('closed.modal.amui', function () {
                 $('.txtRed').removeClass('on'); // 隐藏错误提示
-                clearAll();
+//                clearAll();
             });
         });
         /* 初始化数据 */

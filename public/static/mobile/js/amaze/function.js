@@ -111,13 +111,13 @@ $(function () {
     //         $(".mp-groupBg").show();
     //         $(".mp-bjBox").hide();
     //     }
-        // $(".accordion-gapped .accordion-title").click('touchstart', function () {
-        //         var groupList = $(".group-list");
-        //         if (groupList.length !== 0) {
-        //             $(".mp-groupBg").hide();
-        //         }
-        //     }
-        // );
+    // $(".accordion-gapped .accordion-title").click('touchstart', function () {
+    //         var groupList = $(".group-list");
+    //         if (groupList.length !== 0) {
+    //             $(".mp-groupBg").hide();
+    //         }
+    //     }
+    // );
     // }
 
     // mpBg();
@@ -143,16 +143,16 @@ $(function () {
         // }
 
         /*分组下拉*/
-        $(".default-group .accordion-title").click('touchstart', function () {
-            $(this).siblings(".accordion-bd").slideToggle();
-            $(this).toggleClass("active");
-        });
+        // $(".default-group .accordion-title").click('touchstart', function () {
+        //     $(this).siblings(".accordion-bd").slideToggle();
+        //     $(this).toggleClass("active");
+        // });
         function groupSlide(e) {
-            var length = $(this).siblings('dd').find('.group-list').length;
-            if (length) {
+            var num = $(this).children('i').text();
+            if (num != 0) {
                 var target = $(e.target);
                 target.removeAttr("data-am-modal", "{target: '#mp-btn1'}");
-                target.siblings(".accordion-bd").slideToggle();
+                target.siblings(".accordion-bd").stop(true,true).slideToggle();
                 target.toggleClass("active");
             }
         }
@@ -197,14 +197,14 @@ $(function () {
 
                 $('.modelBtn').click('touchstart', function () {
                     var modelBtnThis = $(this);
-                    if (!modelBtnThis.parent('dl').attr('data-group-id')) {
-                        return false;
-                    }
                     var group_id     = modelBtnThis.parent('dl').attr('data-group-id');
-                    var modelBtnText = $(modelBtnThis).find('span').text();
+                    if (!group_id) {
+                        return false; // 无法编辑默认组
+                    }
+                    var modelBtnText = modelBtnThis.find('span').text();
                     $('#mp-btn1').modal('toggle');
                     $('#mp-btn1').find('input[name="Group[name]"]').val(modelBtnText);
-                    $('#mp-btn1').find('[name="group_id"]').val(group_id);
+                    $('#mp-btn1').find('input[name="group_id"]').val(group_id);
                 });
                 // $('.modelBtn').click('touchstart', myModel);
 
@@ -215,7 +215,6 @@ $(function () {
                 $(".bjBtn").html("名片组");
                 $(iHtml).parent().siblings("b").hide();
                 $(iHtml).parent().removeClass("onAfter");
-
                 $('.modelBtn').unbind('click');
                 iThis.find('dt').bind('touchstart', groupSlide);
                 // onSlide();
@@ -272,7 +271,7 @@ $(function () {
     });
 
     $(".mp-btn1").click('touchstart', function () {
-        $('#mp-btn1').modal('toggle');
+        //$('#mp-btn1').modal('toggle');
     });
 
     $(".x-share").click('touchstart', function () {

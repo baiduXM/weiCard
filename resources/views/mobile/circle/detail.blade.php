@@ -63,7 +63,7 @@
                     <a href="{{ route('cardview',$circle->user->employee?'e-'.$circle->user->employee->id:'u-'.$circle->user_id) }}">查看</a>
                 </span>
             </div>
-            <div class="x-cont-list">
+            <div class="x-cont-list" style="padding-bottom: 2rem;">
                 {{--成员信息--}}
             </div>
             {{--<p class="G-total">合计 : 12人</p>--}}
@@ -165,8 +165,8 @@
 
             /* 加关注 */
             $('.G-btn').click(function () {
-                var length    = $('.select-item:checked').length;
-                var _url      = $(this).data('url');
+                var length = $('.select-item:checked').length;
+                var _url   = $(this).data('url');
                 if (length == 0) {
                     alert('未选择');
                 } else {
