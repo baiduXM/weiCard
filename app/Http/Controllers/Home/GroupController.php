@@ -198,19 +198,21 @@ class GroupController extends HomeController
             $id = $request->input('group_id');
         }
         $group = Group::with('followers')->find($id);
-        if ($group) {
-            $this->moveGroup(['group_id' => $id]);
-        }
         /* 删除分组前，将关注用户移动到默认分组 */
-//        if ($group->followers()->count()) {
-//        }
-        if ($group->delete()) {
-            if ($this->is_mobile) {
-                return redirect()->route('cardcase.mp')->with('success', '删除成功');
+        if ($group) {
+            if (count($group->followers) > 0) {
+                $this->moveGroup(['group_id' => $id]);
             }
-            return redirect()->route('cardcase.mp')->with('success', '删除成功');
-
+            // ?bug:删除分组时、判断组内是否有成员的时候，有概率出现错误，需要优化，下面ajax方法同理
+            if ($group->delete()) {
+                if ($this->is_mobile) {
+                    return redirect()->route('cardcase.mp')->with('success', '删除成功');
+                }
+                return redirect()->back()->with('success', '删除成功');
+            }
+            return redirect()->back()->with('error', '删除失败');
         }
+        return redirect()->back()->with('error', '删除失败');
     }
 
 
