@@ -237,6 +237,8 @@ class HomeController extends Controller
                     . $person->company['coordinate_lat'] . ','
                     . $person->company['coordinate_lng'] . '&title=目标位置&content='
                     . $person->company['address'] . '&output=html';
+                $invoiceurl = url('invoice/' . $person->company['id']);
+                $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $invoiceurl;
                 /* 二维码名片信息 */
                 $title = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
                 $message =
