@@ -487,7 +487,12 @@ class EmployeeController extends HomeController
 
             $employee = array();
             foreach ($data as $k => $items) {
+                $index=0;
                 foreach ($items as $key => $item) {
+                    $index++;
+                    if($index>7){
+                        break;//excel是七列，如果超过七列，是多读，要退出 edit by xufusheng 20170914
+                    }
                     if (in_array($key, $this->importArray)) {
                         if ($key == '部门') {
                             $item = array_search($item, $department);
