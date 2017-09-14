@@ -16,9 +16,8 @@
             <a class="G-close-btn">
                 {{ Auth::id()==$circle->user_id ? '解散该圈子' : '退出圈子'}}
             </a>
-            <p><i>人数 : {{ count($circle->users) }}
-                    / {{ $circle->limit ? $circle->limit : '∞' }}</i>
-                <span>有限期至 : {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
+            <p><i>人数: {{ count($circle->users) }}/{{ $circle->limit ? $circle->limit : '∞' }}</i>
+                <span>有限期至: {{ $circle->expired_time ? $circle->expired_time : '永久' }}</span>
             </p>
         </div>
         <div class="x-share rt">
@@ -45,24 +44,24 @@
                 @endif
             </div>
             {{--创建人信息--}}
-            <div class="myCont">
-                <dl>
-                    <dt><img src="{{ asset($circle->user->avatar) }}" alt=""></dt>
-                    <dd>
-                        <span><b>{{ $circle->user->employee ? $circle->user->employee->nickname : $circle->user->nickname }}</b><i>发起人</i></span>
-                        <p>{{ $circle->user->employee ? $circle->user->employee->company->display_name : '暂无未加入公司' }}</p>
-                        <p>{{ $circle->user->employee ? $circle->user->employee->positions : '无职务信息' }}</p>
-                    </dd>
-                </dl>
-                <span class="myBtn rt">
-                   @if($circle->user_id == Auth::id())
-                        <i>自己</i>
-                    @else
-                        {!! Auth::user()->isFollow($circle->user_id)?'<i class="on">已关注</i>': '<i>未关注</i>' !!}
-                    @endif
-                    <a href="{{ route('cardview',$circle->user->employee?'e-'.$circle->user->employee->id:'u-'.$circle->user_id) }}">查看</a>
-                </span>
-            </div>
+            {{--<div class="myCont">--}}
+            {{--<dl>--}}
+            {{--<dt><img src="{{ asset($circle->user->avatar) }}" alt=""></dt>--}}
+            {{--<dd>--}}
+            {{--<span><b>{{ $circle->user->employee ? $circle->user->employee->nickname : $circle->user->nickname }}</b><i>发起人</i></span>--}}
+            {{--<p>{{ $circle->user->employee ? $circle->user->employee->company->display_name : '暂无未加入公司' }}</p>--}}
+            {{--<p>{{ $circle->user->employee ? $circle->user->employee->positions : '无职务信息' }}</p>--}}
+            {{--</dd>--}}
+            {{--</dl>--}}
+            {{--<span class="myBtn rt">--}}
+            {{--@if($circle->user_id == Auth::id())--}}
+            {{--<i>自己</i>--}}
+            {{--@else--}}
+            {{--{!! Auth::user()->isFollow($circle->user_id)?'<i class="on">已关注</i>': '<i>未关注</i>' !!}--}}
+            {{--@endif--}}
+            {{--<a href="{{ route('cardview',$circle->user->employee?'e-'.$circle->user->employee->id:'u-'.$circle->user_id) }}">查看</a>--}}
+            {{--</span>--}}
+            {{--</div>--}}
             <div class="x-cont-list" style="padding-bottom: 2rem;">
                 {{--成员信息--}}
             </div>
@@ -95,7 +94,7 @@
     <!--踢人弹出框-->
     <div class="am-modal am-modal-confirm  close-modal" tabindex="-1" id="G-close-quit">
         <div class="am-modal-dialog">
-            <form action="{{ route('circle.quit') }}" method="post" id="form-quit">
+            <form action="" method="post" id="form-quit">
                 {{ method_field('delete') }}
                 {{ csrf_field() }}
                 <div class="am-modal-bd">
@@ -105,8 +104,8 @@
                     <span class=" " data-am-modal-close>取消</span>
                     <span class="confirm am-modal-btn confirm-quit" data-am-modal-confirm>确定</span>
                 </div>
-                <input type="hidden" name="circle_id" value="{{ $circle->id }}">
-                <input type="hidden" name="user_id" value="">
+                {{--<input type="hidden" name="circle_id" value="{{ $circle->id }}">--}}
+                {{--<input type="hidden" name="user_id" value="">--}}
             </form>
         </div>
     </div>
@@ -156,6 +155,9 @@
             });
             /* 踢出圈子 模态框 */
             $(".G-close-quit").click('touchstart', function () {
+                var modal = $('#G-close-quit');
+                var url   = $(this).attr('data-url');
+                modal.find('form').attr('action', url)
                 $('#G-close-quit').modal('toggle');
             });
             /* 踢出圈子 */
@@ -215,34 +217,52 @@
 
         }
 
-
+        /* 拼接数据 */
         function jointDiv(data) {
-            var _html = '';
+            var _html          = '';
+            var self_id        = '{{ Auth::id() }}'; // 当前用户ID
+            var circle_user_id = '{{ $circle->user_id }}'; // 圈子创始人ID
             if (data.length) {
                 $.each(data, function (k, v) {
                     _html += '<div class="G-list myCont" data-user-id="' + v.id + '">';
-                    if (!v.isFollow) {
+                    if (v.id != self_id && !v.isFollow) { // 判断是否当前用户 && 判断是否已关注
                         _html += '<input type="checkbox" class="select-item" id="' + v.id + '" value="' + v.id + '">';
                     }
                     _html += '<dl>';
                     _html += '<dt><img src="' + v.avatar + '" alt=""></dt>';
                     _html += '<dd>';
                     if (v.employee) { // 企业员工
-                        _html += '<span><b>' + v.employee.nickname + '</b> </span>';
-                        _html += '<p>' + v.company.display_name + '</p>';
-                        _html += '<p>' + v.employee.positions + '</p>';
+                        _html += '<span>';
+                        _html += '<b>' + v.employee.nickname + '</b>';
+                        if (v.id == circle_user_id) { // 发起人
+                            _html += '<i>发起人</i>';
+                        }
+                        _html += '</span>';
+                        _html += v.company.display_name ? '<p>' + v.company.display_name + '</p>' : "<p>暂无未加入公司</p>";
+                        _html += v.employee.positions ? '<p>' + v.employee.positions + '</p>' : "<p>无职务信息</p>";
                     } else {
-                        _html += '<span><b>' + v.nickname + '</b> </span>';
-                        _html += '<p>' + v.mobile + '</p>';
+                        _html += '<span>';
+                        _html += '<b>' + v.nickname + '</b>';
+                        if (v.id == circle_user_id) { // 发起人
+                            _html += '<i>发起人</i>';
+                        }
+                        _html += '</span>';
+                        _html += v.mobile ? '<p>' + v.mobile + '</p>' : '<p>暂无手机号码</p>';
+                        _html += '<p>【个人用户】</p>';
                     }
                     _html += '</dd></dl>';
-                    {{--_html += '<a class="G-close rt" data-url="' + '{{ route('circle.quit',['id'=>$circle->id,'user_id'=>Auth::id()]) }}' + '" > × </a>';--}}
-                        _html += '<a class="G-close G-close-quit rt" data-url="' + '{{ url('circle/'.$circle->id.'/quit') }}' + '/' + v.id + '" > × </a>';
+                    if (v.id != circle_user_id) { // 发起人
+                        _html += '<a class="G-close G-close-quit rt" data-url="' + '{{ route('circle.quit',$circle->id ) }}' + '/' + v.id + '" > × </a>';
+                    }
                     _html += '<span class="myBtn rt">';
-                    if (v.isFollow) {
-                        _html += '<i class="on">已关注</i>';
+                    if (v.id == self_id) { // 是否是自己
+                        _html += '<i style="color: red;">自己</i>';
                     } else {
-                        _html += '<i>未关注</i>';
+                        if (v.isFollow) {
+                            _html += '<i class="on">已关注</i>';
+                        } else {
+                            _html += '<i>未关注</i>';
+                        }
                     }
                     if (v.employee) { // 企业员工
                         _html += '<a href="' + '{{ url('cardview') }}' + '/e-' + v.employee.id + '">查看</a>';
