@@ -487,13 +487,14 @@ class EmployeeController extends HomeController
 
             $employee = array();
             foreach ($data as $k => $items) {
-                $index=0;
                 foreach ($items as $key => $item) {
-                    $index++;
-                    if($index>7){
-                        break;//excel是七列，如果超过七列，是多读，要退出 edit by xufusheng 20170914
-                    }
-                    if (in_array($key, $this->importArray)) {
+                    $index=0;
+                    foreach ($items as $key => $item) {
+                        $index++;
+                        if($index>7){
+                            break;
+                        }
+
                         if ($key == '部门') {
                             $item = array_search($item, $department);
                         }
@@ -503,25 +504,35 @@ class EmployeeController extends HomeController
                 $employee[$k]['company_id'] = $company_id;
                 $employee[$k]['created_at'] = $time;
 
+
             }
+
             $validator = Validator::make($employee, [
-                '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . '|regex:/^([A-Za-z0-9])*$/',
+                '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . ',deleted_at,Null|regex:/^([A-Za-z0-9])*$/',
                 '*.mobile' => 'required|unique:employees,employees.mobile,null',
             ], [], [
                 '*.number' => '工号',
                 '*.mobile' => '手机',
             ]);
+
             if ($validator->fails()) {
+                print_r($validator->fails());
 //                $error[0] = $this->importArray;
 //                $error[0]['error'] = '错误信息';
                 foreach ($validator->errors()->toArray() as $key => $value) {
                     $k = explode('.', $key)[0];
+                    print_r($value);
+                    print_r($key);
+                    print_r($employee[$k]);
+                    exit();
 //                    $error[$k + 1] = $data[$k];
 //                    $error[$k + 1]['error'] = implode('|', $value);
                     unset($employee[$k]); // 移除错误数据
                 }
             }
+
             if (count($employee) > 0) {
+
                 Employee::insert($employee);
             }
 //            $res['error'] = $error;
