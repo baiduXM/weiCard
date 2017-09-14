@@ -172,7 +172,7 @@ class CircleController extends HomeController
     public function show($id)
     {
         $circle = Circle::with('users')->find($id);
-        $circle->expired_time = $circle->expired_time ? date('Y-m-d', strtotime($circle->expired_time)) : null; // 未填字段设置为null，否则会保存''
+//        $circle->expired_time = $circle->expired_time ? date('Y-m-d', strtotime($circle->expired_time)) : null; // 未填字段设置为null，否则会保存''
         if ($this->is_mobile) {
             return view('mobile.circle.detail')->with([
                 'circle' => $circle,
