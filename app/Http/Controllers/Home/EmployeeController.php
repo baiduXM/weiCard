@@ -517,15 +517,15 @@ class EmployeeController extends HomeController
             ]);
 
             if ($validator->fails()) {
-                print_r($validator->fails());
+           //     print_r($validator->fails());
 //                $error[0] = $this->importArray;
 //                $error[0]['error'] = '错误信息';
                 foreach ($validator->errors()->toArray() as $key => $value) {
                     $k = explode('.', $key)[0];
-                    print_r($value);
-                    print_r($key);
-                    print_r($employee[$k]);
-                    exit();
+              //      print_r($value);
+             //       print_r($key);
+            //        print_r($employee[$k]);
+            //        exit();
 //                    $error[$k + 1] = $data[$k];
 //                    $error[$k + 1]['error'] = implode('|', $value);
                     unset($employee[$k]); // 移除错误数据
