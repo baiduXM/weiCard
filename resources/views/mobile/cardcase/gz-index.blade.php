@@ -152,26 +152,26 @@
             });
 
             $('.mes-data,.mes-img').click('touchstart', function () {
-                var id        = $(this).parents('.group-list').attr('data-user-id');
-                location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
+                var id               = $(this).parents('.group-list').attr('data-user-id');
+                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
 
             /* 取消关注 */
             $('.conRemove').click('touchstart', function () {
-                var data = $(this).parents('form').serializeArray();
-                var json = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
-                if (!json.err) {
-                    location.href = '{{ route('cardcase.index') }}';
-                }
+                var data             = $(this).parents('form').serializeArray();
+                var json             = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
+//                if (!json.err) {
+                window.location.href = '{{ route('cardcase.index') }}';
+//                }
             });
 
             /* 关注且分组 */
             $('.conFollow ').click('touchstart', function () {
-                var data = $(this).parents('form').serializeArray();
-                var json = useAjax('post', '{{ route('user.followAjax') }}', data);
-                if (!json.err) {
-                    window.location.href = '{{ route('cardcase.index') }}';
-                }
+                var data             = $(this).parents('form').serializeArray();
+                var json             = useAjax('post', '{{ route('user.followAjax') }}', data);
+//                if (!json.err) {
+                window.location.href = '{{ route('cardcase.index') }}';
+//                }
             });
 
             /* 加关注 */
