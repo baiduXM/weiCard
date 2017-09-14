@@ -447,6 +447,7 @@ class EmployeeController extends HomeController
             foreach ($temp as $k => $v) {
                 if (isset($department_swap['name'])) { // 避免无数据时报错
                     if (in_array($v, $department_swap['name'])) { // 查看是否已存在，不存在添加
+
                         continue;
                     }
                 }
