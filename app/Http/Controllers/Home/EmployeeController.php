@@ -510,7 +510,7 @@ class EmployeeController extends HomeController
 
             $validator = Validator::make($employee, [
                 '*.number' => 'required|unique:employees,employees.number,null,id,company_id,' . $company_id . ',deleted_at,Null|regex:/^([A-Za-z0-9])*$/',
-                '*.mobile' => 'required|unique:employees,employees.mobile,null',
+                '*.mobile' => 'required|unique:employees,employees.mobile,null,id,deleted_at,Null',
             ], [], [
                 '*.number' => '工号',
                 '*.mobile' => '手机',
