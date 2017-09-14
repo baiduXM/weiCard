@@ -153,7 +153,7 @@
 
             $('.mes-data,.mes-img').click('touchstart', function () {
                 var id               = $(this).parents('.group-list').attr('data-user-id');
-                window.location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
+                location.href = '{{ url('cardcase/showuser') }}' + '/' + id;
             });
 
             /* 取消关注 */
@@ -161,7 +161,7 @@
                 var data             = $(this).parents('form').serializeArray();
                 var json             = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
 //                if (!json.err) {
-                window.location.href = '{{ route('cardcase.index') }}';
+                location.href = '{{ route('cardcase.index') }}';
 //                }
             });
 
@@ -170,7 +170,7 @@
                 var data             = $(this).parents('form').serializeArray();
                 var json             = useAjax('post', '{{ route('user.followAjax') }}', data);
 //                if (!json.err) {
-                window.location.href = '{{ route('cardcase.index') }}';
+                location.href = '{{ route('cardcase.index') }}';
 //                }
             });
 
