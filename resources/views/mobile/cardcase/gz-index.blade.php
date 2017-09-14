@@ -160,16 +160,18 @@
             $('.conRemove').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.unfollowAjax') }}', data);
-                alert(json.msg);
-                window.location.href = '{{ route('cardcase.index') }}';
+                if (!json.err) {
+                    window.location.href = '{{ route('cardcase.index') }}';
+                }
             });
 
             /* 关注且分组 */
             $('.conFollow ').click('touchstart', function () {
                 var data = $(this).parents('form').serializeArray();
                 var json = useAjax('post', '{{ route('user.followAjax') }}', data);
-                alert(json.msg);
-                window.location.href = '{{ route('cardcase.index') }}';
+                if (!json.err) {
+                    window.location.href = '{{ route('cardcase.index') }}';
+                }
             });
 
             /* 加关注 */

@@ -188,6 +188,7 @@
 
             /* 新建圈子提交 */
             $('.confirm-add1').click('touchstart', function () {
+//            $('.confirm-add1').on('touchstart','.confirm-add1', function () {
                 $(this).parents('form').submit();
             });
             /* 新建圈子 */
@@ -209,9 +210,11 @@
             /* 快速加入提交 */
             $('.confirm-add2').click('touchstart', function () {
                 $(this).parents('form').submit();
+                console.log('in')
             });
             /* 快速加入圈子 */
             $('#form-add2').submit(function (e) {
+                console.log('into')
                 var data = $(this).serializeArray();
                 var rule = useAjax('post', '{{ route('circle.joinAjax') }}', data)
                 console.log(rule)

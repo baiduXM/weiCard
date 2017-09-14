@@ -192,7 +192,7 @@
             });
 
             /* 展开分组 */
-            $('.accordion-title').click('touchstart', function () {
+            $('.mp-group').on('touchstart','.accordion-title', function () {
                 var _this    = $(this);
                 var count    = _this.children('i').text(); // 成员数
                 var group_id = $(this).parent('dl').attr('data-group-id');
