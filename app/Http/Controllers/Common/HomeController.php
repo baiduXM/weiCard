@@ -237,8 +237,22 @@ class HomeController extends Controller
                     . $person->company['coordinate_lat'] . ','
                     . $person->company['coordinate_lng'] . '&title=目标位置&content='
                     . $person->company['address'] . '&output=html';
+                /* 发票二维码 */
                 $invoiceurl = url('invoice/' . $person->company['id']);
                 $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $invoiceurl;
+
+
+
+                /* 二维码 */
+                $targetPath = 'uploads/company/' . $person->company['id'] . '/qrcode';
+                if (!file_exists($targetPath . '/' . $person->nickname . $person->number.'.png')) {
+                    $this->createQrcode(url('cardview/e-' . $person->id), $targetPath, ['name' => $person->nickname . $person->number]);
+                    $qrcodeimg['QRcode']=$targetPath . '/' . $person->nickname . $person->number.'.png';
+                }else{
+                    $qrcodeimg['QRcode']=$targetPath . '/' . $person->nickname . $person->number.'.png';
+                }
+//                $url = url('cardview/' . $param[0] . '-' . $person->id);
+//                $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
                 /* 二维码名片信息 */
                 $title = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
                 $message =
@@ -271,6 +285,25 @@ class HomeController extends Controller
                 } else {
                     $template = $templates[0];
                 }
+                /* 二维码 */
+                $targetPath = 'uploads/user/' . $person->id ;
+                if (!file_exists($targetPath . '/' . $person->id . $person->name.'.png')) {
+                    $this->createQrcode(url('cardview/u-' . $person->id), $targetPath, ['name' => $person->id . $person->name]);
+                    $qrcodeimg['QRcode']=$targetPath . '/' . $person->id . $person->name.'.png';
+                }else{
+                    $qrcodeimg['QRcode']=$targetPath . '/' . $person->id . $person->name.'.png';
+                }
+
+//                if(count($person->qrcode_path)>0){
+//                    $qrcodeimg['QRcode']=$person->qrcode_path;
+//                }else{
+//                    $user = User::find($param[1]);
+//                    $user->qrcode_path = $this->createQrcode(url('cardview/' . $param[0] . '-' . $user->id), 'uploads/user/'.$user->id);
+//                    $user->save();
+//                    $user = User::find($param[1]);
+//                    $qrcodeimg['QRcode']=$user->qrcode_path;
+//                }
+
                 /* 二维码名片信息 */
                 $message =
                     "BEGIN:VCARD%0A"
@@ -281,6 +314,8 @@ class HomeController extends Controller
                     . "URL:" . url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
                     . "NOTE:来自G宝盆名片.%0A"
                     . "END:VCARD";
+
+
                 break;
             default:
                 break;
@@ -288,8 +323,8 @@ class HomeController extends Controller
         /* 获取分享js-api参数 */
         $sign_package = $this->getSignPackage();
         /* 二维码 */
-        $url = url('cardview/' . $param[0] . '-' . $person->id);
-        $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
+//        $url = url('cardview/' . $param[0] . '-' . $person->id);
+//        $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
