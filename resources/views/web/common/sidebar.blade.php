@@ -39,8 +39,8 @@
             <ul class="tree_one" {{ Request::path() == 'cardcase' || Request::is('cardcase/*') ? 'style=display:block;' : '' }}>
                 <li {{ Request::path() == 'cardcase' ? 'class=active' : '' }}>
                     <a href="{{ url('cardcase') }}">名片夹管理</a></li>
-                <li {{ Request::path() == 'cardcase/group' ? 'class=active' : '' }}>
-                    <a href="{{ url('cardcase/group') }}">分组管理</a></li>
+                {{--<li {{ Request::path() == 'cardcase/group' ? 'class=active' : '' }}>--}}
+                    {{--<a href="{{ url('cardcase/group') }}">分组管理</a></li>--}}
             </ul>
         </div><!--名片夹-->
         @if(Auth::user()->company)
