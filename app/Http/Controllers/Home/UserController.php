@@ -179,6 +179,24 @@ class UserController extends HomeController
             }
         }
         if ($user->save()) {
+            /*名片信息二维码*/
+            $url = url('cardview/u-' . $user->id);
+            $message =
+                "BEGIN:VCARD%0A
+                VERSION:3.0%0A
+                N:$user->nickname
+                TEL;type=CELL;type=pref:$user->mobile
+                EMAIL: $user->email
+                URL: $url
+                NOTE:来自G宝盆名片
+                END:VCARD";
+            $targetPath = 'uploads/user/' . $user->id .'/message';
+            if (!file_exists($targetPath . '/message' . $user->id . $user->name.'.png')) {
+                $this->createQrcode($message,$targetPath ,['name' => 'message' .$user->id . $user->name]);
+            }else{
+                $this->deleteFiles($targetPath . '/message' . $user->id . $user->name.'.png');
+                $this->createQrcode($message,$targetPath ,['name' => 'message' .$user->id . $user->name]);
+            }
             if ($this->is_mobile) {
                 return redirect()->route('cardcase.show')->with('type', 'u');
             }

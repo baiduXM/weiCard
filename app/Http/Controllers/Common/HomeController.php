@@ -239,8 +239,14 @@ class HomeController extends Controller
                     . $person->company['address'] . '&output=html';
                 /* 发票二维码 */
                 $invoiceurl = url('invoice/' . $person->company['id']);
-                $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $invoiceurl;
-
+//                $qrcodeimg['invoice'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $invoiceurl;
+                $targetPath = 'uploads/company/' . $person->company['id'];
+                if (!file_exists($targetPath  . "/invoice" . $person->company_id.'.png')) {
+                    $this->createQrcode($invoiceurl, $targetPath, ['name' => 'invoice'.$person->company_id]);
+                    $qrcodeimg['invoice']=$targetPath . '/invoice' . $person->company_id.'.png';
+                }else{
+                    $qrcodeimg['invoice']=$targetPath . '/invoice' . $person->company_id.'.png';
+                }
 
 
                 /* 二维码 */
@@ -255,17 +261,41 @@ class HomeController extends Controller
 //                $qrcodeimg['QRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $url;
                 /* 二维码名片信息 */
                 $title = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
+//                $message =
+//                    "BEGIN:VCARD%0A"
+//                    . "VERSION:3.0%0A"
+//                    . "N:" . $person->nickname . "%0A"
+//                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+//                    . "ORG:" . $person->company->display_name . "%0A"
+//                    . "TITLE:" . $title . "%0A"
+//                    . "EMAIL:" . $person->email . "%0A"
+//                    . "URL:" . url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
+//                    . "NOTE:来自G宝盆名片.%0A"
+//                    . "END:VCARD";
+
+//                $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+                $display_name = $person->company->display_name;
+                $mpurl = url('cardview/e-' . $person->id);
                 $message =
-                    "BEGIN:VCARD%0A"
-                    . "VERSION:3.0%0A"
-                    . "N:" . $person->nickname . "%0A"
-                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
-                    . "ORG:" . $person->company->display_name . "%0A"
-                    . "TITLE:" . $title . "%0A"
-                    . "EMAIL:" . $person->email . "%0A"
-                    . "URL:" . url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
-                    . "NOTE:来自G宝盆名片.%0A"
-                    . "END:VCARD";
+                    "BEGIN:VCARD%0A
+                    VERSION:3.0%0A
+                    N:$person->nickname
+                    TEL;type=CELL;type=pref:$person->mobile
+                    ORG:$display_name
+                    TITLE:$title
+                    EMAIL: $person->email
+                    URL: $mpurl
+                    NOTE:来自G宝盆名片
+                    END:VCARD";
+                $targetPath = 'uploads/company/' . $person->company['id'] . '/messsage' ;
+                if (!file_exists($targetPath . '/message' . $person->id . $person->number.'.png')) {
+                    $this->createQrcode($message,$targetPath ,['name' => 'message' .$person->id . $person->number]);
+                    $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->number.'.png';
+                }else{
+                    $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->number.'.png';
+                }
+
+
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -305,17 +335,33 @@ class HomeController extends Controller
 //                }
 
                 /* 二维码名片信息 */
+//                $message =
+//                    "BEGIN:VCARD%0A"
+//                    . "VERSION:3.0%0A"
+//                    . "N:" . $person->nickname . "%0A"
+//                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
+//                    . "EMAIL:" . $person->email . "%0A"
+//                    . "URL:" . url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
+//                    . "NOTE:来自G宝盆名片.%0A"
+//                    . "END:VCARD";
+                $mpurl = url('cardview/u-' . $person->id);
                 $message =
-                    "BEGIN:VCARD%0A"
-                    . "VERSION:3.0%0A"
-                    . "N:" . $person->nickname . "%0A"
-                    . "TEL;type=CELL;type=pref:" . $person->mobile . "%0A"
-                    . "EMAIL:" . $person->email . "%0A"
-                    . "URL:" . url('cardview/' . $param[0] . '-' . $person->id) . "%0A"
-                    . "NOTE:来自G宝盆名片.%0A"
-                    . "END:VCARD";
-
-
+                    "BEGIN:VCARD%0A
+                    VERSION:3.0%0A
+                    N:$person->nickname
+                    TEL;type=CELL;type=pref:$person->mobile
+                    EMAIL: $person->email
+                    URL: $mpurl
+                    NOTE:来自G宝盆名片
+                    END:VCARD";
+                $targetPath = 'uploads/user/' . $person->id .'/message' ;
+                if (!file_exists($targetPath . '/message' . $person->id . $person->name.'.png')) {
+                    $this->createQrcode($message,$targetPath ,['name' => 'message' .$person->id . $person->name]);
+                    $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->name.'.png';
+                }else{
+                    $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->name.'.png';
+                }
+//                $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
                 break;
             default:
                 break;
@@ -328,7 +374,7 @@ class HomeController extends Controller
         if (!$template) {
             return redirect()->route('errorview')->with('com', '$com');
         }
-        $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+//        $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
 
         return view($template->name . '.index')->with([
             'template'       => $template, // 模板数据

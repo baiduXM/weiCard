@@ -283,10 +283,33 @@ class EmployeeController extends HomeController
             }
         }
         if ($employee->save()) {
+            /* 名片二维码 */
             $filePath = 'uploads/company/' . $employee->company_id . '/qrcode';
             $fileName = $employee->nickname . '.png';
             if (!file_exists($filePath . '/' . $fileName)) { // 判断是否创建二维码
                 $this->createQrcode(url('cardview/e-' . $employee->id), $filePath, ['name' => $employee->nickname . $employee->number]);
+            }
+            /* 名片信息二维码 */
+            $title = $employee->positions ? $employee->positions : ($employee->position ? $employee->position->name : '');
+            $display_name = $employee->company->display_name;
+            $mpurl = url('cardview/e-' . $employee->id);
+            $message =
+                "BEGIN:VCARD%0A
+                    VERSION:3.0%0A
+                    N:$employee->nickname
+                    TEL;type=CELL;type=pref:$employee->mobile
+                    ORG:$display_name
+                    TITLE:$title
+                    EMAIL: $employee->email
+                    URL: $mpurl
+                    NOTE:来自G宝盆名片
+                    END:VCARD";
+            $targetPath = 'uploads/company/' . $employee->company['id'] . '/messsage' ;
+            if (!file_exists($targetPath . '/message' . $employee->id . $employee->number.'.png')) {
+                $this->createQrcode($message,$targetPath ,['name' => 'message' .$employee->id . $employee->number]);
+            }else{
+                $this->deleteFiles($targetPath . '/message' . $employee->id . $employee->number.'.png');
+                $this->createQrcode($message,$targetPath ,['name' => 'message' .$employee->id . $employee->number]);
             }
             $err_code = 500;
         } else {

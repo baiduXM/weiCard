@@ -172,6 +172,10 @@ class CompanyController extends HomeController
         }
 
         if ($company->save()) {
+            /* 公司信息更改重置名片信息二维码 */
+            $targetPath = 'uploads/company/' . $company->id . '/messsage' ;
+            $this->deleteFolder($targetPath);
+
             return redirect('company')->with('success', '修改成功');
         } else {
             return redirect()->back();
