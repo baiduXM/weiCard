@@ -80,7 +80,7 @@
 @section('javascript')
     <script src="{{ asset('static/mobile/js/index.js') }}"></script>
     <script src="{{ asset('static/mobile/js/fontsize.js') }}"></script>
-    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_base.js') }}"></script>
 @show
 </body>
 </html>

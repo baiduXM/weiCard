@@ -93,7 +93,7 @@
 @stop
 @section('javascript')
     {{--@parent--}}
-    <script src="{{ asset('static/mobile/js/function_bak.js') }}"></script>
+    <script src="{{ asset('static/mobile/js/function_base.js') }}"></script>
     <script>
         //验证姓名，必填
         function validateName(){
