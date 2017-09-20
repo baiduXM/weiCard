@@ -69,7 +69,7 @@
 					@if($templates)
 						@foreach($templates as $item=>$value)
 							<div class="swiper-slide">
-								<div class="pop_img"><img src="{{ asset($value->file.'/screenshot.jpg') }}"></div>
+								<div class="pop_imgg"><img src="{{ asset($value->file.'/screenshot.jpg') }}"></div>
 								<a class="choose_card3" href="{{ url('template/change-u/'.$value->id) }}"></a>
 							</div>
 						@endforeach
