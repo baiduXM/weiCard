@@ -6,6 +6,7 @@ use App\Models\Cardcase;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Group;
+use App\Models\Link;
 use App\Models\Template;
 use App\Models\TemplateGroup;
 use App\Models\User;
@@ -294,8 +295,99 @@ class HomeController extends Controller
                 }else{
                     $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->number.'.png';
                 }
-
-
+                //底部link
+                // dd($person->company['id']);
+                $link = $person->company->links;
+                //底部-一键拨号
+                $link_phone = $link->where('default_link', 'phone');
+                if (count($link_phone) <= 0) {
+                    $phone_input = [
+                        'company_id' => $person->company['id'],
+                        'link_name' => '一键拨号',
+                        'link_url' => 'javascript:;',
+                        'link_img' => '&#xe644',
+                        'class' => 'mp-tel-btn same animated fadeInLeftBig go',
+                        'class_id' => '',
+                        'sort' => '1',
+                        'is_open' => '1',
+                        'default_link' => 'phone',
+                    ];
+                    $input_phone = Link::create($phone_input);
+                    $person = Employee::find($param[1]);
+                }
+                //底部-名片夹
+                $link_cardcase = $link->where('default_link', 'cardcase');
+                if (count($link_cardcase) <= 0) {
+                    $phone_input = [
+                        'company_id' => $person->company['id'],
+                        'link_name' => '名片夹',
+                        'link_url' => '',
+                        'link_img' => '&#xe617',
+                        'class' => 'name same animated fadeInLeftBig go',
+                        'class_id' => '',
+                        'sort' => '2',
+                        'is_open' => '1',
+                        'default_link' => 'cardcase',
+                    ];
+                    $input_cardcase = Link::create($phone_input);
+                    $person = Employee::find($param[1]);
+                }
+                //底部-关注
+                $link_follow = $link->where('default_link', 'follow');
+                if (count($link_follow) <= 0) {
+                    $phone_input = [
+                        'company_id' => $person->company['id'],
+                        'link_name' => '关注',
+                        'link_url' => '',
+                        'link_img' => '&#xe642',
+                        'class' => 'mp-follow-btn follow same animated fadeInRightBig go',
+                        'class_id' => 'done',
+                        'sort' => '3',
+                        'is_open' => '1',
+                        'default_link' => 'follow',
+                    ];
+                    $input_follow = Link::create($phone_input);
+                    $person = Employee::find($param[1]);
+                }
+                //底部-发票信息
+                $link_invoice = $link->where('default_link', 'invoice');
+                if (count($link_invoice) <= 0) {
+                    $phone_input = [
+                        'company_id' => $person->company['id'],
+                        'link_name' => '发票信息',
+                        'link_url' => 'javascript:;',
+                        'link_img' => '&#xe6d0',
+                        'class' => 'same animated fadeInRightBig qy-mess-btn',
+                        'class_id' => '',
+                        'sort' => '4',
+                        'is_open' => '1',
+                        'default_link' => 'invoice',
+                    ];
+                    $input_invoice = Link::create($phone_input);
+                    $person = Employee::find($param[1]);
+                }
+                //底部-留言板
+                $link_message = $link->where('default_link', 'message');
+                if (count($link_message) <= 0) {
+                    $phone_input = [
+                        'company_id' => $person->company['id'],
+                        'link_name' => '留言板',
+                        'link_url' => 'javascript:;',
+                        'link_img' => '&#xe63d',
+                        'class' => '',
+                        'class_id' => '',
+                        'sort' => '5',
+                        'is_open' => '1',
+                        'default_link' => 'message',
+                    ];
+                    $input_message = Link::create($phone_input);
+                    $person = Employee::find($param[1]);
+                }
+                //$link_phone = Link::where('company_id',"=",$person->company['id'])->where('default_link',"=",'phone')->get();
+                $top_link = Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->take(4)->get();
+                $top_ids = Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->take(4)->pluck('id');
+                $left_link =Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->whereNotIn('id', $top_ids)->get();
+                //dd($left_link);
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -306,6 +398,7 @@ class HomeController extends Controller
                 $count_cardcase = count($cardcases);
                 //dd($count_cardcase);
                 $person = User::find($param[1]);
+//               dd($person->company->id);
                     if(count($person->address)<= 0 ){
                         $person->address = '尚未填写';
                     }
@@ -350,7 +443,7 @@ class HomeController extends Controller
                     VERSION:3.0%0A
                     N:$person->nickname
                     TEL;type=CELL;type=pref:$person->mobile
-                    EMAIL: $person->email
+                    EMAIL: $person->email 
                     URL: $mpurl
                     NOTE:来自G宝盆名片
                     END:VCARD";
@@ -362,6 +455,8 @@ class HomeController extends Controller
                     $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->name.'.png';
                 }
 //                $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
+                $top_link ='';
+                $left_link='';
                 break;
             default:
                 break;
@@ -376,6 +471,7 @@ class HomeController extends Controller
         }
 //        $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
 
+        //dd($person->company->links);
         return view($template->name . '.index')->with([
             'template'       => $template, // 模板数据
             'person'         => $person, // 对象，用户/员工
@@ -383,6 +479,8 @@ class HomeController extends Controller
             'qrcodeimg'      => $qrcodeimg, // 二维码图片
             'sign_package'   => $sign_package, // 微信签名包
             'count_cardcase' => $count_cardcase, // 是否关注
+            'top_link'       => $top_link, // 企业版底部导航
+            'left_link'      => $left_link, // 底部
         ]);
     }
 

@@ -88,7 +88,15 @@ $(function () {
         $(".form-update").attr("action", _url);
         $.get(_url, function (data) {
             console.log('operate-edit');
+             // data.link_img = data.link_img + ';'
+            var er = data.link_img
+            var is = er+';'
+            console.log(is);
+            console.log(er);
+            $("#inputIcons1").val(er);
+            $("#iconStart1").html(is);
             console.log(data);
+
             showInformation(data, 'class', 'info-');
         });
     });
@@ -124,6 +132,52 @@ $(function () {
             }
         });
     });
+
+
+    /* 操作 - 查看2 */
+    $(".operate-edit2").click(function () {
+        var _url = $(this).data("url");
+        $(".form-update2").attr("action", _url);
+        $.get(_url, function (data) {
+            console.log('operate-edit2');
+            // data.link_img = data.link_img + ';'
+            console.log(data);
+
+            showInformation(data, 'class', 'info-');
+        });
+    });
+    /* 操作 - 更新2*/
+    $(".operate-update2").click(function () {
+        var _url      = $('.form-update2').attr('action');
+        var _method   = $('.form-update2').attr('method') ? $('.form-update2').attr('method') : 'post';
+        var _formData = new FormData($('.form-update2')[0]);
+        $("[class^='error-']").addClass('hidden');
+        $.ajax({
+            url: _url,
+            type: _method,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: _formData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (json) {
+                console.log('success-update')
+                console.log(json)
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .after-operate').text();
+            },
+            error: function (json) {
+                console.log('error-update')
+                console.log(json)
+                var errors = json.responseJSON;
+                showError(errors);
+                return false;
+            }
+        });
+    });
+
 
     /* 操作 - 删除 */
     $('.operate-delete').click(function () {
@@ -250,6 +304,7 @@ $(function () {
             var itexts = $(this).find("i").text();
             $("#inputIcons1").val(itext);
             console.log(itext);
+            console.log(itexts);
             $("#iconStart1").text(itexts);
             $("#selIcon1").hide();
 

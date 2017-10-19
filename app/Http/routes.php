@@ -70,6 +70,11 @@ Route::get('download', ['as' => 'download', 'uses' => 'Common\Controller@downloa
 
 /* 案例展示 */
 Route::get('demo', ['as' => 'demo', 'uses' => 'Common\Controller@demo']);
+/* 留言板 */
+Route::get('message-write/{id}', ['as' => 'message.write', 'uses' => 'Home\MessageController@write']);
+Route::any('message-post', ['as' => 'message-post', 'uses' => 'Home\MessageController@messagepost']);
+Route::any('message-success/{id?}', ['as' => 'message-success', 'uses' => 'Home\MessageController@messagesuccess']);
+Route::any('message-error/{id?}', ['as' => 'message-error', 'uses' => 'Home\MessageController@messageerror']);
 /* =====用户界面===== */
 
 /*
@@ -222,7 +227,14 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
     Route::match(['get', 'post'], 'circle/join/{id?}', ['as' => 'circle.join', 'uses' => 'Home\CircleController@join']);
     Route::get('circle/{id}/join', ['as' => 'circle.joinId', 'uses' => 'Home\CircleController@join']);
     Route::resource('circle', 'Home\CircleController');
+    /* 留言板 */
 
+    Route::get('message-list', ['as' => 'message-list', 'uses' => 'Home\MessageController@messagelist']);
+    Route::get('message-detail/{id}', ['as' => 'message-detail', 'uses' => 'Home\MessageController@messagedetail']);
+    Route::match(['get', 'delete'], 'message/quit/{circle_id?}/{user_id?}', ['as' => 'circle.quit', 'uses' => 'Home\MessageController@quit']);
+    Route::match(['get', 'post'], 'message/join/{id?}', ['as' => 'circle.join', 'uses' => 'Home\MessageController@join']);
+    Route::get('message/{id}/join', ['as' => 'message.joinId', 'uses' => 'Home\MessageController@join']);
+//    Route::resource('message', 'Home\MessageController');
     /* 模板中心 */
     Route::get('template/type/{type?}', ['as' => 'template.index', 'uses' => 'Home\TemplateController@index']);
     Route::match(['get', 'post'], 'template/change/{params}', ['as' => 'template.change', 'uses' => 'Home\TemplateController@change']);
