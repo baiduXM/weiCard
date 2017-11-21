@@ -12,25 +12,25 @@
         </ul>
 
         <div class="myCard-content rt-main">
-            <div class="myCard-off">
-                <form action="{{ url('company/productlink') }}">
-                    {{ csrf_field() }}
-                    <span>是否开启外链</span>
-                    @if ($company->is_productlink=='1')
-                        <input  name="Company[is_productlink]" type="radio" checked="checked"   value="1">开
-                    @else
-                        <input  name="Company[is_productlink]" type="radio"    value="1">开
-                    @endif
-                    @if ($company->is_productlink=='1')
-                        <input  name="Company[is_productlink]" type="radio"    value="0">关
-                    @else
-                        <input  name="Company[is_productlink]" type="radio"  checked="checked"  value="0">关
-                    @endif
-                    <input class="cardInput" type="text" name="Company[productlink]"
-                           value="{{ old('Company.productlink') ? old('Company.productlink') : $company->productlink }}">
-                    <input class="cardSave" type="submit" value="保存">
-                </form>
-            </div>
+            {{--<div class="myCard-off">--}}
+                {{--<form action="{{ url('company/productlink') }}">--}}
+                    {{--{{ csrf_field() }}--}}
+                    {{--<span>是否开启外链</span>--}}
+                    {{--@if ($company->is_productlink=='1')--}}
+                        {{--<input  name="Company[is_productlink]" type="radio" checked="checked"   value="1">开--}}
+                    {{--@else--}}
+                        {{--<input  name="Company[is_productlink]" type="radio"    value="1">开--}}
+                    {{--@endif--}}
+                    {{--@if ($company->is_productlink=='1')--}}
+                        {{--<input  name="Company[is_productlink]" type="radio"    value="0">关--}}
+                    {{--@else--}}
+                        {{--<input  name="Company[is_productlink]" type="radio"  checked="checked"  value="0">关--}}
+                    {{--@endif--}}
+                    {{--<input class="cardInput" type="text" name="Company[productlink]"--}}
+                           {{--value="{{ old('Company.productlink') ? old('Company.productlink') : $company->productlink }}">--}}
+                    {{--<input class="cardSave" type="submit" value="保存">--}}
+                {{--</form>--}}
+            {{--</div>--}}
             @if(Auth::user()->company)
                 <ul class="b-button">
 

@@ -151,75 +151,75 @@
 
         </div>
 
-        <div>
-            <span>简介栏目名: </span>
-            <input type="text" name="Company[des_classifyname]" placeholder=""
-                   value="{{ old('Company.des_classifyname') ? old('Company.des_classifyname') : $company->des_classifyname }}">
-            @if ($errors->has('Company.des_classifyname'))
-                <span class="pass-error show">{{ $errors->first('Company.des_classifyname') }}</span>
-            @endif
+        {{--<div>--}}
+            {{--<span>简介栏目名: </span>--}}
+            {{--<input type="text" name="Company[des_classifyname]" placeholder=""--}}
+                   {{--value="{{ old('Company.des_classifyname') ? old('Company.des_classifyname') : $company->des_classifyname }}">--}}
+            {{--@if ($errors->has('Company.des_classifyname'))--}}
+                {{--<span class="pass-error show">{{ $errors->first('Company.des_classifyname') }}</span>--}}
+            {{--@endif--}}
 
-        </div>
-        <div>
-            <span>产品栏目名: </span>
-            <input type="text" name="Company[pro_classifyname]" placeholder=""
-                   value="{{ old('Company.pro_classifyname') ? old('Company.pro_classifyname') : $company->pro_classifyname }}">
-            @if ($errors->has('Company.pro_classifyname'))
-                <span class="pass-error show">{{ $errors->first('Company.pro_classifyname') }}</span>
-            @endif
+        {{--</div>--}}
+        {{--<div>--}}
+            {{--<span>产品栏目名: </span>--}}
+            {{--<input type="text" name="Company[pro_classifyname]" placeholder=""--}}
+                   {{--value="{{ old('Company.pro_classifyname') ? old('Company.pro_classifyname') : $company->pro_classifyname }}">--}}
+            {{--@if ($errors->has('Company.pro_classifyname'))--}}
+                {{--<span class="pass-error show">{{ $errors->first('Company.pro_classifyname') }}</span>--}}
+            {{--@endif--}}
 
-        </div>
-        <div>
-            <span>分享栏目名: </span>
-            <input type="text" name="Company[share_classifyname]" placeholder=""
-                   value="{{ old('Company.share_classifyname') ? old('Company.share_classifyname') : $company->share_classifyname }}">
-            @if ($errors->has('Company.share_classifyname'))
-                <span class="pass-error show">{{ $errors->first('Company.share_classifyname') }}</span>
-            @endif
+        {{--</div>--}}
+        {{--<div>--}}
+            {{--<span>分享栏目名: </span>--}}
+            {{--<input type="text" name="Company[share_classifyname]" placeholder=""--}}
+                   {{--value="{{ old('Company.share_classifyname') ? old('Company.share_classifyname') : $company->share_classifyname }}">--}}
+            {{--@if ($errors->has('Company.share_classifyname'))--}}
+                {{--<span class="pass-error show">{{ $errors->first('Company.share_classifyname') }}</span>--}}
+            {{--@endif--}}
 
-        </div>
-        <div>
-            <span>导航栏目名: </span>
-            <input type="text" name="Company[nav_classifyname]" placeholder=""
-                   value="{{ old('Company.nav_classifyname') ? old('Company.nav_classifyname') : $company->nav_classifyname }}">
-            @if ($errors->has('Company.nav_classifyname'))
-                <span class="pass-error show">{{ $errors->first('Company.nav_classifyname') }}</span>
-            @endif
+        {{--</div>--}}
+        {{--<div>--}}
+            {{--<span>导航栏目名: </span>--}}
+            {{--<input type="text" name="Company[nav_classifyname]" placeholder=""--}}
+                   {{--value="{{ old('Company.nav_classifyname') ? old('Company.nav_classifyname') : $company->nav_classifyname }}">--}}
+            {{--@if ($errors->has('Company.nav_classifyname'))--}}
+                {{--<span class="pass-error show">{{ $errors->first('Company.nav_classifyname') }}</span>--}}
+            {{--@endif--}}
 
-        </div>
-        <div>
-            <span>信息栏目名: </span>
-            <input type="text" name="Company[per_classifyname]" placeholder=""
-                   value="{{ old('Company.per_classifyname') ? old('Company.per_classifyname') : $company->per_classifyname }}">
-            @if ($errors->has('Company.per_classifyname'))
-                <span class="pass-error show">{{ $errors->first('Company.per_classifyname') }}</span>
-            @endif
+        {{--</div>--}}
+        {{--<div>--}}
+            {{--<span>信息栏目名: </span>--}}
+            {{--<input type="text" name="Company[per_classifyname]" placeholder=""--}}
+                   {{--value="{{ old('Company.per_classifyname') ? old('Company.per_classifyname') : $company->per_classifyname }}">--}}
+            {{--@if ($errors->has('Company.per_classifyname'))--}}
+                {{--<span class="pass-error show">{{ $errors->first('Company.per_classifyname') }}</span>--}}
+            {{--@endif--}}
 
-        </div>
-        <div class="companyLink">
-            <span>简介外链开关:</span>
-            <div class="com">
-                <input type="text" name="Company[profilelink]" class="comLinkInput cardInput"
-                       value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">
-                @if ($company->is_profilelink=='1')
-                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="1">
-                    开
-                @else
-                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="1">开
-                @endif
-                @if ($company->is_profilelink=='1')
-                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="0">关
-                @else
-                    <input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="0">
-                    关
-                @endif
+        {{--</div>--}}
+        {{--<div class="companyLink">--}}
+            {{--<span>简介外链开关:</span>--}}
+            {{--<div class="com">--}}
+                {{--<input type="text" name="Company[profilelink]" class="comLinkInput cardInput"--}}
+                       {{--value="{{ old('Company.profilelink') ? old('Company.profilelink') : $company->profilelink }}">--}}
+                {{--@if ($company->is_profilelink=='1')--}}
+                    {{--<input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="1">--}}
+                    {{--开--}}
+                {{--@else--}}
+                    {{--<input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="1">开--}}
+                {{--@endif--}}
+                {{--@if ($company->is_profilelink=='1')--}}
+                    {{--<input class="comLinkInput" name="Company[is_profilelink]" type="radio" value="0">关--}}
+                {{--@else--}}
+                    {{--<input class="comLinkInput" name="Company[is_profilelink]" type="radio" checked="checked" value="0">--}}
+                    {{--关--}}
+                {{--@endif--}}
 
-            </div>
+            {{--</div>--}}
             {{--<h6 class="comTap"><span>备注:</span>公司简介外链</h6>--}}
-        </div>
-        @if ($errors->has('Company.profilelink'))
-            <p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>
-        @endif
+        {{--</div>--}}
+        {{--@if ($errors->has('Company.profilelink'))--}}
+            {{--<p class="pass-error show">{{ $errors->first('Company.profilelink') }}</p>--}}
+        {{--@endif--}}
         <div class="companyLink">
             <span>个人名片展示:</span>
             <div class="com">

@@ -54,6 +54,20 @@
                                 </span>
                             @endif
                         </div>
+                        <div class="form-group {{ $errors->has('Template.category_number') ? ' has-error' : '' }}">
+                            <label class="col-md-3 control-label" for="category_number">
+                                栏目个数</label>
+                            <div class="col-md-6">
+                                <input id="name" name="Template[category_number]" type="text" placeholder="栏目个数"
+                                       class="form-control" value="{{ $template->category_number }}">
+                            </div>
+                            @if ($errors->has('Template.category_number'))
+                                <span class="help-block col-md-3">
+                                    <strong>{{ $errors->first('Template.category_number') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
                         <div class="form-group {{ $errors->has('Template.file') ? ' has-error' : '' }}">
                             <label class="col-md-3 control-label" for="file">模板上传</label>
                             <div class="col-md-6">

@@ -83,6 +83,15 @@ class Company extends CommonModel
     }
 
     /**
+     * 关系模型(一对多) - 栏目
+     */
+    public function categories()
+    {
+        return $this->hasMany('App\Models\Category');
+    }
+
+
+    /**
      * 关系模型(一对多) - 模板组
      */
     public function templategroups()

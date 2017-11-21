@@ -134,6 +134,113 @@ $(function () {
     });
 
 
+    /* 操作 - 查看3 */
+    $(".operate-edit3").click(function () {
+        var _url = $(this).data("url");
+        $(".form-update3").attr("action", _url);
+        $.get(_url, function (data) {
+            console.log('operate-edit3');
+            // data.link_img = data.link_img + ';'
+            var er = data.category_img
+            var is = er+';'
+            console.log(is);
+            console.log(er);
+            $("#inputIcons1").val(er);
+            $("#iconStart1").html(is);
+            console.log(data);
+
+            showInformation(data, 'class', 'info-');
+        });
+    });
+    /* 操作 - 更新3*/
+    $(".operate-update3").click(function () {
+        var _url      = $('.form-update3').attr('action');
+        console.log(_url)
+        var _method   = $('.form-update3').attr('method') ? $('.form-update3').attr('method') : 'post';
+        console.log(_method)
+        var _formData = new FormData($('.form-update3')[0]);
+        $("[class^='error-']").addClass('hidden');
+        $.ajax({
+            url: _url,
+            type: _method,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: _formData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (json) {
+                console.log('success-update')
+                console.log(json)
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .after-operate').text();
+            },
+            error: function (json) {
+                console.log('error-update')
+                console.log(json)
+                var errors = json.responseJSON;
+                showError(errors);
+                return false;
+            }
+        });
+    });
+
+
+    /* 操作 - 查看4 */
+    $(".operate-edit4").click(function () {
+        var _url = $(this).data("url");
+        $(".form-update4").attr("action", _url);
+        $.get(_url, function (data) {
+            console.log('operate-edit4');
+            // data.link_img = data.link_img + ';'
+            var er = data.category_img
+            var is = er+';'
+            console.log(is);
+            console.log(er);
+            $("#inputIcons4").val(er);
+            $("#iconStart4").html(is);
+            console.log(data);
+
+            showInformation(data, 'class', 'info-');
+        });
+    });
+    /* 操作 - 更新4*/
+    $(".operate-update4").click(function () {
+        var _url      = $('.form-update4').attr('action');
+        console.log(_url)
+        var _method   = $('.form-update4').attr('method') ? $('.form-update4').attr('method') : 'post';
+        console.log(_method)
+        var _formData = new FormData($('.form-update4')[0]);
+        $("[class^='error-']").addClass('hidden');
+        $.ajax({
+            url: _url,
+            type: _method,
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: _formData,
+            dataType: 'json',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function (json) {
+                console.log('success-update')
+                console.log(json)
+                $('.hintModal').modal('show');
+                $('.hintModal .modal-body').text(json.msg);
+                $('.hintModal .after-operate').text();
+            },
+            error: function (json) {
+                console.log('error-update')
+                console.log(json)
+                var errors = json.responseJSON;
+                showError(errors);
+                return false;
+            }
+        });
+    });
+
+
+
     /* 操作 - 查看2 */
     $(".operate-edit2").click(function () {
         var _url = $(this).data("url");
@@ -282,8 +389,13 @@ $(function () {
 
 
     /*2017-6-20*/
-    $("#iconId").on("click", function () {
+    $('#modal-product-add').on("click", function(e){
+        console.log("123")
+        $("#selIcon")&&$("#selIcon").hide();
+    });
+    $("#iconId").on("click", function (e) {
         $("#selIcon").show();
+        e.stopPropagation();
         console.log('failed');
         $("#selIcon span").on("click", function () {
             var itext  = $(this).attr('name');
@@ -294,19 +406,47 @@ $(function () {
             $("#selIcon").hide();
 
         })
-    })
-    ;
-    $("#iconId1").on("click", function () {
+    });
+
+    $('#modal-employee-edit').on("click", function(e){
+        console.log("123")
+        $("#selIcon1")&&$("#selIcon1").hide();
+    });
+    $('#modal-employee-edit3').on("click", function(e){
+        console.log("123")
+        $("#selIcon1")&&$("#selIcon1").hide();
+    });
+
+    $("#iconId1").on("click", function (e) {
+        console.log("1")
         $("#selIcon1").show();
-        console.log('111');
+        e.stopPropagation();
         $("#selIcon1 span").on("click", function () {
+            console.log("12")
             var itext  = $(this).attr('name');
             var itexts = $(this).find("i").text();
             $("#inputIcons1").val(itext);
-            console.log(itext);
-            console.log(itexts);
             $("#iconStart1").text(itexts);
             $("#selIcon1").hide();
+        })
+    })
+
+    $('#modal-employee-edit4').on("click", function(e){
+        console.log("123")
+        $("#selIcon4")&&$("#selIcon4").hide();
+    });
+    $("#iconId4").on("click", function (e) {
+        $("#selIcon4").show();
+        e.stopPropagation();
+        console.log('111');
+        $("#selIcon4 span").on("click", function () {
+            var itext  = $(this).attr('name');
+            var itexts = $(this).find("i").text();
+            $("#inputIcons4").val(itext);
+            console.log(itext);
+            console.log(itexts);
+            $("#iconStart4").text(itexts);
+            $("#selIcon4").hide();
 
         })
     })

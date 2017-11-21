@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\HomeController;
+use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Template;
 use App\Models\TemplateGroup;
@@ -80,14 +81,23 @@ class TemplateController extends HomeController
             //dd(11);
             return redirect()->to('company/employee');
         }
-
         $query = Template::query();
         $query->where('type', 2);
-        $template_list = $query->orderBy('sort', 'asc')->get();
         $user = Auth::user();
         $id = $user->employee->id;
-        /* 查询当前所选模板 */
         $person = Employee::find($id);
+        $categorys = Category::where('company_id', '=', $person->company['id'])->get();
+        $category_n = count($categorys);
+        if ($category_n != null) {
+            $template_list = $query->where('category_number', '<=', $category_n)->orderBy('sort', 'asc')->get();
+        } else {
+
+            $template_list = $query->orderBy('sort', 'asc')->get();
+           }
+
+
+        /* 查询当前所选模板 */
+
         $templategroup_id = $person->templategroup_id;
         if($templategroup_id){
             $templategroup = TemplateGroup::where('id', $templategroup_id)->first();

@@ -62,6 +62,10 @@
                                             <div class="fht-cell"></div>
                                         </th><!---->
                                         <th style="">
+                                            <div class="th-inner" data-name="category_number">栏目个数</div>
+                                            <div class="fht-cell"></div>
+                                        </th><!---->
+                                        <th style="">
                                             <div class="th-inner" data-name="type">类型</div>
                                             <div class="fht-cell"></div>
                                         </th><!--type-->
@@ -94,6 +98,7 @@
                                             <td>{{ $item->name }}</td><!--name-->
                                             <td>{{ $item->display_name }}</td><!--display_name-->
                                             <td>{{ $item->sort }}</td><!--sort-->
+                                            <td>{{ $item->category_number }}</td><!--sort-->
                                             <td>
                                                 @if($item->type == $item::TYPE_ALL)
                                                     <span class="label label-default">{{ $item->getType($item->type) }}</span>

@@ -63,7 +63,12 @@ Route::get('viewcard/{id?}', ['as' => 'viewcard', 'uses' => 'Common\HomeControll
 Route::get('cardview/{params}', ['as' => 'cardview', 'uses' => 'Common\HomeController@cardview']);
 Route::any('errorview', ['as' => 'errorview', 'uses' => 'Common\HomeController@errorview']);
 Route::get('companyinfo/{params}', ['as' => 'companyinfo', 'uses' => 'Common\HomeController@companyinfo']);
-Route::get('invoice/{params}', ['as' => 'invoice', 'uses' => 'Common\HomeController@invoice']);
+Route::get('categoryjson/{params}', ['as' => 'categoryjson', 'uses' => 'Common\HomeController@categoryjson']);// json测试
+Route::get('category-about/{params}', ['as' => 'category-about', 'uses' => 'Common\HomeController@categoryabout']);//关于我们ajax
+Route::get('category-product/{params}', ['as' => 'category-product', 'uses' => 'Common\HomeController@categoryproduct']);//产品服务ajax
+Route::get('category-contact/{params}', ['as' => 'category-contact', 'uses' => 'Common\HomeController@categorycontact']);//个人信息ajax
+Route::get('category-nav/{params}', ['as' => 'category-nav', 'uses' => 'Common\HomeController@categorynav']);//导航ajax
+Route::get('category-qrcode/{params}', ['as' => 'category-qrcode', 'uses' => 'Common\HomeController@categoryqrcode']);//分享二维码ajax
 
 /* 文件下载 */
 Route::get('download', ['as' => 'download', 'uses' => 'Common\Controller@download']);
@@ -162,6 +167,12 @@ Route::group(['middleware' => ['auth', 'mobile']], function () {
         Route::get('link/{id}', ['as' => 'company.link.show', 'uses' => 'Home\LinkController@show']);
         Route::post('link/{id}', ['as' => 'company.link.update', 'uses' => 'Home\LinkController@update']);
         Route::delete('link/{id}', ['as' => 'company.link.destroy', 'uses' => 'Home\LinkController@destroy']);
+        /* 我的公司->栏目管理*/
+        Route::get('category', ['as' => 'company.category.index', 'uses' => 'Home\CategoryController@index']);
+        Route::post('category', ['as' => 'company.category.store', 'uses' => 'Home\CategoryController@store']);
+        Route::get('category/{id}', ['as' => 'company.category.show', 'uses' => 'Home\CategoryController@show']);
+        Route::post('category/{id}', ['as' => 'company.category.update', 'uses' => 'Home\CategoryController@update']);
+        Route::delete('category/{id}', ['as' => 'company.category.destroy', 'uses' => 'Home\CategoryController@destroy']);
         /* 我的公司->公司职位 */
         Route::get('position', ['as' => 'company.position.index', 'uses' => 'Home\PositionController@index']);
         Route::post('position', ['as' => 'company.position.store', 'uses' => 'Home\PositionController@store']);

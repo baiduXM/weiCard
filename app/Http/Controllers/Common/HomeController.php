@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Common;
 
 use App\Models\Cardcase;
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Group;
 use App\Models\Link;
+use App\Models\Product;
 use App\Models\Template;
 use App\Models\TemplateGroup;
 use App\Models\User;
@@ -387,7 +389,163 @@ class HomeController extends Controller
                 $top_link = Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->take(4)->get();
                 $top_ids = Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->take(4)->pluck('id');
                 $left_link =Link::where('company_id',"=",$person->company['id'])->orderBy('sort','asc')->whereNotIn('id', $top_ids)->get();
-                //dd($left_link);
+
+                /* 是否存在企业栏目 */
+                $categorys = Category::where('company_id', '=', $person->company['id'])->get();
+                $category_about = $categorys->where('category_id', '1');
+                if (count($category_about) <= 0) {
+                    $phone_input = [
+                        'sort' => '1',
+                        'category_name' => '关于我们',
+                        'category_id' => '1',
+                        'category_url' => '',
+                        'category_img' => '&#xe653',
+                        'class' => 'mp-company-btn',
+                        'is_link' => '0',
+                        'ajax_link' => 'category-about/'.$person->company['id'],
+                        'company_id' => $person->company['id'],
+                    ];
+                    $input_phone = Category::create($phone_input);
+                }
+
+                //产品服务
+                $category_product = $categorys->where('category_id', '2');
+                if (count($category_product) <= 0) {
+                    $phone_input = [
+                        'sort' => '2',
+                        'category_name' => '产品服务',
+                        'category_id' => '2',
+                        'category_url' => '',
+                        'category_img' => '&#xe633',
+                        'class' => 'mp-propage-btn',
+                        'is_link' => '0',
+                        'ajax_link' => 'category-product/'.$person->company['id'],
+                        'company_id' => $person->company['id'],
+                    ];
+                    $input_phone = Category::create($phone_input);
+                }
+
+                //个人信息
+                $category_contact = $categorys->where('category_id', '3');
+                if (count($category_contact) <= 0) {
+                    $phone_input = [
+                        'sort' => '3',
+                        'category_name' => '个人信息',
+                        'category_id' => '3',
+                        'category_url' => '',
+                        'category_img' => '&#xe714',
+                        'class' => 'mp-contact-btn',
+                        'is_link' => '0',
+                        'ajax_link' => 'category-contact/',
+                        'company_id' => $person->company['id'],
+                    ];
+                    $input_phone = Category::create($phone_input);
+                }
+
+                //导航
+                $category_nav = $categorys->where('category_id', '4');
+                if (count($category_nav) <= 0) {
+                    $phone_input = [
+                        'sort' => '4',
+                        'category_name' => '导航',
+                        'category_id' => '4',
+                        'category_url' => '',
+                        'category_img' => '&#xe66c',
+                        'class' => '',
+                        'is_link' => '0',
+                        'ajax_link' => 'category-nav/'.$person->company['id'],
+                        'company_id' => $person->company['id'],
+                    ];
+                    $input_phone = Category::create($phone_input);
+                }
+
+                //分享
+                $category_qrcode = $categorys->where('category_id', '5');
+                if (count($category_qrcode) <= 0) {
+                    $phone_input = [
+                        'sort' => '5',
+                        'category_name' => '分享',
+                        'category_id' => '5',
+                        'category_url' => '',
+                        'category_img' => '&#xe729',
+                        'class' => 'mp-code-btn',
+                        'is_link' => '0',
+                        'ajax_link' => 'category-qrcode/',
+                        'company_id' => $person->company['id'],
+                    ];
+                    //默认外链栏目1
+                    $phone_input1 = [
+                        'sort' => '6',
+                        'category_name' => '百度',
+                        'category_id' => '0',
+                        'category_url' => 'http://www.baidu.com',
+                        'category_img' => '&#xe623',
+                        'class' => '',
+                        'is_link' => '1',
+                        'ajax_link' => '',
+                        'company_id' => $person->company['id'],
+                    ];
+                    //默认外链栏目2
+                    $phone_input2 = [
+                        'sort' => '7',
+                        'category_name' => '12T',
+                        'category_id' => '0',
+                        'category_url' => 'http://www.12t.cn',
+                        'category_img' => '&#xe6cb',
+                        'class' => '',
+                        'is_link' => '1',
+                        'ajax_link' => '',
+                        'company_id' => $person->company['id'],
+                    ];
+
+                    //默认外链栏目3
+                    $phone_input3 = [
+                        'sort' => '8',
+                        'category_name' => 'G宝盆',
+                        'category_id' => '0',
+                        'category_url' => 'http://www.gbpen.com',
+                        'category_img' => '&#xe654',
+                        'class' => '',
+                        'is_link' => '1',
+                        'ajax_link' => '',
+                        'company_id' => $person->company['id'],
+                    ];
+
+                    //默认外链栏目4
+                    $phone_input4 = [
+                        'sort' => '9',
+                        'category_name' => 'E推',
+                        'category_id' => '0',
+                        'category_url' => 'http://www.12t.cn/tg_wzjs.html#tg_pro3',
+                        'category_img' => '&#xe661',
+                        'class' => '',
+                        'is_link' => '1',
+                        'ajax_link' => '',
+                        'company_id' => $person->company['id'],
+                    ];
+                    $input_phone =  Category::create($phone_input);
+                    $input_phone1 = Category::create($phone_input1);
+                    $input_phone2 = Category::create($phone_input2);
+                    $input_phone3 = Category::create($phone_input3);
+                    $input_phone4 = Category::create($phone_input4);
+                }
+                /* 企业名片首页栏目展示 */
+                $category = Category::where('company_id', '=', $person->company['id'])->orderBy('sort','asc')->limit($template->category_number)->get();
+                foreach ($category as $item) {
+                    if($item->category_id =='3'){
+                        $item->ajax_link = $item->ajax_link.$param[1];
+                    }
+                    if($item->category_id =='4'){
+                        $item->ajax_link = $person['map'];
+                    }
+                    if($item->category_id =='5'){
+                        $item->ajax_link = $item->ajax_link.$param[1];
+                    }
+
+                }
+
+
+             //   dd($category);
                 break;
             case 'u':
                 $data['type'] = 'App\Models\User';
@@ -457,6 +615,7 @@ class HomeController extends Controller
 //                $qrcodeimg['mpQRcode'] = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . $message;
                 $top_link ='';
                 $left_link='';
+                $category='';
                 break;
             default:
                 break;
@@ -481,6 +640,7 @@ class HomeController extends Controller
             'count_cardcase' => $count_cardcase, // 是否关注
             'top_link'       => $top_link, // 企业版底部导航
             'left_link'      => $left_link, // 底部
+            'category'      =>  $category, // 栏目
         ]);
     }
 
@@ -611,6 +771,206 @@ class HomeController extends Controller
             'data' => $employee->department->owner,
         );
 
+    }
+
+    /* json测试 */
+
+    public function categoryjson($params)
+    {
+        $id = $params;
+        $category = Category::where('company_id',$id)->orderBy('sort', 'asc')->get();
+   //     dd($category);
+//        $category = json_encode($category);
+//        return $category;
+        return response()->json($category);
+
+    }
+
+    /* 企业版各栏目ajax */
+
+    //关于我们ajax
+    public function categoryabout($params)
+    {
+        $id = $params;
+        $company = Company::find($id);
+        $logo = asset($company['logo'] ? $company['logo'] : '');
+        $display_name = $company['display_name'] ? $company['display_name'] : '';
+        $homepage = asset($company['homepage'] ? $company['homepage'] : '');
+        $description =$company['description'] ? $company['description'] : '';
+        $data="
+            <!-- 企业必须、公司介绍 -->
+            <div id=\"mp-company\" class=\"mp-company\">
+            <div class=\"mask\"></div>
+            <div class=\"companypage popMiddle animated bounceInDown go\">
+            <div class=\"companyti1 clearfix mp-modal-header\">
+            <div class=\"comlogo fl \"><img src=\"".$logo."\"></div>
+            <div class=\"fl h2_wrap\">
+                    <h2 class=\"\">".$display_name."</h2></div>
+                    <a class=\"wgw \" href=\"".$homepage."\">微官网</a>
+            </div>
+                <div class=\"companyinfo1\">
+                 ".$description."
+                </div>
+            <div class=\"close\"><em class=\"iconfonty slowest wobble go\">&#xe612;</em></div>
+            </div>
+            </div>";
+        return $data;
+
+    }
+
+    //产品服务ajax
+    public function categoryproduct($params)
+    {
+        $id = $params;
+        $product = Product::where('company_id',$id)->get();
+        foreach ($product as $item) {
+            $item->product_img = asset($item->product_img);
+        }
+        return response()->json($product);
+
+    }
+
+    //个人信息ajax
+    public function categorycontact($params)
+    {
+        $id = $params;
+        $person = Employee::find($id);
+        if($person->user){
+            $avatar ="<img src=\"".asset($person->user->avatar)."\"> ";
+        }else{
+            $avatar ="<img src=\"".asset('static/home/images/avatar.jpg')."\"> ";
+        }
+
+        if($person->user){
+           if(count($person->user->qrcode)>0){
+                 $user_qrcode=" <img style=\"width: 60%; display: block;margin: auto;\" src=\"".asset($person->user->qrcode)."\">";
+           } else{
+               $user_qrcode ="<img style=\"width: 80%; display: block;margin: auto;\" src=\"".asset('static/home/images/unqrcode.jpg')." \">";
+           }
+        }
+        $nickname = $person->nickname;
+        $position = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
+        $mobile = $person->mobile;
+        $homepage = $person->company->homepage;
+        $address = $person->company->address;
+        $company = Company::find($person->company_id);
+        $map= 'http://api.map.baidu.com/marker?location='
+            . $company['coordinate_lat'] . ','
+            . $company['coordinate_lng'] . '&title=目标位置&content='
+            . $company['address'] . '&output=html';
+        $data="<!-- 个人联系方式 -->
+            <div id=\"mp-contact\" class=\"mp-contact\" style=\"display: none;\">
+            <div class=\"mask\" style=\"display: none;\"></div>
+            <div class=\"companypage popMiddle animated bounceInDown go\" style=\"top: 80px;\">
+             <div class=\"tab-com\">
+            <div class=\"companyinfo1\" style=\"display: block;\">
+                <div class=\"personal_pic\">
+                    <div class=\"person_picc\">".$avatar ."
+                    </div>
+                </div>
+                <ul>
+                    <li><i class=\"iconfonty icon-color2\">&#xe645;</i><span>".$nickname."</span></li>
+                    <li><i class=\"iconfonty icon-color1\">&#xe692;</i><span>".$position."</span></li>
+                    <li><a href=\"tel:".$mobile."\"><i class=\"iconfonty icon-color4\">&#xe669;</i><span>".$mobile."</span></a></li>
+                    <li><i class=\"iconfonty icon-color1\">&#xe61a;</i><span><a href=\"".$homepage."\">".$homepage."</a></span></li>
+                    <li><a  href=\"".$map."\"><i class=\"iconfonty icon-color3\">&#xe822;</i><span>".$address."</span></a></li>
+                </ul>
+            </div>
+            <div class=\"tab-com-li\" style=\"display: none;\">
+                <h2 class=\"mp-modal-header\">扫描二维码添加我的微信</h2>
+                <div class=\"img1\">
+                   ".$user_qrcode."
+                </div>
+                </div>
+            </div>
+             <div class=\"tabb\">
+                <a href=\"javascript:;\" class=\"tab-li on\"><i class=\"iconfonty\">&#xe611;</i><em>个人信息</em></a>
+            <a href=\"javascript:;\" class=\"tab-li\"><i class=\"iconfonty\">&#xe617;</i><em>+Ta微信</em></a>
+            </div>
+                <div class=\"close\"><em class=\"iconfonty slowest wobble go\"></em></div>
+            </div>
+                </div>";
+
+
+//        dd($map);
+        return $data;
+
+    }
+
+    //导航ajax
+    public function categorynav($params)
+    {
+        $id = $params;
+        $company = Company::find($id);
+        $map= 'http://api.map.baidu.com/marker?location='
+            . $company['coordinate_lat'] . ','
+            . $company['coordinate_lng'] . '&title=目标位置&content='
+            . $company['address'] . '&output=html';
+        return response()->json($map);
+
+    }
+
+    //二维码分享ajax
+    public function categoryqrcode($params)
+    {
+        $id = $params;
+        $person = Employee::find($id);
+//        dd($employee);
+        /* 二维码 */
+        $targetPath = 'uploads/company/' . $person->company['id'] . '/qrcode';
+        if (!file_exists($targetPath . '/' . $person->nickname . $person->number.'.png')) {
+            $this->createQrcode(url('cardview/e-' . $person->id), $targetPath, ['name' => $person->nickname . $person->number]);
+            $qrcodeimg['QRcode']=$targetPath . '/' . $person->nickname . $person->number.'.png';
+        }else{
+            $qrcodeimg['QRcode']=$targetPath . '/' . $person->nickname . $person->number.'.png';
+        }
+
+        /* 二维码名片信息 */
+        $title = $person->positions ? $person->positions : ($person->position ? $person->position->name : '');
+        $display_name = $person->company->display_name;
+        $mpurl = url('cardview/e-' . $person->id);
+        $message =
+            "BEGIN:VCARD%0A
+                    VERSION:3.0%0A
+                    N:$person->nickname
+                    TEL;type=CELL;type=pref:$person->mobile
+                    ORG:$display_name
+                    TITLE:$title
+                    EMAIL: $person->email
+                    URL: $mpurl
+                    NOTE:来自G宝盆名片
+                    END:VCARD";
+        $targetPath = 'uploads/company/' . $person->company['id'] . '/messsage' ;
+        if (!file_exists($targetPath . '/message' . $person->id . $person->number.'.png')) {
+            $this->createQrcode($message,$targetPath ,['name' => 'message' .$person->id . $person->number]);
+            $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->number.'.png';
+        }else{
+            $qrcodeimg['mpQRcode']=$targetPath . '/message' . $person->id . $person->number.'.png';
+        }
+        $QRcode=asset($qrcodeimg['QRcode']);
+        $mpQRcode=asset($qrcodeimg['mpQRcode']);
+        $data = "<!-- 必须、二维码扫描 -->
+            <div id=\"mp-code\" class=\"mp-code\">
+            <div class=\"mask\"></div>
+            <div class=\"codeCon popMiddle animated bounceInDown go\">
+            <div class=\"tab-com\">
+            <div class=\"tab-com-li\">
+                <h2 class=\"mp-modal-header\">长按识别二维码存入通讯录</h2>
+                <div class=\"img1\"><img src=\"".$mpQRcode."\"></div>
+                </div>
+                <div class=\"tab-com-li\">
+                <h2 class=\"mp-modal-header\">扫描二维码分享我的名片</h2>
+                <div class=\"img1\"><img src=\"".$QRcode."\"></div>
+                </div>
+            </div>
+            <div class=\"tab\">
+            <a href=\"javascript:;\" class=\"tab-li on\"><i class=\"iconfonty\">&#xe611;</i><em>通讯录</em></a>
+            <a href=\"javascript:;\" class=\"tab-li\"><i class=\"iconfonty\">&#xe617;</i><em>名片</em></a>
+            </div>
+            <div class=\"close\"><em class=\"iconfonty slowest wobble go\">&#xe612;</em></div>
+            </div>
+            </div>";
+                return $data;
     }
 
 

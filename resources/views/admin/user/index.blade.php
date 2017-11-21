@@ -20,10 +20,10 @@
                                         data-toggle="modal" data-target=".confirmModal" title="删除">
                                     <i class="glyphicon glyphicon-trash"></i>
                                 </button>
-                                <button class="btn btn-default operate-add" type="button" name="operate-add"
-                                        data-url="user/create" title="添加">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                </button>
+                                {{--<button class="btn btn-default operate-add" type="button" name="operate-add"--}}
+                                        {{--data-url="user/create" title="添加">--}}
+                                    {{--<i class="glyphicon glyphicon-plus"></i>--}}
+                                {{--</button>--}}
                                 {{--
                                 <button class="btn btn-default operate-add-batch" type="button" name="operate-add-batch"
                                         title="批量添加">

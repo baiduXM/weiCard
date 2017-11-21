@@ -57,6 +57,8 @@
                 <ul class="tree_one" {{ Request::path() == 'circle' || Request::is('circle/*') || Request::path() == 'company' || Request::is('company/*') ? 'style=display:block;' : '' }}>
                     <li {{ Request::path() == 'company' || Request::is('company/create') ? 'class=active' : '' }}>
                         <a href="{{ url('company') }}">我的公司</a></li>
+                    <li {{ Request::path() == 'company/category' ? 'class=active' : '' }}>
+                        <a href="{{ url('company/category') }}">栏目管理</a></li>
                     <li {{ Request::path() == 'company/employee' || Request::path() == 'company/employee/trash' ? 'class=active' : '' }}>
                         <a href="{{ url('company/employee') }}">公司同事</a></li>
                     <li {{ Request::path() == 'company/department' ? 'class=active' : '' }}>
@@ -74,23 +76,23 @@
                 </ul>
             </div><!--我的公司-->
 
-            <div class="tree_box nav ">
-                <h3 {{ Request::path() == 'template' || Request::is('template/*') ? 'class=h3-active' : '' }}>
-                    <a href="javascript:"><em class="iconFont">&#xe655;</em>模板中心
-                        @if(Request::path() == 'template' || Request::is('template/*'))
-                            <i class="nav-j"></i>
-                        @else
-                            <i></i>
-                        @endif
-                    </a>
-                </h3>
-                <ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>
-                    <li {{ Request::path() == 'template/type/1' ? 'class=active' : '' }}>
-                        <a href="{{ url('template/type/1') }}">个人模板</a></li>
-                    <li {{ Request::path() == 'template/type/2' ? 'class=active' : '' }}>
-                        <a href="{{ url('template/type/2') }}">公司模板</a></li>
-                </ul>
-            </div><!--模板中心-->
+            {{--<div class="tree_box nav ">--}}
+                {{--<h3 {{ Request::path() == 'template' || Request::is('template/*') ? 'class=h3-active' : '' }}>--}}
+                    {{--<a href="javascript:"><em class="iconFont">&#xe655;</em>模板中心--}}
+                        {{--@if(Request::path() == 'template' || Request::is('template/*'))--}}
+                            {{--<i class="nav-j"></i>--}}
+                        {{--@else--}}
+                            {{--<i></i>--}}
+                        {{--@endif--}}
+                    {{--</a>--}}
+                {{--</h3>--}}
+                {{--<ul class="tree_one" {{ Request::path() == 'template' || Request::is('template/*') ? 'style=display:block;' : '' }}>--}}
+                    {{--<li {{ Request::path() == 'template/type/1' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('template/type/1') }}">个人模板</a></li>--}}
+                    {{--<li {{ Request::path() == 'template/type/2' ? 'class=active' : '' }}>--}}
+                        {{--<a href="{{ url('template/type/2') }}">公司模板</a></li>--}}
+                {{--</ul>--}}
+            {{--</div><!--模板中心-->--}}
         @elseif(!isset(Auth::user()->employee->company->user_id))
             <div class="tree_box nav">
                 <h3 {{ Request::path() == 'company' || Request::is('company/*') ? 'class=h3-active' : '' }}>
